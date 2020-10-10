@@ -1,6 +1,5 @@
 package mg.maniry.tenymana.game.models
 
-
 data class Word(
     val index: Int,
     val value: String,
