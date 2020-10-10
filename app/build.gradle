@@ -24,6 +24,23 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    buildFeatures {
+        dataBinding true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -40,16 +57,19 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
-    // Moshi
+    // JSON adapter
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
-    // Koin
+    // Dependency injection
     implementation "org.koin:koin-android:$koin_version"
 
+    // Tests
     testImplementation 'junit:junit:4.12'
     testImplementation 'com.google.truth:truth:1.0.1'
     testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
     testImplementation 'org.mockito:mockito-inline:2.23.0'
 
+    // Android tests
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'com.google.truth:truth:1.0.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
