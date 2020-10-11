@@ -12,24 +12,25 @@ data class Word(
 
     val resolvedVersion: Word get() = this.copy(resolved = true)
 
-    fun firstUnrevealedIndex(): Int {
-        for (i in 0..size) {
-            if (!chars[i].resolved) {
-                return i
+    val firstUnrevealedIndex: Int
+        get() {
+            for (i in 0..size) {
+                if (!chars[i].resolved) {
+                    return i
+                }
             }
+            return -1;
         }
-        return -1;
-    }
 
     fun removeBonus(): Word {
         return this.copy(bonus = null)
     }
 
-    fun sameAsChars(otherChars: List<Character>): Boolean {
+    fun sameChars(otherChars: List<Character>): Boolean {
         if (otherChars.size == size) {
             otherChars.forEachIndexed { i, c ->
-                if (c.compValue == chars[i].compValue) {
-                    return true
+                if (c.compValue != chars[i].compValue) {
+                    return false
                 }
             }
             return true

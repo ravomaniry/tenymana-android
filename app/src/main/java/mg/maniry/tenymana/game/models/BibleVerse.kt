@@ -7,7 +7,6 @@ data class BibleVerse(
     val text: String,
     val words: List<Word>
 ) {
-
     companion object {
         fun fromText(book: String, chapter: Int, verse: Int, text: String): BibleVerse {
             var words = parseText(text)
@@ -17,6 +16,19 @@ data class BibleVerse(
             return BibleVerse(book, chapter, verse, text, words)
         }
     }
+
+    val uniqueWords: List<Word>
+        get() {
+            val values = mutableListOf<Word>()
+            for (w in words) {
+                if (!w.isSeparator) {
+                    if (values.find { w.sameChars(it.chars) } == null) {
+                        values.add(w)
+                    }
+                }
+            }
+            return values
+        }
 }
 
 private val separatorRegex = Regex("[^a-zàäèìïòô]", RegexOption.IGNORE_CASE)
