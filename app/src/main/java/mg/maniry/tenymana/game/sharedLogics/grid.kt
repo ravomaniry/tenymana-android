@@ -27,11 +27,15 @@ fun MutableGrid.applyGravity(gravity: List<Point>) {
     }
 }
 
-fun MutableGrid.persist(origin: Point, direction: Point, word: Word) {
+fun MutableGrid.placeWord(origin: Point, direction: Point, word: Word) {
     val done = applyHMoves(origin, direction, word)
     if (!done) {
         applyVMoves(origin, direction, word)
     }
+    persist(word, origin, direction)
+}
+
+private fun MutableGrid.persist(word: Word, origin: Point, direction: Point) {
     for (i in 0 until word.size) {
         val p = origin + direction * i
         set(p.x, p.y, Point(word.index, i))
@@ -59,37 +63,33 @@ private fun MutableGrid.applyVMoves(origin: Point, direction: Point, word: Word)
 
 fun Grid.testChange(origin: Point, direction: Point, word: Word): MutableGrid {
     return toMutable().apply {
-        persist(origin, direction, word)
+        placeWord(origin, direction, word)
     }
 }
 
 private fun Grid.calcHMoves(origin: Point, direction: Point, word: Word): List<Move>? {
     val moves = mutableListOf<Move>()
     val len = word.size
-    if (direction == RIGHT || direction == LEFT) {
-        val p = if (direction == RIGHT) origin + direction * (len - 1) else origin
-        if (countEmptyCellsAtRight(p) < len) {
+    val leftP = if (direction == RIGHT) origin + direction * (len - 1) else origin
+    if ((direction == RIGHT || direction == LEFT)) {
+        if (countEmptyCellsAtRight(leftP) < len) {
             return null
         }
-        moves.appendH(this, p, len, direction)
-        return moves
     } else {
         for (i in 0 until len) {
-            val p = origin + direction * i
-            if (countEmptyCellsAtRight(p) == 0) {
+            if (countEmptyCellsAtRight(origin + direction * i) == 0) {
                 return null
             }
-            moves.appendH(this, p, 1, direction)
         }
     }
+    moves.append(this, origin, len, direction, RIGHT)
     return moves
 }
 
 private fun Grid.calcVMoves(origin: Point, direction: Point, word: Word): List<Move> {
     val moves = mutableListOf<Move>()
     val len = word.size
-    val p = if (direction == UP) origin + direction * (len - 1) else origin
-    moves.appendV(this, p, len, direction)
+    moves.append(this, origin, len, direction, UP)
     return moves
 }
 
@@ -98,7 +98,7 @@ private fun Grid.countEmptyCellsAtRight(point: Point): Int {
     if (point.y >= h) {
         return w
     }
-    for (x in (point.x + 1) until w) {
+    for (x in point.x until w) {
         if (get(x, point.y) == null) {
             c++
         }
@@ -107,57 +107,47 @@ private fun Grid.countEmptyCellsAtRight(point: Point): Int {
 }
 
 private fun MutableGrid.applyMoves(moves: List<Move>) {
-    val cache = hashMapOf<String, Point?>()
+    val cache = hashMapOf<Point, Point?>()
+    val dstCache = hashMapOf<Point, Boolean>()
     for (m in moves) {
-        cache[m.src.toString()] = get(m.src)
-        set(m.src.x, m.src.y, null)
+        cache[m.src] = get(m.src)
+        dstCache[m.dst] = true
     }
     for (m in moves) {
-        set(m.dst.x, m.dst.y, cache[m.src.toString()])
+        set(m.dst.x, m.dst.y, cache[m.src])
+        if (dstCache[m.src] != true) {
+            set(m.src.x, m.src.y, null)
+        }
     }
 }
 
-private fun MutableList<Move>.appendH(
+private fun MutableList<Move>.append(
     grid: Grid,
-    point: Point,
+    origin: Point,
     len: Int,
-    direction: Point
+    direction: Point,
+    slideDir: Point
 ) {
-    if (direction == LEFT || direction == RIGHT) {
-        for (i in 0 until len) {
-            val src = point + RIGHT * i
-            if (grid[src] != null) {
-                add(Move(src, point + RIGHT * (i + len)))
-            }
-        }
+    if (direction == slideDir || direction == slideDir * -1) {
+        addItems(grid, origin, direction, len, slideDir, len)
     } else {
-        for (dx in 0 until len) {
-            for (dy in 0 until grid.h) {
-                val src = Point(point.x + dx, point.y + dy)
-                if (grid[src] != null) {
-                    add(Move(src, src + UP))
-                }
-            }
-        }
+        addItems(grid, origin, direction, len, slideDir, 1)
     }
 }
 
-private fun MutableList<Move>.appendV(grid: Grid, point: Point, len: Int, direction: Point) {
-    if (direction == UP || direction == DOWN) {
-        for (i in 0 until len) {
-            val src = point + UP * i
-            if (grid[src] != null) {
-                add(Move(src, point + UP * (i + len)))
-            }
-        }
-    } else {
-        for (dx in 0 until len) {
-            for (dy in 0 until grid.h) {
-                val src = Point(point.x + dx, point.y + dy)
-                if (grid[src] != null) {
-                    add(Move(src, src + UP))
-                }
-            }
+private fun MutableList<Move>.addItems(
+    grid: Grid,
+    origin: Point,
+    direction: Point,
+    len: Int,
+    slideDir: Point,
+    slideLen: Int
+) {
+    for (i in 0 until len) {
+        val src = origin + direction * i
+        val dst = src + slideDir * slideLen
+        if (grid[src] != null && grid.canContain(dst)) {
+            add(Move(src, dst))
         }
     }
 }

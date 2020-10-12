@@ -62,6 +62,8 @@ data class MutableGrid(
         }
     }
 
+    override fun toString() = super.toString()
+
     init {
         if (cells.isEmpty()) {
             set(0, 0, null)

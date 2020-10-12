@@ -2,7 +2,7 @@ package mg.maniry.tenymana.game.linkClear
 
 import mg.maniry.tenymana.game.models.*
 import mg.maniry.tenymana.game.sharedLogics.applyGravity
-import mg.maniry.tenymana.game.sharedLogics.persist
+import mg.maniry.tenymana.game.sharedLogics.placeWord
 import mg.maniry.tenymana.game.sharedLogics.testChange
 import mg.maniry.tenymana.utils.InsideOutIterator
 import mg.maniry.tenymana.utils.Random
@@ -20,7 +20,7 @@ fun buildLinkGrid(verse: BibleVerse, random: Random, w: Int): Grid {
             val dirs = listPossibleDirs(grid, o, word)
             if (dirs.isNotEmpty()) {
                 val dir = random.from(dirs)
-                grid.persist(o, dir, word)
+                grid.placeWord(o, dir, word)
                 persited = true
             }
         }

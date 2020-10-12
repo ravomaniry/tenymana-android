@@ -4,7 +4,7 @@ import com.google.common.truth.Truth.assertThat
 import mg.maniry.tenymana.game.models.*
 import org.junit.Test
 
-class GridLogicTest {
+class GridTest {
     @Test
     fun gravityDown() {
         testGravity(
@@ -132,22 +132,50 @@ class GridLogicTest {
     )
 
     @Test
-    fun persistOnFilledUp_Right() {
+    fun persistOnFilled_Up_slideRight() {
         testPersist(
             w = 3,
             values = persistOnFilledUpValues,
-            delta = Pair(Point(0, 0), Pair(RIGHT, "Ab")),
+            delta = Pair(Point(0, 1), Pair(UP, "Ab")),
             result = mutableListOf<MutableList<Point?>>(
-                mutableListOf(Point(0, 0), Point(0, 1), Point(1, 2)),
-                mutableListOf(Point(1, 0), Point(1, 1), null),
-                mutableListOf(Point(2, 0), null, null),
+                mutableListOf(Point(1, 0), Point(1, 1), Point(1, 2)),
+                mutableListOf(Point(0, 0), Point(2, 0), null),
+                mutableListOf(Point(0, 1), null, null),
                 mutableListOf(null, null, null)
             )
         )
     }
 
     @Test
-    fun persistOnFilled_Up() {
+    fun persistFilled_Right_slideRight() {
+        testPersist(
+            w = 3,
+            values = persistOnFilledUpValues,
+            delta = Pair(Point(0, 1), Pair(RIGHT, "Ab")),
+            result = mutableListOf<MutableList<Point?>>(
+                mutableListOf(Point(1, 0), Point(1, 1), Point(1, 2)),
+                mutableListOf(Point(0, 0), Point(0, 1), Point(2, 0)),
+                mutableListOf(null, null, null)
+            )
+        )
+    }
+
+    @Test
+    fun persistFilled_Leftt_slideRight() {
+        testPersist(
+            w = 3,
+            values = persistOnFilledUpValues,
+            delta = Pair(Point(1, 1), Pair(LEFT, "Ab")),
+            result = mutableListOf<MutableList<Point?>>(
+                mutableListOf(Point(1, 0), Point(1, 1), Point(1, 2)),
+                mutableListOf(Point(0, 1), Point(0, 0), Point(2, 0)),
+                mutableListOf(null, null, null)
+            )
+        )
+    }
+
+    @Test
+    fun persistOnFilled_Left_SlideUp() {
         testPersist(
             w = 3,
             values = persistOnFilledUpValues,
@@ -158,6 +186,10 @@ class GridLogicTest {
                 mutableListOf(null, null, null)
             )
         )
+    }
+
+    @Test
+    fun persistOnFilled_Down_SlideUp() {
         testPersist(
             w = 3,
             values = persistOnFilledUpValues,
@@ -169,6 +201,10 @@ class GridLogicTest {
                 mutableListOf(null, null, null)
             )
         )
+    }
+
+    @Test
+    fun persistOnFilled_Up_SlideUp() {
         testPersist(
             w = 3,
             values = persistOnFilledUpValues,
@@ -183,44 +219,55 @@ class GridLogicTest {
         )
     }
 
+    // | E | D |   |   |   |
+    // | F | G | H |   |   |
+    private val diagValues = listOf(
+        Pair(Point(0, 0), Point(2, 0)),
+        Pair(Point(1, 0), Point(2, 1)),
+        Pair(Point(2, 0), Point(2, 2)),
+        Pair(Point(0, 1), Point(1, 1)),
+        Pair(Point(1, 1), Point(1, 0))
+    )
+
     @Test
-    fun persistOnFilled_UpAndLeft() {
-        val values = listOf(
-            Pair(Point(0, 0), Point(2, 0)),
-            Pair(Point(1, 0), Point(2, 1)),
-            Pair(Point(2, 0), Point(2, 2)),
-            Pair(Point(0, 1), Point(1, 1)),
-            Pair(Point(1, 1), Point(1, 0))
-        )
+    fun persistOnFilled_UpLeft_slideUp() {
         testPersist(
             w = 5,
-            values = values,
-            delta = Pair(Point(0, 0), Pair(RIGHT, "Ab")),
-            result = mutableListOf<MutableList<Point?>>(
-                mutableListOf(Point(0, 0), Point(0, 1), Point(2, 2), null, null),
-                mutableListOf(Point(2, 0), Point(2, 1), null, null, null),
-                mutableListOf(Point(1, 1), Point(1, 0), null, null, null),
-                mutableListOf(null, null, null, null, null)
-            )
-        )
-        testPersist(
-            w = 5,
-            values = values,
-            delta = Pair(Point(1, 0), Pair(UP, "Abc")),
-            result = mutableListOf<MutableList<Point?>>(
-                mutableListOf(Point(2, 0), Point(0, 0), Point(2, 1), Point(2, 2), null),
-                mutableListOf(Point(1, 1), Point(0, 1), Point(1, 0), null, null),
-                mutableListOf(null, Point(0, 2), null, null, null),
-                mutableListOf(null, null, null, null, null)
-            )
-        )
-        testPersist(
-            w = 5,
+            values = diagValues,
             delta = Pair(Point(2, 0), Pair(UP_LEFT, "Abc")),
             result = mutableListOf<MutableList<Point?>>(
-                mutableListOf(Point(2, 0), Point(2, 1), Point(0, 0), Point(2, 2), null),
-                mutableListOf(Point(1, 1), Point(0, 1), Point(1, 0), null, null),
-                mutableListOf(Point(1, 2), null, null, null, null),
+                mutableListOf(Point(2, 0), Point(2, 1), Point(0, 0), null, null),
+                mutableListOf(Point(1, 1), Point(0, 1), Point(2, 2), null, null),
+                mutableListOf(Point(0, 2), Point(1, 0), null, null, null),
+                mutableListOf(null, null, null, null, null)
+            )
+        )
+    }
+
+    @Test
+    fun persistOnFilled_DownRight_slideRight() {
+        testPersist(
+            w = 5,
+            values = diagValues,
+            delta = Pair(Point(0, 2), Pair(DOWN_RIGHT, "Abc")),
+            result = mutableListOf<MutableList<Point?>>(
+                mutableListOf(Point(2, 0), Point(2, 1), Point(0, 2), null, null),
+                mutableListOf(Point(1, 1), Point(0, 1), Point(2, 2), null, null),
+                mutableListOf(Point(0, 0), Point(1, 0), null, null, null),
+                mutableListOf(null, null, null, null, null)
+            )
+        )
+    }
+
+    @Test
+    fun persistOnFilled_LeftFromBottomRight_SlideUp() {
+        testPersist(
+            w = 5,
+            values = diagValues,
+            delta = Pair(Point(4, 0), Pair(LEFT, "Abc")),
+            result = mutableListOf<MutableList<Point?>>(
+                mutableListOf(Point(2, 0), Point(2, 1), Point(0, 2), Point(0, 1), Point(0, 0)),
+                mutableListOf(Point(1, 1), Point(1, 0), Point(2, 2), null, null),
                 mutableListOf(null, null, null, null, null)
             )
         )
@@ -237,7 +284,7 @@ class GridLogicTest {
             grid.set(v.first.x, v.first.y, v.second)
         }
         val word = Word.fromValue(delta.second.second, 0, false)
-        grid.persist(delta.first, delta.second.first, word)
+        grid.placeWord(delta.first, delta.second.first, word)
         assertThat(grid).isEqualTo(MutableGrid(w, result))
     }
 }
