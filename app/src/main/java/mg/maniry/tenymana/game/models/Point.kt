@@ -26,4 +26,6 @@ data class Point(
     operator fun minus(other: Point): Point {
         return Point(x - other.x, y - other.y)
     }
+
+    override fun toString() = "($x,$y)"
 }

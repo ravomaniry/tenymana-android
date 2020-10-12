@@ -5,6 +5,7 @@ private typealias ForEachCb = (x: Int, y: Int, p: Point?) -> Unit
 open class Grid(
     private val cells: List<List<Point?>>
 ) {
+    val h: Int get() = cells.size
     val w: Int get() = if (cells.isEmpty()) 0 else cells[0].size
 
     fun forEach(cb: ForEachCb) {
