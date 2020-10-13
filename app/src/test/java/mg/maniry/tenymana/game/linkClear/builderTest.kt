@@ -53,6 +53,21 @@ class BuilderTest {
         )
     }
 
+    @Test
+    fun ingoreLongWords() {
+        testBuildGrid(
+            text = "Ab cdefghijklmn",
+            wordsOrder = listOf("cdefghijklmn", "Ab"),
+            origins = listOf(0, 1),
+            directions = listOf(LEFT),
+            directionsQ = listOf(mutableListOf(LEFT)),
+            cells = listOf(
+                listOf(char('B', 'b'), char('A', 'a'), null, null),
+                listOf(null, null, null, null)
+            )
+        )
+    }
+
     private fun testBuildGrid(
         text: String,
         wordsOrder: List<String>,
@@ -85,7 +100,7 @@ class BuilderTest {
                 origins[oI]
             }
         }
-        val grid = buildLinkGrid(verse, random, 4, 10)
+        val grid = buildLinkGrid(verse, random, 4, 8)
         assertThat(grid).isEqualTo(Grid(cells))
         for (dirQ in directionsQ) {
             verifyOnce(random).from(dirQ)
