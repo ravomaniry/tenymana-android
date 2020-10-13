@@ -4,9 +4,9 @@ import com.google.common.truth.Truth.assertThat
 import mg.maniry.tenymana.game.models.*
 import org.junit.Test
 
-class GridTest {
+class GravityTest {
     @Test
-    fun gravityDown() {
+    fun down() {
         testGravity(
             cells = listOf(
                 Pair(Point(1, 1), Point(0, 0)),
@@ -22,7 +22,7 @@ class GridTest {
     }
 
     @Test
-    fun gravityDownLeft() {
+    fun downLeft() {
         testGravity(
             cells = listOf(
                 Pair(Point(0, 3), Point(2, 0)),
@@ -55,10 +55,12 @@ class GridTest {
         }
         assertThat(grid).isEqualTo(MutableGrid(4, result))
     }
+}
 
+class PlaceWordTest {
     @Test
     fun persistOnEmpty_Up() {
-        testPersist(
+        testPlaceWord(
             w = 3,
             delta = Pair(Point(0, 0), Pair(UP, "Abc")),
             result = mutableListOf<MutableList<Point?>>(
@@ -72,7 +74,7 @@ class GridTest {
 
     @Test
     fun persistOnEmpty_Left() {
-        testPersist(
+        testPlaceWord(
             w = 3,
             delta = Pair(Point(2, 0), Pair(LEFT, "Abc")),
             result = mutableListOf<MutableList<Point?>>(
@@ -84,7 +86,7 @@ class GridTest {
 
     @Test
     fun persistOnEmpty_Right() {
-        testPersist(
+        testPlaceWord(
             w = 3,
             delta = Pair(Point(0, 0), Pair(RIGHT, "Abc")),
             result = mutableListOf<MutableList<Point?>>(
@@ -96,7 +98,7 @@ class GridTest {
 
     @Test
     fun persistOnEmpty_UpRight() {
-        testPersist(
+        testPlaceWord(
             w = 3,
             delta = Pair(Point(0, 0), Pair(UP_RIGHT, "Abc")),
             result = mutableListOf<MutableList<Point?>>(
@@ -110,7 +112,7 @@ class GridTest {
 
     @Test
     fun persistOnEmpty_UpLeft() {
-        testPersist(
+        testPlaceWord(
             w = 3,
             delta = Pair(Point(2, 0), Pair(UP_LEFT, "Abc")),
             result = mutableListOf<MutableList<Point?>>(
@@ -133,7 +135,7 @@ class GridTest {
 
     @Test
     fun persistOnFilled_Up_slideRight() {
-        testPersist(
+        testPlaceWord(
             w = 3,
             values = persistOnFilledUpValues,
             delta = Pair(Point(0, 1), Pair(UP, "Ab")),
@@ -148,7 +150,7 @@ class GridTest {
 
     @Test
     fun persistFilled_Right_slideRight() {
-        testPersist(
+        testPlaceWord(
             w = 3,
             values = persistOnFilledUpValues,
             delta = Pair(Point(0, 1), Pair(RIGHT, "Ab")),
@@ -162,7 +164,7 @@ class GridTest {
 
     @Test
     fun persistFilled_Leftt_slideRight() {
-        testPersist(
+        testPlaceWord(
             w = 3,
             values = persistOnFilledUpValues,
             delta = Pair(Point(1, 1), Pair(LEFT, "Ab")),
@@ -176,7 +178,7 @@ class GridTest {
 
     @Test
     fun persistOnFilled_Left_SlideUp() {
-        testPersist(
+        testPlaceWord(
             w = 3,
             values = persistOnFilledUpValues,
             delta = Pair(Point(2, 0), Pair(LEFT, "Ab")),
@@ -190,7 +192,7 @@ class GridTest {
 
     @Test
     fun persistOnFilled_Down_SlideUp() {
-        testPersist(
+        testPlaceWord(
             w = 3,
             values = persistOnFilledUpValues,
             delta = Pair(Point(1, 1), Pair(DOWN, "Ab")),
@@ -205,7 +207,7 @@ class GridTest {
 
     @Test
     fun persistOnFilled_Up_SlideUp() {
-        testPersist(
+        testPlaceWord(
             w = 3,
             values = persistOnFilledUpValues,
             delta = Pair(Point(0, 0), Pair(UP, "Ab")),
@@ -231,7 +233,7 @@ class GridTest {
 
     @Test
     fun persistOnFilled_UpLeft_slideUp() {
-        testPersist(
+        testPlaceWord(
             w = 5,
             values = diagValues,
             delta = Pair(Point(2, 0), Pair(UP_LEFT, "Abc")),
@@ -246,7 +248,7 @@ class GridTest {
 
     @Test
     fun persistOnFilled_DownRight_slideRight() {
-        testPersist(
+        testPlaceWord(
             w = 5,
             values = diagValues,
             delta = Pair(Point(0, 2), Pair(DOWN_RIGHT, "Abc")),
@@ -261,7 +263,7 @@ class GridTest {
 
     @Test
     fun persistOnFilled_LeftFromBottomRight_SlideUp() {
-        testPersist(
+        testPlaceWord(
             w = 5,
             values = diagValues,
             delta = Pair(Point(4, 0), Pair(LEFT, "Abc")),
@@ -273,7 +275,7 @@ class GridTest {
         )
     }
 
-    private fun testPersist(
+    private fun testPlaceWord(
         w: Int,
         values: List<Pair<Point, Point>> = listOf(),
         delta: Pair<Point, Pair<Point, String>>,
