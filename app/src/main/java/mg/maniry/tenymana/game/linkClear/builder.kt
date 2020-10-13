@@ -10,7 +10,7 @@ import mg.maniry.tenymana.utils.Random
 
 fun buildLinkGrid(verse: BibleVerse, random: Random, width: Int, visibleH: Int): Grid<Character> {
     val grid = MutableGrid<CharAddress>(width)
-    val words = verse.uniqueWords.toMutableList()
+    val words = verse.uniqueWords.filter { it.size > 1 }.toMutableList()
     while (words.isNotEmpty()) {
         var persited = false
         val word = random.from(words)

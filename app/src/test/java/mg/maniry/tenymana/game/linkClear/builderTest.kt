@@ -54,15 +54,16 @@ class BuilderTest {
     }
 
     @Test
-    fun ingoreLongWords() {
+    fun ingoreLong_and_OneChar_Words() {
+        // one-char words are filtered out before loop and random
         testBuildGrid(
-            text = "Ab cdefghijklmn",
-            wordsOrder = listOf("cdefghijklmn", "Ab"),
+            text = "An'i cdefghijklmn",
+            wordsOrder = listOf("cdefghijklmn", "An"),
             origins = listOf(0, 1),
             directions = listOf(LEFT),
             directionsQ = listOf(mutableListOf(LEFT)),
             cells = listOf(
-                listOf(char('B', 'b'), char('A', 'a'), null, null),
+                listOf(char('N', 'n'), char('A', 'a'), null, null),
                 listOf(null, null, null, null)
             )
         )
