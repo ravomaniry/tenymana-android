@@ -2,6 +2,9 @@ package mg.maniry.tenymana.game.sharedLogics.grid
 
 import mg.maniry.tenymana.game.linkClear.gravity
 import mg.maniry.tenymana.game.models.*
+import mg.maniry.tenymana.game.models.Point.Companion.LEFT
+import mg.maniry.tenymana.game.models.Point.Companion.RIGHT
+import mg.maniry.tenymana.game.models.Point.Companion.UP
 
 private data class Move(
     val src: Point,

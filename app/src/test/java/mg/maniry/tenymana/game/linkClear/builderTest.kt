@@ -5,6 +5,10 @@ import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.mock
 import mg.maniry.tenymana.game.models.*
+import mg.maniry.tenymana.game.models.Point.Companion.LEFT
+import mg.maniry.tenymana.game.models.Point.Companion.RIGHT
+import mg.maniry.tenymana.game.models.Point.Companion.UP
+import mg.maniry.tenymana.game.models.Point.Companion.UP_LEFT
 import mg.maniry.tenymana.utils.Random
 import mg.maniry.tenymana.utils.verifyOnce
 import org.junit.Test
@@ -81,7 +85,7 @@ class BuilderTest {
                 origins[oI]
             }
         }
-        val grid = buildLinkGrid(verse, random, 4)
+        val grid = buildLinkGrid(verse, random, 4, 10)
         assertThat(grid).isEqualTo(Grid(cells))
         for (dirQ in directionsQ) {
             verifyOnce(random).from(dirQ)

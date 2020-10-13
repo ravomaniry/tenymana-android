@@ -45,7 +45,7 @@ data class Word(
     }
 
     companion object {
-        fun fromValue(value: String, index: Int, isSeparator: Boolean): Word {
+        fun fromValue(value: String, index: Int, isSeparator: Boolean = false): Word {
             val chars = value.toList().map {
                 Character(it, compValue = getLetterComparisonValue(it))
             }

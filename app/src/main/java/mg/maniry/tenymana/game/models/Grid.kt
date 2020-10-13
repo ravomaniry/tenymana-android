@@ -11,8 +11,14 @@ open class Grid<T>(
 
     fun forEach(cb: ForEachCb<T>) {
         cells.forEachIndexed { y, row ->
-            row.forEachIndexed { x, p ->
-                cb(x, y, p)
+            row.forEachIndexed { x, v -> cb(x, y, v) }
+        }
+    }
+
+    fun forEachUntilY(yM: Int, cb: ForEachCb<T>) {
+        cells.forEachIndexed { y, row ->
+            if (y < yM) {
+                row.forEachIndexed { x, v -> cb(x, y, v) }
             }
         }
     }
