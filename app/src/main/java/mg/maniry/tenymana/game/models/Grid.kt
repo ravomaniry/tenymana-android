@@ -1,14 +1,15 @@
 package mg.maniry.tenymana.game.models
 
-private typealias ForEachCb = (x: Int, y: Int, p: Point?) -> Unit
+private typealias ForEachCb<T> = (x: Int, y: Int, p: T?) -> Unit
+private typealias MapCb<A, B> = (x: Int, y: Int, p: A?) -> B?
 
-open class Grid(
-    private val cells: List<List<Point?>>
+open class Grid<T>(
+    private val cells: List<List<T?>>
 ) {
     val h: Int get() = cells.size
     val w: Int get() = if (cells.isEmpty()) 0 else cells[0].size
 
-    fun forEach(cb: ForEachCb) {
+    fun forEach(cb: ForEachCb<T>) {
         cells.forEachIndexed { y, row ->
             row.forEachIndexed { x, p ->
                 cb(x, y, p)
@@ -16,7 +17,7 @@ open class Grid(
         }
     }
 
-    operator fun get(x: Int, y: Int): Point? {
+    operator fun get(x: Int, y: Int): T? {
         return if (y >= 0 && y < cells.size && x >= 0 && x < cells[y].size)
             cells[y][x]
         else null
@@ -24,7 +25,7 @@ open class Grid(
 
     operator fun get(point: Point) = get(point.x, point.y)
 
-    fun toMutable(): MutableGrid {
+    fun toMutable(): MutableGrid<T> {
         return MutableGrid(
             w,
             cells.map { it.toMutableList() }.toMutableList()
@@ -35,22 +36,30 @@ open class Grid(
         return p.x >= 0 && p.y >= 0 && p.x < w
     }
 
+    fun <X> map(cb: MapCb<T, X>): Grid<X> {
+        return Grid(
+            cells.mapIndexed { y, row ->
+                row.mapIndexed { x, v -> cb(x, y, v) }
+            }
+        )
+    }
+
     override fun hashCode() = cells.hashCode()
-    override fun equals(other: Any?) = other is Grid && other.cells == cells
+    override fun equals(other: Any?) = other is Grid<*> && other.cells == cells
     override fun toString() = cells.joinToString("\n") { it.toString() }
 }
 
-data class MutableGrid(
+data class MutableGrid<T>(
     private val width: Int,
-    private val cells: MutableList<MutableList<Point?>> = mutableListOf()
-) : Grid(cells) {
-    fun toGrid(): Grid {
+    private val cells: MutableList<MutableList<T?>> = mutableListOf()
+) : Grid<T>(cells) {
+    fun toGrid(): Grid<T> {
         return Grid(
             cells.map { it.toList() }
         )
     }
 
-    fun set(x: Int, y: Int, value: Point?) {
+    fun set(x: Int, y: Int, value: T?) {
         addMissingRows(y)
         cells[y][x] = value
     }

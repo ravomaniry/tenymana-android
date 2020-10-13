@@ -1,18 +1,24 @@
 package mg.maniry.tenymana.game.models
 
-import java.util.*
-
 data class Character(
-    val value: String,
-    val compValue: String,
+    val value: Char,
+    val compValue: Char,
     val resolved: Boolean = false
 ) {
-
-    fun toSlotChar(): Character {
-        return Character(compValue.toUpperCase(Locale.ROOT), compValue)
+    fun toGridChar(): Character {
+        return Character(compValue.toUpperCase(), compValue)
     }
 
     fun isSameAs(c: Character): Boolean {
         return compValue == c.compValue
     }
+
+    override fun toString() = "$value:$compValue"
+}
+
+data class CharAddress(
+    val wIndex: Int,
+    val cIndex: Int
+) {
+    override fun toString() = "$wIndex/$cIndex"
 }

@@ -20,7 +20,7 @@ class BuilderTest {
             directions = listOf(RIGHT),
             directionsQ = listOf(mutableListOf(UP, RIGHT)),
             cells = listOf(
-                listOf(Point(0, 0), Point(0, 1), Point(0, 2), null),
+                listOf(char('A', 'a'), char('B', 'b'), char('C', 'c'), null),
                 listOf(null, null, null, null)
             )
         )
@@ -40,10 +40,10 @@ class BuilderTest {
                 mutableListOf(UP, RIGHT)
             ),
             cells = listOf(
-                listOf(Point(2, 1), Point(2, 0), Point(6, 0), Point(6, 1)),
-                listOf(Point(0, 0), Point(4, 0), Point(4, 1), Point(4, 2)),
-                listOf(Point(0, 1), null, null, null),
-                listOf(Point(0, 2), null, null, null),
+                listOf(char('E', 'e'), char('D', 'd'), char('I', 'i'), char('J', 'j')),
+                listOf(char('A', 'a'), char('F', 'f'), char('G', 'g'), char('H', 'h')),
+                listOf(char('B', 'b'), null, null, null),
+                listOf(char('C', 'c'), null, null, null),
                 listOf(null, null, null, null)
             )
         )
@@ -52,7 +52,7 @@ class BuilderTest {
     private fun testBuildGrid(
         text: String,
         wordsOrder: List<String>,
-        cells: List<List<Point?>>,
+        cells: List<List<Character?>>,
         origins: List<Int>,
         directions: List<Point>,
         directionsQ: List<MutableList<Point>>
@@ -86,5 +86,9 @@ class BuilderTest {
         for (dirQ in directionsQ) {
             verifyOnce(random).from(dirQ)
         }
+    }
+
+    private fun char(value: Char, compValue: Char): Character {
+        return Character(value, compValue)
     }
 }

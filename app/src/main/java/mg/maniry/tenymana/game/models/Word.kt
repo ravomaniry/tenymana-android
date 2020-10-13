@@ -47,19 +47,19 @@ data class Word(
     companion object {
         fun fromValue(value: String, index: Int, isSeparator: Boolean): Word {
             val chars = value.toList().map {
-                Character(it.toString(), compValue = getLetterComparisonValue(it))
+                Character(it, compValue = getLetterComparisonValue(it))
             }
             return Word(index, value, chars, isSeparator, isSeparator)
         }
     }
 }
 
-private fun getLetterComparisonValue(char: Char): String {
-    return when (val comparisonValue = char.toLowerCase()) {
-        'à', 'ä' -> "a"
-        'ô', 'ò' -> "o"
-        'è' -> "e"
-        'ì', 'ï' -> "i"
-        else -> comparisonValue.toString()
+private fun getLetterComparisonValue(char: Char): Char {
+    return when (val compValue = char.toLowerCase()) {
+        'à', 'ä' -> 'a'
+        'ô', 'ò' -> 'o'
+        'è' -> 'e'
+        'ì', 'ï' -> 'i'
+        else -> compValue
     }
 }

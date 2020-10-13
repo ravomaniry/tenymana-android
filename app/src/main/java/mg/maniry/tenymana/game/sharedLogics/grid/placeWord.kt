@@ -1,4 +1,4 @@
-package mg.maniry.tenymana.game.sharedLogics
+package mg.maniry.tenymana.game.sharedLogics.grid
 
 import mg.maniry.tenymana.game.linkClear.gravity
 import mg.maniry.tenymana.game.models.*
@@ -8,26 +8,7 @@ private data class Move(
     val dst: Point
 )
 
-fun MutableGrid.applyGravity(gravity: List<Point>) {
-    for (d in gravity) {
-        var didUpdate = true
-        while (didUpdate) {
-            didUpdate = false
-            forEach { x, y, p ->
-                if (p == null) {
-                    val neighbor = this[x - d.x, y - d.y]
-                    if (neighbor != null) {
-                        set(x - d.x, y - d.y, null)
-                        set(x, y, neighbor)
-                        didUpdate = true
-                    }
-                }
-            }
-        }
-    }
-}
-
-fun MutableGrid.placeWord(origin: Point, direction: Point, word: Word) {
+fun MutableGrid<CharAddress>.placeWord(origin: Point, direction: Point, word: Word) {
     val done = applyHMoves(origin, direction, word)
     if (!done) {
         applyVMoves(origin, direction, word)
@@ -35,14 +16,28 @@ fun MutableGrid.placeWord(origin: Point, direction: Point, word: Word) {
     persist(word, origin, direction)
 }
 
-private fun MutableGrid.persist(word: Word, origin: Point, direction: Point) {
-    for (i in 0 until word.size) {
-        val p = origin + direction * i
-        set(p.x, p.y, Point(word.index, i))
+fun Grid<CharAddress>.testChange(
+    origin: Point,
+    direction: Point,
+    word: Word
+): MutableGrid<CharAddress> {
+    return toMutable().apply {
+        placeWord(origin, direction, word)
     }
 }
 
-private fun MutableGrid.applyHMoves(origin: Point, direction: Point, word: Word): Boolean {
+private fun MutableGrid<CharAddress>.persist(word: Word, origin: Point, direction: Point) {
+    for (i in 0 until word.size) {
+        val p = origin + direction * i
+        set(p.x, p.y, CharAddress(word.index, i))
+    }
+}
+
+private fun MutableGrid<CharAddress>.applyHMoves(
+    origin: Point,
+    direction: Point,
+    word: Word
+): Boolean {
     val hMoves = calcHMoves(origin, direction, word)
     if (hMoves != null) {
         val copy = toMutable().apply {
@@ -57,17 +52,11 @@ private fun MutableGrid.applyHMoves(origin: Point, direction: Point, word: Word)
     return false
 }
 
-private fun MutableGrid.applyVMoves(origin: Point, direction: Point, word: Word) {
+private fun MutableGrid<CharAddress>.applyVMoves(origin: Point, direction: Point, word: Word) {
     applyMoves(calcVMoves(origin, direction, word))
 }
 
-fun Grid.testChange(origin: Point, direction: Point, word: Word): MutableGrid {
-    return toMutable().apply {
-        placeWord(origin, direction, word)
-    }
-}
-
-private fun Grid.calcHMoves(origin: Point, direction: Point, word: Word): List<Move>? {
+private fun Grid<CharAddress>.calcHMoves(origin: Point, direction: Point, word: Word): List<Move>? {
     val moves = mutableListOf<Move>()
     val len = word.size
     val leftP = if (direction == RIGHT) origin + direction * (len - 1) else origin
@@ -86,14 +75,14 @@ private fun Grid.calcHMoves(origin: Point, direction: Point, word: Word): List<M
     return moves
 }
 
-private fun Grid.calcVMoves(origin: Point, direction: Point, word: Word): List<Move> {
+private fun Grid<CharAddress>.calcVMoves(origin: Point, direction: Point, word: Word): List<Move> {
     val moves = mutableListOf<Move>()
     val len = word.size
     moves.append(this, origin, len, direction, UP)
     return moves
 }
 
-private fun Grid.countEmptyCellsAtRight(point: Point): Int {
+private fun Grid<CharAddress>.countEmptyCellsAtRight(point: Point): Int {
     var c = 0
     if (point.y >= h) {
         return w
@@ -106,8 +95,8 @@ private fun Grid.countEmptyCellsAtRight(point: Point): Int {
     return c
 }
 
-private fun MutableGrid.applyMoves(moves: List<Move>) {
-    val cache = hashMapOf<Point, Point?>()
+private fun MutableGrid<CharAddress>.applyMoves(moves: List<Move>) {
+    val cache = hashMapOf<Point, CharAddress?>()
     val dstCache = hashMapOf<Point, Boolean>()
     for (m in moves) {
         cache[m.src] = get(m.src)
@@ -122,7 +111,7 @@ private fun MutableGrid.applyMoves(moves: List<Move>) {
 }
 
 private fun MutableList<Move>.append(
-    grid: Grid,
+    grid: Grid<CharAddress>,
     origin: Point,
     len: Int,
     direction: Point,
@@ -136,7 +125,7 @@ private fun MutableList<Move>.append(
 }
 
 private fun MutableList<Move>.addItems(
-    grid: Grid,
+    grid: Grid<CharAddress>,
     origin: Point,
     direction: Point,
     len: Int,

@@ -17,9 +17,9 @@ class BibleVerseTest {
                 index = 0,
                 value = "Azà",
                 chars = listOf(
-                    Character(value = "A", compValue = "a"),
-                    Character(value = "z", compValue = "z"),
-                    Character(value = "à", compValue = "a")
+                    Character(value = 'A', compValue = 'a'),
+                    Character(value = 'z', compValue = 'z'),
+                    Character(value = 'à', compValue = 'a')
                 )
             ),
             Word(
@@ -27,19 +27,19 @@ class BibleVerseTest {
                 value = " ",
                 isSeparator = true,
                 resolved = true,
-                chars = listOf(Character(value = " ", compValue = " "))
+                chars = listOf(Character(value = ' ', compValue = ' '))
             ),
             Word(
                 index = 2,
                 value = "menatra",
                 chars = listOf(
-                    Character(value = "m", compValue = "m"),
-                    Character(value = "e", compValue = "e"),
-                    Character(value = "n", compValue = "n"),
-                    Character(value = "a", compValue = "a"),
-                    Character(value = "t", compValue = "t"),
-                    Character(value = "r", compValue = "r"),
-                    Character(value = "a", compValue = "a")
+                    Character(value = 'm', compValue = 'm'),
+                    Character(value = 'e', compValue = 'e'),
+                    Character(value = 'n', compValue = 'n'),
+                    Character(value = 'a', compValue = 'a'),
+                    Character(value = 't', compValue = 't'),
+                    Character(value = 'r', compValue = 'r'),
+                    Character(value = 'a', compValue = 'a')
                 )
             ),
             Word(
@@ -48,21 +48,21 @@ class BibleVerseTest {
                 isSeparator = true,
                 value = ". ",
                 chars = listOf(
-                    Character(value = ".", compValue = "."),
-                    Character(value = " ", compValue = " ")
+                    Character(value = '.', compValue = '.'),
+                    Character(value = ' ', compValue = ' ')
                 )
             ),
             Word(
                 index = 4,
                 value = "Mijòrôa",
                 chars = listOf(
-                    Character(value = "M", compValue = "m"),
-                    Character(value = "i", compValue = "i"),
-                    Character(value = "j", compValue = "j"),
-                    Character(value = "ò", compValue = "o"),
-                    Character(value = "r", compValue = "r"),
-                    Character(value = "ô", compValue = "o"),
-                    Character(value = "a", compValue = "a")
+                    Character(value = 'M', compValue = 'm'),
+                    Character(value = 'i', compValue = 'i'),
+                    Character(value = 'j', compValue = 'j'),
+                    Character(value = 'ò', compValue = 'o'),
+                    Character(value = 'r', compValue = 'r'),
+                    Character(value = 'ô', compValue = 'o'),
+                    Character(value = 'a', compValue = 'a')
                 )
             )
         )
