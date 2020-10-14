@@ -1,5 +1,18 @@
 package mg.maniry.tenymana.game.models
 
+data class Move(
+    val a: Point,
+    val b: Point
+) {
+    override fun toString() = "$a->$b"
+
+    companion object {
+        fun xy(x0: Int, y0: Int, x1: Int, y1: Int): Move {
+            return Move(Point(x0, y0), Point(x1, y1))
+        }
+    }
+}
+
 data class Point(
     val x: Int,
     val y: Int

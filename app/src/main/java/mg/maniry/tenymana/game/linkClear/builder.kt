@@ -12,17 +12,17 @@ fun buildLinkGrid(verse: BibleVerse, random: Random, width: Int, visibleH: Int):
     val grid = MutableGrid<CharAddress>(width)
     val words = verse.uniqueWords.filter { it.size > 1 }.toMutableList()
     while (words.isNotEmpty()) {
-        var persited = false
+        var persisted = false
         val word = random.from(words)
         val origins = grid.calcOrigins(visibleH)
         val originsIt = InsideOutIterator.random(origins, random)
-        while (originsIt.hasNext && !persited) {
+        while (originsIt.hasNext && !persisted) {
             val o = originsIt.next()
             val dirs = grid.calcDirections(Point.directions, o, word, visibleH)
             if (dirs.isNotEmpty()) {
                 val dir = random.from(dirs)
                 grid.placeWord(o, dir, word)
-                persited = true
+                persisted = true
             }
         }
         words.remove(word)

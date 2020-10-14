@@ -6,11 +6,6 @@ import mg.maniry.tenymana.game.models.Point.Companion.LEFT
 import mg.maniry.tenymana.game.models.Point.Companion.RIGHT
 import mg.maniry.tenymana.game.models.Point.Companion.UP
 
-private data class Move(
-    val src: Point,
-    val dst: Point
-)
-
 fun MutableGrid<CharAddress>.placeWord(origin: Point, direction: Point, word: Word) {
     val done = applyHMoves(origin, direction, word)
     if (!done) {
@@ -102,13 +97,13 @@ private fun MutableGrid<CharAddress>.applyMoves(moves: List<Move>) {
     val cache = hashMapOf<Point, CharAddress?>()
     val dstCache = hashMapOf<Point, Boolean>()
     for (m in moves) {
-        cache[m.src] = get(m.src)
-        dstCache[m.dst] = true
+        cache[m.a] = get(m.a)
+        dstCache[m.b] = true
     }
     for (m in moves) {
-        set(m.dst.x, m.dst.y, cache[m.src])
-        if (dstCache[m.src] != true) {
-            set(m.src.x, m.src.y, null)
+        set(m.b.x, m.b.y, cache[m.a])
+        if (dstCache[m.a] != true) {
+            set(m.a.x, m.a.y, null)
         }
     }
 }
