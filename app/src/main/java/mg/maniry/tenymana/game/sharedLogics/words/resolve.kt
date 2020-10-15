@@ -17,18 +17,20 @@ fun MutableList<Word>.resolveWith(selection: List<Character>, hidden: Set<Int>):
 
 private fun MutableList<Word>.resolveHidden(hidden: Set<Int>, resolved: MutableList<Int>) {
     for (i in hidden) {
-        var shouldResolve = true
-        val range = if (i == 0) 1 until size else (i - 1).downTo(0)
-        for (otherI in range) {
-            val other = this[otherI]
-            if (!other.isSeparator) {
-                shouldResolve = other.resolved
-                break
+        if (!this[i].resolved) {
+            var shouldResolve = true
+            val range = if (i == 0) 1 until size else (i - 1).downTo(0)
+            for (otherI in range) {
+                val other = this[otherI]
+                if (!other.isSeparator) {
+                    shouldResolve = other.resolved
+                    break
+                }
             }
-        }
-        if (shouldResolve) {
-            resolved.add(i)
-            this[i] = this[i].resolvedVersion
+            if (shouldResolve) {
+                resolved.add(i)
+                this[i] = this[i].resolvedVersion
+            }
         }
     }
 }

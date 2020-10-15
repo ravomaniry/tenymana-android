@@ -63,6 +63,15 @@ class ResolveTest {
         )
     }
 
+    @Test
+    fun ignoreResolvedHidden() {
+        val words = BibleVerse.fromText("Matio", 1, 1, "Abc de").words.toMutableList()
+        words[0] = words[0].resolvedVersion
+        val chars = listOf(Character('D', 'd'), Character('E', 'e'))
+        val hidden = setOf(0)
+        assertThat(words.resolveWith(chars, hidden)).isEqualTo(listOf(2))
+    }
+
     private fun testResolve(
         hidden: Set<Int>,
         chars: List<Character>,
