@@ -24,7 +24,7 @@ class BuilderTest {
             directions = listOf(RIGHT),
             directionsQ = listOf(mutableListOf(UP, RIGHT)),
             cells = listOf(
-                listOf(char('A', 'a'), char('B', 'b'), char('C', 'c'), null),
+                listOf(charA(0, 0), charA(0, 1), charA(0, 2), null),
                 listOf(null, null, null, null)
             )
         )
@@ -44,10 +44,10 @@ class BuilderTest {
                 mutableListOf(UP, RIGHT)
             ),
             cells = listOf(
-                listOf(char('E', 'e'), char('D', 'd'), char('I', 'i'), char('J', 'j')),
-                listOf(char('A', 'a'), char('F', 'f'), char('G', 'g'), char('H', 'h')),
-                listOf(char('B', 'b'), null, null, null),
-                listOf(char('C', 'c'), null, null, null),
+                listOf(charA(2, 1), charA(2, 0), charA(6, 0), charA(6, 1)),
+                listOf(charA(0, 0), charA(4, 0), charA(4, 1), charA(4, 2)),
+                listOf(charA(0, 1), null, null, null),
+                listOf(charA(0, 2), null, null, null),
                 listOf(null, null, null, null)
             )
         )
@@ -63,7 +63,7 @@ class BuilderTest {
             directions = listOf(LEFT),
             directionsQ = listOf(mutableListOf(LEFT)),
             cells = listOf(
-                listOf(char('N', 'n'), char('A', 'a'), null, null),
+                listOf(charA(0, 1), charA(0, 0), null, null),
                 listOf(null, null, null, null)
             )
         )
@@ -72,7 +72,7 @@ class BuilderTest {
     private fun testBuildGrid(
         text: String,
         wordsOrder: List<String>,
-        cells: List<List<Character?>>,
+        cells: List<List<CharAddress?>>,
         origins: List<Int>,
         directions: List<Point>,
         directionsQ: List<MutableList<Point>>
@@ -108,7 +108,5 @@ class BuilderTest {
         }
     }
 
-    private fun char(value: Char, compValue: Char): Character {
-        return Character(value, compValue)
-    }
+    private fun charA(wI: Int, cI: Int) = CharAddress(wI, cI)
 }

@@ -4,11 +4,10 @@ import mg.maniry.tenymana.game.models.*
 import mg.maniry.tenymana.game.sharedLogics.grid.calcDirections
 import mg.maniry.tenymana.game.sharedLogics.grid.calcOrigins
 import mg.maniry.tenymana.game.sharedLogics.grid.placeWord
-import mg.maniry.tenymana.game.sharedLogics.grid.toCharGrid
 import mg.maniry.tenymana.utils.InsideOutIterator
 import mg.maniry.tenymana.utils.Random
 
-fun buildLinkGrid(verse: BibleVerse, random: Random, width: Int, visibleH: Int): Grid<Character> {
+fun buildLinkGrid(verse: BibleVerse, random: Random, width: Int, visibleH: Int): Grid<CharAddress> {
     val grid = MutableGrid<CharAddress>(width)
     val words = verse.uniqueWords.filter { it.size > 1 }.toMutableList()
     while (words.isNotEmpty()) {
@@ -27,5 +26,5 @@ fun buildLinkGrid(verse: BibleVerse, random: Random, width: Int, visibleH: Int):
         }
         words.remove(word)
     }
-    return grid.toCharGrid(verse.words)
+    return grid.toGrid()
 }
