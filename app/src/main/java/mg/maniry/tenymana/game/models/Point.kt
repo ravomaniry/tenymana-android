@@ -1,9 +1,21 @@
 package mg.maniry.tenymana.game.models
 
+import kotlin.math.absoluteValue
+import kotlin.math.sign
+
 data class Move(
     val a: Point,
     val b: Point
 ) {
+    val direction: Point?
+
+    init {
+        val v = b - a
+        direction = if (v.x == 0 || v.y == 0 || v.x.absoluteValue == v.y.absoluteValue)
+            Point((b.x - a.x).sign, (b.y - a.y).sign)
+        else null
+    }
+
     override fun toString() = "$a->$b"
 
     companion object {
