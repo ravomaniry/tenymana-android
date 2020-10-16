@@ -1,12 +1,12 @@
 package mg.maniry.tenymana.game.linkClear
 
 import mg.maniry.tenymana.game.models.*
-import mg.maniry.tenymana.game.sharedLogics.grid.calcHiddenWords
-import mg.maniry.tenymana.game.sharedLogics.grid.calcSelection
-import mg.maniry.tenymana.game.sharedLogics.grid.clear
-import mg.maniry.tenymana.game.sharedLogics.grid.toCharGrid
-import mg.maniry.tenymana.game.sharedLogics.words.resolved
-import mg.maniry.tenymana.game.sharedLogics.words.resolveWith
+import mg.maniry.tenymana.game.sharedLogic.grid.calcHiddenWords
+import mg.maniry.tenymana.game.sharedLogic.grid.calcSelection
+import mg.maniry.tenymana.game.sharedLogic.grid.clear
+import mg.maniry.tenymana.game.sharedLogic.grid.toCharGrid
+import mg.maniry.tenymana.game.sharedLogic.words.resolved
+import mg.maniry.tenymana.game.sharedLogic.words.resolveWith
 
 class LinkClearBoard(
     initialGrid: Grid<CharAddress>,

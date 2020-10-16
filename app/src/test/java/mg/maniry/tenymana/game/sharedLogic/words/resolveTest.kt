@@ -1,4 +1,4 @@
-package mg.maniry.tenymana.game.sharedLogics.words
+package mg.maniry.tenymana.game.sharedLogic.words
 
 import com.google.common.truth.Truth.assertThat
 import mg.maniry.tenymana.game.models.BibleVerse

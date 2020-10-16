@@ -1,9 +1,9 @@
 package mg.maniry.tenymana.game.linkClear
 
 import mg.maniry.tenymana.game.models.*
-import mg.maniry.tenymana.game.sharedLogics.grid.calcDirections
-import mg.maniry.tenymana.game.sharedLogics.grid.calcOrigins
-import mg.maniry.tenymana.game.sharedLogics.grid.placeWord
+import mg.maniry.tenymana.game.sharedLogic.grid.calcDirections
+import mg.maniry.tenymana.game.sharedLogic.grid.calcOrigins
+import mg.maniry.tenymana.game.sharedLogic.grid.placeWord
 import mg.maniry.tenymana.utils.InsideOutIterator
 import mg.maniry.tenymana.utils.Random
 

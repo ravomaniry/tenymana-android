@@ -1,4 +1,4 @@
-package mg.maniry.tenymana.game.sharedLogics.grid
+package mg.maniry.tenymana.game.sharedLogic.grid
 
 import mg.maniry.tenymana.game.models.CharAddress
 import mg.maniry.tenymana.game.models.Grid
