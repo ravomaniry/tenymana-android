@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Teny Mana</string>
+    <string name="app_menu_desc">Menu</string>
+    <string name="app_score_desc">Isa</string>
 </resources>
