@@ -7,17 +7,24 @@ import mg.maniry.tenymana.utils.findIndex
 import kotlin.math.max
 import kotlin.math.min
 
+data class CreateMatchResult(
+    val word: Int,
+    val cleared: List<Point>,
+    val diff: List<Move>
+)
+
 fun MutableGrid<Character>.createMatch(
-    words: MutableList<Word>,
-    diff: MutableList<Move>,
+    words: List<Word>,
+    diff: List<Move>,
     visibleH: Int,
     directions: List<Point>,
     gravity: List<Point>,
     random: Random
-): Int? {
+): CreateMatchResult? {
     val wInScope = unresolvedWords(words)
     val ns = (0 until w * min(visibleH, h)).toList()
     val it = InsideOutIterator.random(ns, random)
+    val mDiff = diff.toMutableList()
     while (it.hasNext) {
         val origin = nthPoint(it.next())
         val c = get(origin)
@@ -29,8 +36,8 @@ fun MutableGrid<Character>.createMatch(
                         val copy = toMutable().apply { clear(points, gravity) }
                         if (copy.firstVisibleMatch(words, visibleH, directions) != null) {
                             val newDiff = clear(points, gravity)
-                            diff.updateWith(newDiff, points)
-                            return word.index
+                            mDiff.updateWith(newDiff, points)
+                            return CreateMatchResult(word.index, points, mDiff)
                         }
                     }
                 }
@@ -49,7 +56,7 @@ private fun Grid<Character>.findNearestMatch(word: Word, origin: Point): List<Po
     var xR = origin.x
     var yUp = origin.y
     var yDown = origin.y - 1
-    var cI = 1
+    val pending = word.chars.map { it.compValue }.toMutableList().apply { removeAt(0) }
     val points = mutableListOf(origin)
     val seen = mutableSetOf(origin)
     while (xL >= 0 || xR < w || yDown >= 0 || yUp < h) {
@@ -58,11 +65,15 @@ private fun Grid<Character>.findNearestMatch(word: Word, origin: Point): List<Po
                 val p = Point(x, y)
                 if (!seen.contains(p)) {
                     seen.add(p)
-                    if (get(x, y)?.isSameAs(word[cI]) == true) {
-                        cI++
-                        points.add(p)
-                        if (cI == word.size) {
-                            return points
+                    val c = get(x, y)?.compValue
+                    if (c != null) {
+                        val i = pending.indexOf(c)
+                        if (i >= 0) {
+                            pending.removeAt(i)
+                            points.add(p)
+                            if (pending.isEmpty()) {
+                                return points
+                            }
                         }
                     }
                 }
