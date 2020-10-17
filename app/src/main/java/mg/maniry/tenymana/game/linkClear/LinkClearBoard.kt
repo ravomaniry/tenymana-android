@@ -1,5 +1,6 @@
 package mg.maniry.tenymana.game.linkClear
 
+import androidx.lifecycle.MutableLiveData
 import mg.maniry.tenymana.game.models.*
 import mg.maniry.tenymana.game.sharedLogic.grid.*
 import mg.maniry.tenymana.game.sharedLogic.words.resolveWith
@@ -30,7 +31,7 @@ class LinkClearBoard(
     val completed: Boolean get() = _completed
 
     private var _score = 0
-    override val score: Int get() = _score
+    override val score = MutableLiveData(0)
 
     override fun propose(move: Move): Boolean {
         reset()
@@ -79,6 +80,7 @@ class LinkClearBoard(
         if (_completed && !usedHelp) {
             _score *= 2
         }
+        score.postValue(_score)
     }
 
     companion object {
