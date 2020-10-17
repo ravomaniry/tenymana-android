@@ -1,13 +1,17 @@
 package mg.maniry.tenymana.game.sharedLogic.grid
 
-import mg.maniry.tenymana.game.linkClear.gravity
 import mg.maniry.tenymana.game.models.*
 import mg.maniry.tenymana.game.models.Point.Companion.LEFT
 import mg.maniry.tenymana.game.models.Point.Companion.RIGHT
 import mg.maniry.tenymana.game.models.Point.Companion.UP
 
-fun MutableGrid<CharAddress>.placeWord(origin: Point, direction: Point, word: Word) {
-    val done = applyHMoves(origin, direction, word)
+fun MutableGrid<CharAddress>.placeWord(
+    origin: Point,
+    direction: Point,
+    word: Word,
+    gravity: List<Point>
+) {
+    val done = applyHMoves(origin, direction, word, gravity)
     if (!done) {
         applyVMoves(origin, direction, word)
     }
@@ -17,10 +21,11 @@ fun MutableGrid<CharAddress>.placeWord(origin: Point, direction: Point, word: Wo
 fun Grid<CharAddress>.testChange(
     origin: Point,
     direction: Point,
-    word: Word
+    word: Word,
+    gravity: List<Point>
 ): MutableGrid<CharAddress> {
     return toMutable().apply {
-        placeWord(origin, direction, word)
+        placeWord(origin, direction, word, gravity)
     }
 }
 
@@ -34,7 +39,8 @@ private fun MutableGrid<CharAddress>.persist(word: Word, origin: Point, directio
 private fun MutableGrid<CharAddress>.applyHMoves(
     origin: Point,
     direction: Point,
-    word: Word
+    word: Word,
+    gravity: List<Point>
 ): Boolean {
     val hMoves = calcHMoves(origin, direction, word)
     if (hMoves != null) {

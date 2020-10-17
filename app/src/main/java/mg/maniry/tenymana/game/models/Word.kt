@@ -9,8 +9,8 @@ data class Word(
     val bonus: Bonus? = null
 ) {
     val size: Int get() = chars.size
-
     val resolvedVersion: Word get() = this.copy(resolved = true)
+    operator fun get(i: Int) = chars[i]
 
     val firstUnrevealedIndex: Int
         get() {
@@ -47,6 +47,8 @@ data class Word(
         nextChars[index] = char
         return this.copy(chars = nextChars)
     }
+
+    override fun toString() = "[$value:$resolved]"
 
     companion object {
         fun fromValue(value: String, index: Int, isSeparator: Boolean = false): Word {

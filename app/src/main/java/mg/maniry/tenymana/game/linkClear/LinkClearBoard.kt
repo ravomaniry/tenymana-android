@@ -5,8 +5,8 @@ import mg.maniry.tenymana.game.sharedLogic.grid.calcHiddenWords
 import mg.maniry.tenymana.game.sharedLogic.grid.calcSelection
 import mg.maniry.tenymana.game.sharedLogic.grid.clear
 import mg.maniry.tenymana.game.sharedLogic.grid.toCharGrid
-import mg.maniry.tenymana.game.sharedLogic.words.resolved
 import mg.maniry.tenymana.game.sharedLogic.words.resolveWith
+import mg.maniry.tenymana.game.sharedLogic.words.resolved
 
 class LinkClearBoard(
     initialGrid: Grid<CharAddress>,
@@ -47,5 +47,10 @@ class LinkClearBoard(
         _completed = false
         _cleared = null
         _diff = null
+    }
+
+    companion object {
+        val direction = Point.directions
+        val gravity = listOf(Point.DOWN, Point.LEFT)
     }
 }

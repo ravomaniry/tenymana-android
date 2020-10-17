@@ -1,6 +1,7 @@
 package mg.maniry.tenymana.game.sharedLogic.grid
 
 import com.google.common.truth.Truth.assertThat
+import mg.maniry.tenymana.game.linkClear.LinkClearBoard.Companion.gravity
 import mg.maniry.tenymana.game.models.CharAddress
 import mg.maniry.tenymana.game.models.MutableGrid
 import mg.maniry.tenymana.game.models.Point
@@ -249,7 +250,7 @@ class PlaceWordTest {
             grid.set(v.first.x, v.first.y, v.second)
         }
         val word = Word.fromValue(delta.second.second, 0, false)
-        grid.placeWord(delta.first, delta.second.first, word)
+        grid.placeWord(delta.first, delta.second.first, word, gravity)
         assertThat(grid).isEqualTo(MutableGrid(w, result))
     }
 }

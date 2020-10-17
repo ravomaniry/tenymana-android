@@ -1,6 +1,7 @@
 package mg.maniry.tenymana.game.sharedLogic.grid
 
 import com.google.common.truth.Truth.assertThat
+import mg.maniry.tenymana.game.linkClear.LinkClearBoard.Companion.gravity
 import mg.maniry.tenymana.game.models.CharAddress
 import mg.maniry.tenymana.game.models.MutableGrid
 import mg.maniry.tenymana.game.models.Point
@@ -38,11 +39,13 @@ class DirectionsTest {
     fun limitedChoise() {
         val word = Word.fromValue("Abc", 0)
         val choice = listOf(RIGHT)
-        assertThat(grid.calcDirections(choice, Point(0, 0), word, 10)).isEqualTo(listOf(RIGHT))
+        assertThat(grid.calcDirections(choice, Point(0, 0), word, 10, gravity))
+            .isEqualTo(listOf(RIGHT))
     }
 
     private fun testDirections(origin: Point, visiblH: Int, result: List<Point>) {
         val word = Word.fromValue("Abc", 0)
-        assertThat(grid.calcDirections(Point.directions, origin, word, visiblH)).isEqualTo(result)
+        assertThat(grid.calcDirections(Point.directions, origin, word, visiblH, gravity))
+            .isEqualTo(result)
     }
 }

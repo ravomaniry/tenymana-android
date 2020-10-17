@@ -1,6 +1,5 @@
 package mg.maniry.tenymana.game.sharedLogic.grid
 
-import mg.maniry.tenymana.game.linkClear.gravity
 import mg.maniry.tenymana.game.models.CharAddress
 import mg.maniry.tenymana.game.models.Grid
 import mg.maniry.tenymana.game.models.Point
@@ -10,11 +9,12 @@ fun Grid<CharAddress>.calcDirections(
     directions: List<Point>,
     origin: Point,
     word: Word,
-    visibleH: Int
+    visibleH: Int,
+    gravity: List<Point>
 ): List<Point> {
     val dirs = mutableListOf<Point>()
     for (dir in directions) {
-        if (directionIsPossible(origin, dir, word, visibleH)) {
+        if (directionIsPossible(origin, dir, word, visibleH, gravity)) {
             dirs.add(dir)
         }
     }
@@ -25,7 +25,8 @@ private fun Grid<CharAddress>.directionIsPossible(
     origin: Point,
     dir: Point,
     word: Word,
-    visibleH: Int
+    visibleH: Int,
+    gravity: List<Point>
 ): Boolean {
     val len = word.size
     val end = origin + dir * len
@@ -38,7 +39,7 @@ private fun Grid<CharAddress>.directionIsPossible(
             return false
         }
     }
-    val test = testChange(origin, dir, word)
+    val test = testChange(origin, dir, word, gravity)
     val withG = test.toMutable().apply { applyGravity(gravity) }
     return test == withG
 }

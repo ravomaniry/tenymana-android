@@ -42,14 +42,6 @@ open class Grid<T>(
         return p.x >= 0 && p.y >= 0 && p.x < w
     }
 
-    fun <X> map(cb: MapCb<T, X>): Grid<X> {
-        return Grid(
-            cells.mapIndexed { y, row ->
-                row.mapIndexed { x, v -> cb(x, y, v) }
-            }
-        )
-    }
-
     override fun hashCode() = cells.hashCode()
     override fun equals(other: Any?) = other is Grid<*> && other.cells == cells
     override fun toString() = cells.joinToString("\n") { it.toString() }
