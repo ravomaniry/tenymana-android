@@ -36,7 +36,7 @@ fun MutableGrid<Character>.createMatch(
                         val copy = toMutable().apply { clear(points, gravity) }
                         if (copy.firstVisibleMatch(words, visibleH, directions) != null) {
                             val newDiff = clear(points, gravity)
-                            mDiff.updateWith(newDiff, points)
+                            mDiff.updateWith(newDiff, points, this)
                             return CreateMatchResult(word.index, points, mDiff)
                         }
                     }
@@ -91,16 +91,17 @@ private fun unresolvedWords(words: List<Word>): List<Word> {
     return words.filter { !it.resolved }
 }
 
-private fun MutableList<Move>.updateWith(newDiff: List<Move>, cleared: List<Point>) {
+private fun MutableList<Move>.updateWith(newDiff: List<Move>, cleared: List<Point>, grid: Grid<*>) {
     removeClearedDest(cleared)
     updateDest(newDiff)
+    removeEmptyDest(grid)
 }
 
 private fun MutableList<Move>.removeClearedDest(cleared: List<Point>) {
     var i = 0
-    while (i < this.size - 1) {
+    while (i < this.size) {
         val move = this[i]
-        if (move.b in cleared) {
+        if (cleared.contains(move.b)) {
             removeAt(i)
         } else {
             i++
@@ -118,4 +119,15 @@ private fun MutableList<Move>.updateDest(newDiff: List<Move>) {
         }
     }
     addAll(remainingDiff)
+}
+
+private fun MutableList<Move>.removeEmptyDest(grid: Grid<*>) {
+    var i = 0
+    while (i < size) {
+        if (grid[this[i].b] == null) {
+            removeAt(i)
+        } else {
+            i++
+        }
+    }
 }

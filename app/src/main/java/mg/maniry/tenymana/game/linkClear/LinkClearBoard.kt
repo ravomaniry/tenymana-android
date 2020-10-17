@@ -1,17 +1,17 @@
 package mg.maniry.tenymana.game.linkClear
 
 import mg.maniry.tenymana.game.models.*
-import mg.maniry.tenymana.game.sharedLogic.grid.calcHiddenWords
-import mg.maniry.tenymana.game.sharedLogic.grid.calcSelection
-import mg.maniry.tenymana.game.sharedLogic.grid.clear
-import mg.maniry.tenymana.game.sharedLogic.grid.toCharGrid
+import mg.maniry.tenymana.game.sharedLogic.grid.*
 import mg.maniry.tenymana.game.sharedLogic.words.resolveWith
 import mg.maniry.tenymana.game.sharedLogic.words.resolved
+import mg.maniry.tenymana.utils.RandomImpl
 
 class LinkClearBoard(
     initialGrid: Grid<CharAddress>,
     initialVerse: BibleVerse
 ) {
+    private val random = RandomImpl() // maybe inject this?
+
     private val _grid = initialGrid.toCharGrid(initialVerse.words)
     private val hidden = initialGrid.calcHiddenWords(initialVerse.words)
     val grid: Grid<Character> get() = _grid
@@ -34,9 +34,7 @@ class LinkClearBoard(
         if (selection.isNotEmpty) {
             val indexes = words.resolveWith(selection.chars, hidden)
             if (indexes.isNotEmpty()) {
-                _diff = _grid.clear(selection.points, gravity)
-                _cleared = selection.points
-                _completed = words.resolved
+                updateResult(selection.points)
                 return true
             }
         }
@@ -49,8 +47,28 @@ class LinkClearBoard(
         _diff = null
     }
 
+    private fun updateResult(points: List<Point>) {
+        val diff0 = _grid.clear(points, gravity)
+        _completed = words.resolved
+        if (!_completed && _grid.firstVisibleMatch(words, visibleH, direction) == null) {
+            val match = _grid.createMatch(words, diff0, visibleH, direction, gravity, random)
+            if (match == null) {
+                _completed = true
+            } else {
+                _diff = match.diff
+                words[match.word] = words[match.word].resolvedVersion
+                _completed = words.resolved
+                _cleared = points.toMutableList().apply { addAll(match.cleared) }.toSet().toList()
+            }
+        } else {
+            _diff = diff0
+            _cleared = points
+        }
+    }
+
     companion object {
         val direction = Point.directions
         val gravity = listOf(Point.DOWN, Point.LEFT)
+        const val visibleH = 12
     }
 }

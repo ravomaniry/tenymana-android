@@ -86,11 +86,11 @@ class BoardTest {
     }
 
     @Test
-    fun noPossibleMove_resolveToLeft() {
+    fun noPossibleMove_createMatch() {
         val verse = BibleVerse.fromText("Matio", 1, 1, "Ab cde fghi")
-        // | I |   |   |   |
-        // | C | F | G | H |
-        // | A | B | D | E |
+        // | I |   |   |   |     |   |   |   |   |     |   |   |   |   |
+        // | C | F | G | H | ==> | I | G | H |   | ==> |   |   |   |   |
+        // | A | B | D | E |     | C | F | D | E |     | C | D | E |   |
         val grid = Grid(
             listOf(
                 listOf(ca(0, 0), ca(0, 1), ca(2, 1), ca(2, 2)),
@@ -100,13 +100,21 @@ class BoardTest {
         )
         val board = LinkClearBoard(grid, verse)
         board.propose(Move.xy(0, 0, 1, 0))
-        assertThat(board.cleared).isEqualTo(listOf(Point(0, 0), Point(1, 0)))
+        assertThat(board.cleared).isEqualTo(
+            listOf(
+                Point(0, 0),
+                Point(1, 0),
+                Point(0, 1),
+                Point(1, 1),
+                Point(2, 1)
+            )
+        )
         assertThat(board.grid).isEqualTo(
             MutableGrid(
                 4,
                 mutableListOf<MutableList<Character?>>(
-                    mutableListOf(c('f'), c('c'), c('d'), c('e')),
-                    mutableListOf(c('i'), c('g'), c('h'), null),
+                    mutableListOf(c('c'), c('d'), c('e'), null),
+                    mutableListOf(null, null, null, null),
                     mutableListOf(null, null, null, null),
                     mutableListOf(null, null, null, null)
                 )
@@ -114,11 +122,9 @@ class BoardTest {
         )
         assertThat(board.diff).isEqualTo(
             listOf(
-                Move.xy(0, 1, 1, 0),
-                Move.xy(1, 1, 0, 0),
-                Move.xy(2, 0, 1, 0),
-                Move.xy(2, 1, 1, 1),
-                Move.xy(3, 1, 2, 1)
+                Move.xy(0, 1, 0, 0),
+                Move.xy(3, 0, 2, 0),
+                Move.xy(2, 0, 1, 0)
             )
         )
     }
