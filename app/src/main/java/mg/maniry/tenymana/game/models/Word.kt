@@ -26,6 +26,10 @@ data class Word(
         return this.copy(bonus = null)
     }
 
+    fun startsWith(c: Character): Boolean {
+        return size > 0 && chars[0].isSameAs(c)
+    }
+
     fun sameChars(otherChars: List<Character>): Boolean {
         if (otherChars.size == size) {
             otherChars.forEachIndexed { i, c ->

@@ -5,15 +5,14 @@ import mg.maniry.tenymana.game.models.*
 import org.junit.Test
 
 class BoardTest {
-
     // | D
     // | E | I | J | . |
     // | A | B | C | . |
     private val grid = Grid(
         listOf(
-            listOf(CharAddress(0, 0), CharAddress(0, 1), CharAddress(0, 2), null),
-            listOf(CharAddress(2, 1), CharAddress(8, 0), CharAddress(8, 1), null),
-            listOf(CharAddress(2, 0), null, null, null),
+            listOf(ca(0, 0), ca(0, 1), ca(0, 2), null),
+            listOf(ca(2, 1), ca(8, 0), ca(8, 1), null),
+            listOf(ca(2, 0), null, null, null),
             listOf(null, null, null, null)
         )
     )
@@ -86,6 +85,44 @@ class BoardTest {
         )
     }
 
+    @Test
+    fun noPossibleMove_resolveToLeft() {
+        val verse = BibleVerse.fromText("Matio", 1, 1, "Ab cde fghi")
+        // | I |   |   |   |
+        // | C | F | G | H |
+        // | A | B | D | E |
+        val grid = Grid(
+            listOf(
+                listOf(ca(0, 0), ca(0, 1), ca(2, 1), ca(2, 2)),
+                listOf(ca(2, 0), ca(4, 0), ca(4, 1), ca(4, 2)),
+                listOf(ca(4, 3), null, null, null)
+            )
+        )
+        val board = LinkClearBoard(grid, verse)
+        board.propose(Move.xy(0, 0, 1, 0))
+        assertThat(board.cleared).isEqualTo(listOf(Point(0, 0), Point(1, 0)))
+        assertThat(board.grid).isEqualTo(
+            MutableGrid(
+                4,
+                mutableListOf<MutableList<Character?>>(
+                    mutableListOf(c('f'), c('c'), c('d'), c('e')),
+                    mutableListOf(c('i'), c('g'), c('h'), null),
+                    mutableListOf(null, null, null, null),
+                    mutableListOf(null, null, null, null)
+                )
+            )
+        )
+        assertThat(board.diff).isEqualTo(
+            listOf(
+                Move.xy(0, 1, 1, 0),
+                Move.xy(1, 1, 0, 0),
+                Move.xy(2, 0, 1, 0),
+                Move.xy(2, 1, 1, 1),
+                Move.xy(3, 1, 2, 1)
+            )
+        )
+    }
+
     private fun testPropose(
         board: LinkClearBoard,
         move: Move,
@@ -102,4 +139,7 @@ class BoardTest {
         assertThat(board.cleared).isEqualTo(cleared)
         assertThat(board.completed).isEqualTo(completed)
     }
+
+    private fun ca(wI: Int, cI: Int) = CharAddress(wI, cI)
+    private fun c(v: Char) = Character(v.toUpperCase(), v.toLowerCase())
 }

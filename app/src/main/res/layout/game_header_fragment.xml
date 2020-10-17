@@ -19,12 +19,14 @@
         tools:backgroundColorID="@{viewModel.colors.primary}">
 
         <ImageView
+            android:id="@+id/menuBtn"
             android:layout_width="36sp"
             android:layout_height="36sp"
             android:contentDescription="@string/app_menu_desc"
             android:src="@drawable/ic_light_menu" />
 
         <TextView
+            android:id="@+id/verseDisplay"
             style="@style/AppTheme.ScoreTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,6 +42,7 @@
             android:layout_weight="1" />
 
         <TextView
+            android:id="@+id/score"
             style="@style/AppTheme.ScoreTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
