@@ -61,11 +61,12 @@ dependencies {
     // Dependency injection
     implementation "org.koin:koin-android:$koin_version"
 
-    // Tests
+    // Uni Tests
     testImplementation 'junit:junit:4.12'
     testImplementation 'com.google.truth:truth:1.0.1'
     testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
     testImplementation 'org.mockito:mockito-inline:2.23.0'
+    testImplementation "android.arch.core:core-testing:1.1.1"
 
     // Android tests
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
