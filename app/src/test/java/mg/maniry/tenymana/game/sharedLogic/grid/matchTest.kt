@@ -15,18 +15,18 @@ class MatchTest {
                 listOf(c('g'), c('f'), null)
             )
         )
-        assertThat(grid.firstMatch(words, 2, Point.directions)).isEqualTo(Move.xy(0, 0, 2, 0))
+        assertThat(grid.firstVisibleMatch(words, 2, Point.directions)).isEqualTo(Move.xy(0, 0, 2, 0))
         // [0] is resolved
         words[0] = words[0].resolvedVersion
-        assertThat(grid.firstMatch(words, 2, Point.directions)).isEqualTo(Move.xy(2, 1, 1, 1))
+        assertThat(grid.firstVisibleMatch(words, 2, Point.directions)).isEqualTo(Move.xy(2, 1, 1, 1))
         // [0], [2] resolved + off grid
         words[2] = words[2].resolvedVersion
-        assertThat(grid.firstMatch(words, 2, Point.directions)).isNull()
+        assertThat(grid.firstVisibleMatch(words, 2, Point.directions)).isNull()
         // [0], [2] resolved on grid
-        assertThat(grid.firstMatch(words, 3, Point.directions)).isEqualTo(Move.xy(1, 2, 0, 2))
+        assertThat(grid.firstVisibleMatch(words, 3, Point.directions)).isEqualTo(Move.xy(1, 2, 0, 2))
         // [0], [2], [4] resolved
         words[4] = words[4].resolvedVersion
-        assertThat(grid.firstMatch(words, 4, Point.directions)).isNull()
+        assertThat(grid.firstVisibleMatch(words, 4, Point.directions)).isNull()
     }
 
     @Test
@@ -40,9 +40,9 @@ class MatchTest {
             )
         )
         // ABC off grid
-        assertThat(grid.firstMatch(words, 2, Point.directions)).isEqualTo(Move.xy(1, 1, 1, 0))
+        assertThat(grid.firstVisibleMatch(words, 2, Point.directions)).isEqualTo(Move.xy(1, 1, 1, 0))
         // ABC in grid
-        assertThat(grid.firstMatch(words, 3, Point.directions)).isEqualTo(Move.xy(0, 0, 0, 2))
+        assertThat(grid.firstVisibleMatch(words, 3, Point.directions)).isEqualTo(Move.xy(0, 0, 0, 2))
     }
 
     private fun c(v: Char) = Character(v.toUpperCase(), v.toLowerCase())

@@ -3,7 +3,11 @@ package mg.maniry.tenymana.game.sharedLogic.grid
 import mg.maniry.tenymana.game.models.*
 import kotlin.math.max
 
-fun Grid<Character>.firstMatch(words: List<Word>, gridH: Int, directions: List<Point>): Move? {
+fun Grid<Character>.firstVisibleMatch(
+    words: List<Word>,
+    gridH: Int,
+    directions: List<Point>
+): Move? {
     val wInsCope = words.filter { !it.resolved }
     for (y in 0 until max(gridH, h)) {
         for (x in 0 until w) {
