@@ -33,6 +33,7 @@ class BoardTest {
         val w0 = board.verse.words.map { it.copy() }
         for (l in lines) {
             testPropose(board, l, w0)
+            assertThat(board.score).isEqualTo(0)
         }
     }
 
@@ -58,6 +59,7 @@ class BoardTest {
                 Move.xy(1, 1, 1, 0)
             )
         )
+        assertThat(board.score).isEqualTo(10)
         // Invalid move
         testPropose(board, Move.xy(0, 0, 1, 0), w1)
         // Resolve words[8]
@@ -71,6 +73,7 @@ class BoardTest {
             cleared = listOf(Point(1, 0), Point(2, 0)),
             diff = listOf()
         )
+        assertThat(board.score).isEqualTo(12)
         // Resolve last word: words[2]
         val w3 = w2.toMutableList()
         w3[2] = w3[2].resolvedVersion
@@ -83,6 +86,7 @@ class BoardTest {
             diff = listOf(),
             completed = true
         )
+        assertThat(board.score).isEqualTo(14 * 2) // total = 10 * (resolved words = 2)
     }
 
     @Test
@@ -127,6 +131,27 @@ class BoardTest {
                 Move.xy(2, 0, 1, 0)
             )
         )
+        assertThat(board.score).isEqualTo(2)
+    }
+
+    @Test
+    fun noMoreMove_complete() {
+        val verse = BibleVerse.fromText("", 1, 1, "Abc def ghi jk")
+        // | I | F | H |   |     | I |   |   |   |
+        // | G | J | K | C | ==> | G | F | H | C |
+        // | A | B | D | E |     | A | B | D | E |
+        val grid = Grid(
+            listOf(
+                listOf(ca(0, 0), ca(0, 1), ca(2, 0), ca(2, 1)),
+                listOf(ca(4, 0), ca(6, 0), ca(6, 1), ca(0, 2)),
+                listOf(ca(4, 2), ca(2, 2), ca(4, 1), null),
+                listOf(null, null, null, null)
+            )
+        )
+        val board = LinkClearBoard(grid, verse)
+        board.propose(Move.xy(1, 1, 2, 1))
+        assertThat(board.completed).isTrue()
+        assertThat(board.score).isEqualTo(2)
     }
 
     private fun testPropose(

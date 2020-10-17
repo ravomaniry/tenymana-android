@@ -9,7 +9,7 @@ import mg.maniry.tenymana.utils.RandomImpl
 class LinkClearBoard(
     initialGrid: Grid<CharAddress>,
     initialVerse: BibleVerse
-) {
+) : Board {
     private val random = RandomImpl() // maybe inject this?
 
     private val _grid = initialGrid.toCharGrid(initialVerse.words)
@@ -25,16 +25,21 @@ class LinkClearBoard(
     private var _cleared: List<Point>? = null
     val cleared: List<Point>? get() = _cleared
 
+    private var usedHelp = false
     private var _completed = false
     val completed: Boolean get() = _completed
 
-    fun propose(move: Move): Boolean {
+    private var _score = 0
+    override val score: Int get() = _score
+
+    override fun propose(move: Move): Boolean {
         reset()
         val selection = _grid.calcSelection(move)
         if (selection.isNotEmpty) {
             val indexes = words.resolveWith(selection.chars, hidden)
             if (indexes.isNotEmpty()) {
                 updateResult(selection.points)
+                incrementScore(indexes)
                 return true
             }
         }
@@ -51,6 +56,7 @@ class LinkClearBoard(
         val diff0 = _grid.clear(points, gravity)
         _completed = words.resolved
         if (!_completed && _grid.firstVisibleMatch(words, visibleH, direction) == null) {
+            usedHelp = true
             val match = _grid.createMatch(words, diff0, visibleH, direction, gravity, random)
             if (match == null) {
                 _completed = true
@@ -63,6 +69,15 @@ class LinkClearBoard(
         } else {
             _diff = diff0
             _cleared = points
+        }
+    }
+
+    private fun incrementScore(resolved: List<Int>) {
+        resolved.forEach {
+            _score += words[it].size
+        }
+        if (_completed && !usedHelp) {
+            _score *= 2
         }
     }
 
