@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/gameFragment"
-        android:name="mg.maniry.tenymana.ui.game.GameFragment"
+        android:name="mg.maniry.tenymana.ui.game.journey.node.NodeFragment"
         android:label="game_screen"
-        tools:layout="@layout/game_screen" />
+        tools:layout="@layout/node_screen" />
 </navigation>

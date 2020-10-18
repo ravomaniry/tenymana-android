@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="mg.maniry.tenymana.ui.game.GameViewModel" />
+            type="mg.maniry.tenymana.ui.game.journey.node.NodeViewModel" />
     </data>
 
     <LinearLayout
@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:ignore="FragmentTagUsage"
-            tools:layout="@layout/game_header_fragment" />
+            tools:layout="@layout/node_header_fragment" />
         <!--        <TextView-->
         <!--            android:layout_width="match_parent"-->
         <!--            android:layout_height="4dp"-->
