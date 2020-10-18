@@ -2,7 +2,7 @@ package mg.maniry.tenymana.game.models
 
 import androidx.lifecycle.LiveData
 
-interface Board {
+interface Node {
     val score: LiveData<Int>
     val completed: LiveData<Boolean>
     fun propose(move: Move): Boolean

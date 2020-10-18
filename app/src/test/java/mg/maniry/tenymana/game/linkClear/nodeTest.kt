@@ -6,7 +6,7 @@ import mg.maniry.tenymana.game.models.*
 import org.junit.Rule
 import org.junit.Test
 
-class BoardTest {
+class NodeTest {
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
@@ -25,7 +25,7 @@ class BoardTest {
     @Test
     fun wrongReponses() {
         val verse = BibleVerse.fromText("Matio", 1, 1, "Abc de àbc fghi, ij")
-        val board = LinkClearBoard(grid, verse)
+        val board = LinkClearNode(grid, verse)
         val lines = listOf(
             Move.xy(0, 0, 2, 1),
             Move.xy(0, 0, 0, 1),
@@ -45,14 +45,14 @@ class BoardTest {
     @Test
     fun basic() {
         val verse = BibleVerse.fromText("Matio", 1, 1, "Abc de àbc fghi, ij")
-        val board = LinkClearBoard(grid, verse)
+        val node = LinkClearNode(grid, verse)
         // Resolve rows[0]: words[0] && words[4]
-        val w1 = board.verse.words.toMutableList()
+        val w1 = node.verse.words.toMutableList()
         w1[0] = w1[0].resolvedVersion
         w1[4] = w1[4].resolvedVersion
         w1[6] = w1[6].resolvedVersion // automatically resolved
         testPropose(
-            board = board,
+            board = node,
             move = Move.xy(0, 0, 2, 0),
             words = w1,
             didUpdate = true,
@@ -64,26 +64,26 @@ class BoardTest {
                 Move.xy(1, 1, 1, 0)
             )
         )
-        assertThat(board.score.value).isEqualTo(10)
+        assertThat(node.score.value).isEqualTo(10)
         // Invalid move
-        testPropose(board, Move.xy(0, 0, 1, 0), w1)
+        testPropose(node, Move.xy(0, 0, 1, 0), w1)
         // Resolve words[8]
         val w2 = w1.toMutableList()
         w2[8] = w2[8].resolvedVersion
         testPropose(
-            board,
+            node,
             move = Move.xy(1, 0, 3, 0),
             words = w2,
             didUpdate = true,
             cleared = listOf(Point(1, 0), Point(2, 0)),
             diff = listOf()
         )
-        assertThat(board.score.value).isEqualTo(12)
+        assertThat(node.score.value).isEqualTo(12)
         // Resolve last word: words[2]
         val w3 = w2.toMutableList()
         w3[2] = w3[2].resolvedVersion
         testPropose(
-            board,
+            node,
             Move.xy(0, 2, 0, 0),
             w3,
             didUpdate = true,
@@ -91,7 +91,7 @@ class BoardTest {
             diff = listOf(),
             completed = true
         )
-        assertThat(board.score.value).isEqualTo(14 * 2) // total = 10 * (resolved words = 2)
+        assertThat(node.score.value).isEqualTo(14 * 2) // total = 10 * (resolved words = 2)
     }
 
     @Test
@@ -107,7 +107,7 @@ class BoardTest {
                 listOf(ca(4, 3), null, null, null)
             )
         )
-        val board = LinkClearBoard(grid, verse)
+        val board = LinkClearNode(grid, verse)
         board.propose(Move.xy(0, 0, 1, 0))
         assertThat(board.cleared).isEqualTo(
             listOf(
@@ -153,14 +153,14 @@ class BoardTest {
                 listOf(null, null, null, null)
             )
         )
-        val board = LinkClearBoard(grid, verse)
+        val board = LinkClearNode(grid, verse)
         board.propose(Move.xy(1, 1, 2, 1))
         assertThat(board.completed.value).isTrue()
         assertThat(board.score.value).isEqualTo(2)
     }
 
     private fun testPropose(
-        board: LinkClearBoard,
+        board: LinkClearNode,
         move: Move,
         words: List<Word>,
         didUpdate: Boolean = false,

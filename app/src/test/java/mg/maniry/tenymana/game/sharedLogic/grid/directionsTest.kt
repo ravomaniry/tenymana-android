@@ -1,7 +1,7 @@
 package mg.maniry.tenymana.game.sharedLogic.grid
 
 import com.google.common.truth.Truth.assertThat
-import mg.maniry.tenymana.game.linkClear.LinkClearBoard.Companion.gravity
+import mg.maniry.tenymana.game.linkClear.LinkClearNode.Companion.gravity
 import mg.maniry.tenymana.game.models.CharAddress
 import mg.maniry.tenymana.game.models.MutableGrid
 import mg.maniry.tenymana.game.models.Point

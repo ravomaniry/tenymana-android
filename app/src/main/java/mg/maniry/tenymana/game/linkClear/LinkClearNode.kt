@@ -5,12 +5,13 @@ import mg.maniry.tenymana.game.models.*
 import mg.maniry.tenymana.game.sharedLogic.grid.*
 import mg.maniry.tenymana.game.sharedLogic.words.resolveWith
 import mg.maniry.tenymana.game.sharedLogic.words.resolved
+import mg.maniry.tenymana.utils.Random
 import mg.maniry.tenymana.utils.RandomImpl
 
-class LinkClearBoard(
+class LinkClearNode(
     initialGrid: Grid<CharAddress>,
     initialVerse: BibleVerse
-) : Board {
+) : Node {
     private val random = RandomImpl() // maybe inject this?
 
     private val _grid = initialGrid.toCharGrid(initialVerse.words)
@@ -96,5 +97,11 @@ class LinkClearBoard(
         val direction = Point.directions
         val gravity = listOf(Point.DOWN, Point.LEFT)
         const val visibleH = 12
+        const val width = 10
+
+        fun build(verse: BibleVerse, random: Random): LinkClearNode {
+            val grid = buildLinkGrid(verse, random, width, visibleH)
+            return LinkClearNode(grid, verse)
+        }
     }
 }
