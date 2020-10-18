@@ -28,7 +28,7 @@ class LinkClearBoard(
 
     private var usedHelp = false
     private var _completed = false
-    val completed: Boolean get() = _completed
+    override val completed = MutableLiveData(false)
 
     private var _score = 0
     override val score = MutableLiveData(0)
@@ -41,6 +41,7 @@ class LinkClearBoard(
             if (indexes.isNotEmpty()) {
                 updateResult(selection.points)
                 incrementScore(indexes)
+                syncLiveData()
                 return true
             }
         }
@@ -80,7 +81,15 @@ class LinkClearBoard(
         if (_completed && !usedHelp) {
             _score *= 2
         }
-        score.postValue(_score)
+    }
+
+    private fun syncLiveData() {
+        if (score.value != _score) {
+            score.postValue(_score)
+        }
+        if (completed.value != _completed) {
+            completed.postValue(_completed)
+        }
     }
 
     companion object {

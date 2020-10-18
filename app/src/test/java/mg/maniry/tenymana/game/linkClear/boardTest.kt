@@ -155,7 +155,7 @@ class BoardTest {
         )
         val board = LinkClearBoard(grid, verse)
         board.propose(Move.xy(1, 1, 2, 1))
-        assertThat(board.completed).isTrue()
+        assertThat(board.completed.value).isTrue()
         assertThat(board.score.value).isEqualTo(2)
     }
 
@@ -173,7 +173,7 @@ class BoardTest {
         assertThat(board.verse.words).isEqualTo(words)
         assertThat(board.diff).isEqualTo(diff)
         assertThat(board.cleared).isEqualTo(cleared)
-        assertThat(board.completed).isEqualTo(completed)
+        assertThat(board.completed.value).isEqualTo(completed)
     }
 
     private fun ca(wI: Int, cI: Int) = CharAddress(wI, cI)
