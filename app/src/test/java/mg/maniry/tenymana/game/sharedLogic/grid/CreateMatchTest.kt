@@ -4,8 +4,8 @@ import com.google.common.truth.Truth
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
-import mg.maniry.tenymana.game.linkClear.LinkClearNode.Companion.direction
-import mg.maniry.tenymana.game.linkClear.LinkClearNode.Companion.gravity
+import mg.maniry.tenymana.game.puzzles.linkClear.LinkClearPuzzle.Companion.direction
+import mg.maniry.tenymana.game.puzzles.linkClear.LinkClearPuzzle.Companion.gravity
 import mg.maniry.tenymana.game.models.*
 import mg.maniry.tenymana.utils.Random
 import org.junit.Test

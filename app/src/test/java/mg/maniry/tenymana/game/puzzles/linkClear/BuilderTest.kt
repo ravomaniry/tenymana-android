@@ -1,4 +1,4 @@
-package mg.maniry.tenymana.game.linkClear
+package mg.maniry.tenymana.game.puzzles.linkClear
 
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.any

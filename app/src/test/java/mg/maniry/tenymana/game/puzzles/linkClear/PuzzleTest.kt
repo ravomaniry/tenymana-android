@@ -1,4 +1,4 @@
-package mg.maniry.tenymana.game.linkClear
+package mg.maniry.tenymana.game.puzzles.linkClear
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
@@ -6,7 +6,7 @@ import mg.maniry.tenymana.game.models.*
 import org.junit.Rule
 import org.junit.Test
 
-class NodeTest {
+class PuzzleTest {
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
@@ -25,7 +25,7 @@ class NodeTest {
     @Test
     fun wrongReponses() {
         val verse = BibleVerse.fromText("Matio", 1, 1, "Abc de àbc fghi, ij")
-        val board = LinkClearNode(grid, verse)
+        val board = LinkClearPuzzle(grid, verse)
         val lines = listOf(
             Move.xy(0, 0, 2, 1),
             Move.xy(0, 0, 0, 1),
@@ -45,7 +45,7 @@ class NodeTest {
     @Test
     fun basic() {
         val verse = BibleVerse.fromText("Matio", 1, 1, "Abc de àbc fghi, ij")
-        val node = LinkClearNode(grid, verse)
+        val node = LinkClearPuzzle(grid, verse)
         // Resolve rows[0]: words[0] && words[4]
         val w1 = node.verse.words.toMutableList()
         w1[0] = w1[0].resolvedVersion
@@ -107,7 +107,7 @@ class NodeTest {
                 listOf(ca(4, 3), null, null, null)
             )
         )
-        val board = LinkClearNode(grid, verse)
+        val board = LinkClearPuzzle(grid, verse)
         board.propose(Move.xy(0, 0, 1, 0))
         assertThat(board.cleared).isEqualTo(
             listOf(
@@ -153,14 +153,14 @@ class NodeTest {
                 listOf(null, null, null, null)
             )
         )
-        val board = LinkClearNode(grid, verse)
+        val board = LinkClearPuzzle(grid, verse)
         board.propose(Move.xy(1, 1, 2, 1))
         assertThat(board.completed.value).isTrue()
         assertThat(board.score.value).isEqualTo(2)
     }
 
     private fun testPropose(
-        board: LinkClearNode,
+        board: LinkClearPuzzle,
         move: Move,
         words: List<Word>,
         didUpdate: Boolean = false,

@@ -8,7 +8,7 @@ import mg.maniry.tenymana.game.models.Move
 import mg.maniry.tenymana.game.models.Point.Companion.directions
 import org.junit.Test
 
-class MatchTest {
+class FirstVisibleMatchTest {
     @Test
     fun left_right() {
         val words = BibleVerse.fromText("Matio", 1, 1, "Abc de fg ij").words.toMutableList()

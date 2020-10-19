@@ -1,4 +1,4 @@
-package mg.maniry.tenymana.game.linkClear
+package mg.maniry.tenymana.game.puzzles.linkClear
 
 import androidx.lifecycle.MutableLiveData
 import mg.maniry.tenymana.game.models.*
@@ -8,7 +8,7 @@ import mg.maniry.tenymana.game.sharedLogic.words.resolved
 import mg.maniry.tenymana.utils.Random
 import mg.maniry.tenymana.utils.RandomImpl
 
-class LinkClearNode(
+class LinkClearPuzzle(
     initialGrid: Grid<CharAddress>,
     initialVerse: BibleVerse
 ) : Puzzle {
@@ -99,9 +99,9 @@ class LinkClearNode(
         const val visibleH = 12
         const val width = 10
 
-        fun build(verse: BibleVerse, random: Random): LinkClearNode {
+        fun build(verse: BibleVerse, random: Random): LinkClearPuzzle {
             val grid = buildLinkGrid(verse, random, width, visibleH)
-            return LinkClearNode(grid, verse)
+            return LinkClearPuzzle(grid, verse)
         }
     }
 }

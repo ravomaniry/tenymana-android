@@ -1,6 +1,6 @@
-package mg.maniry.tenymana.game.linkClear
+package mg.maniry.tenymana.game.puzzles.linkClear
 
-import mg.maniry.tenymana.game.linkClear.LinkClearNode.Companion.gravity
+import mg.maniry.tenymana.game.puzzles.linkClear.LinkClearPuzzle.Companion.gravity
 import mg.maniry.tenymana.game.models.BibleVerse
 import mg.maniry.tenymana.game.models.CharAddress
 import mg.maniry.tenymana.game.models.Grid
@@ -21,7 +21,7 @@ fun buildLinkGrid(verse: BibleVerse, random: Random, width: Int, visibleH: Int):
         val originsIt = InsideOutIterator.random(origins, random)
         while (originsIt.hasNext && !persisted) {
             val o = originsIt.next()
-            val dirs = grid.calcDirections(LinkClearNode.direction, o, word, visibleH, gravity)
+            val dirs = grid.calcDirections(LinkClearPuzzle.direction, o, word, visibleH, gravity)
             if (dirs.isNotEmpty()) {
                 val dir = random.from(dirs)
                 grid.placeWord(o, dir, word, gravity)
