@@ -1,4 +1,4 @@
-package mg.maniry.tenymana.ui
+package mg.maniry.tenymana.ui.game.colors
 
 import mg.maniry.tenymana.R
 

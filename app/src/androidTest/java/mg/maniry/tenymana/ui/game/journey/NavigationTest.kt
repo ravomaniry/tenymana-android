@@ -5,6 +5,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.helpers.clickView
 import mg.maniry.tenymana.helpers.shouldBeVisible
+import mg.maniry.tenymana.ui.game.puzzle.PuzzleFragment
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -12,7 +13,7 @@ import org.junit.runner.RunWith
 class NavigationTest {
     @Test
     fun linkClear() {
-        launchFragmentInContainer<JourneyFragment>()
+        launchFragmentInContainer<PuzzleFragment>()
         shouldBeVisible(R.id.verseDisplay)
         shouldBeVisible(R.id.bonusOkBtn)
         // Go to puzzle screen

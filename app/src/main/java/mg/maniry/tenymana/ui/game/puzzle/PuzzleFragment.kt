@@ -1,4 +1,4 @@
-package mg.maniry.tenymana.ui.game.journey
+package mg.maniry.tenymana.ui.game.puzzle
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,13 +8,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import mg.maniry.tenymana.R
-import mg.maniry.tenymana.databinding.JourneyScreenBinding
-import mg.maniry.tenymana.ui.game.journey.header.JourneyHeaderFragment
+import mg.maniry.tenymana.databinding.PuzzleScreenBinding
+import mg.maniry.tenymana.ui.game.puzzle.header.PuzzleHeaderFragment
 import mg.maniry.tenymana.utils.mountChild
 
-class JourneyFragment : Fragment() {
-    private lateinit var binding: JourneyScreenBinding
-    private lateinit var viewModel: JourneyViewModel
+class PuzzleFragment : Fragment() {
+    private lateinit var binding: PuzzleScreenBinding
+    private lateinit var viewModel: PuzzleViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,16 +29,16 @@ class JourneyFragment : Fragment() {
     }
 
     private fun initBinding(inflater: LayoutInflater, container: ViewGroup?) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.journey_screen, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.puzzle_screen, container, false)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
     }
 
     private fun initViewModel() {
-        viewModel = ViewModelProvider(requireActivity()).get(JourneyViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(PuzzleViewModel::class.java)
     }
 
     private fun initHeader() {
-        mountChild(JourneyHeaderFragment(), R.id.journeyHeaderPlaceHolder)
+        mountChild(PuzzleHeaderFragment(), R.id.journeyHeaderPlaceHolder)
     }
 }

@@ -1,4 +1,4 @@
-package mg.maniry.tenymana.ui.game.journey.puzzle
+package mg.maniry.tenymana.ui.game.puzzle.linkClear
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,6 +13,6 @@ class LinkClearFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.journey_screen_puzzle_link_clear, container, false)
+        return inflater.inflate(R.layout.puzzle_body_link_clear, container, false)
     }
 }

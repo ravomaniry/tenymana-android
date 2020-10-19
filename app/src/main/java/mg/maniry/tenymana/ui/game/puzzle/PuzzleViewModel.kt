@@ -6,8 +6,8 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import mg.maniry.tenymana.game.models.BibleVerse
 import mg.maniry.tenymana.game.puzzles.Puzzle
-import mg.maniry.tenymana.ui.DefaultColor
-import mg.maniry.tenymana.ui.GameColors
+import mg.maniry.tenymana.ui.game.colors.DefaultColor
+import mg.maniry.tenymana.ui.game.colors.GameColors
 
 enum class Route {
     BONUS,
@@ -15,8 +15,10 @@ enum class Route {
     COMPLETE
 }
 
-class JourneyViewModel : ViewModel() {
-    private val _color = MutableLiveData<GameColors>(DefaultColor)
+class PuzzleViewModel : ViewModel() {
+    private val _color = MutableLiveData<GameColors>(
+        DefaultColor
+    )
     val colors: LiveData<GameColors> = _color
 
     private val _score = MutableLiveData<Int>()

@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="mg.maniry.tenymana.ui.game.puzzle.JourneyViewModel" />
+            type="mg.maniry.tenymana.ui.game.puzzle.PuzzleViewModel" />
     </data>
 
     <LinearLayout
@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:ignore="FragmentTagUsage"
-            tools:layout="@layout/journey_screen_header" />
+            tools:layout="@layout/puzzle_screen_header" />
 
         <FrameLayout
             android:id="@+id/puzzlePlaceHolder"

@@ -1,4 +1,4 @@
-package mg.maniry.tenymana.ui.game.journey.bonus
+package mg.maniry.tenymana.ui.game.puzzle.bonus
 
 import android.os.Bundle
 import android.view.LayoutInflater
