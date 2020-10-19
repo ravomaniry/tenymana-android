@@ -1,4 +1,4 @@
-package mg.maniry.tenymana.ui.game.journey
+package mg.maniry.tenymana.ui.game.puzzle
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
