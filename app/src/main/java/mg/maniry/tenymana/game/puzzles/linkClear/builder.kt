@@ -3,8 +3,8 @@ package mg.maniry.tenymana.game.puzzles.linkClear
 import mg.maniry.tenymana.game.puzzles.linkClear.LinkClearPuzzle.Companion.gravity
 import mg.maniry.tenymana.game.models.BibleVerse
 import mg.maniry.tenymana.game.models.CharAddress
-import mg.maniry.tenymana.game.models.Grid
-import mg.maniry.tenymana.game.models.MutableGrid
+import mg.maniry.tenymana.game.puzzles.Grid
+import mg.maniry.tenymana.game.puzzles.MutableGrid
 import mg.maniry.tenymana.game.sharedLogic.grid.calcDirections
 import mg.maniry.tenymana.game.sharedLogic.grid.calcOrigins
 import mg.maniry.tenymana.game.sharedLogic.grid.placeWord

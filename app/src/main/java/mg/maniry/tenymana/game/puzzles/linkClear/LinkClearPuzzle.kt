@@ -2,6 +2,8 @@ package mg.maniry.tenymana.game.puzzles.linkClear
 
 import androidx.lifecycle.MutableLiveData
 import mg.maniry.tenymana.game.models.*
+import mg.maniry.tenymana.game.puzzles.Grid
+import mg.maniry.tenymana.game.puzzles.Puzzle
 import mg.maniry.tenymana.game.sharedLogic.grid.*
 import mg.maniry.tenymana.game.sharedLogic.words.resolveWith
 import mg.maniry.tenymana.game.sharedLogic.words.resolved

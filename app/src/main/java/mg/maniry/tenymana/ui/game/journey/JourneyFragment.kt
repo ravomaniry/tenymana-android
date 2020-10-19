@@ -39,6 +39,6 @@ class JourneyFragment : Fragment() {
     }
 
     private fun initHeader() {
-        mountChild(JourneyHeaderFragment(), R.id.gameHeaderFragment)
+        mountChild(JourneyHeaderFragment(), R.id.journeyHeaderPlaceHolder)
     }
 }

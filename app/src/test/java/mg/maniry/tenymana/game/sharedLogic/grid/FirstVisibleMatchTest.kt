@@ -3,7 +3,7 @@ package mg.maniry.tenymana.game.sharedLogic.grid
 import com.google.common.truth.Truth.assertThat
 import mg.maniry.tenymana.game.models.BibleVerse
 import mg.maniry.tenymana.game.models.Character
-import mg.maniry.tenymana.game.models.Grid
+import mg.maniry.tenymana.game.puzzles.Grid
 import mg.maniry.tenymana.game.models.Move
 import mg.maniry.tenymana.game.models.Point.Companion.directions
 import org.junit.Test

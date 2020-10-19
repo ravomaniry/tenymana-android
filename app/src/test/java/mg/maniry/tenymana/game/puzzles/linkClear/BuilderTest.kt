@@ -9,6 +9,7 @@ import mg.maniry.tenymana.game.models.Point.Companion.LEFT
 import mg.maniry.tenymana.game.models.Point.Companion.RIGHT
 import mg.maniry.tenymana.game.models.Point.Companion.UP
 import mg.maniry.tenymana.game.models.Point.Companion.UP_LEFT
+import mg.maniry.tenymana.game.puzzles.Grid
 import mg.maniry.tenymana.utils.Random
 import mg.maniry.tenymana.utils.verifyOnce
 import org.junit.Test

@@ -1,6 +1,6 @@
 package mg.maniry.tenymana.game.sharedLogic.grid
 
-import mg.maniry.tenymana.game.models.Grid
+import mg.maniry.tenymana.game.puzzles.Grid
 import mg.maniry.tenymana.game.models.Point
 
 fun Grid<*>.calcOrigins(visibleH: Int): MutableList<Point> {

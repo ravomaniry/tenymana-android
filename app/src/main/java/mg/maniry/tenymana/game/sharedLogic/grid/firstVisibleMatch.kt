@@ -1,6 +1,7 @@
 package mg.maniry.tenymana.game.sharedLogic.grid
 
 import mg.maniry.tenymana.game.models.*
+import mg.maniry.tenymana.game.puzzles.Grid
 import kotlin.math.max
 
 fun Grid<Character>.firstVisibleMatch(

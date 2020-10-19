@@ -2,7 +2,7 @@ package mg.maniry.tenymana.game.sharedLogic.grid
 
 import com.google.common.truth.Truth.assertThat
 import mg.maniry.tenymana.game.models.CharAddress
-import mg.maniry.tenymana.game.models.MutableGrid
+import mg.maniry.tenymana.game.puzzles.MutableGrid
 import mg.maniry.tenymana.game.models.Point
 import org.junit.Test
 
@@ -46,7 +46,8 @@ class OriginsTest {
         visibleH: Int,
         result: List<Point>
     ) {
-        val grid = MutableGrid<CharAddress>(width)
+        val grid =
+            MutableGrid<CharAddress>(width)
         for (p in filled) {
             grid.set(p.x, p.y, CharAddress(p.x, p.y))
         }

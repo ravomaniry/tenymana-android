@@ -3,7 +3,7 @@ package mg.maniry.tenymana.game.sharedLogic.grid
 import com.google.common.truth.Truth.assertThat
 import mg.maniry.tenymana.game.puzzles.linkClear.LinkClearPuzzle.Companion.gravity
 import mg.maniry.tenymana.game.models.CharAddress
-import mg.maniry.tenymana.game.models.MutableGrid
+import mg.maniry.tenymana.game.puzzles.MutableGrid
 import mg.maniry.tenymana.game.models.Point
 import mg.maniry.tenymana.game.models.Point.Companion.DOWN
 import mg.maniry.tenymana.game.models.Point.Companion.DOWN_RIGHT
@@ -251,6 +251,11 @@ class PlaceWordTest {
         }
         val word = Word.fromValue(delta.second.second, 0, false)
         grid.placeWord(delta.first, delta.second.first, word, gravity)
-        assertThat(grid).isEqualTo(MutableGrid(w, result))
+        assertThat(grid).isEqualTo(
+            MutableGrid(
+                w,
+                result
+            )
+        )
     }
 }

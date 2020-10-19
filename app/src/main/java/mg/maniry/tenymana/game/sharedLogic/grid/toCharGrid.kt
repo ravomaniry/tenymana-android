@@ -1,6 +1,8 @@
 package mg.maniry.tenymana.game.sharedLogic.grid
 
 import mg.maniry.tenymana.game.models.*
+import mg.maniry.tenymana.game.puzzles.Grid
+import mg.maniry.tenymana.game.puzzles.MutableGrid
 
 fun Grid<CharAddress>.toCharGrid(words: List<Word>): MutableGrid<Character> {
     val grid = MutableGrid<Character>(w)

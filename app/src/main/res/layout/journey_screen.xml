@@ -12,33 +12,20 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:theme="@style/AppTheme">
 
         <FrameLayout
-            android:id="@+id/gameHeaderFragment"
+            android:id="@+id/journeyHeaderPlaceHolder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:ignore="FragmentTagUsage"
             tools:layout="@layout/journey_screen_header" />
-        <!--        <TextView-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="4dp"-->
-        <!--            android:background="@drawable/bg_gradient_gray_up" />-->
 
-        <!--        <ScrollView-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="match_parent">-->
+        <FrameLayout
+            android:id="@+id/puzzlePlaceHolder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-        <!--            <LinearLayout-->
-        <!--                android:layout_width="match_parent"-->
-        <!--                android:layout_height="wrap_content">-->
-
-        <!--                &lt;!&ndash;                <fragment&ndash;&gt;-->
-        <!--                &lt;!&ndash;                    android:id="@+id/gameBody"&ndash;&gt;-->
-        <!--                &lt;!&ndash;                    android:layout_width="match_parent"&ndash;&gt;-->
-        <!--                &lt;!&ndash;                    android:layout_height="wrap_content"&ndash;&gt;-->
-        <!--                &lt;!&ndash;                    tools:ignore="FragmentTagUsage" />&ndash;&gt;-->
-        <!--            </LinearLayout>-->
-        <!--        </ScrollView>-->
     </LinearLayout>
 </layout>

@@ -1,7 +1,7 @@
 package mg.maniry.tenymana.game.sharedLogic.grid
 
 import mg.maniry.tenymana.game.models.CharAddress
-import mg.maniry.tenymana.game.models.Grid
+import mg.maniry.tenymana.game.puzzles.Grid
 import mg.maniry.tenymana.game.models.Word
 
 fun Grid<CharAddress>.calcHiddenWords(words: List<Word>): Set<Int> {

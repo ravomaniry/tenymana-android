@@ -3,6 +3,8 @@ package mg.maniry.tenymana.game.puzzles.linkClear
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import mg.maniry.tenymana.game.models.*
+import mg.maniry.tenymana.game.puzzles.Grid
+import mg.maniry.tenymana.game.puzzles.MutableGrid
 import org.junit.Rule
 import org.junit.Test
 

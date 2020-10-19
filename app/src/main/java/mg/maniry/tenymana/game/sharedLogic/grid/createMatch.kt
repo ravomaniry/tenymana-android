@@ -1,6 +1,8 @@
 package mg.maniry.tenymana.game.sharedLogic.grid
 
 import mg.maniry.tenymana.game.models.*
+import mg.maniry.tenymana.game.puzzles.Grid
+import mg.maniry.tenymana.game.puzzles.MutableGrid
 import mg.maniry.tenymana.utils.InsideOutIterator
 import mg.maniry.tenymana.utils.Random
 import mg.maniry.tenymana.utils.findIndex

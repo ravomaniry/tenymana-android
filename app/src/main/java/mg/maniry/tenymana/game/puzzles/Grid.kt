@@ -1,7 +1,8 @@
-package mg.maniry.tenymana.game.models
+package mg.maniry.tenymana.game.puzzles
+
+import mg.maniry.tenymana.game.models.Point
 
 private typealias ForEachCb<T> = (x: Int, y: Int, p: T?) -> Unit
-private typealias MapCb<A, B> = (x: Int, y: Int, p: A?) -> B?
 
 open class Grid<T>(
     private val cells: List<List<T?>>

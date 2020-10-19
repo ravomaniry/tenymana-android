@@ -7,6 +7,7 @@ import com.nhaarman.mockitokotlin2.mock
 import mg.maniry.tenymana.game.puzzles.linkClear.LinkClearPuzzle.Companion.direction
 import mg.maniry.tenymana.game.puzzles.linkClear.LinkClearPuzzle.Companion.gravity
 import mg.maniry.tenymana.game.models.*
+import mg.maniry.tenymana.game.puzzles.Grid
 import mg.maniry.tenymana.utils.Random
 import org.junit.Test
 
@@ -73,7 +74,11 @@ class CreateMatchTest {
         val grid = Grid(cells).toMutable()
         val mWords = words.toMutableList()
         val res = grid.createMatch(mWords, diff, visbleH, direction, gravity, random)
-        Truth.assertThat(grid.toGrid()).isEqualTo(Grid(cellsRes))
+        Truth.assertThat(grid.toGrid()).isEqualTo(
+            Grid(
+                cellsRes
+            )
+        )
         Truth.assertThat(res).isEqualTo(CreateMatchResult(revealedWord, clearedCells, diffRes))
     }
 

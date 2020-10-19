@@ -72,4 +72,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'com.google.truth:truth:1.0.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    debugImplementation("androidx.fragment:fragment-testing:1.2.5") {
+        exclude group: 'androidx.test', module: 'monitor'
+    }
 }

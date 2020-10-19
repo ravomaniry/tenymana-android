@@ -2,7 +2,7 @@ package mg.maniry.tenymana.game.sharedLogic.grid
 
 import com.google.common.truth.Truth.assertThat
 import mg.maniry.tenymana.game.models.Move
-import mg.maniry.tenymana.game.models.MutableGrid
+import mg.maniry.tenymana.game.puzzles.MutableGrid
 import mg.maniry.tenymana.game.models.Point
 import mg.maniry.tenymana.game.models.Point.Companion.DOWN
 import mg.maniry.tenymana.game.models.Point.Companion.LEFT
@@ -65,7 +65,12 @@ class GravityTest {
             grid.set(v.first.x, v.first.y, v.second)
         }
         val result = grid.applyGravity(gravity)
-        assertThat(grid).isEqualTo(MutableGrid(4, cells))
+        assertThat(grid).isEqualTo(
+            MutableGrid(
+                4,
+                cells
+            )
+        )
         assertThat(result).isEqualTo(diff)
     }
 }

@@ -1,7 +1,7 @@
 package mg.maniry.tenymana.game.sharedLogic.grid
 
 import mg.maniry.tenymana.game.models.Move
-import mg.maniry.tenymana.game.models.MutableGrid
+import mg.maniry.tenymana.game.puzzles.MutableGrid
 import mg.maniry.tenymana.game.models.Point
 
 fun <T> MutableGrid<T>.applyGravity(gravity: List<Point>): List<Move> {
