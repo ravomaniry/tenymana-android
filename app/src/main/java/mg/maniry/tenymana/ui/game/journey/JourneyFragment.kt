@@ -1,4 +1,4 @@
-package mg.maniry.tenymana.ui.game.journey.node
+package mg.maniry.tenymana.ui.game.journey
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,12 +8,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import mg.maniry.tenymana.R
-import mg.maniry.tenymana.databinding.NodeScreenBinding
+import mg.maniry.tenymana.databinding.JourneyScreenBinding
+import mg.maniry.tenymana.ui.game.journey.header.JourneyHeaderFragment
 import mg.maniry.tenymana.utils.mountChild
 
-class NodeFragment : Fragment() {
-    private lateinit var binding: NodeScreenBinding
-    private lateinit var viewModel: NodeViewModel
+class JourneyFragment : Fragment() {
+    private lateinit var binding: JourneyScreenBinding
+    private lateinit var viewModel: JourneyViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,16 +29,16 @@ class NodeFragment : Fragment() {
     }
 
     private fun initBinding(inflater: LayoutInflater, container: ViewGroup?) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.node_screen, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.journey_screen, container, false)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
     }
 
     private fun initViewModel() {
-        viewModel = ViewModelProvider(requireActivity()).get(NodeViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(JourneyViewModel::class.java)
     }
 
     private fun initHeader() {
-        mountChild(NodeHeaderFragment(), R.id.gameHeaderFragment)
+        mountChild(JourneyHeaderFragment(), R.id.gameHeaderFragment)
     }
 }

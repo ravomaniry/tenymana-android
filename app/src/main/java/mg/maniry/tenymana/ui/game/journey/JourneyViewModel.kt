@@ -1,4 +1,4 @@
-package mg.maniry.tenymana.ui.game.journey.node
+package mg.maniry.tenymana.ui.game.journey
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,7 +8,7 @@ import mg.maniry.tenymana.game.models.BibleVerse
 import mg.maniry.tenymana.ui.DefaultColor
 import mg.maniry.tenymana.ui.GameColors
 
-class NodeViewModel : ViewModel() {
+class JourneyViewModel : ViewModel() {
     private val _color = MutableLiveData<GameColors>(DefaultColor)
     val colors: LiveData<GameColors> = _color
 

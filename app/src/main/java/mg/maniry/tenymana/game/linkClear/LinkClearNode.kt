@@ -11,7 +11,7 @@ import mg.maniry.tenymana.utils.RandomImpl
 class LinkClearNode(
     initialGrid: Grid<CharAddress>,
     initialVerse: BibleVerse
-) : Node {
+) : Puzzle {
     private val random = RandomImpl() // maybe inject this?
 
     private val _grid = initialGrid.toCharGrid(initialVerse.words)
