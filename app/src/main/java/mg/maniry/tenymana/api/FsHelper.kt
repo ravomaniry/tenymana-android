@@ -8,6 +8,7 @@ import kotlinx.coroutines.withContext
 interface FsHelper {
     suspend fun <T> readJson(path: String, type: Class<T>): T?
     suspend fun <T> writeJson(path: String, data: T, type: Class<T>)
+    suspend fun list(path: String): List<String>
 }
 
 class FsHelperImpl(
@@ -17,10 +18,10 @@ class FsHelperImpl(
         .add(KotlinJsonAdapterFactory())
         .build()
 
-    private suspend fun <T> readAndTransform(path: String, transform: (String) -> T): T {
+    private suspend fun <T> readAndTransform(path: String, transform: (String) -> T): T? {
         return withContext(Dispatchers.IO) {
             val content = fileApi.readText(path)
-            return@withContext transform(content)
+            return@withContext content?.let { transform(content) }
         }
     }
 
@@ -38,5 +39,11 @@ class FsHelperImpl(
     override suspend fun <T> writeJson(path: String, data: T, type: Class<T>) {
         val adapter = json.adapter(type)
         writeText(path, adapter.toJson(data))
+    }
+
+    override suspend fun list(path: String): List<String> {
+        return withContext(Dispatchers.IO) {
+            fileApi.readDir(path)
+        }
     }
 }

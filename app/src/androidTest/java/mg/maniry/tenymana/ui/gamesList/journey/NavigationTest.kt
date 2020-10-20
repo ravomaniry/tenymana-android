@@ -1,11 +1,11 @@
-package mg.maniry.tenymana.ui.game.journey
+package mg.maniry.tenymana.ui.gamesList.journey
 
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.helpers.clickView
 import mg.maniry.tenymana.helpers.shouldBeVisible
-import mg.maniry.tenymana.ui.game.puzzle.PuzzleFragment
+import mg.maniry.tenymana.ui.puzzle.PuzzleFragment
 import org.junit.Test
 import org.junit.runner.RunWith
 

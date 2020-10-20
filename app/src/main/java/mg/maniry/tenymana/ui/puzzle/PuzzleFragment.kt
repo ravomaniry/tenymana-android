@@ -1,4 +1,4 @@
-package mg.maniry.tenymana.ui.game.puzzle
+package mg.maniry.tenymana.ui.puzzle
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.PuzzleScreenBinding
-import mg.maniry.tenymana.ui.game.puzzle.header.PuzzleHeaderFragment
+import mg.maniry.tenymana.ui.puzzle.header.PuzzleHeaderFragment
 import mg.maniry.tenymana.utils.mountChild
 
 class PuzzleFragment : Fragment() {

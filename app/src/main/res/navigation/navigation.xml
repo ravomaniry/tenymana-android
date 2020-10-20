@@ -3,11 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/gameFragment">
+    app:startDestination="@id/gamesListFragment">
 
     <fragment
-        android:id="@+id/gameFragment"
-        android:name="mg.maniry.tenymana.ui.game.puzzle.PuzzleFragment"
-        android:label="game_screen"
-        tools:layout="@layout/puzzle_screen" />
+        android:id="@+id/gamesListFragment"
+        android:name="mg.maniry.tenymana.ui.gamesList.GamesListFragment"
+        android:label="GamesListFragment"
+        tools:layout="@layout/games_list_screen">
+        <action
+            android:id="@+id/listToPuzzle"
+            app:destination="@id/puzzleFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/puzzleFragment"
+        android:name="mg.maniry.tenymana.ui.puzzle.PuzzleFragment"
+        android:label="puzzle_screen"
+        tools:layout="@layout/puzzle_screen" >
+        <action
+            android:id="@+id/puzzleToList"
+            app:destination="@id/gamesListFragment" />
+    </fragment>
+
 </navigation>
