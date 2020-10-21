@@ -14,11 +14,6 @@ data class Progress(
     val bonuses: List<Bonus>
 ) {
     companion object {
-        fun empty(id: String) = Progress(
-            id,
-            0,
-            emptyList(),
-            emptyList()
-        )
+        fun empty(id: String) = Progress(id, 0, emptyList(), emptyList())
     }
 }

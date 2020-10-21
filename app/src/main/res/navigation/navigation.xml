@@ -3,7 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/gamesListFragment">
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="mg.maniry.tenymana.ui.home.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/home_screen">
+        <action
+            android:id="@+id/homeToGames"
+            app:destination="@id/gamesListFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_fade_exit"
+            app:popExitAnim="@anim/fragment_fade_enter" />
+    </fragment>
 
     <fragment
         android:id="@+id/gamesListFragment"
@@ -12,17 +26,25 @@
         tools:layout="@layout/games_list_screen">
         <action
             android:id="@+id/listToPuzzle"
-            app:destination="@id/puzzleFragment" />
+            app:destination="@id/puzzleFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_fade_exit"
+            app:popExitAnim="@anim/fragment_fade_enter" />
     </fragment>
 
     <fragment
         android:id="@+id/puzzleFragment"
         android:name="mg.maniry.tenymana.ui.puzzle.PuzzleFragment"
         android:label="puzzle_screen"
-        tools:layout="@layout/puzzle_screen" >
+        tools:layout="@layout/puzzle_screen">
         <action
             android:id="@+id/puzzleToList"
-            app:destination="@id/gamesListFragment" />
+            app:destination="@id/gamesListFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_fade_exit"
+            app:popExitAnim="@anim/fragment_fade_enter" />
     </fragment>
 
 </navigation>

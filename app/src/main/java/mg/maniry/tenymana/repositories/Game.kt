@@ -8,6 +8,7 @@ import mg.maniry.tenymana.repositories.models.Session
 
 interface GameRepo {
     val sessions: LiveData<List<Session>>
+    suspend fun initialize(userID: String)
 }
 
 class GameRepoImpl(
@@ -16,7 +17,7 @@ class GameRepoImpl(
     override val sessions = MutableLiveData<List<Session>>()
     private lateinit var dao: GameDao
 
-    suspend fun initialize(userID: String) {
+    override suspend fun initialize(userID: String) {
         dao = GameDao(userID, fs)
         sessions.postValue(dao.getSessions())
     }
