@@ -10,13 +10,13 @@ import mg.maniry.tenymana.game.models.Session
 private const val JOURNEY_DIR = "journey"
 private const val PROGRESS_DIR = "progress"
 
-interface GameRepository {
+interface GameRepo {
     val sessions: LiveData<List<Session>>
 }
 
-class GameRepositoryImpl(
+class GameRepoImpl(
     private val fs: FsHelper
-) : GameRepository {
+) : GameRepo {
     override val sessions = MutableLiveData<List<Session>>()
 
     suspend fun initialize() {

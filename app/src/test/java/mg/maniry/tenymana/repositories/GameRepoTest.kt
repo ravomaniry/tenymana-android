@@ -12,7 +12,7 @@ import mg.maniry.tenymana.game.models.Session
 import org.junit.Rule
 import org.junit.Test
 
-class GameRepositoryTest {
+class GameRepoTest {
     @get:Rule
     val liveDatarule = InstantTaskExecutorRule()
 
@@ -25,7 +25,7 @@ class GameRepositoryTest {
             onBlocking { readJson("progress/1.json", Progress::class.java) } doReturn p()
             onBlocking { readJson("progress/2.json", Progress::class.java) } doReturn null
         }
-        val repo = GameRepositoryImpl(fs)
+        val repo = GameRepoImpl(fs)
         runBlocking { repo.initialize() }
         assertThat(repo.sessions.value).isEqualTo(
             listOf(
