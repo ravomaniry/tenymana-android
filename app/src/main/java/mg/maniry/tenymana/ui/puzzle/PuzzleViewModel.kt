@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import mg.maniry.tenymana.game.models.BibleVerse
-import mg.maniry.tenymana.game.puzzles.Puzzle
+import mg.maniry.tenymana.gameLogic.models.BibleVerse
+import mg.maniry.tenymana.gameLogic.models.Puzzle
 import mg.maniry.tenymana.ui.colors.DefaultColor
 import mg.maniry.tenymana.ui.colors.GameColors
 
