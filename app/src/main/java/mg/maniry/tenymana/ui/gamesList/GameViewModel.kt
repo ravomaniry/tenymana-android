@@ -33,19 +33,20 @@ class GameViewModel(
     val onSessionClick = { item: Session ->
         shouldNavigate = true
         _session.postValue(item)
-        appViewModel.screen.value = Screen.PUZZLE
+        appViewModel.screen.postValue(Screen.PATHS_LIST)
+    }
+
+    fun onResumeSession() {
+        shouldNavigate = true
+        appViewModel.screen.postValue(Screen.PUZZLE)
+    }
+
+    init {
+        userRepo.user.observeForever(userObserver)
     }
 
     override fun onCleared() {
         super.onCleared()
         userRepo.user.removeObserver(userObserver)
-    }
-
-    fun onDoneNavigating() {
-        shouldNavigate = false
-    }
-
-    init {
-        userRepo.user.observeForever(userObserver)
     }
 }

@@ -41,7 +41,7 @@ class LinkClearTest : KoinTest {
         gameRepo.sessionsM.postValue(
             listOf(
                 Session(
-                    Journey.empty("11").copy(title = "Journey 1"),
+                    Journey.empty("11").copy(title = "Journey 1", description = "Long text .."),
                     Progress.empty("11")
                 )
             )
@@ -50,8 +50,11 @@ class LinkClearTest : KoinTest {
         // Go to game screen
         clickView(R.id.goToGameBtn)
         shouldBeVisible(R.id.gamesList)
-        // go to puzzle screen
+        // go to paths screen
         clickView(R.id.gameListItem)
+        shouldBeVisible(R.id.pathsGrid)
+        // Go to puzzle screen
+        clickView(R.id.pathsNextBtn)
         shouldBeVisible(R.id.puzzleScreen)
     }
 }

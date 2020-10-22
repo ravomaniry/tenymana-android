@@ -16,9 +16,7 @@ enum class Route {
 }
 
 class PuzzleViewModel : ViewModel() {
-    private val _color = MutableLiveData<GameColors>(
-        DefaultColor
-    )
+    private val _color = MutableLiveData<GameColors>(DefaultColor)
     val colors: LiveData<GameColors> = _color
 
     private val _score = MutableLiveData<Int>()
@@ -32,6 +30,4 @@ class PuzzleViewModel : ViewModel() {
 
     private val _route = MutableLiveData<Route?>()
     val route: LiveData<Route?> = _route
-
-
 }

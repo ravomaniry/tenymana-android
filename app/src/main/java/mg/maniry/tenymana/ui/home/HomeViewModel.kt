@@ -13,6 +13,6 @@ class HomeViewModel(
 
     fun goToGameScreen() {
         shouldNavigate = true
-        appViewModel.screen.postValue(Screen.GAMES)
+        appViewModel.screen.postValue(Screen.GAMES_LIST)
     }
 }

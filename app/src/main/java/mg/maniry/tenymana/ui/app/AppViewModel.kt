@@ -5,7 +5,8 @@ import androidx.lifecycle.ViewModel
 
 enum class Screen {
     HOME,
-    GAMES,
+    GAMES_LIST,
+    PATHS_LIST,
     PUZZLE
 }
 

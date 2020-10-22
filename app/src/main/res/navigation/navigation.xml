@@ -25,12 +25,8 @@
         android:label="GamesListFragment"
         tools:layout="@layout/games_list_screen">
         <action
-            android:id="@+id/listToPuzzle"
-            app:destination="@id/puzzleFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_fade_exit"
-            app:popExitAnim="@anim/fragment_fade_enter" />
+            android:id="@+id/gamesListToPaths"
+            app:destination="@id/pathsFragment" />
     </fragment>
 
     <fragment
@@ -44,7 +40,23 @@
             app:enterAnim="@anim/fragment_fade_enter"
             app:exitAnim="@anim/fragment_fade_exit"
             app:popEnterAnim="@anim/fragment_fade_exit"
-            app:popExitAnim="@anim/fragment_fade_enter" />
+            app:popExitAnim="@anim/fragment_fade_enter"
+            app:popUpTo="@id/gamesListFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/pathsFragment"
+        android:name="mg.maniry.tenymana.ui.paths.PathsFragment"
+        android:label="PathsFragment"
+        tools:layout="@layout/paths_screen">
+        <action
+            android:id="@+id/pathsListToPuzzle"
+            app:destination="@id/puzzleFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@anim/fragment_fade_exit"
+            app:popExitAnim="@anim/fragment_fade_enter"
+            app:popUpTo="@id/gamesListFragment" />
     </fragment>
 
 </navigation>
