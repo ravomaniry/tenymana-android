@@ -5,8 +5,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
-import mg.maniry.tenymana.gameLogic.models.BibleVerse
 import mg.maniry.tenymana.gameLogic.models.Puzzle
+import mg.maniry.tenymana.gameLogic.shared.session.resume
+import mg.maniry.tenymana.repositories.BibleRepo
 import mg.maniry.tenymana.repositories.GameRepo
 import mg.maniry.tenymana.repositories.UserRepo
 import mg.maniry.tenymana.repositories.models.Session
@@ -19,12 +20,12 @@ class GameViewModel(
     private val appViewModel: AppViewModel,
     private val userRepo: UserRepo,
     private val gameRepo: GameRepo,
+    private val bibleRepo: BibleRepo,
     private val random: Random
 ) : ViewModel() {
     val sessions = gameRepo.sessions
     var shouldNavigate = false
     val screen: LiveData<Screen> = appViewModel.screen
-    private var verse: BibleVerse? = null
 
     private val _session = MutableLiveData<Session?>(null)
     val session: LiveData<Session?> = _session
@@ -46,12 +47,18 @@ class GameViewModel(
         appViewModel.screen.postValue(Screen.PATHS_LIST)
     }
 
-    private fun initBoard() {
+    // Hardcoded to resume for now
+    private fun initPuzzle() {
         _puzzle.postValue(null)
-        if (verse != null) {
-            viewModelScope.launch {
+        val active = _session.value!!
+        val next = active.resume()
+        viewModelScope.launch {
+            val path = active.journey.paths[next.pathIndex]
+            val verseNum = path.start + next.verseIndex
+            val verse = bibleRepo.getSingle(path.book, path.chapter, verseNum)
+            if (verse != null) {
                 withContext(Dispatchers.Default) {
-                    _puzzle.postValue(LinkClearPuzzle.build(verse!!, random))
+                    _puzzle.postValue(LinkClearPuzzle.build(verse, random))
                 }
             }
         }
@@ -60,7 +67,7 @@ class GameViewModel(
     fun onResumeSession() {
         shouldNavigate = true
         appViewModel.screen.postValue(Screen.PUZZLE)
-        initBoard()
+        initPuzzle()
     }
 
     init {

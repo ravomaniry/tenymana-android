@@ -2,8 +2,6 @@ package mg.maniry.tenymana.gameLogic.linkClear
 
 import androidx.lifecycle.MutableLiveData
 import mg.maniry.tenymana.gameLogic.models.*
-import mg.maniry.tenymana.gameLogic.models.Grid
-import mg.maniry.tenymana.gameLogic.models.Puzzle
 import mg.maniry.tenymana.gameLogic.shared.grid.*
 import mg.maniry.tenymana.gameLogic.shared.words.resolveWith
 import mg.maniry.tenymana.gameLogic.shared.words.resolved
@@ -21,7 +19,7 @@ class LinkClearPuzzle(
     val grid: Grid<Character> get() = _grid
 
     private val words = initialVerse.words.toMutableList()
-    val verse = initialVerse.copy(words = words)
+    override val verse = initialVerse.copy(words = words)
 
     private var _diff: List<Move>? = null
     val diff: List<Move>? get() = _diff

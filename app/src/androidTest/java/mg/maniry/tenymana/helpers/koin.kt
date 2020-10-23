@@ -1,5 +1,6 @@
 package mg.maniry.tenymana.helpers
 
+import mg.maniry.tenymana.repositories.BibleRepo
 import mg.maniry.tenymana.repositories.GameRepo
 import mg.maniry.tenymana.repositories.UserRepo
 import mg.maniry.tenymana.ui.app.SharedViewModels
@@ -24,6 +25,7 @@ fun createTestModule(): Module {
         single<GameRepo> { GameRepoMock() }
         single { SharedViewModels() }
         single<Random> { RandomMock() }
+        single<BibleRepo> { BibleRepoMock() }
     }
 }
 

@@ -3,6 +3,7 @@ package mg.maniry.tenymana
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import mg.maniry.tenymana.repositories.BibleRepo
 import mg.maniry.tenymana.repositories.GameRepo
 import mg.maniry.tenymana.repositories.UserRepo
 import mg.maniry.tenymana.ui.app.AppViewModel
@@ -24,8 +25,9 @@ class MainActivity : AppCompatActivity() {
         val userRepo: UserRepo by inject()
         val gameRepo: GameRepo by inject()
         val random: Random by inject()
+        val bibleRepo: BibleRepo by inject()
         viewModels.app = ViewModelProvider(this).get(AppViewModel::class.java)
-        val fct = GameViewModelFactory(viewModels.app, userRepo, gameRepo, random)
+        val fct = GameViewModelFactory(viewModels.app, userRepo, gameRepo, bibleRepo, random)
         viewModels.game = ViewModelProvider(this, fct).get(GameViewModel::class.java)
     }
 }
