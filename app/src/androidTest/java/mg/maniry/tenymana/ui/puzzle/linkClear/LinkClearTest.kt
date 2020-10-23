@@ -7,10 +7,8 @@ import mg.maniry.tenymana.R
 import mg.maniry.tenymana.helpers.*
 import mg.maniry.tenymana.repositories.GameRepo
 import mg.maniry.tenymana.repositories.UserRepo
-import mg.maniry.tenymana.repositories.models.Journey
-import mg.maniry.tenymana.repositories.models.Progress
-import mg.maniry.tenymana.repositories.models.Session
-import mg.maniry.tenymana.repositories.models.User
+import mg.maniry.tenymana.repositories.models.*
+import mg.maniry.tenymana.utils.Random
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -35,13 +33,25 @@ class LinkClearTest : KoinTest {
     fun navigation() {
         val inUserRepo: UserRepo by inject()
         val inGameRepo: GameRepo by inject()
+        val inRandom: Random by inject()
         val userRepo = inUserRepo as UserRepoMock
         val gameRepo = inGameRepo as GameRepoMock
+        // random always pick first
         userRepo.userM.postValue(User("1", ""))
+        val random = inRandom as RandomMock
+        random.intFn.mockImplementation { it[0] as Int }
+        @Suppress("unchecked_cast")
+        random.fromFn.mockImplementation { (it[0] as List<Any>)[0] }
         gameRepo.sessionsM.postValue(
             listOf(
                 Session(
-                    Journey.empty("11").copy(title = "Journey 1", description = "Long text .."),
+                    Journey.empty("11").copy(
+                        title = "Journey 1",
+                        description = "Long text ..",
+                        paths = listOf(
+                            Path("Path0", "...", "Matio", 1, 1, 20)
+                        )
+                    ),
                     Progress.empty("11")
                 ),
                 Session(
@@ -60,5 +70,6 @@ class LinkClearTest : KoinTest {
         // Go to puzzle screen
         clickView(R.id.pathsNextBtn)
         shouldBeVisible(R.id.puzzleScreen)
+        //
     }
 }

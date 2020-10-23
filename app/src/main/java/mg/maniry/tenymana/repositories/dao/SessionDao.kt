@@ -10,7 +10,7 @@ private class Directories(userID: String) {
     val progress = "$userID/progress"
 }
 
-class GameDao(
+class SessionDao(
     userID: String,
     private val fs: FsHelper
 ) {

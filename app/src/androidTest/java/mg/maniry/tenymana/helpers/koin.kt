@@ -2,6 +2,8 @@ package mg.maniry.tenymana.helpers
 
 import mg.maniry.tenymana.repositories.GameRepo
 import mg.maniry.tenymana.repositories.UserRepo
+import mg.maniry.tenymana.ui.app.SharedViewModels
+import mg.maniry.tenymana.utils.Random
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.core.module.Module
@@ -20,6 +22,8 @@ fun createTestModule(): Module {
     return module {
         single<UserRepo> { UserRepoMock() }
         single<GameRepo> { GameRepoMock() }
+        single { SharedViewModels() }
+        single<Random> { RandomMock() }
     }
 }
 

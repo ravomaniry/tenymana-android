@@ -19,8 +19,7 @@ data class Journey(
 }
 
 data class Path(
-    val id: String,
-    val title: String,
+    val name: String,
     val description: String,
     val book: String,
     val chapter: Int,

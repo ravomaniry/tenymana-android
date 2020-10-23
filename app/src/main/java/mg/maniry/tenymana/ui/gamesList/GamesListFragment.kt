@@ -7,19 +7,15 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.GamesListScreenBinding
-import mg.maniry.tenymana.repositories.GameRepo
-import mg.maniry.tenymana.repositories.UserRepo
-import mg.maniry.tenymana.ui.app.AppViewModel
 import mg.maniry.tenymana.ui.app.Screen
+import mg.maniry.tenymana.ui.app.SharedViewModels
 import mg.maniry.tenymana.ui.utils.observeGamesNav
 import org.koin.android.ext.android.inject
 
 class GamesListFragment : Fragment() {
-    private val userRepo: UserRepo by inject()
-    private val gameRepo: GameRepo by inject()
+    private val viewModels: SharedViewModels by inject()
     private lateinit var viewModel: GameViewModel
     private lateinit var binding: GamesListScreenBinding
 
@@ -36,10 +32,7 @@ class GamesListFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        // same instance across the app (appVM and gamesVM)
-        val appVm = ViewModelProvider(requireActivity()).get(AppViewModel::class.java)
-        val fct = GameViewModelFactory(appVm, userRepo, gameRepo)
-        viewModel = ViewModelProvider(requireActivity(), fct).get(GameViewModel::class.java)
+        viewModel = viewModels.game
     }
 
     private fun initBinding(inflater: LayoutInflater, container: ViewGroup?) {
