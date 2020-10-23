@@ -9,8 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.PuzzleScreenBinding
+import mg.maniry.tenymana.ui.app.SharedViewModels
 import mg.maniry.tenymana.ui.puzzle.header.PuzzleHeaderFragment
 import mg.maniry.tenymana.utils.mountChild
+import org.koin.android.ext.android.inject
 
 class PuzzleFragment : Fragment() {
     private lateinit var binding: PuzzleScreenBinding
@@ -35,7 +37,9 @@ class PuzzleFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        viewModel = ViewModelProvider(requireActivity()).get(PuzzleViewModel::class.java)
+        val vms: SharedViewModels by inject()
+        val fct = PuzzleViewModelFactory(vms.game)
+        viewModel = ViewModelProvider(this, fct).get(PuzzleViewModel::class.java)
     }
 
     private fun initHeader() {
