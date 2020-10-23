@@ -5,14 +5,16 @@ import androidx.lifecycle.ViewModelProvider
 import mg.maniry.tenymana.repositories.GameRepo
 import mg.maniry.tenymana.repositories.UserRepo
 import mg.maniry.tenymana.ui.app.AppViewModel
+import mg.maniry.tenymana.utils.Random
 
 class GameViewModelFactory(
     private val appViewModel: AppViewModel,
     private val userRepo: UserRepo,
-    private val gameRepo: GameRepo
+    private val gameRepo: GameRepo,
+    private val random: Random
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         @Suppress("unchecked_cast")
-        return GameViewModel(appViewModel, userRepo, gameRepo) as T
+        return GameViewModel(appViewModel, userRepo, gameRepo, random) as T
     }
 }

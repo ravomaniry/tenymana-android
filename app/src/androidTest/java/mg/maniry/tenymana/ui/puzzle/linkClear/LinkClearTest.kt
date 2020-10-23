@@ -43,6 +43,10 @@ class LinkClearTest : KoinTest {
                 Session(
                     Journey.empty("11").copy(title = "Journey 1", description = "Long text .."),
                     Progress.empty("11")
+                ),
+                Session(
+                    Journey.empty("22").copy(title = "Journey 2"),
+                    Progress.empty("22")
                 )
             )
         )
@@ -51,7 +55,7 @@ class LinkClearTest : KoinTest {
         clickView(R.id.goToGameBtn)
         shouldBeVisible(R.id.gamesList)
         // go to paths screen
-        clickView(R.id.gameListItem)
+        clickView(R.id.gameListItem, 0)
         shouldBeVisible(R.id.pathsGrid)
         // Go to puzzle screen
         clickView(R.id.pathsNextBtn)
