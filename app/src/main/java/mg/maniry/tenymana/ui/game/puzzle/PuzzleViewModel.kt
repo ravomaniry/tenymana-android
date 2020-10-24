@@ -1,15 +1,15 @@
 package mg.maniry.tenymana.ui.game.puzzle
 
 import androidx.lifecycle.*
+import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.gameLogic.models.Puzzle
+import mg.maniry.tenymana.ui.game.GameViewModel
 import mg.maniry.tenymana.ui.game.colors.DefaultColor
 import mg.maniry.tenymana.ui.game.colors.GameColors
-import mg.maniry.tenymana.ui.game.GameViewModel
 
 enum class Route {
-    BONUS,
-    PUZZLE,
-    COMPLETE
+    LOADER,
+    LINK_CLEAR
 }
 
 class PuzzleViewModel(
@@ -33,8 +33,8 @@ class PuzzleViewModel(
     }
 
     private val puzzleStateObserver = Observer<Puzzle?> {
+        updateRoute()
         if (it != null) {
-            initScreen()
             observeScore()
         }
     }
@@ -43,8 +43,11 @@ class PuzzleViewModel(
         gameViewModel.puzzle.value!!.score.observeForever(scoreSyncObserver)
     }
 
-    private fun initScreen() {
-        // go to the correct route
+    private fun updateRoute() {
+        _route.value = when (gameViewModel.puzzle.value) {
+            is LinkClearPuzzle -> Route.LINK_CLEAR
+            else -> Route.LOADER
+        }
     }
 
     init {

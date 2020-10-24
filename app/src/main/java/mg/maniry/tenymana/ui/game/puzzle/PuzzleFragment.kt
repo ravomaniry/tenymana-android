@@ -6,11 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.PuzzleScreenBinding
 import mg.maniry.tenymana.ui.app.SharedViewModels
 import mg.maniry.tenymana.ui.game.puzzle.header.PuzzleHeaderFragment
+import mg.maniry.tenymana.ui.game.puzzle.linkClear.LinkClearFragment
+import mg.maniry.tenymana.ui.game.puzzle.loader.PuzzleLoaderFragment
 import mg.maniry.tenymana.utils.mountChild
 import org.koin.android.ext.android.inject
 
@@ -27,6 +30,7 @@ class PuzzleFragment : Fragment() {
         initViewModel()
         initBinding(inflater, container)
         initHeader()
+        observeRoute()
         return binding.root
     }
 
@@ -43,6 +47,16 @@ class PuzzleFragment : Fragment() {
     }
 
     private fun initHeader() {
-        mountChild(PuzzleHeaderFragment(), R.id.journeyHeaderPlaceHolder)
+        mountChild(PuzzleHeaderFragment(), R.id.puzzleHeaderPlaceHolder)
+    }
+
+    private fun observeRoute() {
+        viewModel.route.observe(viewLifecycleOwner, Observer {
+            val body = when (it) {
+                Route.LINK_CLEAR -> LinkClearFragment()
+                else -> PuzzleLoaderFragment()
+            }
+            mountChild(body, R.id.puzzleBodyPlaceHolder)
+        })
     }
 }

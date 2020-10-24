@@ -96,5 +96,7 @@ class LinkClearTest : KoinTest {
         // Display headers
         shouldHaveText(R.id.headerVerseDisplay, text = "Matio 1:10")
         shouldHaveText(R.id.headerScore, text = "5")
+        // Open LinkClear fragment
+        shouldBeVisible(R.id.linkClearPuzzle)
     }
 }
