@@ -5,7 +5,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import mg.maniry.tenymana.ui.app.Screen
-import mg.maniry.tenymana.ui.gamesList.GameViewModel
+import mg.maniry.tenymana.ui.game.GameViewModel
 
 fun Fragment.observeGamesNav(viewModel: GameViewModel, router: (Screen?) -> NavDirections?) {
     viewModel.screen.observe(viewLifecycleOwner, Observer {

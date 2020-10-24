@@ -1,4 +1,4 @@
-package mg.maniry.tenymana.ui.gamesList
+package mg.maniry.tenymana.ui.game.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

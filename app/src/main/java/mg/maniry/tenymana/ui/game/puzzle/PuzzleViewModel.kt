@@ -1,10 +1,10 @@
-package mg.maniry.tenymana.ui.puzzle
+package mg.maniry.tenymana.ui.game.puzzle
 
 import androidx.lifecycle.*
 import mg.maniry.tenymana.gameLogic.models.Puzzle
 import mg.maniry.tenymana.ui.game.colors.DefaultColor
 import mg.maniry.tenymana.ui.game.colors.GameColors
-import mg.maniry.tenymana.ui.gamesList.GameViewModel
+import mg.maniry.tenymana.ui.game.GameViewModel
 
 enum class Route {
     BONUS,

@@ -16,6 +16,4 @@ data class Progress(
     companion object {
         fun empty(id: String) = Progress(id, 0, emptyList(), emptyList())
     }
-
-    val stringScore: String get() = totalScore.toString()
 }

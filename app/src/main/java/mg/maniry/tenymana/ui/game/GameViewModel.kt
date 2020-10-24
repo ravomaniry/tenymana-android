@@ -1,4 +1,4 @@
-package mg.maniry.tenymana.ui.gamesList
+package mg.maniry.tenymana.ui.game
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers

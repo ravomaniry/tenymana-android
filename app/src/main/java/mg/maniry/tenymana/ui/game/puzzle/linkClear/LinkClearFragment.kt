@@ -1,4 +1,4 @@
-package mg.maniry.tenymana.ui.puzzle.linkClear
+package mg.maniry.tenymana.ui.game.puzzle.linkClear
 
 import android.os.Bundle
 import android.view.LayoutInflater

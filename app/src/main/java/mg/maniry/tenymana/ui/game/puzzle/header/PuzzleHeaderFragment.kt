@@ -1,4 +1,4 @@
-package mg.maniry.tenymana.ui.puzzle.header
+package mg.maniry.tenymana.ui.game.puzzle.header
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,8 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.PuzzleScreenHeaderBinding
 import mg.maniry.tenymana.ui.app.SharedViewModels
-import mg.maniry.tenymana.ui.puzzle.PuzzleViewModel
-import mg.maniry.tenymana.ui.puzzle.PuzzleViewModelFactory
+import mg.maniry.tenymana.ui.game.puzzle.PuzzleViewModel
+import mg.maniry.tenymana.ui.game.puzzle.PuzzleViewModelFactory
 import org.koin.android.ext.android.inject
 
 class PuzzleHeaderFragment : Fragment() {

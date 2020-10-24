@@ -1,8 +1,8 @@
-package mg.maniry.tenymana.ui.puzzle
+package mg.maniry.tenymana.ui.game.puzzle
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import mg.maniry.tenymana.ui.gamesList.GameViewModel
+import mg.maniry.tenymana.ui.game.GameViewModel
 
 class PuzzleViewModelFactory(
     private val gameViewModel: GameViewModel

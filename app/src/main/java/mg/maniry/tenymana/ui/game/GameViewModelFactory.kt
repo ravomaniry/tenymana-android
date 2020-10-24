@@ -1,4 +1,4 @@
-package mg.maniry.tenymana.ui.gamesList
+package mg.maniry.tenymana.ui.game
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -17,6 +17,12 @@ class GameViewModelFactory(
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         @Suppress("unchecked_cast")
-        return GameViewModel(appViewModel, userRepo, gameRepo, bibleRepo, random) as T
+        return GameViewModel(
+            appViewModel,
+            userRepo,
+            gameRepo,
+            bibleRepo,
+            random
+        ) as T
     }
 }

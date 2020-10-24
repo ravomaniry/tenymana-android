@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="mg.maniry.tenymana.ui.gamesList.GameViewModel" />
+            type="mg.maniry.tenymana.ui.game.GameViewModel" />
     </data>
 
     <LinearLayout
