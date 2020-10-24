@@ -1,12 +1,9 @@
 package mg.maniry.tenymana.ui.puzzle
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import mg.maniry.tenymana.gameLogic.models.Puzzle
-import mg.maniry.tenymana.ui.colors.DefaultColor
-import mg.maniry.tenymana.ui.colors.GameColors
+import mg.maniry.tenymana.ui.game.colors.DefaultColor
+import mg.maniry.tenymana.ui.game.colors.GameColors
 import mg.maniry.tenymana.ui.gamesList.GameViewModel
 
 enum class Route {
@@ -24,12 +21,39 @@ class PuzzleViewModel(
     private val _score = MutableLiveData<Int>()
     val score: LiveData<String> = Transformations.map(_score) { it.toString() }
 
-    val puzzle: LiveData<Puzzle?> = gameViewModel.puzzle
-
-    val displayVerse = Transformations.map(puzzle) {
+    val displayVerse = Transformations.map(gameViewModel.puzzle) {
         "${it?.verse?.book} ${it?.verse?.chapter}:${it?.verse?.verse}"
     }
 
     private val _route = MutableLiveData<Route?>()
     val route: LiveData<Route?> = _route
+
+    private val scoreSyncObserver = Observer<Int> {
+        _score.postValue(it + gameViewModel.session.value!!.progress.totalScore)
+    }
+
+    private val puzzleStateObserver = Observer<Puzzle?> {
+        if (it != null) {
+            initScreen()
+            observeScore()
+        }
+    }
+
+    private fun observeScore() {
+        gameViewModel.puzzle.value!!.score.observeForever(scoreSyncObserver)
+    }
+
+    private fun initScreen() {
+        // go to the correct route
+    }
+
+    init {
+        gameViewModel.puzzle.observeForever(puzzleStateObserver)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        gameViewModel.puzzle.removeObserver(puzzleStateObserver)
+        gameViewModel.puzzle.value?.score?.removeObserver(scoreSyncObserver)
+    }
 }

@@ -7,10 +7,6 @@
     <data>
 
         <variable
-            name="progress"
-            type="Integer" />
-
-        <variable
             name="session"
             type="mg.maniry.tenymana.repositories.models.Session" />
 
@@ -32,6 +28,7 @@
             style="@style/AppTheme.GamesListScore"
             android:layout_width="48dp"
             android:layout_height="wrap_content"
+            android:text="@{session.progress.stringScore}"
             app:drawableTopCompat="@drawable/ic_star"
             tools:text="1500" />
 
@@ -58,7 +55,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="100"
-                android:progress="@{progress}"
                 tools:progress="40" />
 
         </LinearLayout>

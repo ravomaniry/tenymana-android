@@ -63,11 +63,14 @@ class LinkClearTest : KoinTest {
                             Path("Path0", "...", "Matio", 1, 10, 20)
                         )
                     ),
-                    Progress.empty("11")
+                    Progress.empty("11").copy(totalScore = 5)
                 ),
                 Session(
-                    Journey.empty("22").copy(title = "Journey 2"),
-                    Progress.empty("22")
+                    Journey.empty("22").copy(
+                        title = "Journey 2",
+                        paths = listOf(Path("Path 1", "..", "Marka", 1, 1, 2))
+                    ),
+                    Progress.empty("22").copy(totalScore = 10, scores = listOf(10))
                 )
             )
         )
@@ -90,5 +93,8 @@ class LinkClearTest : KoinTest {
         assertThat(bibleRepo.getSingleFn.calledWith("Matio", 1, 10)).isTrue()
         //  - go to puzzle screen
         shouldBeVisible(R.id.puzzleScreen)
+        // Display headers
+        shouldHaveText(R.id.headerVerseDisplay, text = "Matio 1:10")
+        shouldHaveText(R.id.headerScore, text = "5")
     }
 }

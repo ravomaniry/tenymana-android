@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -26,13 +27,13 @@
             android:src="@drawable/ic_light_menu" />
 
         <TextView
-            android:id="@+id/verseDisplay"
+            android:id="@+id/headerVerseDisplay"
             style="@style/AppTheme.ScoreTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@{viewModel.displayVerse}"
-            tools:drawableLeftCompat="@drawable/ic_book"
+            app:drawableLeftCompat="@drawable/ic_book"
             tools:text="Matthiew 1:1" />
 
         <FrameLayout
@@ -42,12 +43,12 @@
             android:layout_weight="1" />
 
         <TextView
-            android:id="@+id/score"
+            android:id="@+id/headerScore"
             style="@style/AppTheme.ScoreTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{viewModel.score}"
-            tools:drawableRightCompat="@drawable/ic_star"
-            tools:text="100" />
+            app:drawableRightCompat="@drawable/ic_star"
+            tools:text="10" />
     </LinearLayout>
 </layout>

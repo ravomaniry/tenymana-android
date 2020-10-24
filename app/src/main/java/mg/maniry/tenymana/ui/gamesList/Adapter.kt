@@ -37,7 +37,7 @@ class SessionViewHolder private constructor(
     fun bind(item: Session, onClick: OnSessionClick) {
         binding.session = item
         binding.onClick = onClick
-        binding.progress = item.displayProgress
+        binding.sessionProgress.progress = item.displayProgress
         binding.executePendingBindings()
     }
 
