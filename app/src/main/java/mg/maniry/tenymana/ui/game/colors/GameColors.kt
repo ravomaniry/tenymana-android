@@ -7,7 +7,12 @@ interface GameColors {
     val accent: Int
 }
 
-object DefaultColor : GameColors {
+class DefaultColors : GameColors {
     override val primary = R.color.blue
     override val accent = R.color.red
+}
+
+class LinkClearColors : GameColors {
+    override val primary = R.color.red
+    override val accent = R.color.blue
 }

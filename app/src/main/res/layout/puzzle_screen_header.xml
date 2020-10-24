@@ -26,21 +26,22 @@
             android:contentDescription="@string/app_menu_desc"
             android:src="@drawable/ic_light_menu" />
 
-        <TextView
-            android:id="@+id/headerVerseDisplay"
-            style="@style/AppTheme.ScoreTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@{viewModel.displayVerse}"
-            app:drawableLeftCompat="@drawable/ic_book"
-            tools:text="Matthiew 1:1" />
-
         <FrameLayout
-            android:id="@+id/headerSeparator"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/headerVerseDisplay"
+                style="@style/AppTheme.ScoreTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@{viewModel.displayVerse}"
+                app:drawableLeftCompat="@drawable/ic_book"
+                tools:text="Matthiew 1:1" />
+
+        </FrameLayout>
 
         <TextView
             android:id="@+id/headerScore"

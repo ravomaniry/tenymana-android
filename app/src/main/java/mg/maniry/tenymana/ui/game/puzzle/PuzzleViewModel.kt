@@ -4,8 +4,9 @@ import androidx.lifecycle.*
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.gameLogic.models.Puzzle
 import mg.maniry.tenymana.ui.game.GameViewModel
-import mg.maniry.tenymana.ui.game.colors.DefaultColor
+import mg.maniry.tenymana.ui.game.colors.DefaultColors
 import mg.maniry.tenymana.ui.game.colors.GameColors
+import mg.maniry.tenymana.ui.game.colors.LinkClearColors
 
 enum class Route {
     LOADER,
@@ -15,8 +16,12 @@ enum class Route {
 class PuzzleViewModel(
     private val gameViewModel: GameViewModel
 ) : ViewModel() {
-    private val _color = MutableLiveData<GameColors>(DefaultColor)
-    val colors: LiveData<GameColors> = _color
+    val colors: LiveData<GameColors> = Transformations.map(gameViewModel.puzzle) {
+        when (it) {
+            is LinkClearPuzzle -> LinkClearColors()
+            else -> DefaultColors()
+        }
+    }
 
     private val _score = MutableLiveData<Int>()
     val score: LiveData<String> = Transformations.map(_score) { it.toString() }
