@@ -7,6 +7,8 @@ import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.mock
 import mg.maniry.tenymana.gameLogic.models.Word
+import mg.maniry.tenymana.utils.TestRect
+import mg.maniry.tenymana.utils.TestTextShape
 import org.junit.Test
 import org.mockito.invocation.InvocationOnMock
 
@@ -44,9 +46,9 @@ class VerseViewTest {
             words = listOf(Word.fromValue("Abc", 0)),
             texts = listOf(),
             rects = listOf(
-                Rect.xywh(0f, y0, w, h),
-                Rect.xywh(wPlusMrg, y0, w, h),
-                Rect.xywh(2 * wPlusMrg, y0, w, h)
+                TestRect.xywh(0f, y0, w, h),
+                TestRect.xywh(wPlusMrg, y0, w, h),
+                TestRect.xywh(2 * wPlusMrg, y0, w, h)
             )
         )
     }
@@ -58,9 +60,9 @@ class VerseViewTest {
             words = listOf(Word.fromValue("Abc", 0).resolvedVersion),
             rects = emptyList(),
             texts = listOf(
-                Text("A", 0f, y0),
-                Text("b", wPlusMrg, y0),
-                Text("c", 2 * wPlusMrg, y0)
+                TestTextShape("A", 0f + w / 2, y0),
+                TestTextShape("b", wPlusMrg + w / 2, y0),
+                TestTextShape("c", 2 * wPlusMrg + w / 2, y0)
             )
         )
     }
@@ -77,22 +79,22 @@ class VerseViewTest {
                 Word.fromValue("efghijkl", 4)
             ),
             texts = listOf(
-                Text(",", wPlusMrg + w, y0),
-                Text(" ", wPlusMrg + w + w, y0)
+                TestTextShape(",", wPlusMrg + w + w / 2, y0),
+                TestTextShape(" ", wPlusMrg + w + w + w / 2, y0)
             ),
             rects = listOf(
-                Rect.xywh(0f, y0, w, h), // a
-                Rect.xywh(wPlusMrg, y0, w, h), // b
-                Rect.xywh(wPlusMrg + w + 2 * w, y0, w, h), // c
-                Rect.xywh(wPlusMrg + w + 2 * w + wPlusMrg, y0, w, h), // d
-                Rect.xywh(0f, hPlusMrg + y0, w, h), // e
-                Rect.xywh(wPlusMrg, hPlusMrg + y0, w, h), // f
-                Rect.xywh(wPlusMrg * 2, hPlusMrg + y0, w, h), // g
-                Rect.xywh(wPlusMrg * 3, hPlusMrg + y0, w, h), // h
-                Rect.xywh(wPlusMrg * 4, hPlusMrg + y0, w, h), // i
-                Rect.xywh(0f, hPlusMrg * 2 + y0, w, h), // j
-                Rect.xywh(wPlusMrg, hPlusMrg * 2 + y0, w, h), // k
-                Rect.xywh(wPlusMrg * 2, hPlusMrg * 2 + y0, w, h) // l
+                TestRect.xywh(0f, y0, w, h), // a
+                TestRect.xywh(wPlusMrg, y0, w, h), // b
+                TestRect.xywh(wPlusMrg + w + 2 * w, y0, w, h), // c
+                TestRect.xywh(wPlusMrg + w + 2 * w + wPlusMrg, y0, w, h), // d
+                TestRect.xywh(0f, hPlusMrg + y0, w, h), // e
+                TestRect.xywh(wPlusMrg, hPlusMrg + y0, w, h), // f
+                TestRect.xywh(wPlusMrg * 2, hPlusMrg + y0, w, h), // g
+                TestRect.xywh(wPlusMrg * 3, hPlusMrg + y0, w, h), // h
+                TestRect.xywh(wPlusMrg * 4, hPlusMrg + y0, w, h), // i
+                TestRect.xywh(0f, hPlusMrg * 2 + y0, w, h), // j
+                TestRect.xywh(wPlusMrg, hPlusMrg * 2 + y0, w, h), // k
+                TestRect.xywh(wPlusMrg * 2, hPlusMrg * 2 + y0, w, h) // l
             )
         )
     }
@@ -109,21 +111,21 @@ class VerseViewTest {
                 Word.fromValue("cd", 4).resolvedVersion
             ),
             texts = listOf(
-                Text("a", 0f, y0),
-                Text("b", wPlusMrg, y0),
-                Text(",", wPlusMrg + w, y0),
-                Text(" ", wPlusMrg + w + w, y0),
-                Text("e", 0f, hPlusMrg + y0),
-                Text("f", wPlusMrg, hPlusMrg + y0),
-                Text("g", 2 * wPlusMrg, hPlusMrg + y0),
-                Text("h", 3 * wPlusMrg, hPlusMrg + y0),
-                Text("i", 4 * wPlusMrg, hPlusMrg + y0),
-                Text("j", 0f, 2 * hPlusMrg + y0),
-                Text("k", wPlusMrg, 2 * hPlusMrg + y0),
-                Text("l", 2 * wPlusMrg, 2 * hPlusMrg + y0),
-                Text(" ", 2 * wPlusMrg + w, 2 * hPlusMrg + y0),
-                Text("c", 0f, 3 * hPlusMrg + y0),
-                Text("d", wPlusMrg, 3 * hPlusMrg + y0)
+                TestTextShape("a", 0f + w / 2, y0),
+                TestTextShape("b", wPlusMrg + w / 2, y0),
+                TestTextShape(",", wPlusMrg + w + w / 2, y0),
+                TestTextShape(" ", wPlusMrg + w + w + w / 2, y0),
+                TestTextShape("e", 0f + w / 2, hPlusMrg + y0),
+                TestTextShape("f", wPlusMrg + w / 2, hPlusMrg + y0),
+                TestTextShape("g", 2 * wPlusMrg + w / 2, hPlusMrg + y0),
+                TestTextShape("h", 3 * wPlusMrg + w / 2, hPlusMrg + y0),
+                TestTextShape("i", 4 * wPlusMrg + w / 2, hPlusMrg + y0),
+                TestTextShape("j", 0f + w / 2, 2 * hPlusMrg + y0),
+                TestTextShape("k", wPlusMrg + w / 2, 2 * hPlusMrg + y0),
+                TestTextShape("l", 2 * wPlusMrg + w / 2, 2 * hPlusMrg + y0),
+                TestTextShape(" ", 2 * wPlusMrg + w + w / 2, 2 * hPlusMrg + y0),
+                TestTextShape("c", 0f + w / 2, 3 * hPlusMrg + y0),
+                TestTextShape("d", wPlusMrg + w / 2, 3 * hPlusMrg + y0)
             ),
             rects = emptyList()
         )
@@ -139,24 +141,29 @@ class VerseViewTest {
                 Word.fromValue("ef", 2).resolvedVersion
             ),
             texts = listOf(
-                Text("A", 0f, y0),
-                Text("b", wPlusMrg, y0),
-                Text("c", 0f, hPlusMrg + y0),
-                Text("d", wPlusMrg, hPlusMrg + y0),
-                Text("-", 0f, 2 * hPlusMrg + y0),
-                Text("e", 0f, 3 * hPlusMrg + y0),
-                Text("f", wPlusMrg, 3 * hPlusMrg + y0)
+                TestTextShape("A", 0f + w / 2, y0),
+                TestTextShape("b", wPlusMrg + w / 2, y0),
+                TestTextShape("c", 0f + w / 2, hPlusMrg + y0),
+                TestTextShape("d", wPlusMrg + w / 2, hPlusMrg + y0),
+                TestTextShape("-", 0f + w / 2, 2 * hPlusMrg + y0),
+                TestTextShape("e", 0f + w / 2, 3 * hPlusMrg + y0),
+                TestTextShape("f", wPlusMrg + w / 2, 3 * hPlusMrg + y0)
             ),
             rects = emptyList()
         )
     }
 
-    private fun testDraw(width: Int, words: List<Word>, texts: List<Text>, rects: List<Rect>) {
-        val resRects = mutableListOf<Rect>()
-        val resTexts = mutableListOf<Text>()
+    private fun testDraw(
+        width: Int,
+        words: List<Word>,
+        texts: List<TestTextShape>,
+        rects: List<TestRect>
+    ) {
+        val resRects = mutableListOf<TestRect>()
+        val resTexts = mutableListOf<TestTextShape>()
         val drawRect: (InvocationOnMock) -> Unit = {
             resRects.add(
-                Rect(
+                TestRect(
                     it.arguments[0] as Float,
                     it.arguments[1] as Float,
                     it.arguments[2] as Float,
@@ -166,7 +173,11 @@ class VerseViewTest {
         }
         val drawText: (InvocationOnMock) -> Unit = {
             resTexts.add(
-                Text(it.arguments[0] as String, it.arguments[1] as Float, it.arguments[2] as Float)
+                TestTextShape(
+                    it.arguments[0] as String,
+                    it.arguments[1] as Float,
+                    it.arguments[2] as Float
+                )
             )
         }
         val canvas: Canvas = mock {
@@ -182,22 +193,3 @@ class VerseViewTest {
         assertThat(resRects).isEqualTo(rects)
     }
 }
-
-private data class Rect(
-    val left: Float,
-    val top: Float,
-    val right: Float,
-    val bottom: Float
-) {
-    companion object {
-        fun xywh(x: Float, y: Float, w: Float, h: Float): Rect {
-            return Rect(x, y, x + w, y + h)
-        }
-    }
-}
-
-private data class Text(
-    val value: String,
-    val x: Float,
-    val y: Float
-)

@@ -61,8 +61,13 @@ class VerseViewBrain {
     private var primaryColor: Int = 0
     private var accentColor: Int = 0
 
-    private val placeHolderPaint = Paint().apply { style = Paint.Style.FILL }
-    private val charPaint = Paint().apply { style = Paint.Style.FILL }
+    private val placeHolderPaint = Paint().apply {
+        style = Paint.Style.FILL
+    }
+    private val charPaint = Paint().apply {
+        style = Paint.Style.FILL
+        textAlign = Paint.Align.CENTER
+    }
 
     val height: Int get() = (H + SPACING_V) * cells.size + SPACING_V
 
@@ -138,7 +143,7 @@ class VerseViewBrain {
     }
 
     private fun drawChar(canvas: Canvas, cell: Cell, char: Character) {
-        canvas.drawText(char.value.toString(), cell.x, cell.y, charPaint)
+        canvas.drawText(char.value.toString(), cell.x + W / 2, cell.y, charPaint)
     }
 }
 
