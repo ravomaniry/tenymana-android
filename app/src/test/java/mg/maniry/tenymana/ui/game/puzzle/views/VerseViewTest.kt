@@ -66,7 +66,7 @@ class VerseViewTest {
     }
 
     @Test
-    fun drawWrap_LeadingSpace_break_initialState() {
+    fun draw_wrap_LeadingSpace_break_initialState() {
         testDraw(
             width = 104,
             words = listOf(
@@ -98,23 +98,21 @@ class VerseViewTest {
     }
 
     @Test
-    fun drawWrap_LeadingSpace_break_revealed() {
+    fun draw_wrap_LeadingSpace_break_revealed_wordsAfterWrap() {
         testDraw(
             width = 104,
             words = listOf(
                 Word.fromValue("ab", 0).resolvedVersion,
                 Word.fromValue(", ", 1, true),
-                Word.fromValue("cd", 2).resolvedVersion,
+                Word.fromValue("efghijkl", 2).resolvedVersion,
                 Word.fromValue(" ", 3, true),
-                Word.fromValue("efghijkl", 4).resolvedVersion
+                Word.fromValue("cd", 4).resolvedVersion
             ),
             texts = listOf(
                 Text("a", 0f, y0),
                 Text("b", wPlusMrg, y0),
                 Text(",", wPlusMrg + w, y0),
                 Text(" ", wPlusMrg + w + w, y0),
-                Text("c", wPlusMrg + w + 2 * w, y0),
-                Text("d", wPlusMrg + w + 2 * w + wPlusMrg, y0),
                 Text("e", 0f, hPlusMrg + y0),
                 Text("f", wPlusMrg, hPlusMrg + y0),
                 Text("g", 2 * wPlusMrg, hPlusMrg + y0),
@@ -122,7 +120,10 @@ class VerseViewTest {
                 Text("i", 4 * wPlusMrg, hPlusMrg + y0),
                 Text("j", 0f, 2 * hPlusMrg + y0),
                 Text("k", wPlusMrg, 2 * hPlusMrg + y0),
-                Text("l", 2 * wPlusMrg, 2 * hPlusMrg + y0)
+                Text("l", 2 * wPlusMrg, 2 * hPlusMrg + y0),
+                Text(" ", 2 * wPlusMrg + w, 2 * hPlusMrg + y0),
+                Text("c", 0f, 3 * hPlusMrg + y0),
+                Text("d", wPlusMrg, 3 * hPlusMrg + y0)
             ),
             rects = emptyList()
         )

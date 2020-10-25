@@ -87,6 +87,7 @@ class VerseViewBrain {
                 if (w > width) {
                     next.appendAndWrap(word, y, width)
                     rowI = next.size - 1
+                    y = rowI.toFloat() * LINE_H + SPACING_V
                 } else {
                     val totalW = currentW + w
                     if (totalW <= width) {
@@ -137,6 +138,7 @@ class VerseViewBrain {
         const val H = 20
         const val SPACING_H = 4
         const val SPACING_V = 5
+        const val LINE_H = H + SPACING_V
     }
 }
 
@@ -178,16 +180,17 @@ private fun MutableList<Cell>.append(words: List<Word>, wI: Int, y: Float) {
 }
 
 private fun MutableList<MutableList<Cell>>.appendAndWrap(word: Word, y0: Float, width: Int) {
+    var y = y0
     if (isEmpty() || last().isNotEmpty()) {
         add(mutableListOf())
+        y += VerseViewBrain.LINE_H
     }
     var row = last()
     var x = 0f
-    var y = y0
     for (i in 0 until word.size) {
         if (x + VerseViewBrain.W > width) {
             x = 0f
-            y += VerseViewBrain.H + VerseViewBrain.SPACING_V
+            y += VerseViewBrain.LINE_H
             row = mutableListOf()
             add(row)
         }
