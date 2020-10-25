@@ -41,8 +41,15 @@ class VerseViewTest {
             val bottom: Float
         )
 
+        data class Text(
+            val value: String,
+            val x: Float,
+            val y: Float
+        )
+
         val rects = mutableListOf<Rect>()
-        val draw = { it: InvocationOnMock ->
+        val texts = mutableListOf<Text>()
+        val drawRect: (InvocationOnMock) -> Unit = {
             rects.add(
                 Rect(
                     it.arguments[0] as Float,
@@ -51,11 +58,16 @@ class VerseViewTest {
                     it.arguments[3] as Float
                 )
             )
-            Unit
+        }
+        val drawText: (InvocationOnMock) -> Unit = {
+            texts.add(
+                Text(it.arguments[0] as String, it.arguments[1] as Float, it.arguments[2] as Float)
+            )
         }
         val canvas: Canvas = mock {
-            on { drawRoundRect(any(), any(), any(), any(), any(), any(), any()) } doAnswer draw
-            on { drawRect(any(), any(), any(), any(), any()) } doAnswer draw
+            on { drawRoundRect(any(), any(), any(), any(), any(), any(), any()) } doAnswer drawRect
+            on { drawRect(any(), any(), any(), any(), any()) } doAnswer drawRect
+            on { drawText(any(), any(), any(), any()) } doAnswer drawText
         }
         val brain = VerseViewBrain()
         brain.draw(canvas, 22)
@@ -75,6 +87,20 @@ class VerseViewTest {
                 Rect(0f, y0, w, y0 + h),
                 Rect(w + maringH, y0, w + maringH + w, y0 + h),
                 Rect(2 * (w + maringH), y0, 2 * (w + maringH) + w, y0 + h)
+            )
+        )
+        assertThat(texts).isEmpty()
+        // revealed
+        rects.removeAll { true }
+        val words1 = listOf(words0[0].resolvedVersion)
+        brain.onWordsChange(words1)
+        brain.draw(canvas, 22)
+        assertThat(rects).isEmpty()
+        assertThat(texts).isEqualTo(
+            mutableListOf(
+                Text("A", 0f, y0),
+                Text("b", w + maringH, y0),
+                Text("c", 2 * (w + maringH), y0)
             )
         )
     }
