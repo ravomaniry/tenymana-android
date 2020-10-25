@@ -1,11 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linkClearPuzzle"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <mg.maniry.tenymana.ui.game.puzzle.views.VerseView
+        android:id="@+id/verseView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Link clear Puzzle" />
-</FrameLayout>
+        tools:layout_height="60dp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <mg.maniry.tenymana.ui.game.puzzle.views.LetterGridView
+            android:id="@+id/letterGrid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
+    <mg.maniry.tenymana.ui.game.puzzle.views.BonusView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:layout_height="40dp" />
+</LinearLayout>
