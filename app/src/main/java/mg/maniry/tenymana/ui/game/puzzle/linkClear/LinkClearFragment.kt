@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.PuzzleScreenLinkClearBinding
+import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.ui.game.puzzle.PuzzleViewModel
 import mg.maniry.tenymana.utils.bindTo
 
@@ -22,6 +23,8 @@ class LinkClearFragment(
         savedInstanceState: Bundle?
     ): View? {
         initBinding(inflater, container)
+        initVerseView()
+        initCharsGridView()
         return binding.root
     }
 
@@ -29,7 +32,20 @@ class LinkClearFragment(
         binding = DataBindingUtil
             .inflate(inflater, R.layout.puzzle_screen_link_clear, container, false)
         binding.lifecycleOwner = this
+    }
+
+    private fun initVerseView() {
         bindTo(puzzleViewModel.colors) { binding.verseView.onColorsChanged(it) }
-        bindTo(puzzleViewModel.words) { binding.verseView.onWordsChange(it) }
+        bindTo(puzzleViewModel.puzzle) { binding.verseView.onWordsChange(it?.verse?.words) }
+    }
+
+    private fun initCharsGridView() {
+        binding.charsGrid.onVisibleHChanged(LinkClearPuzzle.visibleH)
+        bindTo(puzzleViewModel.colors) { binding.charsGrid.onColorsChanged(it) }
+        bindTo(puzzleViewModel.puzzle) {
+            if (it != null) {
+                binding.charsGrid.onGridChanged((it as LinkClearPuzzle).grid)
+            }
+        }
     }
 }

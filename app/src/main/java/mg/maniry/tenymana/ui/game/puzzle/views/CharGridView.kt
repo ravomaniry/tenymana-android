@@ -127,6 +127,6 @@ class CharGridViewBrain {
     }
 
     private fun calcTop(y: Int): Float {
-        return origin.y - (y * cellSize) - MARGIN
+        return origin.y - (y * cellSize) - cellSize - MARGIN
     }
 }

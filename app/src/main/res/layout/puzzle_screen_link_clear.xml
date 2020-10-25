@@ -12,6 +12,7 @@
             android:id="@+id/verseView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/gray"
             tools:layout_height="60dp" />
 
         <FrameLayout
@@ -20,7 +21,7 @@
             android:layout_weight="1">
 
             <mg.maniry.tenymana.ui.game.puzzle.views.CharGridView
-                android:id="@+id/letterGrid"
+                android:id="@+id/charsGrid"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </FrameLayout>
@@ -28,6 +29,7 @@
         <mg.maniry.tenymana.ui.game.puzzle.views.BonusView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/blue"
             tools:layout_height="40dp" />
     </LinearLayout>
 </layout>

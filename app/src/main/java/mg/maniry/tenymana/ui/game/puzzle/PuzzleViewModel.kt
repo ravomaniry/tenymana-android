@@ -34,6 +34,8 @@ class PuzzleViewModel(
     private val _route = MutableLiveData<Route?>()
     val route: LiveData<Route?> = _route
 
+    val puzzle = gameViewModel.puzzle
+
     val words: LiveData<List<Word>?> = Transformations.map(gameViewModel.puzzle) {
         it?.verse?.words
     }
