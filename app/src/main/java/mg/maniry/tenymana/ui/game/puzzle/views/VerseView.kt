@@ -6,10 +6,10 @@ import android.graphics.Paint
 import android.os.Build
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.content.ContextCompat
 import mg.maniry.tenymana.gameLogic.models.CharAddress
 import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.gameLogic.models.Word
-import mg.maniry.tenymana.ui.game.colors.DefaultColors
 import mg.maniry.tenymana.ui.game.colors.GameColors
 
 class VerseView : View {
@@ -26,7 +26,10 @@ class VerseView : View {
     }
 
     fun onColorsChanged(colors: GameColors) {
-        brain.onColorsChange(colors)
+        brain.onColorsChange(
+            ContextCompat.getColor(context, colors.primary),
+            ContextCompat.getColor(context, colors.accent)
+        )
         invalidate()
     }
 
@@ -48,10 +51,11 @@ class VerseViewBrain {
     private var width = 0
     private var words: List<Word>? = null
     private var cells: List<List<Cell>> = listOf()
-    private var colors: GameColors = DefaultColors()
+    private var primaryColor: Int = 0
+    private var accentColor: Int = 0
 
-    private var placeHolderPaint = Paint()
-    private var charPaint = Paint()
+    private val placeHolderPaint = Paint().apply { style = Paint.Style.FILL }
+    private val charPaint = Paint().apply { style = Paint.Style.FILL }
 
     val height: Int get() = (H + SPACING_V) * cells.size + SPACING_V
 
@@ -65,8 +69,9 @@ class VerseViewBrain {
         computeCells()
     }
 
-    fun onColorsChange(colors: GameColors) {
-        this.colors = colors
+    fun onColorsChange(primary: Int, accent: Int) {
+        primaryColor = primary
+        accentColor = accent
         updatePaints()
     }
 
@@ -95,12 +100,8 @@ class VerseViewBrain {
     }
 
     private fun updatePaints() {
-        placeHolderPaint.apply {
-            color = colors.accent
-        }
-        charPaint.apply {
-            color = colors.primary
-        }
+        placeHolderPaint.color = primaryColor
+        charPaint.color = accentColor
     }
 
     fun draw(canvas: Canvas, sdkVersion: Int) {
@@ -136,10 +137,6 @@ class VerseViewBrain {
 
     private fun drawChar(canvas: Canvas, cell: Cell, char: Character) {
         canvas.drawText(char.value.toString(), cell.x, cell.y, charPaint)
-    }
-
-    init {
-        updatePaints()
     }
 
     companion object {
