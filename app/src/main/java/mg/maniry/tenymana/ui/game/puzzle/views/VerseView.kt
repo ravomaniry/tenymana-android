@@ -3,7 +3,6 @@ package mg.maniry.tenymana.ui.game.puzzle.views
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -42,7 +41,7 @@ class VerseView : View {
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         if (canvas != null) {
-            brain.draw(canvas, Build.VERSION.SDK_INT)
+            brain.draw(canvas)
         }
     }
 }
@@ -83,18 +82,25 @@ class VerseViewBrain {
             var rowI = 0
             var y = SPACING_V.toFloat()
             next.add(mutableListOf())
-            words!!.forEach {
-                val w = it.width
-                val totalW = currentW + w
-                if (totalW <= width) {
-                    currentW = totalW
+            for (word in words!!) {
+                val w = word.width
+                if (w > width) {
+                    next.appendAndWrap(word, y, width)
+                    rowI = next.size - 1
                 } else {
-                    rowI++
-                    y += H + SPACING_V
-                    currentW = w
-                    next.add(mutableListOf())
+                    val totalW = currentW + w
+                    if (totalW <= width) {
+                        currentW = totalW
+                    } else {
+                        rowI++
+                        y += H + SPACING_V
+                        currentW = w
+                        next.add(mutableListOf())
+                    }
+                    if (word.value != " " || currentW != w) {
+                        next[rowI].append(words!!, word.index, y)
+                    }
                 }
-                next[rowI].append(it, y)
             }
         }
     }
@@ -104,7 +110,7 @@ class VerseViewBrain {
         charPaint.color = accentColor
     }
 
-    fun draw(canvas: Canvas, sdkVersion: Int) {
+    fun draw(canvas: Canvas) {
         for (row in cells) {
             for (cell in row) {
                 val w = words!![cell.char.wIndex]
@@ -112,27 +118,14 @@ class VerseViewBrain {
                 if (w.resolved || char.resolved) {
                     drawChar(canvas, cell, char)
                 } else {
-                    drawPlaceHolder(canvas, cell, sdkVersion)
+                    drawPlaceHolder(canvas, cell)
                 }
             }
         }
     }
 
-    private fun drawPlaceHolder(canvas: Canvas, cell: Cell, sdkVersion: Int) {
-        if (sdkVersion >= 21) {
-            @Suppress("newApi")
-            canvas.drawRoundRect(
-                cell.x,
-                cell.y,
-                cell.x + W,
-                cell.y + H,
-                BORDER_R,
-                BORDER_R,
-                placeHolderPaint
-            )
-        } else {
-            canvas.drawRect(cell.x, cell.y, cell.x + W, cell.y + H, placeHolderPaint)
-        }
+    private fun drawPlaceHolder(canvas: Canvas, cell: Cell) {
+        canvas.drawRect(cell.x, cell.y, cell.x + W, cell.y + H, placeHolderPaint)
     }
 
     private fun drawChar(canvas: Canvas, cell: Cell, char: Character) {
@@ -144,7 +137,6 @@ class VerseViewBrain {
         const val H = 20
         const val SPACING_H = 4
         const val SPACING_V = 5
-        const val BORDER_R = 4f
     }
 }
 
@@ -169,10 +161,37 @@ private val Word.width: Int
         return w
     }
 
-private fun MutableList<Cell>.append(word: Word, y: Float) {
-    var x = 0f
+private fun Word.charWidthAt(i: Int): Int {
+    return when {
+        isSeparator || i == size - 1 -> VerseViewBrain.W
+        else -> VerseViewBrain.W + VerseViewBrain.SPACING_H
+    }
+}
+
+private fun MutableList<Cell>.append(words: List<Word>, wI: Int, y: Float) {
+    val word = words[wI]
+    var x = if (isEmpty()) 0f else last().x + words[wI - 1].charWidthAt(words[wI - 1].size - 1)
     for (i in 0 until word.size) {
         add(Cell(x, y, CharAddress(word.index, i)))
-        x += VerseViewBrain.W + VerseViewBrain.SPACING_H
+        x += word.charWidthAt(i)
+    }
+}
+
+private fun MutableList<MutableList<Cell>>.appendAndWrap(word: Word, y0: Float, width: Int) {
+    if (isEmpty() || last().isNotEmpty()) {
+        add(mutableListOf())
+    }
+    var row = last()
+    var x = 0f
+    var y = y0
+    for (i in 0 until word.size) {
+        if (x + VerseViewBrain.W > width) {
+            x = 0f
+            y += VerseViewBrain.H + VerseViewBrain.SPACING_V
+            row = mutableListOf()
+            add(row)
+        }
+        row.add(Cell(x, y, CharAddress(word.index, i)))
+        x += word.charWidthAt(i)
     }
 }
