@@ -47,6 +47,14 @@ class VerseView : View {
 }
 
 class VerseViewBrain {
+    companion object {
+        const val W = 16
+        const val H = 20
+        const val SPACING_H = 4
+        const val SPACING_V = 5
+        const val LINE_H = H + SPACING_V
+    }
+
     private var width = 0
     private var words: List<Word>? = null
     private var cells: List<List<Cell>> = listOf()
@@ -85,7 +93,7 @@ class VerseViewBrain {
             for (word in words!!) {
                 val w = word.width
                 if (w > width) {
-                    next.appendAndWrap(word, y, width)
+                    currentW = next.appendAndWrap(word, y, width)
                     rowI = next.size - 1
                     y = rowI.toFloat() * LINE_H + SPACING_V
                 } else {
@@ -132,14 +140,6 @@ class VerseViewBrain {
     private fun drawChar(canvas: Canvas, cell: Cell, char: Character) {
         canvas.drawText(char.value.toString(), cell.x, cell.y, charPaint)
     }
-
-    companion object {
-        const val W = 16
-        const val H = 20
-        const val SPACING_H = 4
-        const val SPACING_V = 5
-        const val LINE_H = H + SPACING_V
-    }
 }
 
 private data class Cell(
@@ -179,7 +179,7 @@ private fun MutableList<Cell>.append(words: List<Word>, wI: Int, y: Float) {
     }
 }
 
-private fun MutableList<MutableList<Cell>>.appendAndWrap(word: Word, y0: Float, width: Int) {
+private fun MutableList<MutableList<Cell>>.appendAndWrap(word: Word, y0: Float, width: Int): Int {
     var y = y0
     if (isEmpty() || last().isNotEmpty()) {
         add(mutableListOf())
@@ -197,4 +197,5 @@ private fun MutableList<MutableList<Cell>>.appendAndWrap(word: Word, y0: Float, 
         row.add(Cell(x, y, CharAddress(word.index, i)))
         x += word.charWidthAt(i)
     }
+    return (x + word.charWidthAt(word.size - 1)).toInt()
 }

@@ -129,6 +129,28 @@ class VerseViewTest {
         )
     }
 
+    @Test
+    fun draw_wrapAtEndOfRow() {
+        testDraw(
+            width = 40,
+            words = listOf(
+                Word.fromValue("Abcd", 0).resolvedVersion,
+                Word.fromValue("-", 1, true),
+                Word.fromValue("ef", 2).resolvedVersion
+            ),
+            texts = listOf(
+                Text("A", 0f, y0),
+                Text("b", wPlusMrg, y0),
+                Text("c", 0f, hPlusMrg + y0),
+                Text("d", wPlusMrg, hPlusMrg + y0),
+                Text("-", 0f, 2 * hPlusMrg + y0),
+                Text("e", 0f, 3 * hPlusMrg + y0),
+                Text("f", wPlusMrg, 3 * hPlusMrg + y0)
+            ),
+            rects = emptyList()
+        )
+    }
+
     private fun testDraw(width: Int, words: List<Word>, texts: List<Text>, rects: List<Rect>) {
         val resRects = mutableListOf<Rect>()
         val resTexts = mutableListOf<Text>()
