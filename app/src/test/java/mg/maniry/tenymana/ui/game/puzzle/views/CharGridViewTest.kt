@@ -44,6 +44,27 @@ class CharGridViewTest {
         )
     }
 
+    @Test
+    fun draw_contraintY() {
+        testDraw(
+            grid = listOf(
+                chars('a', null, null),
+                chars('d', null, null)
+            ),
+            visibleH = 5,
+            width = 200,
+            height = 102,
+            rects = listOf(
+                TestRect.xywh(70f, 102f - MARGIN, rectSize, rectSize), // a
+                TestRect.xywh(70f, 102f - cellSize - MARGIN, rectSize, rectSize) // d
+            ),
+            texts = listOf(
+                TestTextShape("A", 70f + rectSize / 2, 102f - MARGIN),
+                TestTextShape("D", 70f + rectSize / 2, 102f - cellSize - MARGIN)
+            )
+        )
+    }
+
     private fun testDraw(
         grid: List<List<Character?>>,
         width: Int,

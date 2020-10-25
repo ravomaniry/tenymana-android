@@ -89,21 +89,21 @@ class CharGridViewBrain {
         bgPaint.color = primary
     }
 
+    private fun updateDrawingSettings() {
+        if (grid != null && visibleH > 0 && w > 0 && h > 0) {
+            cellSize = floor(min(w.toDouble() / grid!!.w, h.toDouble() / visibleH)).toFloat()
+            val totalW = cellSize * grid!!.w
+            val x0 = (w - totalW) / 2
+            origin = Point(x0.toInt(), h.toInt())
+        }
+    }
+
     fun draw(canvas: Canvas) {
         grid?.forEach { x, y, char ->
             if (char != null) {
                 drawBG(canvas, x, y)
                 drawChar(canvas, char.value, x, y)
             }
-        }
-    }
-
-    private fun updateDrawingSettings() {
-        if (grid != null && visibleH > 0 && w > 0 && h > 0) {
-            cellSize = min(floor(w.toDouble() / grid!!.w), floor(h.toDouble() / visibleH)).toFloat()
-            val totalW = cellSize * grid!!.w
-            val margin = (w - totalW) / 2
-            origin = Point(margin.toInt(), h.toInt())
         }
     }
 
@@ -123,10 +123,10 @@ class CharGridViewBrain {
     }
 
     private fun calcLeft(x: Int): Float {
-        return cellSize * x
+        return cellSize * x + origin.x
     }
 
     private fun calcTop(y: Int): Float {
-        return h - (y * cellSize) - MARGIN
+        return origin.y - (y * cellSize) - MARGIN
     }
 }
