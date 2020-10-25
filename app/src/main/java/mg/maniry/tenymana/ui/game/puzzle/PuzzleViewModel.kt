@@ -3,6 +3,7 @@ package mg.maniry.tenymana.ui.game.puzzle
 import androidx.lifecycle.*
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.gameLogic.models.Puzzle
+import mg.maniry.tenymana.gameLogic.models.Word
 import mg.maniry.tenymana.ui.game.GameViewModel
 import mg.maniry.tenymana.ui.game.colors.DefaultColors
 import mg.maniry.tenymana.ui.game.colors.GameColors
@@ -32,6 +33,10 @@ class PuzzleViewModel(
 
     private val _route = MutableLiveData<Route?>()
     val route: LiveData<Route?> = _route
+
+    val words: LiveData<List<Word>?> = Transformations.map(gameViewModel.puzzle) {
+        it?.verse?.words
+    }
 
     private val scoreSyncObserver = Observer<Int> {
         _score.postValue(it + gameViewModel.session.value!!.progress.totalScore)

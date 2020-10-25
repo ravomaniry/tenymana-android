@@ -53,7 +53,7 @@ class PuzzleFragment : Fragment() {
     private fun observeRoute() {
         viewModel.route.observe(viewLifecycleOwner, Observer {
             val body = when (it) {
-                Route.LINK_CLEAR -> LinkClearFragment()
+                Route.LINK_CLEAR -> LinkClearFragment(viewModel)
                 else -> PuzzleLoaderFragment()
             }
             mountChild(body, R.id.puzzleBodyPlaceHolder)
