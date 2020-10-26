@@ -68,6 +68,8 @@ class CharGridViewBrain {
         textAlign = Paint.Align.CENTER
         color = Color.WHITE
     }
+    private val textDY: Float get() = cellSize - MARGIN * 4
+    private val textDX: Float get() = (cellSize - MARGIN) / 2
 
     fun onSizeChanged(w: Int, h: Int) {
         this.w = w.toFloat()
@@ -95,6 +97,7 @@ class CharGridViewBrain {
             val totalW = cellSize * grid!!.w
             val x0 = (w - totalW) / 2
             origin = Point(x0.toInt(), h.toInt())
+            textPaint.textSize = cellSize
         }
     }
 
@@ -114,12 +117,7 @@ class CharGridViewBrain {
     }
 
     private fun drawChar(canvas: Canvas, char: Char, x: Int, y: Int) {
-        canvas.drawText(
-            char.toString(),
-            calcLeft(x) + (cellSize - MARGIN) / 2,
-            calcTop(y),
-            textPaint
-        )
+        canvas.drawText(char.toString(), calcLeft(x) + textDX, calcTop(y) + textDY, textPaint)
     }
 
     private fun calcLeft(x: Int): Float {

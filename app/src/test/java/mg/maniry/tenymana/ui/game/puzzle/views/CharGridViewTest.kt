@@ -15,6 +15,8 @@ import org.junit.Test
 class CharGridViewTest {
     private val rectSize = 20f - MARGIN
     private val cellSize = 20f
+    private val textDX = (cellSize - MARGIN) / 2
+    private val textDY = cellSize - MARGIN * 4
 
     @Test
     fun draw_contraintX() {
@@ -35,11 +37,11 @@ class CharGridViewTest {
                 TestRect.xywh(cellSize, 100f - 2 * cellSize - MARGIN, rectSize, rectSize) // e
             ),
             texts = listOf(
-                TestTextShape("A", rectSize / 2, 100f - cellSize - MARGIN),
-                TestTextShape("B", cellSize + rectSize / 2, 100f - cellSize - MARGIN),
-                TestTextShape("C", 2 * cellSize + rectSize / 2, 100f - cellSize - MARGIN),
-                TestTextShape("D", rectSize / 2, 100f - 2 * cellSize - MARGIN),
-                TestTextShape("E", cellSize + rectSize / 2, 100f - 2 * cellSize - MARGIN)
+                TestTextShape("A", textDX, 100f - cellSize - MARGIN + textDY),
+                TestTextShape("B", cellSize + textDX, 100f - cellSize - MARGIN + textDY),
+                TestTextShape("C", 2 * cellSize + textDX, 100f - cellSize - MARGIN + textDY),
+                TestTextShape("D", textDX, 100f - 2 * cellSize - MARGIN + textDY),
+                TestTextShape("E", cellSize + textDX, 100f - 2 * cellSize - MARGIN + textDY)
             )
         )
     }
@@ -59,8 +61,8 @@ class CharGridViewTest {
                 TestRect.xywh(70f, 102f - 2 * cellSize - MARGIN, rectSize, rectSize) // d
             ),
             texts = listOf(
-                TestTextShape("A", 70f + rectSize / 2, 102f - cellSize - MARGIN),
-                TestTextShape("D", 70f + rectSize / 2, 102f - 2 * cellSize - MARGIN)
+                TestTextShape("A", 70f + textDX, 102f - cellSize - MARGIN + textDY),
+                TestTextShape("D", 70f + textDX, 102f - 2 * cellSize - MARGIN + textDY)
             )
         )
     }
