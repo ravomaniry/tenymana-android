@@ -30,12 +30,17 @@
         <item name="android:drawablePadding">4dp</item>
     </style>
 
-    <!-- Gales list -->
+    <!-- Journeys list -->
     <style name="AppTheme.GamesListScore" parent="TextAppearance.AppCompat.Body1">
         <item name="android:textColor">@color/light</item>
         <item name="android:gravity">center</item>
         <item name="drawableTint">@color/light</item>
         <item name="android:layout_gravity">bottom</item>
         <item name="android:background">?attr/colorPrimary</item>
+    </style>
+
+    <!-- Puzzle screen -->
+    <style name="AppTheme.PuzzleBody">
+        <item name="android:padding">4dp</item>
     </style>
 </resources>
