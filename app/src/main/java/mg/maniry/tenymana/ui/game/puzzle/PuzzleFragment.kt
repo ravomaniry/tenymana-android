@@ -47,7 +47,7 @@ class PuzzleFragment : Fragment() {
     }
 
     private fun initHeader() {
-        mountChild(PuzzleHeaderFragment(), R.id.puzzleHeaderPlaceHolder)
+        mountChild(PuzzleHeaderFragment(viewModel), R.id.puzzleHeaderPlaceHolder)
     }
 
     private fun observeRoute() {
