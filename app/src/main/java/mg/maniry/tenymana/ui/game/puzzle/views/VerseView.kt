@@ -67,9 +67,12 @@ class VerseViewBrain {
     private val charPaint = Paint().apply {
         style = Paint.Style.FILL
         textAlign = Paint.Align.CENTER
+        textSize = H.toFloat()
     }
 
     val height: Int get() = (H + SPACING_V) * cells.size + SPACING_V
+    private val textDx = W / 2
+    private val textDy = H - SPACING_V
 
     fun onMeasure(w: Int) {
         width = w
@@ -143,7 +146,7 @@ class VerseViewBrain {
     }
 
     private fun drawChar(canvas: Canvas, cell: Cell, char: Character) {
-        canvas.drawText(char.value.toString(), cell.x + W / 2, cell.y, charPaint)
+        canvas.drawText(char.value.toString(), cell.x + textDx, cell.y + textDy, charPaint)
     }
 }
 

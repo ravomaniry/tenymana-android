@@ -38,6 +38,8 @@ class VerseViewTest {
     private val h = VerseViewBrain.H.toFloat()
     private val hPlusMrg = h + VerseViewBrain.SPACING_V
     private val wPlusMrg = w + VerseViewBrain.SPACING_H.toFloat()
+    private val textDx = VerseViewBrain.W.toFloat() / 2
+    private val textDy = VerseViewBrain.H.toFloat() - VerseViewBrain.SPACING_V
 
     @Test
     fun drawSingleRow_initialState() {
@@ -60,9 +62,9 @@ class VerseViewTest {
             words = listOf(Word.fromValue("Abc", 0).resolvedVersion),
             rects = emptyList(),
             texts = listOf(
-                TestTextShape("A", 0f + w / 2, y0),
-                TestTextShape("b", wPlusMrg + w / 2, y0),
-                TestTextShape("c", 2 * wPlusMrg + w / 2, y0)
+                TestTextShape("A", 0f + textDx, y0 + textDy),
+                TestTextShape("b", wPlusMrg + textDx, y0 + textDy),
+                TestTextShape("c", 2 * wPlusMrg + textDx, y0 + textDy)
             )
         )
     }
@@ -79,8 +81,8 @@ class VerseViewTest {
                 Word.fromValue("efghijkl", 4)
             ),
             texts = listOf(
-                TestTextShape(",", wPlusMrg + w + w / 2, y0),
-                TestTextShape(" ", wPlusMrg + w + w + w / 2, y0)
+                TestTextShape(",", wPlusMrg + w + textDx, y0 + textDy),
+                TestTextShape(" ", wPlusMrg + w + w + textDx, y0 + textDy)
             ),
             rects = listOf(
                 TestRect.xywh(0f, y0, w, h), // a
@@ -111,21 +113,21 @@ class VerseViewTest {
                 Word.fromValue("cd", 4).resolvedVersion
             ),
             texts = listOf(
-                TestTextShape("a", 0f + w / 2, y0),
-                TestTextShape("b", wPlusMrg + w / 2, y0),
-                TestTextShape(",", wPlusMrg + w + w / 2, y0),
-                TestTextShape(" ", wPlusMrg + w + w + w / 2, y0),
-                TestTextShape("e", 0f + w / 2, hPlusMrg + y0),
-                TestTextShape("f", wPlusMrg + w / 2, hPlusMrg + y0),
-                TestTextShape("g", 2 * wPlusMrg + w / 2, hPlusMrg + y0),
-                TestTextShape("h", 3 * wPlusMrg + w / 2, hPlusMrg + y0),
-                TestTextShape("i", 4 * wPlusMrg + w / 2, hPlusMrg + y0),
-                TestTextShape("j", 0f + w / 2, 2 * hPlusMrg + y0),
-                TestTextShape("k", wPlusMrg + w / 2, 2 * hPlusMrg + y0),
-                TestTextShape("l", 2 * wPlusMrg + w / 2, 2 * hPlusMrg + y0),
-                TestTextShape(" ", 2 * wPlusMrg + w + w / 2, 2 * hPlusMrg + y0),
-                TestTextShape("c", 0f + w / 2, 3 * hPlusMrg + y0),
-                TestTextShape("d", wPlusMrg + w / 2, 3 * hPlusMrg + y0)
+                TestTextShape("a", 0f + textDx, y0 + textDy),
+                TestTextShape("b", wPlusMrg + textDx, y0 + textDy),
+                TestTextShape(",", wPlusMrg + w + textDx, y0 + textDy),
+                TestTextShape(" ", wPlusMrg + w + w + textDx, y0 + textDy),
+                TestTextShape("e", 0f + textDx, hPlusMrg + y0 + textDy),
+                TestTextShape("f", wPlusMrg + textDx, hPlusMrg + y0 + textDy),
+                TestTextShape("g", 2 * wPlusMrg + textDx, hPlusMrg + y0 + textDy),
+                TestTextShape("h", 3 * wPlusMrg + textDx, hPlusMrg + y0 + textDy),
+                TestTextShape("i", 4 * wPlusMrg + textDx, hPlusMrg + y0 + textDy),
+                TestTextShape("j", 0f + textDx, 2 * hPlusMrg + y0 + textDy),
+                TestTextShape("k", wPlusMrg + textDx, 2 * hPlusMrg + y0 + textDy),
+                TestTextShape("l", 2 * wPlusMrg + textDx, 2 * hPlusMrg + y0 + textDy),
+                TestTextShape(" ", 2 * wPlusMrg + w + textDx, 2 * hPlusMrg + y0 + textDy),
+                TestTextShape("c", 0f + textDx, 3 * hPlusMrg + y0 + textDy),
+                TestTextShape("d", wPlusMrg + textDx, 3 * hPlusMrg + y0 + textDy)
             ),
             rects = emptyList()
         )
@@ -141,13 +143,13 @@ class VerseViewTest {
                 Word.fromValue("ef", 2).resolvedVersion
             ),
             texts = listOf(
-                TestTextShape("A", 0f + w / 2, y0),
-                TestTextShape("b", wPlusMrg + w / 2, y0),
-                TestTextShape("c", 0f + w / 2, hPlusMrg + y0),
-                TestTextShape("d", wPlusMrg + w / 2, hPlusMrg + y0),
-                TestTextShape("-", 0f + w / 2, 2 * hPlusMrg + y0),
-                TestTextShape("e", 0f + w / 2, 3 * hPlusMrg + y0),
-                TestTextShape("f", wPlusMrg + w / 2, 3 * hPlusMrg + y0)
+                TestTextShape("A", 0f + textDx, y0 + textDy),
+                TestTextShape("b", wPlusMrg + textDx, y0 + textDy),
+                TestTextShape("c", 0f + textDx, hPlusMrg + y0 + textDy),
+                TestTextShape("d", wPlusMrg + textDx, hPlusMrg + y0 + textDy),
+                TestTextShape("-", 0f + textDx, 2 * hPlusMrg + y0 + textDy),
+                TestTextShape("e", 0f + textDx, 3 * hPlusMrg + y0 + textDy),
+                TestTextShape("f", wPlusMrg + textDx, 3 * hPlusMrg + y0 + textDy)
             ),
             rects = emptyList()
         )
