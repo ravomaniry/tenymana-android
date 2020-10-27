@@ -10,11 +10,6 @@ import mg.maniry.tenymana.ui.game.colors.DefaultColors
 import mg.maniry.tenymana.ui.game.colors.GameColors
 import mg.maniry.tenymana.ui.game.colors.LinkClearColors
 
-enum class Route {
-    LOADER,
-    LINK_CLEAR
-}
-
 class PuzzleViewModel(
     private val gameViewModel: GameViewModel
 ) : ViewModel() {
@@ -32,9 +27,6 @@ class PuzzleViewModel(
         "${it?.verse?.book} ${it?.verse?.chapter}:${it?.verse?.verse}"
     }
 
-    private val _route = MutableLiveData<Route?>()
-    val route: LiveData<Route?> = _route
-
     val puzzle = gameViewModel.puzzle
 
     val words: LiveData<List<Word>?> = Transformations.map(gameViewModel.puzzle) {
@@ -46,7 +38,6 @@ class PuzzleViewModel(
     }
 
     private val puzzleStateObserver = Observer<Puzzle?> {
-        updateRoute()
         if (it != null) {
             observeScore()
         }
@@ -56,15 +47,8 @@ class PuzzleViewModel(
         gameViewModel.puzzle.value!!.score.observeForever(scoreSyncObserver)
     }
 
-    private fun updateRoute() {
-        _route.value = when (gameViewModel.puzzle.value) {
-            is LinkClearPuzzle -> Route.LINK_CLEAR
-            else -> Route.LOADER
-        }
-    }
-
     fun propose(move: Move) {
-        val didUpdate = puzzle.value?.propose(move)
+        gameViewModel.puzzle.value?.propose(move)
         // re-render if true ...
     }
 
@@ -74,7 +58,6 @@ class PuzzleViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        gameViewModel.puzzle.removeObserver(puzzleStateObserver)
         gameViewModel.puzzle.value?.score?.removeObserver(scoreSyncObserver)
     }
 }

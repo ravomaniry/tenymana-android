@@ -14,7 +14,8 @@ import mg.maniry.tenymana.ui.game.puzzle.views.DrawingSettings
 import mg.maniry.tenymana.utils.bindTo
 
 class LinkClearFragment(
-    private val puzzleViewModel: PuzzleViewModel
+    private val puzzleViewModel: PuzzleViewModel,
+    private val puzzle: LinkClearPuzzle
 ) : Fragment() {
     private lateinit var binding: PuzzleScreenLinkClearBinding
     private val drawingSettings = DrawingSettings()
@@ -38,33 +39,28 @@ class LinkClearFragment(
     }
 
     private fun initVerseView() {
-        val view = binding.verseView
-        view.onSettingsChanged(drawingSettings)
-        bindTo(puzzleViewModel.colors, view::onColorsChanged)
-        bindTo(puzzleViewModel.puzzle) { view.onWordsChange(it?.verse?.words) }
+        binding.verseView.apply {
+            onSettingsChanged(drawingSettings)
+            onWordsChange(puzzle.verse.words)
+            bindTo(puzzleViewModel.colors, ::onColorsChanged)
+        }
     }
 
     private fun initCharsGridView() {
-        val view = binding.charsGrid
-        view.onSettingsChanged(drawingSettings)
-        view.onVisibleHChanged(LinkClearPuzzle.visibleH)
-        bindTo(puzzleViewModel.colors, view::onColorsChanged)
-        bindTo(puzzleViewModel.puzzle) {
-            if (it != null) {
-                view.onGridChanged((it as LinkClearPuzzle).grid)
-            }
+        binding.charsGrid.apply {
+            onSettingsChanged(drawingSettings)
+            onVisibleHChanged(LinkClearPuzzle.visibleH)
+            onGridChanged(puzzle.grid)
+            bindTo(puzzleViewModel.colors, ::onColorsChanged)
         }
     }
 
     private fun initCharsGridInput() {
-        val view = binding.charsGridInput
-        view.onSettingsChanged(drawingSettings)
-        view.onPropose(puzzleViewModel::propose)
-        bindTo(puzzleViewModel.colors, view::onColorsChanged)
-        bindTo(puzzleViewModel.puzzle) {
-            if (it != null) {
-                view.onGridChanged((it as LinkClearPuzzle).grid)
-            }
+        binding.charsGridInput.apply {
+            onSettingsChanged(drawingSettings)
+            onPropose(puzzleViewModel::propose)
+            onGridChanged(puzzle.grid)
+            bindTo(puzzleViewModel.colors, ::onColorsChanged)
         }
     }
 }

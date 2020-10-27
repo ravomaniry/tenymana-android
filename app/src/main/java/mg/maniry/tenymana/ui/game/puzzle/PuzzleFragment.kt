@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.PuzzleScreenBinding
+import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.ui.app.SharedViewModels
 import mg.maniry.tenymana.ui.game.puzzle.header.PuzzleHeaderFragment
 import mg.maniry.tenymana.ui.game.puzzle.linkClear.LinkClearFragment
@@ -51,9 +52,9 @@ class PuzzleFragment : Fragment() {
     }
 
     private fun observeRoute() {
-        viewModel.route.observe(viewLifecycleOwner, Observer {
+        viewModel.puzzle.observe(viewLifecycleOwner, Observer {
             val body = when (it) {
-                Route.LINK_CLEAR -> LinkClearFragment(viewModel)
+                is LinkClearPuzzle -> LinkClearFragment(viewModel, it)
                 else -> PuzzleLoaderFragment()
             }
             mountChild(body, R.id.puzzleBodyPlaceHolder)
