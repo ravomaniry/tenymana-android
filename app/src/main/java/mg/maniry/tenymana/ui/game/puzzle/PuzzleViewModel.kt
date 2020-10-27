@@ -2,6 +2,7 @@ package mg.maniry.tenymana.ui.game.puzzle
 
 import androidx.lifecycle.*
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
+import mg.maniry.tenymana.gameLogic.models.Move
 import mg.maniry.tenymana.gameLogic.models.Puzzle
 import mg.maniry.tenymana.gameLogic.models.Word
 import mg.maniry.tenymana.ui.game.GameViewModel
@@ -60,6 +61,11 @@ class PuzzleViewModel(
             is LinkClearPuzzle -> Route.LINK_CLEAR
             else -> Route.LOADER
         }
+    }
+
+    fun propose(move: Move) {
+        val didUpdate = puzzle.value?.propose(move)
+        // re-render if true ...
     }
 
     init {

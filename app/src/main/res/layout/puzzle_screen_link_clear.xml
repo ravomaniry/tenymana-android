@@ -25,6 +25,12 @@
                 android:id="@+id/charsGrid"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+
+            <mg.maniry.tenymana.ui.game.puzzle.views.CharGridInput
+                android:id="@+id/charsGridInput"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
         </FrameLayout>
 
         <mg.maniry.tenymana.ui.game.puzzle.views.BonusView

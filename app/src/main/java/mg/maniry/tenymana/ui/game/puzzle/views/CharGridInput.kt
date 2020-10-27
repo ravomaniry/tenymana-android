@@ -14,6 +14,8 @@ import mg.maniry.tenymana.gameLogic.models.Point
 import mg.maniry.tenymana.ui.game.colors.GameColors
 import kotlin.math.floor
 
+private typealias ProposeFn = (Move) -> Unit
+
 class CharGridInput : View {
     constructor(context: Context) : super(context)
     constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet)
@@ -23,7 +25,9 @@ class CharGridInput : View {
     private val control = CharGridInputControl()
 
     fun onSettingsChanged(settings: DrawingSettings) {
+        control.settings?.forget(DrawingSettings.Event.CHAR_GRID, this)
         control.settings = settings
+        settings.subscribe(DrawingSettings.Event.CHAR_GRID, this)
     }
 
     fun onGridChanged(grid: Grid<Character>) {
@@ -32,6 +36,10 @@ class CharGridInput : View {
 
     fun onColorsChanged(colors: GameColors) {
         control.onColorChanged(ContextCompat.getColor(context, colors.primary))
+    }
+
+    fun onPropose(fn: ProposeFn) {
+        control.propose = fn
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -60,7 +68,7 @@ class CharGridInput : View {
 
 class CharGridInputControl {
     var settings: DrawingSettings? = null
-    var propose: ((Move) -> Unit)? = null
+    var propose: ProposeFn? = null
     private var start: Point? = null
     private var end: Point? = null
     private var gridWidth = 0

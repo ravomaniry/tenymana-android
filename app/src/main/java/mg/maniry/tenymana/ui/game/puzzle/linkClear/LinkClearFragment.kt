@@ -27,6 +27,7 @@ class LinkClearFragment(
         initBinding(inflater, container)
         initVerseView()
         initCharsGridView()
+        initCharsGridInput()
         return binding.root
     }
 
@@ -37,18 +38,32 @@ class LinkClearFragment(
     }
 
     private fun initVerseView() {
-        binding.verseView.onSettingsChanged(drawingSettings)
-        bindTo(puzzleViewModel.colors) { binding.verseView.onColorsChanged(it) }
-        bindTo(puzzleViewModel.puzzle) { binding.verseView.onWordsChange(it?.verse?.words) }
+        val view = binding.verseView
+        view.onSettingsChanged(drawingSettings)
+        bindTo(puzzleViewModel.colors, view::onColorsChanged)
+        bindTo(puzzleViewModel.puzzle) { view.onWordsChange(it?.verse?.words) }
     }
 
     private fun initCharsGridView() {
-        binding.charsGrid.onSettingsChanged(drawingSettings)
-        binding.charsGrid.onVisibleHChanged(LinkClearPuzzle.visibleH)
-        bindTo(puzzleViewModel.colors) { binding.charsGrid.onColorsChanged(it) }
+        val view = binding.charsGrid
+        view.onSettingsChanged(drawingSettings)
+        view.onVisibleHChanged(LinkClearPuzzle.visibleH)
+        bindTo(puzzleViewModel.colors, view::onColorsChanged)
         bindTo(puzzleViewModel.puzzle) {
             if (it != null) {
-                binding.charsGrid.onGridChanged((it as LinkClearPuzzle).grid)
+                view.onGridChanged((it as LinkClearPuzzle).grid)
+            }
+        }
+    }
+
+    private fun initCharsGridInput() {
+        val view = binding.charsGridInput
+        view.onSettingsChanged(drawingSettings)
+        view.onPropose(puzzleViewModel::propose)
+        bindTo(puzzleViewModel.colors, view::onColorsChanged)
+        bindTo(puzzleViewModel.puzzle) {
+            if (it != null) {
+                view.onGridChanged((it as LinkClearPuzzle).grid)
             }
         }
     }
