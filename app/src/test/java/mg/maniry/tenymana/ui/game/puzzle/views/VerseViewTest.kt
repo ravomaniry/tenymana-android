@@ -16,8 +16,9 @@ class VerseViewTest {
     @Test
     fun measure() {
         // words is null
-        val brain = VerseViewControl()
-        assertThat(brain.height).isEqualTo(VerseViewControl.SPACING_V)
+        val control = VerseViewControl()
+        control.settings = DrawingSettings()
+        assertThat(control.settings?.verseViewHeight).isEqualTo(VerseViewControl.SPACING_V)
         // One row
         val words = listOf(
             Word.fromValue("Abc", 0), // 16 * 3 + 4 * 2 = 56
@@ -26,10 +27,10 @@ class VerseViewTest {
             Word.fromValue(" ", 3, true), // 16
             Word.fromValue("fgh", 4) // 16 * 3 + 4 * 2 = 56
         )
-        brain.onMeasure(124)
-        assertThat(brain.height).isEqualTo(VerseViewControl.SPACING_V)
-        brain.onWordsChange(words)
-        assertThat(brain.height)
+        control.onMeasure(124)
+        assertThat(control.settings?.verseViewHeight).isEqualTo(VerseViewControl.SPACING_V)
+        control.onWordsChange(words)
+        assertThat(control.settings?.verseViewHeight)
             .isEqualTo(2 * (VerseViewControl.H + VerseViewControl.SPACING_V) + VerseViewControl.SPACING_V)
     }
 
@@ -186,11 +187,13 @@ class VerseViewTest {
             on { drawRect(any(), any(), any(), any(), any()) } doAnswer drawRect
             on { drawText(any(), any(), any(), any()) } doAnswer drawText
         }
-        val brain = VerseViewControl()
-        brain.onWordsChange(words)
-        brain.onMeasure(width)
-        brain.onColorsChange(Color.RED, Color.BLUE)
-        brain.draw(canvas)
+        val control = VerseViewControl().apply {
+            settings = DrawingSettings()
+            onWordsChange(words)
+            onMeasure(width)
+            onColorsChange(Color.RED, Color.BLUE)
+        }
+        control.draw(canvas)
         assertThat(resTexts).isEqualTo(texts)
         assertThat(resRects).isEqualTo(rects)
     }

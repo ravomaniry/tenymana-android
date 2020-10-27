@@ -23,7 +23,7 @@ class DrawingSettingsTest {
         // Chars grid
         //      - subscribe & notify
         settings.charGridOrigin = Point(2, 2)
-        settings.charGridCellSize = 10
+        settings.charGridCellSize = 10f
         assertThat(settings.charGridOrigin).isEqualTo(Point(2, 2))
         assertThat(settings.charGridCellSize).isEqualTo(10)
         verifyTimes(charGridSub0, 2).invalidate()
@@ -32,7 +32,7 @@ class DrawingSettingsTest {
         //      - forget
         clearInvocations(charGridSub0, charGridSub1)
         settings.forget(DrawingSettings.Event.CHAR_GRID, charGridSub0)
-        settings.charGridCellSize = 20
+        settings.charGridCellSize = 20f
         verifyZeroInteractions(charGridSub0)
         verifyOnce(charGridSub1).invalidate()
         verifyZeroInteractions(verseViewSub)

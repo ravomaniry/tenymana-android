@@ -27,7 +27,7 @@ class DrawingSettings {
             }
         }
 
-    private var _verseViewHeight = 0
+    private var _verseViewHeight = VerseViewControl.SPACING_V
     var verseViewHeight: Int
         get() = _verseViewHeight
         set(value) {

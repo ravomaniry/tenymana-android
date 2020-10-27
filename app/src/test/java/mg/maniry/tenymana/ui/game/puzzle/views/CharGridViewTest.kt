@@ -75,7 +75,8 @@ class CharGridViewTest {
         texts: List<TestTextShape>,
         rects: List<TestRect>
     ) {
-        val brain = CharGridViewControl().apply {
+        val control = CharGridViewControl().apply {
+            settings = DrawingSettings()
             onGridChanged(Grid(grid))
             onSizeChanged(width, height)
             onVisibleHChanged(visibleH)
@@ -105,7 +106,7 @@ class CharGridViewTest {
                 Unit
             }
         }
-        brain.draw(canvas)
+        control.draw(canvas)
         assertThat(drawnTexts).isEqualTo(texts)
         assertThat(drawnRects).isEqualTo(rects)
     }

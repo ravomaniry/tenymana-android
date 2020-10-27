@@ -131,6 +131,7 @@ class VerseViewControl {
 
     private fun updateHeight() {
         height = (H + SPACING_V) * cells.size + SPACING_V
+        settings!!.verseViewHeight = height
     }
 
     private fun updatePaints() {
