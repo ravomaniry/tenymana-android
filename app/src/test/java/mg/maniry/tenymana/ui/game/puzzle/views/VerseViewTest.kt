@@ -16,8 +16,8 @@ class VerseViewTest {
     @Test
     fun measure() {
         // words is null
-        val brain = VerseViewBrain()
-        assertThat(brain.height).isEqualTo(VerseViewBrain.SPACING_V)
+        val brain = VerseViewControl()
+        assertThat(brain.height).isEqualTo(VerseViewControl.SPACING_V)
         // One row
         val words = listOf(
             Word.fromValue("Abc", 0), // 16 * 3 + 4 * 2 = 56
@@ -27,19 +27,19 @@ class VerseViewTest {
             Word.fromValue("fgh", 4) // 16 * 3 + 4 * 2 = 56
         )
         brain.onMeasure(124)
-        assertThat(brain.height).isEqualTo(VerseViewBrain.SPACING_V)
+        assertThat(brain.height).isEqualTo(VerseViewControl.SPACING_V)
         brain.onWordsChange(words)
         assertThat(brain.height)
-            .isEqualTo(2 * (VerseViewBrain.H + VerseViewBrain.SPACING_V) + VerseViewBrain.SPACING_V)
+            .isEqualTo(2 * (VerseViewControl.H + VerseViewControl.SPACING_V) + VerseViewControl.SPACING_V)
     }
 
-    private val y0 = VerseViewBrain.SPACING_V.toFloat()
-    private val w = VerseViewBrain.W.toFloat()
-    private val h = VerseViewBrain.H.toFloat()
-    private val hPlusMrg = h + VerseViewBrain.SPACING_V
-    private val wPlusMrg = w + VerseViewBrain.SPACING_H.toFloat()
-    private val textDx = VerseViewBrain.W.toFloat() / 2
-    private val textDy = VerseViewBrain.H.toFloat() - VerseViewBrain.SPACING_V
+    private val y0 = VerseViewControl.SPACING_V.toFloat()
+    private val w = VerseViewControl.W.toFloat()
+    private val h = VerseViewControl.H.toFloat()
+    private val hPlusMrg = h + VerseViewControl.SPACING_V
+    private val wPlusMrg = w + VerseViewControl.SPACING_H.toFloat()
+    private val textDx = VerseViewControl.W.toFloat() / 2
+    private val textDy = VerseViewControl.H.toFloat() - VerseViewControl.SPACING_V
 
     @Test
     fun drawSingleRow_initialState() {
@@ -186,7 +186,7 @@ class VerseViewTest {
             on { drawRect(any(), any(), any(), any(), any()) } doAnswer drawRect
             on { drawText(any(), any(), any(), any()) } doAnswer drawText
         }
-        val brain = VerseViewBrain()
+        val brain = VerseViewControl()
         brain.onWordsChange(words)
         brain.onMeasure(width)
         brain.onColorsChange(Color.RED, Color.BLUE)

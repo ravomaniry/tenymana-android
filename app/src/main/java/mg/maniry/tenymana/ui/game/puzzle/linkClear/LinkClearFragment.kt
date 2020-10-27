@@ -10,12 +10,14 @@ import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.PuzzleScreenLinkClearBinding
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.ui.game.puzzle.PuzzleViewModel
+import mg.maniry.tenymana.ui.game.puzzle.views.DrawingSettings
 import mg.maniry.tenymana.utils.bindTo
 
 class LinkClearFragment(
     private val puzzleViewModel: PuzzleViewModel
 ) : Fragment() {
     private lateinit var binding: PuzzleScreenLinkClearBinding
+    private val drawingSettings = DrawingSettings()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,11 +37,13 @@ class LinkClearFragment(
     }
 
     private fun initVerseView() {
+        binding.verseView.onSettingsChanged(drawingSettings)
         bindTo(puzzleViewModel.colors) { binding.verseView.onColorsChanged(it) }
         bindTo(puzzleViewModel.puzzle) { binding.verseView.onWordsChange(it?.verse?.words) }
     }
 
     private fun initCharsGridView() {
+        binding.charsGrid.onSettingsChanged(drawingSettings)
         binding.charsGrid.onVisibleHChanged(LinkClearPuzzle.visibleH)
         bindTo(puzzleViewModel.colors) { binding.charsGrid.onColorsChanged(it) }
         bindTo(puzzleViewModel.puzzle) {

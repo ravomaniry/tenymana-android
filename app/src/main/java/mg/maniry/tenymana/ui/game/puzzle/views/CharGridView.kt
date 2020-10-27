@@ -20,46 +20,49 @@ class CharGridView : View {
     constructor(context: Context, attributeSet: AttributeSet, defStyleAttr: Int) :
             super(context, attributeSet, defStyleAttr)
 
-    private val brain = CharGridViewBrain()
+    private val control = CharGridViewControl()
+
+    fun onSettingsChanged(settings: DrawingSettings) {
+        control.settings = settings
+    }
 
     fun onGridChanged(grid: Grid<Character>) {
-        brain.onGridChanged(grid)
+        control.onGridChanged(grid)
         invalidate()
     }
 
     fun onVisibleHChanged(h: Int) {
-        brain.onVisibleHChanged(h)
+        control.onVisibleHChanged(h)
         invalidate()
     }
 
     fun onColorsChanged(colors: GameColors) {
-        brain.onColorChanged(ContextCompat.getColor(context, colors.primary))
+        control.onColorChanged(ContextCompat.getColor(context, colors.primary))
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        brain.onSizeChanged(w, h)
+        control.onSizeChanged(w, h)
     }
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         if (canvas != null) {
-            brain.draw(canvas)
+            control.draw(canvas)
         }
     }
 }
 
-class CharGridViewBrain {
+class CharGridViewControl {
     companion object {
         const val MARGIN = 2
     }
 
-    private var origin = Point(0, 0)
+    var settings: DrawingSettings? = null
     private var grid: Grid<Character>? = null
     private var visibleH = 0
     private var w = 0f
     private var h = 0f
-    private var cellSize = 0f
     private val bgPaint = Paint().apply {
         style = Paint.Style.FILL
     }
@@ -68,6 +71,8 @@ class CharGridViewBrain {
         textAlign = Paint.Align.CENTER
         color = Color.WHITE
     }
+    private val cellSize: Float get() = settings?.charGridCellSize ?: 0f
+    private val origin: Point get() = settings?.charGridOrigin ?: Point(0, 0)
     private val textDY: Float get() = cellSize - MARGIN * 4
     private val textDX: Float get() = (cellSize - MARGIN) / 2
 
@@ -92,12 +97,13 @@ class CharGridViewBrain {
     }
 
     private fun updateDrawingSettings() {
-        if (grid != null && visibleH > 0 && w > 0 && h > 0) {
-            cellSize = floor(min(w.toDouble() / grid!!.w, h.toDouble() / visibleH)).toFloat()
+        if (settings != null && grid != null && visibleH > 0 && w > 0 && h > 0) {
+            val cellSize = floor(min(w.toDouble() / grid!!.w, h.toDouble() / visibleH)).toFloat()
             val totalW = cellSize * grid!!.w
             val x0 = (w - totalW) / 2
-            origin = Point(x0.toInt(), h.toInt())
             textPaint.textSize = cellSize
+            settings!!.charGridOrigin = Point(x0.toInt(), h.toInt())
+            settings!!.charGridCellSize = cellSize
         }
     }
 

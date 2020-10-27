@@ -7,7 +7,7 @@ import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.mock
 import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.gameLogic.models.Grid
-import mg.maniry.tenymana.ui.game.puzzle.views.CharGridViewBrain.Companion.MARGIN
+import mg.maniry.tenymana.ui.game.puzzle.views.CharGridViewControl.Companion.MARGIN
 import mg.maniry.tenymana.utils.TestRect
 import mg.maniry.tenymana.utils.TestTextShape
 import org.junit.Test
@@ -75,7 +75,7 @@ class CharGridViewTest {
         texts: List<TestTextShape>,
         rects: List<TestRect>
     ) {
-        val brain = CharGridViewBrain().apply {
+        val brain = CharGridViewControl().apply {
             onGridChanged(Grid(grid))
             onSizeChanged(width, height)
             onVisibleHChanged(visibleH)

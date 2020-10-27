@@ -17,15 +17,19 @@ class VerseView : View {
     constructor(context: Context, attributeSet: AttributeSet, defStyleAttr: Int) :
             super(context, attributeSet, defStyleAttr)
 
-    private val brain = VerseViewBrain()
+    private val control = VerseViewControl()
+
+    fun onSettingsChanged(settings: DrawingSettings) {
+        control.settings = settings
+    }
 
     fun onWordsChange(words: List<Word>?) {
-        brain.onWordsChange(words)
+        control.onWordsChange(words)
         requestLayout()
     }
 
     fun onColorsChanged(colors: GameColors) {
-        brain.onColorsChange(
+        control.onColorsChange(
             ContextCompat.getColor(context, colors.primary),
             ContextCompat.getColor(context, colors.accent)
         )
@@ -34,19 +38,19 @@ class VerseView : View {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val w = MeasureSpec.getSize(widthMeasureSpec)
-        brain.onMeasure(w)
-        setMeasuredDimension(w, brain.height)
+        control.onMeasure(w)
+        setMeasuredDimension(w, control.settings?.verseViewHeight ?: 0)
     }
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         if (canvas != null) {
-            brain.draw(canvas)
+            control.draw(canvas)
         }
     }
 }
 
-class VerseViewBrain {
+class VerseViewControl {
     companion object {
         const val W = 16
         const val H = 20
@@ -55,6 +59,7 @@ class VerseViewBrain {
         const val LINE_H = H + SPACING_V
     }
 
+    var settings: DrawingSettings? = null
     private var width = 0
     private var words: List<Word>? = null
     private var cells: List<List<Cell>> = listOf()
@@ -70,18 +75,20 @@ class VerseViewBrain {
         textSize = H.toFloat()
     }
 
-    val height: Int get() = (H + SPACING_V) * cells.size + SPACING_V
+    private var height = 0
     private val textDx = W / 2
     private val textDy = H - SPACING_V
 
     fun onMeasure(w: Int) {
         width = w
         computeCells()
+        updateHeight()
     }
 
     fun onWordsChange(words: List<Word>?) {
         this.words = words
         computeCells()
+        updateHeight()
     }
 
     fun onColorsChange(primary: Int, accent: Int) {
@@ -122,6 +129,10 @@ class VerseViewBrain {
         }
     }
 
+    private fun updateHeight() {
+        height = (H + SPACING_V) * cells.size + SPACING_V
+    }
+
     private fun updatePaints() {
         placeHolderPaint.color = primaryColor
         charPaint.color = accentColor
@@ -159,13 +170,13 @@ private data class Cell(
 private val Word.width: Int
     get() {
         if (isSeparator) {
-            return size * VerseViewBrain.W
+            return size * VerseViewControl.W
         }
         var w = 0
         for (i in 0 until size) {
-            w += VerseViewBrain.W
+            w += VerseViewControl.W
             if (i != size - 1) {
-                w += VerseViewBrain.SPACING_H
+                w += VerseViewControl.SPACING_H
             }
         }
         return w
@@ -173,8 +184,8 @@ private val Word.width: Int
 
 private fun Word.charWidthAt(i: Int): Int {
     return when {
-        isSeparator || i == size - 1 -> VerseViewBrain.W
-        else -> VerseViewBrain.W + VerseViewBrain.SPACING_H
+        isSeparator || i == size - 1 -> VerseViewControl.W
+        else -> VerseViewControl.W + VerseViewControl.SPACING_H
     }
 }
 
@@ -191,14 +202,14 @@ private fun MutableList<MutableList<Cell>>.appendAndWrap(word: Word, y0: Float, 
     var y = y0
     if (isEmpty() || last().isNotEmpty()) {
         add(mutableListOf())
-        y += VerseViewBrain.LINE_H
+        y += VerseViewControl.LINE_H
     }
     var row = last()
     var x = 0f
     for (i in 0 until word.size) {
-        if (x + VerseViewBrain.W > width) {
+        if (x + VerseViewControl.W > width) {
             x = 0f
-            y += VerseViewBrain.LINE_H
+            y += VerseViewControl.LINE_H
             row = mutableListOf()
             add(row)
         }
