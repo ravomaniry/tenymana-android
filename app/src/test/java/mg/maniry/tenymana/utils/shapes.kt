@@ -18,3 +18,16 @@ data class TestTextShape(
     val x: Float,
     val y: Float
 )
+
+class TestMotionEvent(
+    val action: Int,
+    val x: Float,
+    val y: Float
+)
+
+data class TestLine(
+    val x0: Float,
+    val y0: Float,
+    val x1: Float,
+    val y1: Float
+)
