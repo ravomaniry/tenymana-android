@@ -15,7 +15,7 @@ class CartesianTest {
     @Test
     fun downward() {
         testEq(1, 3, 2, 1, 2.5, 0.0)
-        testEq(1, 3, 2, 1, 3.0, -1.0)
+        testEq(0, 5, 2, 1, 3.0, -1.0)
     }
 
     private fun testEq(x0: Int, y0: Int, x1: Int, y1: Int, x: Double, y: Double) {
