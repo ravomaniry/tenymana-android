@@ -20,7 +20,7 @@
         tools:backgroundColorID="@{viewModel.colors.primary}">
 
         <ImageView
-            android:id="@+id/menuBtn"
+            android:id="@+id/puzzleHeaderMenuBtn"
             android:layout_width="36sp"
             android:layout_height="36sp"
             android:contentDescription="@string/app_menu_desc"
@@ -32,7 +32,7 @@
             android:layout_weight="1">
 
             <TextView
-                android:id="@+id/headerVerseDisplay"
+                android:id="@+id/puzzleHeaderVerseDisplay"
                 style="@style/AppTheme.ScoreTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
         </FrameLayout>
 
         <TextView
-            android:id="@+id/headerScore"
+            android:id="@+id/puzzleHeaderScore"
             style="@style/AppTheme.ScoreTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

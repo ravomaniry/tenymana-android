@@ -1,4 +1,4 @@
-package mg.maniry.tenymana.ui.game.paths
+package mg.maniry.tenymana.ui.game.solution
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import mg.maniry.tenymana.R
-import mg.maniry.tenymana.databinding.PathsScreenBinding
+import mg.maniry.tenymana.databinding.GameSolutionScreenBinding
 import mg.maniry.tenymana.ui.game.GameViewModel
 
-class PathsFragment(
+class SolutionFragment(
     private val gameViewModel: GameViewModel
 ) : Fragment() {
-    private lateinit var binding: PathsScreenBinding
+    private lateinit var binding: GameSolutionScreenBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,7 +25,7 @@ class PathsFragment(
     }
 
     private fun initBinding(inflater: LayoutInflater, container: ViewGroup?) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.paths_screen, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.game_solution_screen, container, false)
         binding.lifecycleOwner = this
         binding.viewModel = gameViewModel
     }

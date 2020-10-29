@@ -5,6 +5,7 @@
     <string name="app_action_done">Vita</string>
     <string name="app_action_games">Kilalao</string>
     <string name="app_action_play">Hilalao</string>
+    <string name="app_action_next">Tohizana</string>
 
     <!-- Loader-->
     <string name="loader_text">Jesosy Kristy no lalana sy fahamarinana ary fiainana.</string>

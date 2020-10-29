@@ -11,14 +11,15 @@ import androidx.lifecycle.ViewModelProvider
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.PuzzleScreenBinding
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
-import mg.maniry.tenymana.ui.app.SharedViewModels
+import mg.maniry.tenymana.ui.game.GameViewModel
 import mg.maniry.tenymana.ui.game.puzzle.header.PuzzleHeaderFragment
 import mg.maniry.tenymana.ui.game.puzzle.linkClear.LinkClearFragment
 import mg.maniry.tenymana.ui.game.puzzle.loader.PuzzleLoaderFragment
 import mg.maniry.tenymana.utils.mountChild
-import org.koin.android.ext.android.inject
 
-class PuzzleFragment : Fragment() {
+class PuzzleFragment(
+    private val gameViewModel: GameViewModel
+) : Fragment() {
     private lateinit var binding: PuzzleScreenBinding
     private lateinit var viewModel: PuzzleViewModel
 
@@ -42,8 +43,7 @@ class PuzzleFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        val vms: SharedViewModels by inject()
-        val fct = PuzzleViewModelFactory(vms.game)
+        val fct = PuzzleViewModelFactory(gameViewModel)
         viewModel = ViewModelProvider(this, fct).get(PuzzleViewModel::class.java)
     }
 

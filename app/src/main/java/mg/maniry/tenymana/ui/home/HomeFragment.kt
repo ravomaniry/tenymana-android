@@ -45,7 +45,10 @@ class HomeFragment : Fragment() {
     private fun observeNav() {
         viewModel.screen.observe(viewLifecycleOwner, Observer {
             val d = when (it) {
-                Screen.GAMES_LIST -> HomeFragmentDirections.homeToGames()
+                Screen.GAMES_LIST,
+                Screen.PATHS_LIST,
+                Screen.PUZZLE,
+                Screen.PUZZLE_SOLUTION -> HomeFragmentDirections.homeToGames()
                 else -> null
             }
             navigate(d)

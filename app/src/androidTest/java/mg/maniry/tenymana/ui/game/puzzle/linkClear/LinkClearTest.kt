@@ -5,14 +5,12 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
 import mg.maniry.tenymana.MainActivity
 import mg.maniry.tenymana.R
-import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.gameLogic.models.BibleVerse
 import mg.maniry.tenymana.helpers.*
 import mg.maniry.tenymana.repositories.BibleRepo
 import mg.maniry.tenymana.repositories.GameRepo
 import mg.maniry.tenymana.repositories.UserRepo
 import mg.maniry.tenymana.repositories.models.*
-import mg.maniry.tenymana.ui.app.SharedViewModels
 import mg.maniry.tenymana.utils.Random
 import org.junit.After
 import org.junit.Before
@@ -83,19 +81,13 @@ class LinkClearTest : KoinTest {
         shouldBeVisible(R.id.pathsGrid)
         // Go to puzzle screen:
         clickView(R.id.pathsNextBtn)
-        val viewModels: SharedViewModels by inject()
         //  - load verse and init puzzle
-        assertThat(viewModels.game.puzzle.value!!::class.java).isEqualTo(LinkClearPuzzle::class.java)
-        val verse = viewModels.game.puzzle.value!!.verse
-        assertThat(verse.book).isEqualTo("Matio")
-        assertThat(verse.chapter).isEqualTo(1)
-        assertThat(verse.verse).isEqualTo(10)
         assertThat(bibleRepo.getSingleFn.calledWith("Matio", 1, 10)).isTrue()
         //  - go to puzzle screen
         shouldBeVisible(R.id.puzzleScreen)
         // Display headers
-        shouldHaveText(R.id.headerVerseDisplay, text = "Matio 1:10")
-        shouldHaveText(R.id.headerScore, text = "5")
+        shouldHaveText(R.id.puzzleHeaderVerseDisplay, text = "Matio 1:10")
+        shouldHaveText(R.id.puzzleHeaderScore, text = "5")
         // Open LinkClear fragment
         shouldBeVisible(R.id.linkClearPuzzle)
     }
