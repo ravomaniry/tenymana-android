@@ -38,7 +38,7 @@ class PuzzleTest {
         val w0 = board.verse.words.map { it.copy() }
         for (l in lines) {
             testPropose(board, l, w0)
-            assertThat(board.score.value).isEqualTo(0)
+            assertThat(board.score).isEqualTo(0)
         }
     }
 
@@ -91,7 +91,7 @@ class PuzzleTest {
                 Move.xy(1, 1, 1, 0)
             )
         )
-        assertThat(puzzle.score.value).isEqualTo(10)
+        assertThat(puzzle.score).isEqualTo(10)
         // Invalid move
         testPropose(puzzle, Move.xy(0, 0, 1, 0), w1)
         // Resolve words[8]
@@ -105,7 +105,7 @@ class PuzzleTest {
             cleared = listOf(Point(1, 0), Point(2, 0)),
             diff = listOf()
         )
-        assertThat(puzzle.score.value).isEqualTo(12)
+        assertThat(puzzle.score).isEqualTo(12)
         // Resolve last word: words[2]
         val w3 = w2.toMutableList()
         w3[2] = w3[2].resolvedVersion
@@ -118,7 +118,7 @@ class PuzzleTest {
             diff = listOf(),
             completed = true
         )
-        assertThat(puzzle.score.value).isEqualTo(14 * 2) // total = 10 * (resolved words = 2)
+        assertThat(puzzle.score).isEqualTo(14 * 2) // total = 10 * (resolved words = 2)
     }
 
     @Test
@@ -163,7 +163,7 @@ class PuzzleTest {
                 Move.xy(2, 0, 1, 0)
             )
         )
-        assertThat(board.score.value).isEqualTo(2)
+        assertThat(board.score).isEqualTo(2)
     }
 
     @Test
@@ -182,8 +182,8 @@ class PuzzleTest {
         )
         val board = LinkClearPuzzle(grid, verse)
         board.propose(Move.xy(1, 1, 2, 1))
-        assertThat(board.completed.value).isTrue()
-        assertThat(board.score.value).isEqualTo(2)
+        assertThat(board.completed).isTrue()
+        assertThat(board.score).isEqualTo(2)
     }
 
     private fun testPropose(
@@ -200,7 +200,7 @@ class PuzzleTest {
         assertThat(board.verse.words).isEqualTo(words)
         assertThat(board.diff).isEqualTo(diff)
         assertThat(board.cleared).isEqualTo(cleared)
-        assertThat(board.completed.value).isEqualTo(completed)
+        assertThat(board.completed).isEqualTo(completed)
     }
 
     private fun ca(wI: Int, cI: Int) = CharAddress(wI, cI)

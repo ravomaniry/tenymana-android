@@ -64,10 +64,23 @@ class GameViewModel(
         }
     }
 
-    fun onResumeSession() {
+    fun resumeSession() {
         shouldNavigate = true
         appViewModel.screen.postValue(Screen.PUZZLE)
         initPuzzle()
+    }
+
+    fun onPuzzleCompleted() {
+        // go to solution screen
+    }
+
+    fun goToNextVerse() {
+        // save progress
+        // if journey is completed
+        //      - go to congrats screen
+        // if path is completed
+        //      - go to paths screen
+        // else load next verse and go to puzzle screen
     }
 
     init {

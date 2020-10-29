@@ -3,11 +3,11 @@ package mg.maniry.tenymana.ui.game.puzzle
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.google.common.truth.Truth.assertThat
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
-import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.gameLogic.models.BibleVerse
-import mg.maniry.tenymana.gameLogic.models.Grid
 import mg.maniry.tenymana.gameLogic.models.Move
 import mg.maniry.tenymana.gameLogic.models.Puzzle
 import mg.maniry.tenymana.repositories.models.Journey
@@ -15,7 +15,8 @@ import mg.maniry.tenymana.repositories.models.Path
 import mg.maniry.tenymana.repositories.models.Progress
 import mg.maniry.tenymana.repositories.models.Session
 import mg.maniry.tenymana.ui.game.GameViewModel
-import mg.maniry.tenymana.utils.addresses
+import mg.maniry.tenymana.utils.verifyNever
+import mg.maniry.tenymana.utils.verifyOnce
 import org.junit.Rule
 import org.junit.Test
 
@@ -25,14 +26,16 @@ class PuzzleViewModelTest {
 
     @Test
     fun gamePlay() {
-        val grid = Grid(
-            listOf(
-                addresses(0, 0, 0, 1, 0, 2),
-                addresses(2, 0, 2, 1, null, null)
-            )
-        )
         val verse = BibleVerse.fromText("Maio", 1, 1, "Abc de")
-        val puzzle: Puzzle = LinkClearPuzzle(grid, verse)
+        var score = 0
+        var proposeResult = false
+        var isComplete = false
+        val puzzle: Puzzle = mock {
+            on { this.verse } doReturn verse
+            on { this.score } doAnswer { score }
+            on { this.completed } doAnswer { isComplete }
+            on { propose(any()) } doAnswer { proposeResult }
+        }
         val puzzleLD = MutableLiveData(puzzle)
         val session = Session(
             Journey.empty("0").copy(paths = listOf(Path("path0", "...", "Matio", 1, 1, 10))),
@@ -48,7 +51,18 @@ class PuzzleViewModelTest {
         viewModel.propose(Move.xy(0, 0, 1, 0))
         assertThat(viewModel.invalidate.value).isFalse()
         // true
+        proposeResult = true
+        score = 10
         viewModel.propose(Move.xy(0, 0, 2, 0))
         assertThat(viewModel.invalidate.value).isTrue()
+        assertThat(viewModel.score.value).isEqualTo("10")
+        // Bonus tests here ...
+        // End
+        verifyNever(gameVm).onPuzzleCompleted()
+        // complete
+        isComplete = true
+        score = 20
+        viewModel.propose(Move.xy(0, 0, 1, 0))
+        verifyOnce(gameVm).onPuzzleCompleted()
     }
 }

@@ -1,6 +1,5 @@
 package mg.maniry.tenymana.gameLogic.linkClear
 
-import androidx.lifecycle.MutableLiveData
 import mg.maniry.tenymana.gameLogic.models.*
 import mg.maniry.tenymana.gameLogic.shared.grid.*
 import mg.maniry.tenymana.gameLogic.shared.words.resolveWith
@@ -28,11 +27,8 @@ class LinkClearPuzzle(
     val cleared: List<Point>? get() = _cleared
 
     private var usedHelp = false
-    private var _completed = false
-    override val completed = MutableLiveData(false)
-
-    private var _score = 0
-    override val score = MutableLiveData(0)
+    override var completed = false
+    override var score = 0
 
     override fun propose(move: Move): Boolean {
         reset()
@@ -42,7 +38,6 @@ class LinkClearPuzzle(
             if (indexes.isNotEmpty()) {
                 updateResult(selection.points)
                 incrementScore(indexes)
-                syncLiveData()
                 return true
             }
         }
@@ -50,23 +45,23 @@ class LinkClearPuzzle(
     }
 
     private fun reset() {
-        _completed = false
+        completed = false
         _cleared = null
         _diff = null
     }
 
     private fun updateResult(points: List<Point>) {
         val diff0 = _grid.clear(points, gravity)
-        _completed = words.resolved
-        if (!_completed && _grid.firstVisibleMatch(words, visibleH, direction) == null) {
+        completed = words.resolved
+        if (!completed && _grid.firstVisibleMatch(words, visibleH, direction) == null) {
             usedHelp = true
             val match = _grid.createMatch(words, diff0, visibleH, direction, gravity, random)
             if (match == null) {
-                _completed = true
+                completed = true
             } else {
                 _diff = match.diff
                 words[match.word] = words[match.word].resolvedVersion
-                _completed = words.resolved
+                completed = words.resolved
                 _cleared = points.toMutableList().apply { addAll(match.cleared) }.toSet().toList()
             }
         } else {
@@ -77,19 +72,10 @@ class LinkClearPuzzle(
 
     private fun incrementScore(resolved: List<Int>) {
         resolved.forEach {
-            _score += words[it].size
+            score += words[it].size
         }
-        if (_completed && !usedHelp) {
-            _score *= 2
-        }
-    }
-
-    private fun syncLiveData() {
-        if (score.value != _score) {
-            score.postValue(_score)
-        }
-        if (completed.value != _completed) {
-            completed.postValue(_completed)
+        if (completed && !usedHelp) {
+            score *= 2
         }
     }
 

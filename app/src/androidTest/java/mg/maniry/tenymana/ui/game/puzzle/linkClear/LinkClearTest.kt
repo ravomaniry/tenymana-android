@@ -99,9 +99,4 @@ class LinkClearTest : KoinTest {
         // Open LinkClear fragment
         shouldBeVisible(R.id.linkClearPuzzle)
     }
-
-    @Test
-    fun gamePlay() {
-
-    }
 }
