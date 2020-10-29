@@ -114,12 +114,7 @@ class CharGridInputControl {
 
     private fun handleEnd(x: Int, y: Int) {
         end = Point(x, y)
-        adjust()
         submit()
-    }
-
-    private fun adjust() {
-
     }
 
     private fun submit() {

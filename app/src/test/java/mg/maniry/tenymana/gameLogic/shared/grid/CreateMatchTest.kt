@@ -7,8 +7,8 @@ import com.nhaarman.mockitokotlin2.mock
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle.Companion.direction
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle.Companion.gravity
 import mg.maniry.tenymana.gameLogic.models.*
-import mg.maniry.tenymana.gameLogic.models.Grid
 import mg.maniry.tenymana.utils.Random
+import mg.maniry.tenymana.utils.chars
 import org.junit.Test
 
 class CreateMatchTest {
@@ -80,11 +80,5 @@ class CreateMatchTest {
             )
         )
         Truth.assertThat(res).isEqualTo(CreateMatchResult(revealedWord, clearedCells, diffRes))
-    }
-
-    private fun chars(vararg v: Char?): List<Character?> {
-        return v.map {
-            it?.let { Character(it.toUpperCase(), it.toLowerCase()) }
-        }
     }
 }

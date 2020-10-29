@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.PuzzleScreenLinkClearBinding
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
@@ -29,6 +30,7 @@ class LinkClearFragment(
         initVerseView()
         initCharsGridView()
         initCharsGridInput()
+        observeReRender()
         return binding.root
     }
 
@@ -62,5 +64,15 @@ class LinkClearFragment(
             onGridChanged(puzzle.grid)
             bindTo(puzzleViewModel.colors, ::onColorsChanged)
         }
+    }
+
+    private fun observeReRender() {
+        puzzleViewModel.invalidate.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                binding.charsGrid.invalidate()
+                binding.verseView.invalidate()
+                puzzleViewModel.invalidate.postValue(false)
+            }
+        })
     }
 }

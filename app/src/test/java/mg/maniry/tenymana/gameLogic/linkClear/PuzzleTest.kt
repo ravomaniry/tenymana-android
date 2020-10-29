@@ -3,8 +3,6 @@ package mg.maniry.tenymana.gameLogic.linkClear
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import mg.maniry.tenymana.gameLogic.models.*
-import mg.maniry.tenymana.gameLogic.models.Grid
-import mg.maniry.tenymana.gameLogic.models.MutableGrid
 import org.junit.Rule
 import org.junit.Test
 
@@ -15,7 +13,7 @@ class PuzzleTest {
     // | D
     // | E | I | J | . |
     // | A | B | C | . |
-    private val grid = Grid(
+    private fun grid() = Grid(
         listOf(
             listOf(ca(0, 0), ca(0, 1), ca(0, 2), null),
             listOf(ca(2, 1), ca(8, 0), ca(8, 1), null),
@@ -27,7 +25,7 @@ class PuzzleTest {
     @Test
     fun wrongReponses() {
         val verse = BibleVerse.fromText("Matio", 1, 1, "Abc de àbc fghi, ij")
-        val board = LinkClearPuzzle(grid, verse)
+        val board = LinkClearPuzzle(grid(), verse)
         val lines = listOf(
             Move.xy(0, 0, 2, 1),
             Move.xy(0, 0, 0, 1),
@@ -45,16 +43,43 @@ class PuzzleTest {
     }
 
     @Test
+    fun adjust() {
+        val verse = BibleVerse.fromText("Matio", 1, 1, "Abc de àbc fghi, ij")
+        val puzzle = LinkClearPuzzle(grid(), verse)
+        testPropose(
+            puzzle,
+            move = Move.xy(-2, 0, 5, 0),
+            words = puzzle.verse.words,
+            didUpdate = true,
+            cleared = listOf(Point(0, 0), Point(1, 0), Point(2, 0)),
+            diff = listOf(
+                Move.xy(0, 1, 0, 0),
+                Move.xy(0, 2, 0, 1),
+                Move.xy(2, 1, 2, 0),
+                Move.xy(1, 1, 1, 0)
+            )
+        )
+        testPropose(
+            puzzle,
+            move = Move.xy(0, 20, 0, -5),
+            words = puzzle.verse.words,
+            didUpdate = true,
+            cleared = listOf(Point(0, 1), Point(0, 0)),
+            diff = listOf(Move.xy(1, 0, 0, 0), Move.xy(2, 0, 1, 0))
+        )
+    }
+
+    @Test
     fun basic() {
         val verse = BibleVerse.fromText("Matio", 1, 1, "Abc de àbc fghi, ij")
-        val node = LinkClearPuzzle(grid, verse)
+        val puzzle = LinkClearPuzzle(grid(), verse)
         // Resolve rows[0]: words[0] && words[4]
-        val w1 = node.verse.words.toMutableList()
+        val w1 = puzzle.verse.words.toMutableList()
         w1[0] = w1[0].resolvedVersion
         w1[4] = w1[4].resolvedVersion
         w1[6] = w1[6].resolvedVersion // automatically resolved
         testPropose(
-            board = node,
+            board = puzzle,
             move = Move.xy(0, 0, 2, 0),
             words = w1,
             didUpdate = true,
@@ -66,26 +91,26 @@ class PuzzleTest {
                 Move.xy(1, 1, 1, 0)
             )
         )
-        assertThat(node.score.value).isEqualTo(10)
+        assertThat(puzzle.score.value).isEqualTo(10)
         // Invalid move
-        testPropose(node, Move.xy(0, 0, 1, 0), w1)
+        testPropose(puzzle, Move.xy(0, 0, 1, 0), w1)
         // Resolve words[8]
         val w2 = w1.toMutableList()
         w2[8] = w2[8].resolvedVersion
         testPropose(
-            node,
+            puzzle,
             move = Move.xy(1, 0, 3, 0),
             words = w2,
             didUpdate = true,
             cleared = listOf(Point(1, 0), Point(2, 0)),
             diff = listOf()
         )
-        assertThat(node.score.value).isEqualTo(12)
+        assertThat(puzzle.score.value).isEqualTo(12)
         // Resolve last word: words[2]
         val w3 = w2.toMutableList()
         w3[2] = w3[2].resolvedVersion
         testPropose(
-            node,
+            puzzle,
             Move.xy(0, 2, 0, 0),
             w3,
             didUpdate = true,
@@ -93,7 +118,7 @@ class PuzzleTest {
             diff = listOf(),
             completed = true
         )
-        assertThat(node.score.value).isEqualTo(14 * 2) // total = 10 * (resolved words = 2)
+        assertThat(puzzle.score.value).isEqualTo(14 * 2) // total = 10 * (resolved words = 2)
     }
 
     @Test

@@ -56,6 +56,22 @@ class CharGridInputTest {
         )
     }
 
+    @Test
+    fun diagonal_outsideArea() {
+        testInput(
+            gridWidth = 3,
+            origin = Point(50, 100),
+            cellSize = 10f,
+            events = listOf(
+                TestMotionEvent(ACTION_MOVE, 45f, 106f),
+                TestMotionEvent(ACTION_MOVE, 92f, 55f),
+                TestMotionEvent(ACTION_UP, 92f, 55f)
+            ),
+            lines = listOf(TestLine(45f, 106f, 92f, 55f)),
+            move = Move.xy(-1, -1, 4, 4)
+        )
+    }
+
     private fun testInput(
         gridWidth: Int,
         origin: Point,

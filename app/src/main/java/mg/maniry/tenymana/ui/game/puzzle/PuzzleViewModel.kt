@@ -13,6 +13,7 @@ import mg.maniry.tenymana.ui.game.colors.LinkClearColors
 class PuzzleViewModel(
     private val gameViewModel: GameViewModel
 ) : ViewModel() {
+    val puzzle = gameViewModel.puzzle
     val colors: LiveData<GameColors> = Transformations.map(gameViewModel.puzzle) {
         when (it) {
             is LinkClearPuzzle -> LinkClearColors()
@@ -22,19 +23,15 @@ class PuzzleViewModel(
 
     private val _score = MutableLiveData<Int>()
     val score: LiveData<String> = Transformations.map(_score) { it.toString() }
+    private val scoreSyncObserver = Observer<Int> {
+        _score.postValue(it + gameViewModel.session.value!!.progress.totalScore)
+    }
 
     val displayVerse = Transformations.map(gameViewModel.puzzle) {
         "${it?.verse?.book} ${it?.verse?.chapter}:${it?.verse?.verse}"
     }
-
-    val puzzle = gameViewModel.puzzle
-
     val words: LiveData<List<Word>?> = Transformations.map(gameViewModel.puzzle) {
         it?.verse?.words
-    }
-
-    private val scoreSyncObserver = Observer<Int> {
-        _score.postValue(it + gameViewModel.session.value!!.progress.totalScore)
     }
 
     private val puzzleStateObserver = Observer<Puzzle?> {
@@ -43,13 +40,17 @@ class PuzzleViewModel(
         }
     }
 
+    val invalidate = MutableLiveData(false)
+
     private fun observeScore() {
         gameViewModel.puzzle.value!!.score.observeForever(scoreSyncObserver)
     }
 
     fun propose(move: Move) {
-        gameViewModel.puzzle.value?.propose(move)
-        // re-render if true ...
+        val didUpdate = gameViewModel.puzzle.value!!.propose(move)
+        if (didUpdate) {
+            invalidate.postValue(true)
+        }
     }
 
     init {
