@@ -12,8 +12,9 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.HomeScreenBinding
-import mg.maniry.tenymana.ui.app.AppViewModel
 import mg.maniry.tenymana.ui.app.Screen
+import mg.maniry.tenymana.ui.app.SharedViewModels
+import org.koin.android.ext.android.inject
 
 class HomeFragment : Fragment() {
     private lateinit var viewModel: HomeViewModel
@@ -31,8 +32,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        val appVM = ViewModelProvider(this).get(AppViewModel::class.java)
-        val fact = HomeViewModelFactory(appVM)
+        val viewModels: SharedViewModels by inject()
+        val fact = HomeViewModelFactory(viewModels.app)
         viewModel = ViewModelProvider(this, fact).get(HomeViewModel::class.java)
     }
 

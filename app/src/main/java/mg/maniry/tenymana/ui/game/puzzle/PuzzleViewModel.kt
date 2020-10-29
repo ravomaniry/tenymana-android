@@ -1,12 +1,10 @@
 package mg.maniry.tenymana.ui.game.puzzle
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.gameLogic.models.Move
 import mg.maniry.tenymana.gameLogic.models.Word
+import mg.maniry.tenymana.repositories.models.Session
 import mg.maniry.tenymana.ui.game.GameViewModel
 import mg.maniry.tenymana.ui.game.colors.DefaultColors
 import mg.maniry.tenymana.ui.game.colors.GameColors
@@ -56,4 +54,18 @@ class PuzzleViewModel(
         _score.postValue((puzzle.value!!.score + totalScore).toString())
     }
 
+    private val initScore = Observer<Session?> {
+        if (it != null) {
+            _score.postValue((it.progress.totalScore).toString())
+        }
+    }
+
+    init {
+        gameViewModel.session.observeForever(initScore)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        gameViewModel.session.removeObserver(initScore)
+    }
 }
