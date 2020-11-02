@@ -11,4 +11,9 @@ class UserRepoMock : UserRepo {
 
     val userM = MutableLiveData<User?>(null)
     override val user: LiveData<User?> = userM
+
+    val setupFn = Fn<Unit>()
+    override suspend fun setup() {
+        setupFn()
+    }
 }

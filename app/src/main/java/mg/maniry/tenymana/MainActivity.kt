@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import mg.maniry.tenymana.repositories.BibleRepo
+import mg.maniry.tenymana.repositories.UserRepo
 import mg.maniry.tenymana.ui.app.AppViewModel
 import mg.maniry.tenymana.ui.app.AppViewModelFactory
 import mg.maniry.tenymana.ui.app.SharedViewModels
@@ -18,8 +19,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun initSingletons() {
         val bibleRepo: BibleRepo by inject()
+        val userRepo: UserRepo by inject()
         val viewModels: SharedViewModels by inject()
-        val factory = AppViewModelFactory(bibleRepo)
+        val factory = AppViewModelFactory(bibleRepo, userRepo)
         viewModels.app = ViewModelProvider(this, factory).get(AppViewModel::class.java)
     }
 }

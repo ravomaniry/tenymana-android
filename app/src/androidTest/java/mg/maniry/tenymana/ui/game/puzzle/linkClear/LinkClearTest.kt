@@ -79,8 +79,9 @@ class LinkClearTest : KoinTest {
             )
         )
         ActivityScenario.launch(MainActivity::class.java)
-        // Init bible repo
+        // Init repositories
         assertThat(bibleRepo.setupFn.called).isTrue()
+        assertThat(userRepo.setupFn.called).isTrue()
         // Go to game screen
         clickView(R.id.goToGameBtn)
         shouldBeVisible(R.id.gamesList)
