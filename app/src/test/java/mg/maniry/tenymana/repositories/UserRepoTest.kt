@@ -10,6 +10,7 @@ import mg.maniry.tenymana.api.FsHelper
 import mg.maniry.tenymana.repositories.models.User
 import mg.maniry.tenymana.utils.DateTimeUtil
 import mg.maniry.tenymana.utils.Random
+import mg.maniry.tenymana.utils.verifyNever
 import mg.maniry.tenymana.utils.verifyOnce
 import org.junit.Rule
 import org.junit.Test
@@ -79,14 +80,13 @@ class UserRepoTest {
                     SavedUsers(repoUsers),
                     SavedUsers::class.java
                 )
+            } else {
+                verifyNever(fs).writeJson(
+                    "users.json",
+                    SavedUsers(repoUsers),
+                    SavedUsers::class.java
+                )
             }
-//            else {
-//                verifyNever(fs).writeJson(
-//                    "users.json",
-//                    SavedUsers(repoUsers),
-//                    SavedUsers::class.java
-//                )
-//            }
         }
     }
 }
