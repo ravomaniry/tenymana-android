@@ -12,8 +12,9 @@ data class SessionPosition(
 fun Session.resume(): SessionPosition {
     var pathIndex = 0
     var verseIndex = 0
-    var remainingScore = progress.scores.size
-    for (path in journey.paths) {
+    for (i in journey.paths.indices) {
+        val path = journey.paths[i]
+        var remainingScore = if (progress.scores.size > i) progress.scores[i].size else 0
         val len = path.end - path.start + 1
         if (remainingScore >= len) {
             remainingScore -= len

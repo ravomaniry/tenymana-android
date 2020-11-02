@@ -138,6 +138,115 @@ class GameViewModelTest {
         }
     }
 
+    @Test
+    fun resumeNewGame() {
+        testResume(
+            paths = listOf(
+                Path("path 0", "", "Jaona", 2, 2, 6),
+                Path("path 0", "", "Marka", 1, 1, 10)
+            ),
+            scores = listOf(),
+            firstVerse = BibleVerse.fromText("Jaona", 2, 2, "")
+        )
+    }
+
+    @Test
+    fun resumeUncompletePath_path0() {
+        testResume(
+            paths = listOf(
+                Path("path 0", "", "Jaona", 2, 2, 6),
+                Path("path 0", "", "Marka", 1, 1, 10)
+            ),
+            scores = listOf(listOf(2, 3)),
+            firstVerse = BibleVerse.fromText("Jaona", 2, 4, "")
+        )
+    }
+
+    @Test
+    fun resumeUncompletePath_path1() {
+        testResume(
+            paths = listOf(
+                Path("path 0", "", "Jaona", 2, 2, 6),
+                Path("path 0", "", "Marka", 1, 1, 10)
+            ),
+            scores = listOf(listOf(2, 3, 4, 5, 6), listOf(1)),
+            firstVerse = BibleVerse.fromText("Marka", 1, 2, "")
+        )
+    }
+
+    @Test
+    fun resumeNewPath() {
+        testResume(
+            paths = listOf(
+                Path("path 0", "", "Jaona", 2, 2, 6),
+                Path("path 0", "", "Marka", 1, 1, 10)
+            ),
+            scores = listOf(listOf(2, 3, 4, 5, 6)),
+            firstVerse = BibleVerse.fromText("Marka", 1, 1, "")
+        )
+    }
+
+    @Test
+    fun resumeCompletedGame() {
+        testResume(
+            paths = listOf(
+                Path("path 0", "", "Jaona", 2, 2, 6),
+                Path("path 0", "", "Marka", 1, 1, 3)
+            ),
+            scores = listOf(listOf(1, 2, 3, 4, 5), listOf(1, 2, 3)),
+            firstVerse = BibleVerse.fromText("Jaona", 2, 2, "")
+        )
+        testResume(
+            paths = listOf(
+                Path("path 0", "", "Jaona", 1, 1, 5),
+                Path("path 0", "", "Marka", 1, 4, 6)
+            ),
+            scores = listOf(listOf(1, 2, 3, 4, 5), listOf(1, 2, 3)),
+            firstVerse = BibleVerse.fromText("Jaona", 1, 1, "")
+        )
+    }
+
+    private fun testResume(
+        paths: List<Path>,
+        scores: List<List<Int>>,
+        firstVerse: BibleVerse
+    ) {
+        runBlocking {
+            // App viewmodel
+            val appViewModel: AppViewModel = mock {
+                on { this.screen } doReturn MutableLiveData(Screen.GAMES_LIST)
+            }
+            // User repo
+            val user = MutableLiveData<User>(User("1", "abc"))
+            val userRepo: UserRepo = mock {
+                on { this.user } doReturn user
+            }
+            // Game repo
+            val session = Session(
+                Journey(id = "ab", paths = paths),
+                Progress("ab", totalScore = 80, scores = scores)
+            )
+            val sessions = MutableLiveData<List<Session>>()
+            val gameRepo: GameRepo = mock {
+                on { this.sessions } doReturn sessions
+                onBlocking { initialize("1") } doAnswer { sessions.postValue(listOf(session)) }
+            }
+            // bible repo
+            val bibleRepo: BibleRepo = mock {
+                onBlocking { getSingle(any(), any(), any()) } doReturn firstVerse
+            }
+            val random = RandomImpl()
+            val viewModel =
+                GameViewModel(appViewModel, userRepo, gameRepo, bibleRepo, random, TestDispatchers)
+            viewModel.apply {
+                onSessionClick(session)
+                continueSession()
+            }
+            // query correct verse
+            verifyOnce(bibleRepo).getSingle(firstVerse.book, firstVerse.chapter, firstVerse.verse)
+        }
+    }
+
     private fun Puzzle.setScore(n: Int) {
         (this as LinkClearPuzzle).score = n
     }
