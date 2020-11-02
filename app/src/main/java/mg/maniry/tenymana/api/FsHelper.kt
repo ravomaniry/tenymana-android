@@ -1,13 +1,13 @@
 package mg.maniry.tenymana.api
 
-import android.content.res.AssetManager
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import mg.maniry.tenymana.utils.AssetWrapper
 
 interface FsHelper {
-    val assetManager: AssetManager
+    val assets: AssetWrapper
     suspend fun exists(path: String): Boolean
     suspend fun <T> readJson(path: String, type: Class<T>): T?
     suspend fun <T> writeJson(path: String, data: T, type: Class<T>)
@@ -17,13 +17,12 @@ interface FsHelper {
 }
 
 class FsHelperImpl(
-    private val fileApi: FileApi
+    private val fileApi: FileApi,
+    override val assets: AssetWrapper
 ) : FsHelper {
     private val json = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
         .build()
-
-    override val assetManager: AssetManager = fileApi.assetsManager
 
     override suspend fun exists(path: String): Boolean {
         return withContext(Dispatchers.IO) {

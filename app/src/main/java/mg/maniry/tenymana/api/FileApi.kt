@@ -1,11 +1,9 @@
 package mg.maniry.tenymana.api
 
 import android.content.Context
-import android.content.res.AssetManager
 import java.io.File
 
 interface FileApi {
-    val assetsManager: AssetManager
     fun exists(path: String): Boolean
     fun readText(path: String): String?
     fun writeText(path: String, content: String)
@@ -14,7 +12,6 @@ interface FileApi {
 
 class FileApiImpl(context: Context) : FileApi {
     private val rootDir = context.filesDir
-    override val assetsManager: AssetManager = context.assets
 
     override fun exists(path: String): Boolean {
         return File(rootDir, path).exists()

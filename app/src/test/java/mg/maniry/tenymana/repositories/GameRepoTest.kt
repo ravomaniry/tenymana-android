@@ -25,14 +25,16 @@ class GameRepoTest {
             onBlocking { readJson("123/progress/1.json", Progress::class.java) } doReturn p()
             onBlocking { readJson("123/progress/2.json", Progress::class.java) } doReturn null
         }
-        val repo = GameRepoImpl(fs)
-        runBlocking { repo.initialize("123") }
-        assertThat(repo.sessions.value).isEqualTo(
-            listOf(
-                Session(j("1"), p()),
-                Session(j("2"), Progress("2"))
+        runBlocking {
+            val repo = GameRepoImpl(fs)
+            repo.initialize("123")
+            assertThat(repo.sessions.value).isEqualTo(
+                listOf(
+                    Session(j("1"), p()),
+                    Session(j("2"), Progress("2"))
+                )
             )
-        )
+        }
     }
 
     private fun j(id: String) = Journey(id, "", "", emptyList())

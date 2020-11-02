@@ -6,12 +6,12 @@ import mg.maniry.tenymana.api.FsHelper
 
 suspend fun FsHelper.copyAssets(dir: String) {
     withContext(Dispatchers.IO) {
-        val names = assetManager.list(dir)
+        val names = assets.list(dir)
         if (names != null) {
             for (name in names) {
                 val path = "$dir/$name"
                 if (!exists(path)) {
-                    val content = assetManager.open(path).bufferedReader().use { it.readText() }
+                    val content = assets.readText(path)
                     writeText(path, content)
                 }
             }

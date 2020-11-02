@@ -7,10 +7,7 @@ import mg.maniry.tenymana.gameLogic.shared.puzzleBuilder.PuzzleBuilder
 import mg.maniry.tenymana.gameLogic.shared.puzzleBuilder.PuzzleBuilderImpl
 import mg.maniry.tenymana.repositories.*
 import mg.maniry.tenymana.ui.app.SharedViewModels
-import mg.maniry.tenymana.utils.DateTimeUtilImpl
-import mg.maniry.tenymana.utils.KDispatchers
-import mg.maniry.tenymana.utils.RandomImpl
-import mg.maniry.tenymana.utils.RealDispatchers
+import mg.maniry.tenymana.utils.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -23,4 +20,4 @@ val appModules = module {
     single<KDispatchers> { RealDispatchers }
 }
 
-private fun fs(context: Context) = FsHelperImpl(FileApiImpl(context))
+private fun fs(context: Context) = FsHelperImpl(FileApiImpl(context), AssetWrapperImpl(context))
