@@ -5,16 +5,21 @@ import mg.maniry.tenymana.repositories.models.Journey
 import mg.maniry.tenymana.repositories.models.Progress
 import mg.maniry.tenymana.repositories.models.Session
 
-private class Directories(userID: String) {
-    val journey = "$userID/journey"
-    val progress = "$userID/progress"
+class Directories(userID: String) {
+    val journey = "$userID/$JOURNEY_DIR"
+    val progress = "$userID/$PROGRESS_DIR"
+
+    companion object {
+        const val JOURNEY_DIR = "journey"
+        const val PROGRESS_DIR = "progress"
+    }
 }
 
 class SessionDao(
     userID: String,
     private val fs: FsHelper
 ) {
-    private val dirs = Directories(userID)
+    val dirs = Directories(userID)
 
     suspend fun getSessions(): List<Session> {
         val sessions = mutableListOf<Session>()

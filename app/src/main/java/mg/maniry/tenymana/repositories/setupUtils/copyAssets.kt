@@ -4,15 +4,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mg.maniry.tenymana.api.FsHelper
 
-suspend fun FsHelper.copyAssets(dir: String) {
+suspend fun FsHelper.copyAssets(srcDir: String, destDir: String) {
     withContext(Dispatchers.IO) {
-        val names = assets.list(dir)
+        val names = assets.list(srcDir)
         if (names != null) {
             for (name in names) {
-                val path = "$dir/$name"
-                if (!exists(path)) {
-                    val content = assets.readText(path)
-                    writeText(path, content)
+                val srcPath = "$srcDir/$name"
+                val destPath = "$destDir/$name"
+                if (!exists(srcPath)) {
+                    val content = assets.readText(srcPath)
+                    writeText(destPath, content)
                 }
             }
         }

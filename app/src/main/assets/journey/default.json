@@ -1,0 +1,15 @@
+{
+  "id": "default",
+  "title": "Matio toko 1",
+  "description": "Matio toko voalohany",
+  "paths": [
+    {
+      "name": "Test",
+      "description": "Test",
+      "book": "Matio",
+      "chapter": 1,
+      "start": 1,
+      "end": 10
+    }
+  ]
+}

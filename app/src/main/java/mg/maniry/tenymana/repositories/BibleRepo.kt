@@ -16,7 +16,8 @@ interface BibleRepo {
 class BibleRepoImpl(
     private val fs: FsHelper
 ) : BibleRepo {
-    private val setupFileName = "bible/_setup.txt"
+    private val dirName = "bible"
+    private val setupFileName = "$dirName/_setup.txt"
     private val dao = BibleDao(fs)
 
     override suspend fun get(book: String, chapter: Int, minV: Int, maxV: Int): List<BibleVerse> {
@@ -31,7 +32,7 @@ class BibleRepoImpl(
     override suspend fun setup() {
         withContext(Dispatchers.IO) {
             if (!fs.exists(setupFileName)) {
-                fs.copyAssets("bible")
+                fs.copyAssets(dirName, dirName)
                 fs.writeText(setupFileName, "done")
             }
         }
