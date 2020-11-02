@@ -6,6 +6,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import mg.maniry.tenymana.api.FsHelper
 import mg.maniry.tenymana.repositories.dao.SessionDao
+import mg.maniry.tenymana.repositories.models.Journey
+import mg.maniry.tenymana.repositories.models.Path
 import mg.maniry.tenymana.repositories.models.Progress
 import mg.maniry.tenymana.repositories.models.Session
 
@@ -23,6 +25,16 @@ class GameRepoImpl(
 
     override suspend fun initialize(userID: String) {
         dao = SessionDao(userID, fs)
+        val j = Journey(
+            "test",
+            "Test",
+            "Journey test",
+            paths = listOf(
+                Path("Part 1", "...", "Matio", 1, 1, 10),
+                Path("Part 1", "...", "Matio", 1, 11, 20)
+            )
+        )
+        fs.writeJson("0/journey/test.json", j, Journey::class.java)
         sessions.postValue(dao.getSessions())
     }
 

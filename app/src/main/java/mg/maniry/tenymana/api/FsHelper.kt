@@ -5,7 +5,6 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.io.OutputStream
 
 interface FsHelper {
     val assetManager: AssetManager
@@ -15,7 +14,6 @@ interface FsHelper {
     suspend fun writeText(path: String, content: String)
     suspend fun readText(path: String): String?
     suspend fun list(path: String): List<String>
-    fun newOutputStream(path: String): OutputStream
 }
 
 class FsHelperImpl(
@@ -27,11 +25,9 @@ class FsHelperImpl(
 
     override val assetManager: AssetManager = fileApi.assetsManager
 
-    override fun newOutputStream(path: String) = fileApi.newOutStream(path)
-
     override suspend fun exists(path: String): Boolean {
         return withContext(Dispatchers.IO) {
-            return@withContext fileApi.exists(path)
+            fileApi.exists(path)
         }
     }
 
@@ -42,7 +38,7 @@ class FsHelperImpl(
 
     override suspend fun readText(path: String): String? {
         return withContext(Dispatchers.IO) {
-            return@withContext fileApi.readText(path)
+            fileApi.readText(path)
         }
     }
 

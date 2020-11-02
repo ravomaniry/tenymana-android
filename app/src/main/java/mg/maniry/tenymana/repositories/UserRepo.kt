@@ -12,4 +12,8 @@ interface UserRepo {
 class UserRepoImpl : UserRepo {
     override val users = MutableLiveData<List<User>?>(null)
     override val user = MutableLiveData<User?>(null)
+
+    init {
+        user.postValue(User("0", "Marc"))
+    }
 }

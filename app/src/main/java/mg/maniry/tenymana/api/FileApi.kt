@@ -3,7 +3,6 @@ package mg.maniry.tenymana.api
 import android.content.Context
 import android.content.res.AssetManager
 import java.io.File
-import java.io.OutputStream
 
 interface FileApi {
     val assetsManager: AssetManager
@@ -11,7 +10,6 @@ interface FileApi {
     fun readText(path: String): String?
     fun writeText(path: String, content: String)
     fun readDir(path: String): List<String>
-    fun newOutStream(path: String): OutputStream
 }
 
 class FileApiImpl(context: Context) : FileApi {
@@ -28,16 +26,24 @@ class FileApiImpl(context: Context) : FileApi {
     }
 
     override fun writeText(path: String, content: String) {
-        val f = File(rootDir, path)
-        f.writeText(content)
+        File(rootDir, path).apply {
+            mkParentDirs()
+            if (exists()) {
+                delete()
+            }
+            this.writeText(content)
+        }
     }
 
     override fun readDir(path: String): List<String> {
         val dir = File(rootDir, path)
         return dir.list()?.toList() ?: emptyList()
     }
+}
 
-    override fun newOutStream(path: String): OutputStream {
-        return File(rootDir, path).outputStream()
+private fun File.mkParentDirs() {
+    val p = parent
+    if (p != null) {
+        File(p).mkdirs()
     }
 }
