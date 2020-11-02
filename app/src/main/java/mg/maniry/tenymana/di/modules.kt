@@ -7,13 +7,15 @@ import mg.maniry.tenymana.gameLogic.shared.puzzleBuilder.PuzzleBuilder
 import mg.maniry.tenymana.gameLogic.shared.puzzleBuilder.PuzzleBuilderImpl
 import mg.maniry.tenymana.repositories.*
 import mg.maniry.tenymana.ui.app.SharedViewModels
+import mg.maniry.tenymana.utils.DateTimeUtilImpl
 import mg.maniry.tenymana.utils.KDispatchers
+import mg.maniry.tenymana.utils.RandomImpl
 import mg.maniry.tenymana.utils.RealDispatchers
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val appModules = module {
-    single<UserRepo> { UserRepoImpl() }
+    single<UserRepo> { UserRepoImpl(fs(androidContext()), RandomImpl(), DateTimeUtilImpl()) }
     single<GameRepo> { GameRepoImpl(fs(androidContext())) }
     single { SharedViewModels() }
     single<PuzzleBuilder> { PuzzleBuilderImpl() }
