@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import mg.maniry.tenymana.R
+import mg.maniry.tenymana.gameLogic.shared.puzzleBuilder.PuzzleBuilder
 import mg.maniry.tenymana.repositories.BibleRepo
 import mg.maniry.tenymana.repositories.GameRepo
 import mg.maniry.tenymana.repositories.UserRepo
@@ -18,7 +19,6 @@ import mg.maniry.tenymana.ui.game.paths.PathsFragment
 import mg.maniry.tenymana.ui.game.puzzle.PuzzleFragment
 import mg.maniry.tenymana.ui.game.solution.SolutionFragment
 import mg.maniry.tenymana.utils.KDispatchers
-import mg.maniry.tenymana.utils.Random
 import mg.maniry.tenymana.utils.mountChild
 import org.koin.android.ext.android.inject
 
@@ -40,11 +40,17 @@ class GameFragment : Fragment() {
         val viewModels: SharedViewModels by inject()
         val userRepo: UserRepo by inject()
         val gameRepo: GameRepo by inject()
-        val random: Random by inject()
+        val puzzleBuilder: PuzzleBuilder by inject()
         val bibleRepo: BibleRepo by inject()
         val dispatchers: KDispatchers by inject()
-        val fct =
-            GameViewModelFactory(viewModels.app, userRepo, gameRepo, bibleRepo, random, dispatchers)
+        val fct = GameViewModelFactory(
+            viewModels.app,
+            userRepo,
+            gameRepo,
+            bibleRepo,
+            puzzleBuilder,
+            dispatchers
+        )
         viewModel = ViewModelProvider(this, fct).get(GameViewModel::class.java)
     }
 

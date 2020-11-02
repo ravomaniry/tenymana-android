@@ -6,12 +6,12 @@ import com.google.common.truth.Truth.assertThat
 import mg.maniry.tenymana.MainActivity
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.gameLogic.models.BibleVerse
+import mg.maniry.tenymana.gameLogic.shared.puzzleBuilder.PuzzleBuilder
 import mg.maniry.tenymana.helpers.*
 import mg.maniry.tenymana.repositories.BibleRepo
 import mg.maniry.tenymana.repositories.GameRepo
 import mg.maniry.tenymana.repositories.UserRepo
 import mg.maniry.tenymana.repositories.models.*
-import mg.maniry.tenymana.utils.Random
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -38,12 +38,12 @@ class LinkClearTest : KoinTest {
         val inUserRepo: UserRepo by inject()
         val userRepo = inUserRepo as UserRepoMock
         userRepo.userM.postValue(User("1", ""))
-        // random (always pick first)
-        val inRandom: Random by inject()
-        val random = inRandom as RandomMock
-        random.intFn.mockImplementation { it[0] as Int }
-        @Suppress("unchecked_cast")
-        random.fromFn.mockImplementation { (it[0] as List<Any>)[0] }
+        // Puzzle builder
+        val puzzle = LinkClearPuzzleMock(BibleVerse.fromText("Matio", 1, 10, "Ny")).apply {
+            proposeFn.mockReturnValue(true)
+        }
+        val puzzleBuilder: PuzzleBuilder by inject()
+        (puzzleBuilder as PuzzleBuilderMock).linkClearFn.mockReturnValue(puzzle)
         // Bible repo
         val inBibleRepo: BibleRepo by inject()
         val bibleRepo = inBibleRepo as BibleRepoMock

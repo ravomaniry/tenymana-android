@@ -25,7 +25,7 @@ class PuzzleTest {
     @Test
     fun wrongReponses() {
         val verse = BibleVerse.fromText("Matio", 1, 1, "Abc de àbc fghi, ij")
-        val board = LinkClearPuzzle(grid(), verse)
+        val board = LinkClearPuzzleImpl(grid(), verse)
         val lines = listOf(
             Move.xy(0, 0, 2, 1),
             Move.xy(0, 0, 0, 1),
@@ -45,7 +45,7 @@ class PuzzleTest {
     @Test
     fun adjust() {
         val verse = BibleVerse.fromText("Matio", 1, 1, "Abc de àbc fghi, ij")
-        val puzzle = LinkClearPuzzle(grid(), verse)
+        val puzzle = LinkClearPuzzleImpl(grid(), verse)
         testPropose(
             puzzle,
             move = Move.xy(-2, 0, 5, 0),
@@ -72,7 +72,7 @@ class PuzzleTest {
     @Test
     fun basic() {
         val verse = BibleVerse.fromText("Matio", 1, 1, "Abc de àbc fghi, ij")
-        val puzzle = LinkClearPuzzle(grid(), verse)
+        val puzzle = LinkClearPuzzleImpl(grid(), verse)
         // Resolve rows[0]: words[0] && words[4]
         val w1 = puzzle.verse.words.toMutableList()
         w1[0] = w1[0].resolvedVersion
@@ -134,7 +134,7 @@ class PuzzleTest {
                 listOf(ca(4, 3), null, null, null)
             )
         )
-        val board = LinkClearPuzzle(grid, verse)
+        val board = LinkClearPuzzleImpl(grid, verse)
         board.propose(Move.xy(0, 0, 1, 0))
         assertThat(board.cleared).isEqualTo(
             listOf(
@@ -180,7 +180,7 @@ class PuzzleTest {
                 listOf(null, null, null, null)
             )
         )
-        val board = LinkClearPuzzle(grid, verse)
+        val board = LinkClearPuzzleImpl(grid, verse)
         board.propose(Move.xy(1, 1, 2, 1))
         assertThat(board.completed).isTrue()
         assertThat(board.score).isEqualTo(2)

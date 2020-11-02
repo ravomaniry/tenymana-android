@@ -22,7 +22,7 @@ fun buildLinkGrid(verse: BibleVerse, random: Random, width: Int, visibleH: Int):
         val originsIt = InsideOutIterator.random(origins, random)
         while (originsIt.hasNext && !persisted) {
             val o = originsIt.next()
-            val dirs = grid.calcDirections(LinkClearPuzzle.direction, o, word, visibleH, gravity)
+            val dirs = grid.calcDirections(LinkClearPuzzle.directions, o, word, visibleH, gravity)
             if (dirs.isNotEmpty()) {
                 val dir = random.from(dirs)
                 grid.placeWord(o, dir, word, gravity)

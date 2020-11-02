@@ -11,14 +11,13 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.gameLogic.models.BibleVerse
-import mg.maniry.tenymana.gameLogic.models.Puzzle
+import mg.maniry.tenymana.gameLogic.shared.puzzleBuilder.PuzzleBuilder
 import mg.maniry.tenymana.repositories.BibleRepo
 import mg.maniry.tenymana.repositories.GameRepo
 import mg.maniry.tenymana.repositories.UserRepo
 import mg.maniry.tenymana.repositories.models.*
 import mg.maniry.tenymana.ui.app.AppViewModel
 import mg.maniry.tenymana.ui.app.Screen
-import mg.maniry.tenymana.utils.RandomImpl
 import mg.maniry.tenymana.utils.TestDispatchers
 import mg.maniry.tenymana.utils.verifyOnce
 import org.junit.Rule
@@ -72,9 +71,24 @@ class GameViewModelTest {
                     verses["${it.arguments[0]}/${it.arguments[1]}/${it.arguments[2]}"]
                 }
             }
-            val random = RandomImpl()
+            // Puzzle builder
+            var score = 0
+            val puzzle: LinkClearPuzzle = mock {
+                on { this.score } doAnswer { score }
+            }
+            val puzzleBuilder: PuzzleBuilder = mock {
+                on { this.linkClear(any()) } doReturn puzzle
+            }
+            // test
             val viewModel =
-                GameViewModel(appViewModel, userRepo, gameRepo, bibleRepo, random, TestDispatchers)
+                GameViewModel(
+                    appViewModel,
+                    userRepo,
+                    gameRepo,
+                    bibleRepo,
+                    puzzleBuilder,
+                    TestDispatchers
+                )
             // 1- Init sessions list
             assertThat(viewModel.sessions.value).isEqualTo(listOf(session))
             // 2- Select session and resume
@@ -82,7 +96,7 @@ class GameViewModelTest {
             viewModel.continueSession()
             assertThat(viewModel.puzzle.value).isNotNull()
             // 4- Increment score & complete: go to SOLUTION screen
-            viewModel.puzzle.value?.setScore(20)
+            score = 20
             viewModel.onPuzzleCompleted()
             assertThat(viewModel.screen.value).isEqualTo(Screen.PUZZLE_SOLUTION)
             assertThat(viewModel.shouldNavigate).isTrue()
@@ -90,25 +104,23 @@ class GameViewModelTest {
             viewModel.saveAndContinue()
             var progress = Progress("ab", totalScore = 20, scores = listOf(listOf(20)))
             verifyOnce(gameRepo).saveProgress(progress)
-            assertThat(viewModel.puzzle.value?.verse).isEqualTo(verses["Matio/1/2"])
+            verifyOnce(puzzleBuilder).linkClear(verses["Matio/1/2"] ?: error("1"))
             assertThat(viewModel.screen.value).isEqualTo(Screen.PUZZLE)
             assertThat(viewModel.session.value!!.progress).isEqualTo(progress)
-            assertThat(viewModel.puzzle.value?.score).isEqualTo(0)
             assertThat(viewModel.shouldNavigate).isTrue()
             // Next once again
-            viewModel.puzzle.value?.setScore(40)
+            score = 40
             viewModel.onPuzzleCompleted()
             viewModel.saveAndContinue()
             progress = Progress("ab", totalScore = 60, scores = listOf(listOf(20, 40)))
             verifyOnce(gameRepo).saveProgress(progress)
-            assertThat(viewModel.puzzle.value?.verse).isEqualTo(verses["Matio/1/3"])
+            verifyOnce(puzzleBuilder).linkClear(verses["Matio/1/3"] ?: error("1"))
             assertThat(viewModel.screen.value).isEqualTo(Screen.PUZZLE)
             assertThat(viewModel.session.value!!.progress).isEqualTo(progress)
-            assertThat(viewModel.puzzle.value?.score).isEqualTo(0)
             assertThat(viewModel.shouldNavigate).isTrue()
             // Complete path
             val prevPzz = viewModel.puzzle.value
-            viewModel.puzzle.value?.setScore(10)
+            score = 10
             viewModel.onPuzzleCompleted()
             viewModel.saveAndContinue()
             progress = Progress("ab", totalScore = 70, scores = listOf(listOf(20, 40, 10)))
@@ -118,12 +130,11 @@ class GameViewModelTest {
             assertThat(viewModel.shouldNavigate).isTrue()
             // resume on paths screen load verse
             viewModel.continueSession()
-            assertThat(viewModel.puzzle.value?.verse).isEqualTo(verses["Marka/1/1"])
+            verifyOnce(puzzleBuilder).linkClear(verses["Marka/1/1"] ?: error("1"))
             assertThat(viewModel.session.value!!.progress).isEqualTo(progress)
-            assertThat(viewModel.puzzle.value?.score).isEqualTo(0)
             assertThat(viewModel.shouldNavigate).isTrue()
             // Complete the journey
-            viewModel.puzzle.value?.setScore(30)
+            score = 30
             viewModel.onPuzzleCompleted()
             viewModel.saveAndContinue()
             progress = Progress(
@@ -235,9 +246,18 @@ class GameViewModelTest {
             val bibleRepo: BibleRepo = mock {
                 onBlocking { getSingle(any(), any(), any()) } doReturn firstVerse
             }
-            val random = RandomImpl()
-            val viewModel =
-                GameViewModel(appViewModel, userRepo, gameRepo, bibleRepo, random, TestDispatchers)
+            val puzzle: LinkClearPuzzle = mock()
+            val puzzleBuilder: PuzzleBuilder = mock {
+                on { linkClear(any()) } doReturn puzzle
+            }
+            val viewModel = GameViewModel(
+                appViewModel,
+                userRepo,
+                gameRepo,
+                bibleRepo,
+                puzzleBuilder,
+                TestDispatchers
+            )
             viewModel.apply {
                 onSessionClick(session)
                 continueSession()
@@ -245,9 +265,5 @@ class GameViewModelTest {
             // query correct verse
             verifyOnce(bibleRepo).getSingle(firstVerse.book, firstVerse.chapter, firstVerse.verse)
         }
-    }
-
-    private fun Puzzle.setScore(n: Int) {
-        (this as LinkClearPuzzle).score = n
     }
 }

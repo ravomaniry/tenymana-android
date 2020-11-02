@@ -7,24 +7,41 @@ import mg.maniry.tenymana.gameLogic.shared.words.resolved
 import mg.maniry.tenymana.utils.Random
 import mg.maniry.tenymana.utils.RandomImpl
 
-class LinkClearPuzzle(
+interface LinkClearPuzzle : Puzzle {
+    val grid: Grid<Character>
+    val diff: List<Move>?
+    val cleared: List<Point>?
+
+    companion object {
+        const val visibleH = 12
+        const val width = 10
+        val gravity = listOf(Point.DOWN, Point.LEFT)
+        val directions = Point.directions
+
+        fun build(verse: BibleVerse, random: Random): LinkClearPuzzle {
+            val grid = buildLinkGrid(verse, random, width, visibleH)
+            return LinkClearPuzzleImpl(grid, verse)
+        }
+    }
+}
+
+class LinkClearPuzzleImpl(
     initialGrid: Grid<CharAddress>,
     initialVerse: BibleVerse
-) : Puzzle {
-    private val random = RandomImpl() // maybe inject this?
+) : LinkClearPuzzle {
+    private val visibleH = LinkClearPuzzle.visibleH
+    private val gravity = LinkClearPuzzle.gravity
+    private val directions = LinkClearPuzzle.directions
 
-    private val _grid = initialGrid.toCharGrid(initialVerse.words)
+    private val random = RandomImpl()
+
     private val hidden = initialGrid.calcHiddenWords(initialVerse.words)
-    val grid: Grid<Character> get() = _grid
+    override val grid: MutableGrid<Character> = initialGrid.toCharGrid(initialVerse.words)
 
     private val words = initialVerse.words.toMutableList()
     override val verse = initialVerse.copy(words = words)
-
-    private var _diff: List<Move>? = null
-    val diff: List<Move>? get() = _diff
-
-    private var _cleared: List<Point>? = null
-    val cleared: List<Point>? get() = _cleared
+    override var diff: List<Move>? = null
+    override var cleared: List<Point>? = null
 
     private var usedHelp = false
     override var completed = false
@@ -32,7 +49,7 @@ class LinkClearPuzzle(
 
     override fun propose(move: Move): Boolean {
         reset()
-        val selection = _grid.calcSelection(move)
+        val selection = grid.calcSelection(move)
         if (selection.isNotEmpty) {
             val indexes = words.resolveWith(selection.chars, hidden)
             if (indexes.isNotEmpty()) {
@@ -46,27 +63,28 @@ class LinkClearPuzzle(
 
     private fun reset() {
         completed = false
-        _cleared = null
-        _diff = null
+        cleared = null
+        diff = null
     }
 
     private fun updateResult(points: List<Point>) {
-        val diff0 = _grid.clear(points, gravity)
+        val diff0 = grid.clear(points, gravity)
         completed = words.resolved
-        if (!completed && _grid.firstVisibleMatch(words, visibleH, direction) == null) {
+        if (!completed && grid.firstVisibleMatch(words, visibleH, directions) == null) {
             usedHelp = true
-            val match = _grid.createMatch(words, diff0, visibleH, direction, gravity, random)
+            val match =
+                grid.createMatch(words, diff0, visibleH, directions, gravity, random)
             if (match == null) {
                 completed = true
             } else {
-                _diff = match.diff
+                diff = match.diff
                 words[match.word] = words[match.word].resolvedVersion
                 completed = words.resolved
-                _cleared = points.toMutableList().apply { addAll(match.cleared) }.toSet().toList()
+                cleared = points.toMutableList().apply { addAll(match.cleared) }.toSet().toList()
             }
         } else {
-            _diff = diff0
-            _cleared = points
+            diff = diff0
+            cleared = points
         }
     }
 
@@ -76,18 +94,6 @@ class LinkClearPuzzle(
         }
         if (completed && !usedHelp) {
             score *= 2
-        }
-    }
-
-    companion object {
-        val direction = Point.directions
-        val gravity = listOf(Point.DOWN, Point.LEFT)
-        const val visibleH = 12
-        const val width = 10
-
-        fun build(verse: BibleVerse, random: Random): LinkClearPuzzle {
-            val grid = buildLinkGrid(verse, random, width, visibleH)
-            return LinkClearPuzzle(grid, verse)
         }
     }
 }

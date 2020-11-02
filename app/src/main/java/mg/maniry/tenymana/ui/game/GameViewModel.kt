@@ -2,8 +2,8 @@ package mg.maniry.tenymana.ui.game
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
-import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.gameLogic.models.Puzzle
+import mg.maniry.tenymana.gameLogic.shared.puzzleBuilder.PuzzleBuilder
 import mg.maniry.tenymana.gameLogic.shared.session.SessionPosition
 import mg.maniry.tenymana.gameLogic.shared.session.next
 import mg.maniry.tenymana.gameLogic.shared.session.resume
@@ -15,14 +15,13 @@ import mg.maniry.tenymana.repositories.models.User
 import mg.maniry.tenymana.ui.app.AppViewModel
 import mg.maniry.tenymana.ui.app.Screen
 import mg.maniry.tenymana.utils.KDispatchers
-import mg.maniry.tenymana.utils.Random
 
 class GameViewModel(
     private val appViewModel: AppViewModel,
     private val userRepo: UserRepo,
     private val gameRepo: GameRepo,
     private val bibleRepo: BibleRepo,
-    private val random: Random,
+    private val puzzleBuilder: PuzzleBuilder,
     private val dispatchers: KDispatchers
 ) : ViewModel() {
     val sessions = gameRepo.sessions
@@ -90,7 +89,7 @@ class GameViewModel(
             val verseNum = path.start + position!!.verseIndex
             val verse = bibleRepo.getSingle(path.book, path.chapter, verseNum)
             if (verse != null) {
-                _puzzle.postValue(LinkClearPuzzle.build(verse, random))
+                _puzzle.postValue(puzzleBuilder.linkClear(verse))
             }
         }
     }
