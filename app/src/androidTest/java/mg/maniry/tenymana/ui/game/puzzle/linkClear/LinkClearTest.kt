@@ -54,21 +54,23 @@ class LinkClearTest : KoinTest {
         gameRepo.sessionsM.postValue(
             listOf(
                 Session(
-                    Journey.empty("11").copy(
+                    Journey(
+                        "11",
                         title = "Journey 1",
                         description = "Long text ..",
                         paths = listOf(
                             Path("Path0", "...", "Matio", 1, 10, 20)
                         )
                     ),
-                    Progress.empty("11").copy(totalScore = 5)
+                    Progress("11", totalScore = 5)
                 ),
                 Session(
-                    Journey.empty("22").copy(
+                    Journey(
+                        "22",
                         title = "Journey 2",
                         paths = listOf(Path("Path 1", "..", "Marka", 1, 1, 2))
                     ),
-                    Progress.empty("22").copy(totalScore = 10, scores = listOf(listOf(10)))
+                    Progress("22", totalScore = 10, scores = listOf(listOf(10)))
                 )
             )
         )
