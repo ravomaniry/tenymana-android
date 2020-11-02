@@ -22,6 +22,6 @@ class BibleDao(
         return res
     }
 
-    private fun buildPath(book: String, chapter: Int) = "$dir/$book-$chapter"
+    private fun buildPath(book: String, chapter: Int) = "$dir/$book-$chapter.json"
 }
 

@@ -1,14 +1,21 @@
 package mg.maniry.tenymana.api
 
+import android.content.res.AssetManager
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.io.OutputStream
 
 interface FsHelper {
+    val assetManager: AssetManager
+    suspend fun exists(path: String): Boolean
     suspend fun <T> readJson(path: String, type: Class<T>): T?
     suspend fun <T> writeJson(path: String, data: T, type: Class<T>)
+    suspend fun writeText(path: String, content: String)
+    suspend fun readText(path: String): String?
     suspend fun list(path: String): List<String>
+    fun newOutputStream(path: String): OutputStream
 }
 
 class FsHelperImpl(
@@ -18,14 +25,28 @@ class FsHelperImpl(
         .add(KotlinJsonAdapterFactory())
         .build()
 
-    private suspend fun <T> readAndTransform(path: String, transform: (String) -> T): T? {
+    override val assetManager: AssetManager = fileApi.assetsManager
+
+    override fun newOutputStream(path: String) = fileApi.newOutStream(path)
+
+    override suspend fun exists(path: String): Boolean {
         return withContext(Dispatchers.IO) {
-            val content = fileApi.readText(path)
-            return@withContext content?.let { transform(content) }
+            return@withContext fileApi.exists(path)
         }
     }
 
-    private suspend fun writeText(path: String, content: String) {
+    private suspend fun <T> readAndTransform(path: String, transform: (String) -> T): T? {
+        val content = readText(path)
+        return content?.let { transform(content) }
+    }
+
+    override suspend fun readText(path: String): String? {
+        return withContext(Dispatchers.IO) {
+            return@withContext fileApi.readText(path)
+        }
+    }
+
+    override suspend fun writeText(path: String, content: String) {
         withContext(Dispatchers.IO) {
             fileApi.writeText(path, content)
         }
