@@ -1,6 +1,9 @@
 package mg.maniry.tenymana.ui.game.puzzle.linkClear
 
 import androidx.test.core.app.ActivityScenario
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
 import mg.maniry.tenymana.MainActivity
@@ -41,6 +44,7 @@ class LinkClearTest : KoinTest {
         // Puzzle builder
         val puzzle = LinkClearPuzzleMock(BibleVerse.fromText("Matio", 1, 10, "Ny")).apply {
             proposeFn.mockReturnValue(true)
+            completed = true
         }
         val puzzleBuilder: PuzzleBuilder by inject()
         (puzzleBuilder as PuzzleBuilderMock).linkClearFn.mockReturnValue(puzzle)
@@ -92,5 +96,12 @@ class LinkClearTest : KoinTest {
         shouldHaveText(R.id.puzzleHeaderScore, text = "5")
         // Open LinkClear fragment
         shouldBeVisible(R.id.linkClearPuzzle)
+        // Propose & complete
+        onView(withId(R.id.charsGridInput)).perform(ViewActions.swipeRight())
+        // On solution screen -> tap next -> load next verse + display puzzle screen
+        shouldBeVisible(R.id.solutionScreen)
+        clickView(R.id.solutionSaveAndContinueBtn)
+        shouldBeVisible(R.id.puzzleScreen)
+        assertThat(bibleRepo.getSingleFn.calledWith("Matio", 1, 11)).isTrue()
     }
 }
