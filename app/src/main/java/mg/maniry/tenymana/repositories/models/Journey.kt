@@ -2,9 +2,9 @@ package mg.maniry.tenymana.repositories.models
 
 data class Journey(
     val id: String,
-    val title: String,
-    val description: String,
-    val paths: List<Path>
+    val title: String = "",
+    val description: String = "",
+    val paths: List<Path> = emptyList()
 ) {
     val size: Int
         get() {
@@ -12,10 +12,6 @@ data class Journey(
             paths.forEach { s += 1 + it.end - it.start }
             return s
         }
-
-    companion object {
-        fun empty(id: String) = Journey(id, "", "", emptyList())
-    }
 }
 
 data class Path(

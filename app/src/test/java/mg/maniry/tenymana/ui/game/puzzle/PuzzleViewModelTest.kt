@@ -38,7 +38,7 @@ class PuzzleViewModelTest {
         }
         val puzzleLD = MutableLiveData(puzzle)
         val session = Session(
-            Journey.empty("0").copy(paths = listOf(Path("path0", "...", "Matio", 1, 1, 10))),
+            Journey("0", paths = listOf(Path("path0", "...", "Matio", 1, 1, 10))),
             Progress("0", 0, emptyList(), emptyList())
         )
         val sessionLD = MutableLiveData(session)

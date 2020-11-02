@@ -30,7 +30,7 @@ class GameRepoTest {
         assertThat(repo.sessions.value).isEqualTo(
             listOf(
                 Session(j("1"), p()),
-                Session(j("2"), Progress.empty("2"))
+                Session(j("2"), Progress("2"))
             )
         )
     }

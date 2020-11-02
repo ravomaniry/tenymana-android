@@ -47,13 +47,13 @@ class GameViewModel(
     val onSessionClick = { item: Session ->
         shouldNavigate = true
         _session.postValue(item)
+        position = item.resume()
         appViewModel.screen.postValue(Screen.PATHS_LIST)
     }
 
-    fun resumeSession() {
+    fun continueSession() {
         shouldNavigate = true
         appViewModel.screen.postValue(Screen.PUZZLE)
-        position = _session.value?.resume()
         initPuzzle()
     }
 
@@ -67,8 +67,12 @@ class GameViewModel(
             position = session.value!!.next(position!!, _puzzle.value!!)
             gameRepo.saveProgress(position!!.value.progress)
             _session.postValue(position!!.value)
+            shouldNavigate = true
             when {
-                position?.isCompleted!! -> appViewModel.screen.postValue(Screen.JOURNEY_COMPLETE)
+                position?.isCompleted!! -> {
+                    _puzzle.postValue(null)
+                    appViewModel.screen.postValue(Screen.JOURNEY_COMPLETE)
+                }
                 position?.pathIndex != prevPathI -> appViewModel.screen.postValue(Screen.PATHS_LIST)
                 else -> {
                     initPuzzle()

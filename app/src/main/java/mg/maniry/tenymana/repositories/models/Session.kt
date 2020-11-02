@@ -9,11 +9,7 @@ data class Session(
 
 data class Progress(
     val journeyID: String,
-    val totalScore: Int,
-    val scores: List<List<Int>>,
-    val bonuses: List<Bonus>
-) {
-    companion object {
-        fun empty(id: String) = Progress(id, 0, emptyList(), emptyList())
-    }
-}
+    val totalScore: Int = 0,
+    val scores: List<List<Int>> = emptyList(),
+    val bonuses: List<Bonus> = emptyList()
+)

@@ -24,8 +24,7 @@ class SessionDao(
             if (journey != null) {
                 val id = fileName.substring(0, fileName.lastIndexOf('.'))
                 val progress = fs.readJson("${dirs.progress}/$fileName", Progress::class.java)
-                    ?: Progress.empty(id)
-                sessions.add(Session(journey, progress))
+                sessions.add(Session(journey, progress ?: Progress(id)))
             }
         }
         return sessions
