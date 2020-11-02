@@ -16,20 +16,22 @@ class SessionDao(
 ) {
     private val dirs = Directories(userID)
 
-    suspend fun getSessions() = fs.readSessions(dirs)
-}
-
-private suspend fun FsHelper.readSessions(dirs: Directories): List<Session> {
-    val sessions = mutableListOf<Session>()
-    val fileNames = list(dirs.journey)
-    for (fileName in fileNames) {
-        val journey = readJson("${dirs.journey}/$fileName", Journey::class.java)
-        if (journey != null) {
-            val id = fileName.substring(0, fileName.lastIndexOf('.'))
-            val progress =
-                readJson("${dirs.progress}/$fileName", Progress::class.java) ?: Progress.empty(id)
-            sessions.add(Session(journey, progress))
+    suspend fun getSessions(): List<Session> {
+        val sessions = mutableListOf<Session>()
+        val fileNames = fs.list(dirs.journey)
+        for (fileName in fileNames) {
+            val journey = fs.readJson("${dirs.journey}/$fileName", Journey::class.java)
+            if (journey != null) {
+                val id = fileName.substring(0, fileName.lastIndexOf('.'))
+                val progress = fs.readJson("${dirs.progress}/$fileName", Progress::class.java)
+                    ?: Progress.empty(id)
+                sessions.add(Session(journey, progress))
+            }
         }
+        return sessions
     }
-    return sessions
+
+    suspend fun saveProgress(progress: Progress) {
+        fs.writeJson("${dirs.progress}/${progress.journeyID}.json", progress, Progress::class.java)
+    }
 }

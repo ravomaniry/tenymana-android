@@ -1,11 +1,11 @@
 package mg.maniry.tenymana.ui.game
 
 import androidx.lifecycle.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.gameLogic.models.Puzzle
+import mg.maniry.tenymana.gameLogic.shared.session.SessionPosition
+import mg.maniry.tenymana.gameLogic.shared.session.next
 import mg.maniry.tenymana.gameLogic.shared.session.resume
 import mg.maniry.tenymana.repositories.BibleRepo
 import mg.maniry.tenymana.repositories.GameRepo
@@ -14,6 +14,7 @@ import mg.maniry.tenymana.repositories.models.Session
 import mg.maniry.tenymana.repositories.models.User
 import mg.maniry.tenymana.ui.app.AppViewModel
 import mg.maniry.tenymana.ui.app.Screen
+import mg.maniry.tenymana.utils.KDispatchers
 import mg.maniry.tenymana.utils.Random
 
 class GameViewModel(
@@ -21,7 +22,8 @@ class GameViewModel(
     private val userRepo: UserRepo,
     private val gameRepo: GameRepo,
     private val bibleRepo: BibleRepo,
-    private val random: Random
+    private val random: Random,
+    private val dispatchers: KDispatchers
 ) : ViewModel() {
     val sessions = gameRepo.sessions
     var shouldNavigate = false
@@ -32,10 +34,11 @@ class GameViewModel(
 
     private val _puzzle = MutableLiveData<Puzzle?>(null)
     val puzzle: LiveData<Puzzle?> = _puzzle
+    private var position: SessionPosition? = null
 
     private val userObserver = Observer<User?> {
         if (it != null) {
-            viewModelScope.launch {
+            viewModelScope.launch(dispatchers.main) {
                 gameRepo.initialize(it.id)
             }
         }
@@ -47,40 +50,45 @@ class GameViewModel(
         appViewModel.screen.postValue(Screen.PATHS_LIST)
     }
 
-    // Hardcoded to resume for now
-    private fun initPuzzle() {
-        _puzzle.postValue(null)
-        val active = _session.value!!
-        val next = active.resume()
-        viewModelScope.launch {
-            val path = active.journey.paths[next.pathIndex]
-            val verseNum = path.start + next.verseIndex
-            val verse = bibleRepo.getSingle(path.book, path.chapter, verseNum)
-            if (verse != null) {
-                withContext(Dispatchers.Default) {
-                    _puzzle.postValue(LinkClearPuzzle.build(verse, random))
+    fun resumeSession() {
+        shouldNavigate = true
+        appViewModel.screen.postValue(Screen.PUZZLE)
+        position = _session.value?.resume()
+        initPuzzle()
+    }
+
+    fun onPuzzleCompleted() {
+        appViewModel.screen.postValue(Screen.PUZZLE_SOLUTION)
+    }
+
+    fun saveAndContinue() {
+        if (session.value != null && position != null && _puzzle.value != null) {
+            val prevPathI = position?.pathIndex
+            position = session.value!!.next(position!!, _puzzle.value!!)
+            gameRepo.saveProgress(position!!.value.progress)
+            _session.postValue(position!!.value)
+            when {
+                position?.isCompleted!! -> appViewModel.screen.postValue(Screen.JOURNEY_COMPLETE)
+                position?.pathIndex != prevPathI -> appViewModel.screen.postValue(Screen.PATHS_LIST)
+                else -> {
+                    initPuzzle()
+                    appViewModel.screen.postValue(Screen.PUZZLE)
                 }
             }
         }
     }
 
-    fun resumeSession() {
-        shouldNavigate = true
-        appViewModel.screen.postValue(Screen.PUZZLE)
-        initPuzzle()
-    }
-
-    fun onPuzzleCompleted() {
-        // go to solution screen
-    }
-
-    fun goToNextVerse() {
-        // save progress
-        // if journey is completed
-        //      - go to congrats screen
-        // if path is completed
-        //      - go to paths screen
-        // else load next verse and go to puzzle screen
+    private fun initPuzzle() {
+        _puzzle.postValue(null)
+        val active = _session.value!!
+        viewModelScope.launch(dispatchers.default) {
+            val path = active.journey.paths[position!!.pathIndex]
+            val verseNum = path.start + position!!.verseIndex
+            val verse = bibleRepo.getSingle(path.book, path.chapter, verseNum)
+            if (verse != null) {
+                _puzzle.postValue(LinkClearPuzzle.build(verse, random))
+            }
+        }
     }
 
     init {

@@ -4,7 +4,9 @@ import mg.maniry.tenymana.repositories.BibleRepo
 import mg.maniry.tenymana.repositories.GameRepo
 import mg.maniry.tenymana.repositories.UserRepo
 import mg.maniry.tenymana.ui.app.SharedViewModels
+import mg.maniry.tenymana.utils.KDispatchers
 import mg.maniry.tenymana.utils.Random
+import mg.maniry.tenymana.utils.RealDispatchers
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.core.module.Module
@@ -26,6 +28,7 @@ fun createTestModule(): Module {
         single { SharedViewModels() }
         single<Random> { RandomMock() }
         single<BibleRepo> { BibleRepoMock() }
+        single<KDispatchers> { RealDispatchers }
     }
 }
 

@@ -10,7 +10,7 @@ data class Session(
 data class Progress(
     val journeyID: String,
     val totalScore: Int,
-    val scores: List<Int>,
+    val scores: List<List<Int>>,
     val bonuses: List<Bonus>
 ) {
     companion object {

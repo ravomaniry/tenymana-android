@@ -68,7 +68,7 @@ class LinkClearTest : KoinTest {
                         title = "Journey 2",
                         paths = listOf(Path("Path 1", "..", "Marka", 1, 1, 2))
                     ),
-                    Progress.empty("22").copy(totalScore = 10, scores = listOf(10))
+                    Progress.empty("22").copy(totalScore = 10, scores = listOf(listOf(10)))
                 )
             )
         )

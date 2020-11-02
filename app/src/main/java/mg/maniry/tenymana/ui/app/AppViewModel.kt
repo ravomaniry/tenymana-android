@@ -8,7 +8,8 @@ enum class Screen {
     GAMES_LIST,
     PATHS_LIST,
     PUZZLE,
-    PUZZLE_SOLUTION
+    PUZZLE_SOLUTION,
+    JOURNEY_COMPLETE
 }
 
 class AppViewModel : ViewModel() {

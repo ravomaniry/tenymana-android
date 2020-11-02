@@ -37,5 +37,5 @@ class GameRepoTest {
 
     private fun j(id: String) = Journey(id, "", "", emptyList())
 
-    private fun p() = Progress("1", 10, listOf(10), emptyList())
+    private fun p() = Progress("1", 10, listOf(listOf(20)), emptyList())
 }

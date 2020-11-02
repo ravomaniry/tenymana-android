@@ -17,7 +17,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{() ->viewModel.goToNextVerse()}"
+            android:onClick="@{() ->viewModel.saveAndContinue()}"
             android:text="@string/app_action_next" />
     </LinearLayout>
 </layout>
