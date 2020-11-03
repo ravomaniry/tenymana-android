@@ -26,6 +26,11 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="AppTheme.DescriptionTextView" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
     <style name="AppTheme.Button" parent="@style/Widget.AppCompat.Button.Colored">
         <item name="android:drawablePadding">4dp</item>
     </style>
@@ -35,6 +40,7 @@
         <item name="android:textColor">@color/light</item>
         <item name="android:gravity">center</item>
         <item name="drawableTint">@color/light</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:layout_gravity">bottom</item>
         <item name="android:background">?attr/colorPrimary</item>
     </style>

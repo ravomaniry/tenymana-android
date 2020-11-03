@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import mg.maniry.tenymana.R
-import mg.maniry.tenymana.databinding.GameListScreenItemBinding
+import mg.maniry.tenymana.databinding.GamesListScreenItemBinding
 import mg.maniry.tenymana.repositories.models.Session
 
 class SessionAdapter(
@@ -32,7 +32,7 @@ class SessionAdapter(
 }
 
 class SessionViewHolder private constructor(
-    private val binding: GameListScreenItemBinding
+    private val binding: GamesListScreenItemBinding
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(item: Session, onClick: OnSessionClick) {
         binding.session = item
@@ -44,8 +44,8 @@ class SessionViewHolder private constructor(
     companion object {
         fun from(parent: ViewGroup): SessionViewHolder {
             val inflater = LayoutInflater.from(parent.context)
-            val binding: GameListScreenItemBinding =
-                DataBindingUtil.inflate(inflater, R.layout.game_list_screen_item, parent, false)
+            val binding: GamesListScreenItemBinding =
+                DataBindingUtil.inflate(inflater, R.layout.games_list_screen_item, parent, false)
             return SessionViewHolder(binding)
         }
     }

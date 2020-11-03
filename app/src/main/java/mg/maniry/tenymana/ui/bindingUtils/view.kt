@@ -1,8 +1,7 @@
-package mg.maniry.tenymana.utils
+package mg.maniry.tenymana.ui.bindingUtils
 
 import android.graphics.Color
 import android.view.View
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 
@@ -13,9 +12,4 @@ fun View.bindBackgroundColor(resID: Int?) {
     } else {
         setBackgroundColor(ContextCompat.getColor(context, resID))
     }
-}
-
-@BindingAdapter("intValue")
-fun TextView.bindIntValue(value: Int?) {
-    text = value?.toString() ?: ""
 }
