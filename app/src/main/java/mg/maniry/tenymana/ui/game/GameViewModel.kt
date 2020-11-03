@@ -22,11 +22,13 @@ interface GameViewModel {
     val session: LiveData<Session?>
     val puzzle: LiveData<Puzzle?>
     val onSessionClick: (Session) -> Unit
+    val position: SessionPosition?
 
     fun continueSession()
     fun onPuzzleCompleted()
     fun saveAndContinue()
     fun onPathVerseSelect(pathIndex: Int, verseIndex: Int)
+    fun closePathDetails()
 }
 
 class GameViewModelImpl(
@@ -43,7 +45,7 @@ class GameViewModelImpl(
     override var session = MutableLiveData<Session?>(null)
 
     override val puzzle = MutableLiveData<Puzzle?>(null)
-    private var position: SessionPosition? = null
+    override var position: SessionPosition? = null
 
     private val userObserver = Observer<User?> {
         if (it != null) {
@@ -61,12 +63,16 @@ class GameViewModelImpl(
 
     override fun continueSession() {
         shouldNavigate = true
-        navigateTo(Screen.PUZZLE)
+        navigateTo(Screen.PATH_DETAILS)
         initPuzzle()
     }
 
     override fun onPuzzleCompleted() {
         navigateTo(Screen.PUZZLE_SOLUTION)
+    }
+
+    override fun closePathDetails() {
+        navigateTo(Screen.PUZZLE)
     }
 
     override fun saveAndContinue() {

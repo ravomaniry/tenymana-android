@@ -96,6 +96,9 @@ class GameViewModelTest {
             // 2- Select session and resume
             viewModel.onSessionClick(session)
             viewModel.continueSession()
+            assertThat(viewModel.screen.value).isEqualTo(Screen.PATH_DETAILS)
+            viewModel.closePathDetails()
+            assertThat(viewModel.screen.value).isEqualTo(Screen.PUZZLE)
             assertThat(viewModel.puzzle.value).isNotNull()
             // 4- Increment score (3 stars) & complete: go to SOLUTION screen
             score = 20
@@ -142,8 +145,11 @@ class GameViewModelTest {
             assertThat(viewModel.screen.value).isEqualTo(Screen.PATHS_LIST)
             assertThat(viewModel.puzzle.value).isEqualTo(prevPzz)
             assertThat(viewModel.shouldNavigate).isTrue()
-            // resume on paths screen load verse
+            // resume on paths screen load verse + go to path details
             viewModel.continueSession()
+            assertThat(viewModel.screen.value).isEqualTo(Screen.PATH_DETAILS)
+            viewModel.closePathDetails()
+            assertThat(viewModel.screen.value).isEqualTo(Screen.PUZZLE)
             verifyOnce(puzzleBuilder).linkClear(verses["Marka/1/1"] ?: error("1"))
             assertThat(viewModel.session.value!!.progress).isEqualTo(progress)
             assertThat(viewModel.shouldNavigate).isTrue()

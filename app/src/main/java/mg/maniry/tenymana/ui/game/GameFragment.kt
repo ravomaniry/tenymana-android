@@ -15,6 +15,7 @@ import mg.maniry.tenymana.repositories.UserRepo
 import mg.maniry.tenymana.ui.app.Screen
 import mg.maniry.tenymana.ui.app.SharedViewModels
 import mg.maniry.tenymana.ui.game.list.GamesListFragment
+import mg.maniry.tenymana.ui.game.pathDetails.PathDetailsFragment
 import mg.maniry.tenymana.ui.game.paths.PathsFragment
 import mg.maniry.tenymana.ui.game.puzzle.PuzzleFragment
 import mg.maniry.tenymana.ui.game.solution.SolutionFragment
@@ -59,6 +60,7 @@ class GameFragment : Fragment() {
             val child = when (it) {
                 Screen.GAMES_LIST -> GamesListFragment(viewModel)
                 Screen.PATHS_LIST -> PathsFragment(viewModel)
+                Screen.PATH_DETAILS -> PathDetailsFragment(viewModel, viewModel.position)
                 Screen.PUZZLE -> PuzzleFragment(viewModel)
                 Screen.PUZZLE_SOLUTION -> SolutionFragment(viewModel)
                 else -> null

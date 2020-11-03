@@ -11,6 +11,7 @@
 
     <string name="paths_screen_prev_description">Aseho ny teo aloha</string>
     <string name="paths_screen_next_description">Aseho ny manaraka</string>
+    <string name="path_details_verse_ref">%s %d:%d-%d</string>
 
     <!-- Loader-->
     <string name="loader_text">Jesosy Kristy no lalana sy fahamarinana ary fiainana.</string>

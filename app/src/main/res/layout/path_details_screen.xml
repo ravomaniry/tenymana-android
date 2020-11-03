@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="path"
+            type="mg.maniry.tenymana.repositories.models.Path" />
+
+        <variable
+            name="gameViewModel"
+            type="mg.maniry.tenymana.ui.game.GameViewModel" />
+
+    </data>
+
+    <LinearLayout
+        android:id="@+id/pathDetailsScreen"
+        style="@style/AppTheme.DarkMainCont"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/AppTheme.Title1Light"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{path.name}"
+            tools:text="Path 1" />
+
+        <TextView
+            android:id="@+id/pathDetailsVerseRef"
+            style="@style/AppTheme.Title2Light"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{@string/path_details_verse_ref(path.book, path.chapter, path.start, path.end)}"
+            tools:text="Matthiew 1:1-20" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    style="@style/AppTheme.DescriptionTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{path.description}"
+                    tools:text="Long text\nLongText..." />
+            </ScrollView>
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/pathDetailsNextBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:drawableStart="@drawable/ic_play"
+            android:onClick="@{() -> gameViewModel.closePathDetails()}"
+            android:text="@string/app_action_play" />
+    </LinearLayout>
+</layout>

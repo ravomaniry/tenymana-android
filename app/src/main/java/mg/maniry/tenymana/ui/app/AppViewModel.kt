@@ -12,6 +12,7 @@ enum class Screen {
     HOME,
     GAMES_LIST,
     PATHS_LIST,
+    PATH_DETAILS,
     PUZZLE,
     PUZZLE_SOLUTION,
     JOURNEY_COMPLETE

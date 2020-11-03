@@ -25,6 +25,7 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">?attr/colorPrimary</item>
         <item name="android:gravity">center</item>
+        <item name="android:layout_marginBottom">10dp</item>
     </style>
 
     <style name="AppTheme.Title1Light" parent="AppTheme.Title1">
@@ -33,6 +34,15 @@
 
     <style name="AppTheme.Title2" parent="AppTheme.Title1">
         <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="AppTheme.Title2Light" parent="AppTheme.Title2">
+        <item name="android:textColor">@color/light</item>
+    </style>
+
+    <style name="AppTheme.DarkMainCont">
+        <item name="android:background">@color/blue</item>
+        <item name="android:padding">8dp</item>
     </style>
 
     <style name="AppTheme.DescriptionTextView" parent="TextAppearance.AppCompat.Body1">

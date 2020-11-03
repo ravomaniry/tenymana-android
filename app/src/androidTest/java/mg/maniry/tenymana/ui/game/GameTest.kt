@@ -91,6 +91,10 @@ class GameTest : KoinTest {
         clickView(R.id.pathsNextBtn)
         //  - load verse and init puzzle
         assertThat(bibleRepo.getSingleFn.calledWith("Matio", 1, 10)).isTrue()
+        //  - go to path details screen
+        shouldBeVisible(R.id.pathDetailsScreen)
+        shouldHaveText(R.id.pathDetailsVerseRef, text = "Matio 1:10-20")
+        clickView(R.id.pathDetailsNextBtn)
         //  - go to puzzle screen
         shouldBeVisible(R.id.puzzleScreen)
         // Display headers
