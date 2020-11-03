@@ -11,6 +11,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.gameLogic.models.BibleVerse
+import mg.maniry.tenymana.gameLogic.models.Score
 import mg.maniry.tenymana.gameLogic.shared.puzzleBuilder.PuzzleBuilder
 import mg.maniry.tenymana.repositories.BibleRepo
 import mg.maniry.tenymana.repositories.GameRepo
@@ -63,8 +64,8 @@ class GameViewModelTest {
             val verses = mapOf(
                 Pair("Matio/1/1", BibleVerse.fromText("Matio", 1, 1, "Abc de")),
                 Pair("Matio/1/2", BibleVerse.fromText("Matio", 1, 2, "fgh ij")),
-                Pair("Matio/1/3", BibleVerse.fromText("Matio", 1, 3, "jkl")),
-                Pair("Marka/1/1", BibleVerse.fromText("Marka", 1, 1, "fgh"))
+                Pair("Matio/1/3", BibleVerse.fromText("Matio", 1, 3, "jkl km")),
+                Pair("Marka/1/1", BibleVerse.fromText("Marka", 1, 1, "fgh ij"))
             )
             val bibleRepo: BibleRepo = mock {
                 onBlocking { getSingle(any(), any(), any()) } doAnswer {
@@ -75,6 +76,7 @@ class GameViewModelTest {
             var score = 0
             val puzzle: LinkClearPuzzle = mock {
                 on { this.score } doAnswer { score }
+                on { this.verse } doReturn BibleVerse.fromText("", 1, 1, "Abc de")
             }
             val puzzleBuilder: PuzzleBuilder = mock {
                 on { this.linkClear(any()) } doReturn puzzle
@@ -95,35 +97,47 @@ class GameViewModelTest {
             viewModel.onSessionClick(session)
             viewModel.continueSession()
             assertThat(viewModel.puzzle.value).isNotNull()
-            // 4- Increment score & complete: go to SOLUTION screen
+            // 4- Increment score (3 stars) & complete: go to SOLUTION screen
             score = 20
             viewModel.onPuzzleCompleted()
             assertThat(viewModel.screen.value).isEqualTo(Screen.PUZZLE_SOLUTION)
             assertThat(viewModel.shouldNavigate).isTrue()
             // 5- SaveAndContinue: update progress, save, load nextverse, go to puzzle screen
             viewModel.saveAndContinue()
-            var progress = Progress("ab", totalScore = 20, scores = listOf(listOf(20)))
+            var progress = Progress(
+                "ab",
+                totalScore = 20,
+                scores = listOf(listOf(Score(20, 3)))
+            )
             verifyOnce(gameRepo).saveProgress(progress)
             verifyOnce(puzzleBuilder).linkClear(verses["Matio/1/2"] ?: error("1"))
             assertThat(viewModel.screen.value).isEqualTo(Screen.PUZZLE)
             assertThat(viewModel.session.value!!.progress).isEqualTo(progress)
             assertThat(viewModel.shouldNavigate).isTrue()
-            // Next once again
-            score = 40
+            // Next once again: (1 star)
+            score = 3
             viewModel.onPuzzleCompleted()
             viewModel.saveAndContinue()
-            progress = Progress("ab", totalScore = 60, scores = listOf(listOf(20, 40)))
+            progress = Progress(
+                "ab",
+                totalScore = 23,
+                scores = listOf(listOf(Score(20, 3), Score(3, 1)))
+            )
             verifyOnce(gameRepo).saveProgress(progress)
             verifyOnce(puzzleBuilder).linkClear(verses["Matio/1/3"] ?: error("1"))
             assertThat(viewModel.screen.value).isEqualTo(Screen.PUZZLE)
             assertThat(viewModel.session.value!!.progress).isEqualTo(progress)
             assertThat(viewModel.shouldNavigate).isTrue()
-            // Complete path
+            // Complete path: 2 stars
             val prevPzz = viewModel.puzzle.value
-            score = 10
+            score = 6
             viewModel.onPuzzleCompleted()
             viewModel.saveAndContinue()
-            progress = Progress("ab", totalScore = 70, scores = listOf(listOf(20, 40, 10)))
+            progress = Progress(
+                "ab",
+                totalScore = 29,
+                scores = listOf(listOf(Score(20, 3), Score(3, 1), Score(6, 2)))
+            )
             verifyOnce(gameRepo).saveProgress(progress)
             assertThat(viewModel.screen.value).isEqualTo(Screen.PATHS_LIST)
             assertThat(viewModel.puzzle.value).isEqualTo(prevPzz)
@@ -139,8 +153,11 @@ class GameViewModelTest {
             viewModel.saveAndContinue()
             progress = Progress(
                 "ab",
-                totalScore = 100,
-                scores = listOf(listOf(20, 40, 10), listOf(30))
+                totalScore = 59,
+                scores = listOf(
+                    listOf(Score(20, 3), Score(3, 1), Score(6, 2)),
+                    listOf(Score(30, 3))
+                )
             )
             verifyOnce(gameRepo).saveProgress(progress)
             assertThat(viewModel.puzzle.value).isNull()
@@ -168,7 +185,7 @@ class GameViewModelTest {
                 Path("path 0", "", "Jaona", 2, 2, 6),
                 Path("path 0", "", "Marka", 1, 1, 10)
             ),
-            scores = listOf(listOf(2, 3)),
+            scores = listOf(scores(2, 3)),
             firstVerse = BibleVerse.fromText("Jaona", 2, 4, "")
         )
     }
@@ -180,7 +197,7 @@ class GameViewModelTest {
                 Path("path 0", "", "Jaona", 2, 2, 6),
                 Path("path 0", "", "Marka", 1, 1, 10)
             ),
-            scores = listOf(listOf(2, 3, 4, 5, 6), listOf(1)),
+            scores = listOf(scores(2, 3, 4, 5, 6), scores(1)),
             firstVerse = BibleVerse.fromText("Marka", 1, 2, "")
         )
     }
@@ -192,7 +209,7 @@ class GameViewModelTest {
                 Path("path 0", "", "Jaona", 2, 2, 6),
                 Path("path 0", "", "Marka", 1, 1, 10)
             ),
-            scores = listOf(listOf(2, 3, 4, 5, 6)),
+            scores = listOf(scores(2, 3, 4, 5, 6)),
             firstVerse = BibleVerse.fromText("Marka", 1, 1, "")
         )
     }
@@ -204,7 +221,7 @@ class GameViewModelTest {
                 Path("path 0", "", "Jaona", 2, 2, 6),
                 Path("path 0", "", "Marka", 1, 1, 3)
             ),
-            scores = listOf(listOf(1, 2, 3, 4, 5), listOf(1, 2, 3)),
+            scores = listOf(scores(1, 2, 3, 4, 5), scores(1, 2, 3)),
             firstVerse = BibleVerse.fromText("Jaona", 2, 2, "")
         )
         testResume(
@@ -212,14 +229,14 @@ class GameViewModelTest {
                 Path("path 0", "", "Jaona", 1, 1, 5),
                 Path("path 0", "", "Marka", 1, 4, 6)
             ),
-            scores = listOf(listOf(1, 2, 3, 4, 5), listOf(1, 2, 3)),
+            scores = listOf(scores(1, 2, 3, 4, 5), scores(1, 2, 3)),
             firstVerse = BibleVerse.fromText("Jaona", 1, 1, "")
         )
     }
 
     private fun testResume(
         paths: List<Path>,
-        scores: List<List<Int>>,
+        scores: List<List<Score>>,
         firstVerse: BibleVerse
     ) {
         runBlocking {
@@ -265,5 +282,9 @@ class GameViewModelTest {
             // query correct verse
             verifyOnce(bibleRepo).getSingle(firstVerse.book, firstVerse.chapter, firstVerse.verse)
         }
+    }
+
+    private fun scores(vararg values: Int): List<Score> {
+        return values.map { Score(it, 2) }
     }
 }

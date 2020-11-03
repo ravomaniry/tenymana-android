@@ -1,12 +1,13 @@
 package mg.maniry.tenymana.gameLogic.shared.session
 
+import mg.maniry.tenymana.gameLogic.models.BibleVerse
 import mg.maniry.tenymana.gameLogic.models.Puzzle
+import mg.maniry.tenymana.gameLogic.models.Score
+import mg.maniry.tenymana.gameLogic.models.Word
 import mg.maniry.tenymana.repositories.models.Journey
 import mg.maniry.tenymana.repositories.models.Path
 import mg.maniry.tenymana.repositories.models.Progress
 import mg.maniry.tenymana.repositories.models.Session
-
-private val sumReducer = { a: Int, b: Int -> a + b }
 
 fun Session.next(pos: SessionPosition, puzzle: Puzzle): SessionPosition {
     val next = journey.nextVerse(pos)
@@ -40,13 +41,11 @@ private fun Progress.updateScore(pos: SessionPosition, puzzle: Puzzle): Progress
     val nextScores = scores.toMutableList()
     nextScores.addUpTo(pos.pathIndex, ::listOf)
     val active = nextScores[pos.pathIndex].toMutableList()
-    active.addUpTo(pos.verseIndex) { 0 }
-    active[pos.verseIndex] = puzzle.score
+    active.addUpTo(pos.verseIndex) { Score.ZERO }
+    val stars = puzzle.verse.calcStars(puzzle.score)
+    active[pos.verseIndex] = Score(puzzle.score, stars)
     nextScores[pos.pathIndex] = active
-    val nextTotalScore = nextScores
-        .map { it.reduce(sumReducer) }
-        .reduce(sumReducer)
-    return copy(scores = nextScores, totalScore = nextTotalScore)
+    return copy(scores = nextScores, totalScore = nextScores.total)
 }
 
 private val Path.maxIndex: Int get() = end - start
@@ -56,3 +55,33 @@ private fun <T> MutableList<T>.addUpTo(n: Int, builder: () -> T) {
         add(builder())
     }
 }
+
+private fun BibleVerse.calcStars(score: Int): Int {
+    val charsN = words.countChars { !it.isSeparator }
+    return when {
+        score <= 0.75 * charsN -> 1
+        score <= 1.2 * charsN -> 2
+        else -> 3
+    }
+}
+
+private fun List<Word>.countChars(filter: (Word) -> Boolean): Int {
+    var count = 0
+    forEach {
+        if (filter(it)) {
+            count += it.size
+        }
+    }
+    return count
+}
+
+private val List<List<Score>>.total: Int
+    get() {
+        var n = 0
+        forEach { pathScores ->
+            pathScores.forEach {
+                n += it.value
+            }
+        }
+        return n
+    }

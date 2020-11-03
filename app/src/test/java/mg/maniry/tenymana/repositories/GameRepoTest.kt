@@ -7,6 +7,7 @@ import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import kotlinx.coroutines.runBlocking
 import mg.maniry.tenymana.api.FsHelper
+import mg.maniry.tenymana.gameLogic.models.Score
 import mg.maniry.tenymana.repositories.models.Journey
 import mg.maniry.tenymana.repositories.models.Progress
 import mg.maniry.tenymana.repositories.models.Session
@@ -66,5 +67,5 @@ class GameRepoTest {
 
     private fun j(id: String) = Journey(id, "", "", emptyList())
 
-    private fun p() = Progress("1", 10, listOf(listOf(20)), emptyList())
+    private fun p() = Progress("1", 10, listOf(listOf(Score(20, 3))), emptyList())
 }

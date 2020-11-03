@@ -26,10 +26,11 @@ interface GameViewModel {
     fun continueSession()
     fun onPuzzleCompleted()
     fun saveAndContinue()
+    fun onPathVerseSelect(pathIndex: Int, verseIndex: Int)
 }
 
 class GameViewModelImpl(
-    private val appViewModel: AppViewModel,
+    appViewModel: AppViewModel,
     private val userRepo: UserRepo,
     private val gameRepo: GameRepo,
     private val bibleRepo: BibleRepo,
@@ -53,20 +54,19 @@ class GameViewModelImpl(
     }
 
     override val onSessionClick = { item: Session ->
-        shouldNavigate = true
         session.postValue(item)
         position = item.resume()
-        appViewModel.screen.postValue(Screen.PATHS_LIST)
+        navigateTo(Screen.PATHS_LIST)
     }
 
     override fun continueSession() {
         shouldNavigate = true
-        appViewModel.screen.postValue(Screen.PUZZLE)
+        navigateTo(Screen.PUZZLE)
         initPuzzle()
     }
 
     override fun onPuzzleCompleted() {
-        appViewModel.screen.postValue(Screen.PUZZLE_SOLUTION)
+        navigateTo(Screen.PUZZLE_SOLUTION)
     }
 
     override fun saveAndContinue() {
@@ -79,15 +79,22 @@ class GameViewModelImpl(
             when {
                 position?.isCompleted!! -> {
                     puzzle.postValue(null)
-                    appViewModel.screen.postValue(Screen.JOURNEY_COMPLETE)
+                    navigateTo(Screen.JOURNEY_COMPLETE)
                 }
-                position?.pathIndex != prevPathI -> appViewModel.screen.postValue(Screen.PATHS_LIST)
+                position?.pathIndex != prevPathI -> navigateTo(Screen.PATHS_LIST)
                 else -> {
                     initPuzzle()
-                    appViewModel.screen.postValue(Screen.PUZZLE)
+                    navigateTo(Screen.PUZZLE)
                 }
             }
         }
+    }
+
+    override fun onPathVerseSelect(pathIndex: Int, verseIndex: Int) {
+        // check here before navigating
+        //        position = SessionPosition(session.value!!, false, pathIndex, verseIndex)
+        //        initPuzzle()
+        //        navigateTo(Screen.PUZZLE)
     }
 
     private fun initPuzzle() {
@@ -101,6 +108,11 @@ class GameViewModelImpl(
                 puzzle.postValue(puzzleBuilder.linkClear(verse))
             }
         }
+    }
+
+    private fun navigateTo(dest: Screen) {
+        shouldNavigate = true
+        screen.postValue(dest)
     }
 
     init {

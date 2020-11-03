@@ -1,6 +1,7 @@
 package mg.maniry.tenymana.repositories.models
 
 import mg.maniry.tenymana.gameLogic.models.Bonus
+import mg.maniry.tenymana.gameLogic.models.Score
 
 data class Session(
     val journey: Journey,
@@ -10,6 +11,6 @@ data class Session(
 data class Progress(
     val journeyID: String,
     val totalScore: Int = 0,
-    val scores: List<List<Int>> = emptyList(),
+    val scores: List<List<Score>> = emptyList(),
     val bonuses: List<Bonus> = emptyList()
 )
