@@ -8,6 +8,9 @@
     <string name="app_action_next">Tohizana</string>
     <string name="app_expand_collapse_img_description">Angezana na akelezina</string>
 
+    <string name="paths_screen_prev_description">Aseho ny teo aloha</string>
+    <string name="paths_screen_next_description">Aseho ny manaraka</string>
+
     <!-- Loader-->
     <string name="loader_text">Jesosy Kristy no lalana sy fahamarinana ary fiainana.</string>
 </resources>

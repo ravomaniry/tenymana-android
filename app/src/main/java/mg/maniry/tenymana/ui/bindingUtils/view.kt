@@ -13,3 +13,8 @@ fun View.bindBackgroundColor(resID: Int?) {
         setBackgroundColor(ContextCompat.getColor(context, resID))
     }
 }
+
+@BindingAdapter("isVisible")
+fun View.bindIsVisible(value: Boolean?) {
+    visibility = if (value == false) View.GONE else View.VISIBLE
+}

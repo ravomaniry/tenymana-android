@@ -1,14 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
+        <variable
+            name="verse"
+            type="String" />
+
+        <variable
+            name="index"
+            type="Integer" />
+
+        <variable
+            name="score"
+            type="mg.maniry.tenymana.gameLogic.models.Score" />
+
+        <variable
+            name="onClick"
+            type="mg.maniry.tenymana.ui.game.paths.OnVerseClick" />
     </data>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/pathsScreenVerse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/blue"
+        android:onClick="@{() -> onClick.onClick(index)}"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/pathsScreenVerseNumber"
+            style="@style/AppTheme.PathsListVerse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{verse}"
+            tools:text="1" />
     </LinearLayout>
 </layout>

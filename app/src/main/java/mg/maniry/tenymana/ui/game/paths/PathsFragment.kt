@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.PathsScreenBinding
 import mg.maniry.tenymana.ui.game.GameViewModel
+import mg.maniry.tenymana.utils.bindTo
 
 class PathsFragment(
     private val gameViewModel: GameViewModel
@@ -24,6 +26,7 @@ class PathsFragment(
     ): View? {
         initViewModel()
         initBinding(inflater, container)
+        initGrid()
         return binding.root
     }
 
@@ -36,5 +39,15 @@ class PathsFragment(
         binding = DataBindingUtil.inflate(inflater, R.layout.paths_screen, container, false)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+    }
+
+    private fun initGrid() {
+        val pathsAdapter = PathAdapter(viewModel.verseClickHandler)
+        binding.pathsGrid.apply {
+            adapter = pathsAdapter
+            (layoutManager as GridLayoutManager).spanCount = 8
+        }
+        bindTo(viewModel.activePath) { pathsAdapter.path = it }
+        bindTo(viewModel.activeScores) { pathsAdapter.scores = it }
     }
 }
