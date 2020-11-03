@@ -15,6 +15,11 @@
         android:gravity="center"
         android:orientation="vertical">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.puzzle.verse.text}" />
+
         <Button
             android:id="@+id/solutionSaveAndContinueBtn"
             android:layout_width="wrap_content"
