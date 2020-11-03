@@ -23,7 +23,7 @@
 
     <LinearLayout
         android:id="@+id/pathsScreenVerse"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/blue"
         android:onClick="@{() -> onClick.onClick(index)}"
@@ -32,7 +32,7 @@
         <TextView
             android:id="@+id/pathsScreenVerseNumber"
             style="@style/AppTheme.PathsListVerse"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{verse}"
             tools:text="1" />
