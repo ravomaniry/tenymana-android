@@ -1,4 +1,4 @@
-package mg.maniry.tenymana.ui.game.puzzle.linkClear
+package mg.maniry.tenymana.ui.game
 
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
@@ -25,7 +25,7 @@ import org.koin.test.KoinTest
 import org.koin.test.inject
 
 @RunWith(AndroidJUnit4::class)
-class LinkClearTest : KoinTest {
+class GameTest : KoinTest {
     @Before
     fun iniKoin() {
         setupTestKoin()
@@ -64,7 +64,8 @@ class LinkClearTest : KoinTest {
                         title = "Journey 1",
                         description = "Long text ..",
                         paths = listOf(
-                            Path("Path0", "...", "Matio", 1, 10, 20)
+                            Path("Path 0", "...", "Matio", 1, 10, 20),
+                            Path("Path 1", "...", "Jaona", 1, 10, 20)
                         )
                     ),
                     Progress("11", totalScore = 5)
