@@ -3,6 +3,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/blue</item>
         <item name="colorPrimaryDark">@color/blueDark</item>
+        <item name="colorSecondary">@color/green</item>
         <item name="colorAccent">@color/red</item>
         <item name="buttonStyle">@style/AppTheme.Button</item>
     </style>
@@ -26,6 +27,10 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="AppTheme.Title1Light" parent="AppTheme.Title1">
+        <item name="android:textColor">@color/light</item>
+    </style>
+
     <style name="AppTheme.Title2" parent="AppTheme.Title1">
         <item name="android:textSize">15sp</item>
     </style>
@@ -40,8 +45,8 @@
         <item name="android:drawablePadding">4dp</item>
     </style>
 
-    <style name="AppTheme.SmallFloatingButton" parent="Widget.AppCompat.Button.Small">
-        <item name="android:background">@color/blue</item>
+    <style name="AppTheme.LeftRightBtn" parent="Widget.AppCompat.Button.Small">
+        <item name="android:background">#886200EE</item>
         <item name="color">@color/blue</item>
         <item name="android:color">@color/blue</item>
         <item name="android:padding">0dp</item>

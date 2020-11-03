@@ -1,9 +1,6 @@
 package mg.maniry.tenymana.ui.game
 
 import androidx.test.core.app.ActivityScenario
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
 import mg.maniry.tenymana.MainActivity
@@ -65,7 +62,7 @@ class GameTest : KoinTest {
                         description = "Long text ..",
                         paths = listOf(
                             Path("Path 0", "...", "Matio", 1, 10, 20),
-                            Path("Path 1", "...", "Jaona", 1, 10, 20)
+                            Path("Path 1", "...", "Jaona", 1, 1, 10)
                         )
                     ),
                     Progress("11", totalScore = 5)
@@ -102,7 +99,7 @@ class GameTest : KoinTest {
         // Open LinkClear fragment
         shouldBeVisible(R.id.linkClearPuzzle)
         // Propose & complete
-        onView(withId(R.id.charsGridInput)).perform(ViewActions.swipeRight())
+        swipeRight(R.id.charsGridInput)
         // On solution screen -> tap next -> load next verse + display puzzle screen
         shouldBeVisible(R.id.solutionScreen)
         clickView(R.id.solutionSaveAndContinueBtn)

@@ -64,3 +64,11 @@ fun shouldBeEnabled(id: Int, index: Int? = null) {
 fun shouldBeDisabled(id: Int, index: Int? = null) {
     findView(id, index).check(matches(not(isEnabled())))
 }
+
+fun swipeRight(id: Int, index: Int? = null) {
+    findView(id, index).perform(swipeRight())
+}
+
+fun swipeLeft(id: Int, index: Int? = null) {
+    findView(id, index).perform(swipeLeft())
+}

@@ -5,7 +5,7 @@
     android:insetRight="2dp"
     android:insetBottom="2dp">
     <shape>
-        <solid android:color="@color/blue" />
+        <solid android:color="?attr/colorAccent" />
         <corners android:radius="6dp" />
     </shape>
 </inset>
