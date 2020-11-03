@@ -16,13 +16,17 @@ class InsideOutIteratorTest {
 
     @Test
     fun iterate() {
-        val it = InsideOutIterator(listOf(0, 1, 2, 3, 4), 3)
-        val values = listOf(3, 2, 4, 1, 0)
-        for (v in values) {
-            assertThat(it.hasNext).isTrue()
-            assertThat(it.next()).isEqualTo(v)
-        }
-        assertThat(it.hasNext).isFalse()
+        testSequences(listOf(0, 1, 2, 3, 4), 3, listOf(3, 2, 4, 1, 0))
+    }
+
+    @Test
+    fun end_right() {
+        testSequences(listOf(0, 1, 2, 3, 4), 1, listOf(1, 0, 2, 4, 3))
+    }
+
+    @Test
+    fun end_left() {
+        testSequences(listOf(0, 1, 2, 3, 4), 4, listOf(4, 3, 0, 2, 1))
     }
 
     @Test
@@ -32,6 +36,15 @@ class InsideOutIteratorTest {
         }
         val it = InsideOutIterator.random(listOf(0, 1, 2), random)
         val values = listOf(2, 1, 0)
+        for (v in values) {
+            assertThat(it.hasNext).isTrue()
+            assertThat(it.next()).isEqualTo(v)
+        }
+        assertThat(it.hasNext).isFalse()
+    }
+
+    private fun testSequences(list: List<Int>, start: Int, values: List<Int>) {
+        val it = InsideOutIterator(list, start)
         for (v in values) {
             assertThat(it.hasNext).isTrue()
             assertThat(it.next()).isEqualTo(v)

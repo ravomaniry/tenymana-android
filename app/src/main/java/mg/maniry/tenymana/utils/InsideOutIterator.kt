@@ -4,10 +4,11 @@ class InsideOutIterator<T>(
     private val list: List<T>,
     private val i0: Int
 ) {
+
     private val indexes = mutableListOf(i0)
     private var i = -1
 
-    val hasNext: Boolean get() = i < indexes.size - 1
+    val hasNext: Boolean get() = i < list.size - 1
 
     fun next(): T {
         i++
@@ -17,15 +18,12 @@ class InsideOutIterator<T>(
     private fun buildIndexes() {
         var minI = i0
         var maxI = i0
-        while (minI > 0 || maxI < list.size) {
+        val size = list.size
+        while (minI > 0 || maxI < size) {
             minI--
             maxI++
-            if (minI >= 0) {
-                indexes.add(minI)
-            }
-            if (maxI < list.size) {
-                indexes.add(maxI)
-            }
+            indexes.add((size + minI) % size)
+            indexes.add((size + maxI) % size)
         }
     }
 
