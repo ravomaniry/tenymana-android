@@ -9,6 +9,7 @@ import com.google.common.truth.Truth.assertThat
 import mg.maniry.tenymana.MainActivity
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.gameLogic.models.BibleVerse
+import mg.maniry.tenymana.gameLogic.models.Score
 import mg.maniry.tenymana.gameLogic.shared.puzzleBuilder.PuzzleBuilder
 import mg.maniry.tenymana.helpers.*
 import mg.maniry.tenymana.repositories.BibleRepo
@@ -74,7 +75,7 @@ class LinkClearTest : KoinTest {
                         title = "Journey 2",
                         paths = listOf(Path("Path 1", "..", "Marka", 1, 1, 2))
                     ),
-                    Progress("22", totalScore = 10, scores = listOf(listOf(10)))
+                    Progress("22", totalScore = 10, scores = listOf(listOf(Score(10, 3))))
                 )
             )
         )
