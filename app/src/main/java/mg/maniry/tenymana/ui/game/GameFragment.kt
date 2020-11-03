@@ -51,7 +51,7 @@ class GameFragment : Fragment() {
             puzzleBuilder,
             dispatchers
         )
-        viewModel = ViewModelProvider(this, fct).get(GameViewModel::class.java)
+        viewModel = ViewModelProvider(this, fct).get(GameViewModelImpl::class.java)
     }
 
     private fun observeRoute() {

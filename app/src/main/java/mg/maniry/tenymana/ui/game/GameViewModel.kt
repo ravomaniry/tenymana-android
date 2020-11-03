@@ -16,23 +16,32 @@ import mg.maniry.tenymana.ui.app.AppViewModel
 import mg.maniry.tenymana.ui.app.Screen
 import mg.maniry.tenymana.utils.KDispatchers
 
-class GameViewModel(
+interface GameViewModel {
+    val sessions: LiveData<List<Session>>
+    val screen: LiveData<Screen>
+    val session: LiveData<Session?>
+    val puzzle: LiveData<Puzzle?>
+    val onSessionClick: (Session) -> Unit
+
+    fun continueSession()
+    fun onPuzzleCompleted()
+    fun saveAndContinue()
+}
+
+class GameViewModelImpl(
     private val appViewModel: AppViewModel,
     private val userRepo: UserRepo,
     private val gameRepo: GameRepo,
     private val bibleRepo: BibleRepo,
     private val puzzleBuilder: PuzzleBuilder,
     private val dispatchers: KDispatchers
-) : ViewModel() {
-    val sessions = gameRepo.sessions
+) : ViewModel(), GameViewModel {
+    override val sessions = gameRepo.sessions
     var shouldNavigate = false
-    val screen: LiveData<Screen> = appViewModel.screen
+    override val screen = appViewModel.screen
+    override var session = MutableLiveData<Session?>(null)
 
-    private val _session = MutableLiveData<Session?>(null)
-    val session: LiveData<Session?> = _session
-
-    private val _puzzle = MutableLiveData<Puzzle?>(null)
-    val puzzle: LiveData<Puzzle?> = _puzzle
+    override val puzzle = MutableLiveData<Puzzle?>(null)
     private var position: SessionPosition? = null
 
     private val userObserver = Observer<User?> {
@@ -43,33 +52,33 @@ class GameViewModel(
         }
     }
 
-    val onSessionClick = { item: Session ->
+    override val onSessionClick = { item: Session ->
         shouldNavigate = true
-        _session.postValue(item)
+        session.postValue(item)
         position = item.resume()
         appViewModel.screen.postValue(Screen.PATHS_LIST)
     }
 
-    fun continueSession() {
+    override fun continueSession() {
         shouldNavigate = true
         appViewModel.screen.postValue(Screen.PUZZLE)
         initPuzzle()
     }
 
-    fun onPuzzleCompleted() {
+    override fun onPuzzleCompleted() {
         appViewModel.screen.postValue(Screen.PUZZLE_SOLUTION)
     }
 
-    fun saveAndContinue() {
-        if (session.value != null && position != null && _puzzle.value != null) {
+    override fun saveAndContinue() {
+        if (session.value != null && position != null && puzzle.value != null) {
             val prevPathI = position?.pathIndex
-            position = session.value!!.next(position!!, _puzzle.value!!)
+            position = session.value!!.next(position!!, puzzle.value!!)
             gameRepo.saveProgress(position!!.value.progress)
-            _session.postValue(position!!.value)
+            session.postValue(position!!.value)
             shouldNavigate = true
             when {
                 position?.isCompleted!! -> {
-                    _puzzle.postValue(null)
+                    puzzle.postValue(null)
                     appViewModel.screen.postValue(Screen.JOURNEY_COMPLETE)
                 }
                 position?.pathIndex != prevPathI -> appViewModel.screen.postValue(Screen.PATHS_LIST)
@@ -82,14 +91,14 @@ class GameViewModel(
     }
 
     private fun initPuzzle() {
-        _puzzle.postValue(null)
-        val active = _session.value!!
+        puzzle.postValue(null)
+        val active = session.value!!
         viewModelScope.launch(dispatchers.default) {
             val path = active.journey.paths[position!!.pathIndex]
             val verseNum = path.start + position!!.verseIndex
             val verse = bibleRepo.getSingle(path.book, path.chapter, verseNum)
             if (verse != null) {
-                _puzzle.postValue(puzzleBuilder.linkClear(verse))
+                puzzle.postValue(puzzleBuilder.linkClear(verse))
             }
         }
     }

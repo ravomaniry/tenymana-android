@@ -81,7 +81,7 @@ class GameViewModelTest {
             }
             // test
             val viewModel =
-                GameViewModel(
+                GameViewModelImpl(
                     appViewModel,
                     userRepo,
                     gameRepo,
@@ -250,7 +250,7 @@ class GameViewModelTest {
             val puzzleBuilder: PuzzleBuilder = mock {
                 on { linkClear(any()) } doReturn puzzle
             }
-            val viewModel = GameViewModel(
+            val viewModel = GameViewModelImpl(
                 appViewModel,
                 userRepo,
                 gameRepo,
