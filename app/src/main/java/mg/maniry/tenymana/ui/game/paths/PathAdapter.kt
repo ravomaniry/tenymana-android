@@ -53,7 +53,21 @@ class PathViewHolder private constructor(
         binding.verse = verse.toString()
         binding.score = score ?: Score.ZERO
         binding.onClick = onClick
+        binding.star0 = starID(score, 1)
+        binding.star1 = starID(score, 2)
+        binding.star2 = starID(score, 3)
+        binding.background = when (score) {
+            null -> R.drawable.bg_paths_screen_item_new
+            else -> R.drawable.bg_paths_screen_item_done
+        }
         binding.executePendingBindings()
+    }
+
+    private fun starID(score: Score?, min: Int): Int {
+        return when {
+            score != null && score.stars >= min -> R.drawable.ic_star_rate
+            else -> R.drawable.ic_star_rate_white
+        }
     }
 
     companion object {

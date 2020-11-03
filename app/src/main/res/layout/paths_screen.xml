@@ -102,7 +102,7 @@
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_play"
             android:onClick="@{() -> viewModel.continueSession()}"
-            android:text="@string/app_action_play" />
+            android:text="@string/app_action_next" />
 
     </LinearLayout>
 

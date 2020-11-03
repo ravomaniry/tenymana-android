@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -17,24 +18,77 @@
             type="mg.maniry.tenymana.gameLogic.models.Score" />
 
         <variable
+            name="star0"
+            type="Integer" />
+
+        <variable
+            name="star1"
+            type="Integer" />
+
+        <variable
+            name="star2"
+            type="Integer" />
+
+        <variable
             name="onClick"
             type="mg.maniry.tenymana.ui.game.paths.OnVerseClick" />
+
+        <variable
+            name="background"
+            type="Integer" />
+
     </data>
 
     <LinearLayout
         android:id="@+id/pathsScreenVerse"
+        style="@style/AppTheme.PathsListCont"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/blue"
         android:onClick="@{() -> onClick.onClick(index)}"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:backgroundDrawableID="@{background}"
+        tools:background="@drawable/bg_paths_screen_item_done">
 
         <TextView
             android:id="@+id/pathsScreenVerseNumber"
             style="@style/AppTheme.PathsListVerse"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{verse}"
             tools:text="1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="@string/app_start_desc"
+                app:srcResID="@{star0}"
+                tools:src="@drawable/ic_star_rate" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="@string/app_start_desc"
+                app:srcResID="@{star1}"
+                tools:src="@drawable/ic_star_rate" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="@string/app_start_desc"
+                app:srcResID="@{star2}"
+                tools:src="@drawable/ic_star_rate_white" />
+
+        </LinearLayout>
+
     </LinearLayout>
+
 </layout>

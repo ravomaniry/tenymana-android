@@ -18,3 +18,11 @@ fun View.bindBackgroundColor(resID: Int?) {
 fun View.bindIsVisible(value: Boolean?) {
     visibility = if (value == false) View.GONE else View.VISIBLE
 }
+
+@BindingAdapter("backgroundDrawableID")
+fun View.bindBackgroundDrawable(resID: Int?) {
+    background = when (resID) {
+        null -> null
+        else -> ContextCompat.getDrawable(context, resID)
+    }
+}

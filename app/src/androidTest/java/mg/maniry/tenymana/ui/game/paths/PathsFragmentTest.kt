@@ -82,7 +82,7 @@ class PathsFragmentTest {
                 "11",
                 totalScore = 10,
                 scores = listOf(
-                    listOf(Score(10, 1), Score(11, 2))
+                    listOf(Score(10, 1), Score(11, 2), Score(12, 3))
                 )
             )
         )
