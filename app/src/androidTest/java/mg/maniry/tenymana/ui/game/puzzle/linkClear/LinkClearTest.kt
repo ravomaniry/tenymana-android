@@ -87,7 +87,7 @@ class LinkClearTest : KoinTest {
         shouldBeVisible(R.id.gamesList)
         // go to paths screen
         clickView(R.id.gameListItem, 0)
-        shouldBeVisible(R.id.pathsGrid)
+        shouldBeVisible(R.id.pathsScreen)
         // Go to puzzle screen:
         clickView(R.id.pathsNextBtn)
         //  - load verse and init puzzle

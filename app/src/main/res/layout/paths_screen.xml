@@ -8,34 +8,44 @@
 
         <variable
             name="viewModel"
-            type="mg.maniry.tenymana.ui.game.GameViewModel" />
+            type="mg.maniry.tenymana.ui.game.paths.PathsViewModel" />
     </data>
 
     <LinearLayout
+        android:id="@+id/pathsScreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <TextView
             style="@style/AppTheme.Title1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.session.journey.title}"
+            android:text="@{viewModel.journeyTitle}"
             tools:text="Journey 1" />
 
-        <ScrollView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.2">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{viewModel.session.journey.description}"
+                android:text="@{viewModel.journeyDescription}"
                 tools:text="Description ...\nDescription ..." />
 
-        </ScrollView>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:contentDescription="@string/app_expand_collapse_img_description"
+                android:onClick="@{() -> viewModel.onToggleDescription()}"
+                app:srcResID="@{viewModel.descriptionBtnIcon}"
+                tools:src="@drawable/ic_open_in_full" />
+
+        </androidx.cardview.widget.CardView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/pathsGrid"
