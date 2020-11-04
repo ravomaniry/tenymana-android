@@ -16,7 +16,7 @@ interface LinkClearPuzzle : Puzzle {
         const val visibleH = 12
         const val width = 10
         val gravity = listOf(Point.DOWN, Point.LEFT)
-        val directions = Point.directions
+        val directions = listOf(Point.UP, Point.RIGHT, Point.DOWN, Point.LEFT)
 
         fun build(verse: BibleVerse, random: Random): LinkClearPuzzle {
             val grid = buildLinkGrid(verse, random, width, visibleH)

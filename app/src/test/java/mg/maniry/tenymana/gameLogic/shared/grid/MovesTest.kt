@@ -25,14 +25,11 @@ class MovesTest {
         val word = Word.fromValue("ghi", 2, false)
         val moves = listOf(
             MoveWithScore(Move.xy(0, 0, 0, 1), -3.0 + 2.0 / 3),
-            MoveWithScore(Move.xy(0, 0, 1, 1), -2.0 + 1),
             MoveWithScore(Move.xy(0, 0, 1, 0), -2.0 + 2),
             MoveWithScore(Move.xy(2, 0, -1, 0), -2.0 + 2),
-            MoveWithScore(Move.xy(2, 0, -1, 1), -2.0 + 1),
             MoveWithScore(Move.xy(0, 1, 1, 0), -2.0 + 1),
             MoveWithScore(Move.xy(2, 1, -1, 0), -2.0 + 1),
             MoveWithScore(Move.xy(0, 2, 1, 0), -2.0 + 0),
-            MoveWithScore(Move.xy(0, 2, 1, -1), -2.0 + 1),
             MoveWithScore(Move.xy(0, 2, 0, -1), -3.0 + 2.0 / 3),
             MoveWithScore(Move.xy(2, 2, -1, 0), -2.0 + 0)
         )
@@ -52,15 +49,12 @@ class MovesTest {
         val word = Word.fromValue("ghi", 2, false)
         val moves = listOf(
             MoveWithScore(Move.xy(0, 0, 0, 1), -3.0 + 2.0 / 3),
-            MoveWithScore(Move.xy(0, 0, 1, 1), -2.0 + 1),
             MoveWithScore(Move.xy(0, 0, 1, 0), -2.0 + 2),
             MoveWithScore(Move.xy(2, 0, -1, 0), -2.0 + 2),
-            MoveWithScore(Move.xy(2, 0, -1, 1), -2.0 + 1),
             MoveWithScore(Move.xy(0, 1, 0, 1), -3.0 + 1.0 / 3),
             MoveWithScore(Move.xy(0, 1, 1, 0), -2.0 + 1),
             MoveWithScore(Move.xy(2, 1, -1, 0), -2.0 + 1),
             MoveWithScore(Move.xy(0, 2, 1, 0), -2.0 + 0),
-            MoveWithScore(Move.xy(0, 2, 1, -1), -2.0 + 1),
             MoveWithScore(Move.xy(0, 2, 0, -1), -3.0 + 2.0 / 3),
             MoveWithScore(Move.xy(2, 2, -1, 0), -2.0 + 0)
         )
