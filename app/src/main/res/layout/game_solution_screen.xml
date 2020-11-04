@@ -44,8 +44,9 @@
                     android:text="@{viewModel.singleVerseText}"
                     tools:text="In the beginning ..." />
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/solutionScreenExpandBtn"
+                    style="@style/AppTheme.ImageBtnPrimary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/solution_expand_description"
