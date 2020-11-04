@@ -1,29 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="viewModel"
-            type="mg.maniry.tenymana.ui.game.GameViewModel" />
+            type="mg.maniry.tenymana.ui.game.solution.SolutionViewModel" />
     </data>
 
     <LinearLayout
         android:id="@+id/solutionScreen"
+        style="@style/AppTheme.DarkMainCont"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/solutionScreenTitle"
+            style="@style/AppTheme.Title1Light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.puzzle.verse.text}" />
+            android:text="@{viewModel.title}"
+            tools:text="Matthiew 1" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/solutionScreenSmallView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:isVisible="@{!viewModel.showBigView}">
+
+            <ImageView
+                android:id="@+id/solutionScreenExpandBtn"
+                style="@style/AppTheme.RightFloatingImg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/app_expand_collapse_img_description"
+                android:onClick="@{() -> viewModel.showPreviousVerses()}"
+                android:src="@drawable/ic_open_in_full" />
+
+            <TextView
+                android:id="@+id/solutionScreenVerse"
+                style="@style/AppTheme.VerseTexView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.singleVerseText}"
+                tools:text="In the beginning ..." />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/solutionScreenBigView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:isVisible="@{viewModel.showBigView}">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/solutionScreenVersesList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        </androidx.cardview.widget.CardView>
 
         <Button
             android:id="@+id/solutionSaveAndContinueBtn"
+            style="@style/AppTheme.BottomBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_play"
             android:onClick="@{() ->viewModel.saveAndContinue()}"
             android:text="@string/app_action_next" />
     </LinearLayout>

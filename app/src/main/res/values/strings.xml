@@ -13,6 +13,8 @@
     <string name="paths_screen_next_description">Aseho ny manaraka</string>
     <string name="paths_screen_path_title">%s\n%s %d</string>
     <string name="path_details_verse_ref">%s %d:%d-%d</string>
+    <string name="solution_expand_verses">Sokafana manontolo</string>
+    <string name="solution_verse_item">%d- %s</string>
 
     <!-- Loader-->
     <string name="loader_text">Jesosy Kristy no lalana sy fahamarinana ary fiainana.</string>

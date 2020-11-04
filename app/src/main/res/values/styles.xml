@@ -67,6 +67,15 @@
         <item name="android:padding">0dp</item>
     </style>
 
+    <style name="AppTheme.BottomBtn" parent="AppTheme.Button">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginTop">10dp</item>
+    </style>
+
+    <style name="AppTheme.RightFloatingImg">
+        <item name="android:layout_gravity">end</item>
+    </style>
+
     <!-- Journeys list -->
     <style name="AppTheme.GamesListScore" parent="TextAppearance.AppCompat.Body1">
         <item name="android:textColor">@color/light</item>
@@ -102,5 +111,10 @@
     <!-- Puzzle screen -->
     <style name="AppTheme.PuzzleBody">
         <item name="android:padding">4dp</item>
+    </style>
+
+    <!-- Solution screen -->
+    <style name="AppTheme.VerseTexView" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:layout_margin">5dp</item>
     </style>
 </resources>

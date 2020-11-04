@@ -24,6 +24,7 @@ import mg.maniry.tenymana.utils.mountChild
 import org.koin.android.ext.android.inject
 
 class GameFragment : Fragment() {
+    private val bibleRepo: BibleRepo by inject()
     private lateinit var viewModel: GameViewModel
 
     override fun onCreateView(
@@ -42,7 +43,6 @@ class GameFragment : Fragment() {
         val userRepo: UserRepo by inject()
         val gameRepo: GameRepo by inject()
         val puzzleBuilder: PuzzleBuilder by inject()
-        val bibleRepo: BibleRepo by inject()
         val dispatchers: KDispatchers by inject()
         val fct = GameViewModelFactory(
             viewModels.app,
@@ -62,7 +62,7 @@ class GameFragment : Fragment() {
                 Screen.PATHS_LIST -> PathsFragment(viewModel)
                 Screen.PATH_DETAILS -> PathDetailsFragment(viewModel, viewModel.position)
                 Screen.PUZZLE -> PuzzleFragment(viewModel)
-                Screen.PUZZLE_SOLUTION -> SolutionFragment(viewModel)
+                Screen.PUZZLE_SOLUTION -> SolutionFragment(viewModel, bibleRepo)
                 else -> null
             }
             if (child != null) {
