@@ -49,7 +49,7 @@ class LinkClearPuzzleImpl(
 
     override fun propose(move: Move): Boolean {
         reset()
-        val selection = grid.calcSelection(move)
+        val selection = grid.calcSelection(move, directions)
         if (selection.isNotEmpty) {
             val indexes = words.resolveWith(selection.chars, hidden)
             if (indexes.isNotEmpty()) {

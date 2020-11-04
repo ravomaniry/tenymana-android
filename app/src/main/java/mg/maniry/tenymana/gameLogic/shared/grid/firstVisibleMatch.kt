@@ -1,7 +1,6 @@
 package mg.maniry.tenymana.gameLogic.shared.grid
 
 import mg.maniry.tenymana.gameLogic.models.*
-import mg.maniry.tenymana.gameLogic.models.Grid
 import kotlin.math.max
 
 fun Grid<Character>.firstVisibleMatch(
@@ -38,7 +37,7 @@ private fun Grid<Character>.findValidMove(
         val a = Point(origin.x, origin.y)
         val b = a + d * (word.size - 1)
         if (b.y < visibleH) {
-            val selection = calcSelection(Move(a, b))
+            val selection = calcSelection(Move(a, b), directions)
             if (selection.chars.isNotEmpty() && word.sameChars(selection.chars)) {
                 return Move(a, b)
             }

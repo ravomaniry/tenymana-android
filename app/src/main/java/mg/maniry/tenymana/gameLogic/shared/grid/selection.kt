@@ -12,8 +12,8 @@ data class Selection(
     val isNotEmpty: Boolean get() = chars.isNotEmpty()
 }
 
-fun Grid<Character>.calcSelection(move: Move): Selection {
-    if (move.direction != null && move.direction in Point.directions) {
+fun Grid<Character>.calcSelection(move: Move, directions: List<Point>): Selection {
+    if (move.direction != null && move.direction in directions) {
         val chars = mutableListOf<Character>()
         val points = mutableListOf<Point>()
         var point = move.a
