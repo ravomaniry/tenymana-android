@@ -40,15 +40,15 @@
                 android:text="@{viewModel.journeyDescription}"
                 tools:text="Description ...\nDescription ..." />
 
-            <ImageView
+            <ImageButton
+                style="@style/AppTheme.ImageBtnPrimary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:contentDescription="@string/app_expand_collapse_img_description"
                 android:onClick="@{() -> viewModel.onToggleDescription()}"
-                app:isVisible="@{viewModel.descriptionExpanded}"
-                app:srcResID="@{viewModel.descriptionBtnIcon}"
-                tools:src="@drawable/ic_open_in_full" />
+                android:src="@drawable/ic_more_horizontal"
+                app:isVisible="@{viewModel.descriptionExpanded}" />
 
         </androidx.cardview.widget.CardView>
 

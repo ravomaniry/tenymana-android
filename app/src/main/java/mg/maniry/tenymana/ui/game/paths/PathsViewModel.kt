@@ -1,7 +1,6 @@
 package mg.maniry.tenymana.ui.game.paths
 
 import androidx.lifecycle.*
-import mg.maniry.tenymana.R
 import mg.maniry.tenymana.gameLogic.models.Score
 import mg.maniry.tenymana.gameLogic.shared.session.resume
 import mg.maniry.tenymana.repositories.models.Path
@@ -41,10 +40,6 @@ class PathsViewModel(
 
     val journeyTitle: LiveData<String> = Transformations.map(gameViewModel.session) {
         it?.journey?.title ?: ""
-    }
-
-    val descriptionBtnIcon: LiveData<Int> = Transformations.map(descriptionExpanded) {
-        if (it == true) R.drawable.ic_close_fullscreen else R.drawable.ic_open_in_full
     }
 
     val verseClickHandler = { index: Int ->
