@@ -38,7 +38,8 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/app_expand_collapse_img_description"
                 android:onClick="@{() -> viewModel.showPreviousVerses()}"
-                android:src="@drawable/ic_open_in_full" />
+                android:src="@drawable/ic_open_in_full"
+                app:isVisible="@{viewModel.showExpandBtn}" />
 
             <TextView
                 android:id="@+id/solutionScreenVerse"

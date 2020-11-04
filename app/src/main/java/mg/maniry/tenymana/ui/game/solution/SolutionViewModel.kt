@@ -27,6 +27,7 @@ class SolutionViewModel(
     private val _showBigView = MutableLiveData(false)
     val showBigView: LiveData<Boolean> = _showBigView
     private val _showExpandBtn = MutableLiveData(false)
+    val showExpandBtn: LiveData<Boolean> = _showExpandBtn
 
     private val _title = MutableLiveData("")
     val title: LiveData<String> = _title
