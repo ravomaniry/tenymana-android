@@ -22,9 +22,9 @@ class PlaceWordTest {
             w = 3,
             delta = Pair(Point(0, 0), Pair(UP, "Abc")),
             result = mutableListOf<MutableList<CharAddress?>>(
-                mutableListOf(CharAddress(0, 0), null, null),
-                mutableListOf(CharAddress(0, 1), null, null),
-                mutableListOf(CharAddress(0, 2), null, null),
+                mutableListOf(ca(0, 0), null, null),
+                mutableListOf(ca(0, 1), null, null),
+                mutableListOf(ca(0, 2), null, null),
                 mutableListOf(null, null, null)
             )
         )
@@ -36,7 +36,7 @@ class PlaceWordTest {
             w = 3,
             delta = Pair(Point(2, 0), Pair(LEFT, "Abc")),
             result = mutableListOf<MutableList<CharAddress?>>(
-                mutableListOf(CharAddress(0, 2), CharAddress(0, 1), CharAddress(0, 0)),
+                mutableListOf(ca(0, 2), ca(0, 1), ca(0, 0)),
                 mutableListOf(null, null, null)
             )
         )
@@ -48,7 +48,7 @@ class PlaceWordTest {
             w = 3,
             delta = Pair(Point(0, 0), Pair(RIGHT, "Abc")),
             result = mutableListOf<MutableList<CharAddress?>>(
-                mutableListOf(CharAddress(0, 0), CharAddress(0, 1), CharAddress(0, 2)),
+                mutableListOf(ca(0, 0), ca(0, 1), ca(0, 2)),
                 mutableListOf(null, null, null)
             )
         )
@@ -60,9 +60,9 @@ class PlaceWordTest {
             w = 3,
             delta = Pair(Point(0, 0), Pair(UP_RIGHT, "Abc")),
             result = mutableListOf<MutableList<CharAddress?>>(
-                mutableListOf(CharAddress(0, 0), null, null),
-                mutableListOf(null, CharAddress(0, 1), null),
-                mutableListOf(null, null, CharAddress(0, 2)),
+                mutableListOf(ca(0, 0), null, null),
+                mutableListOf(null, ca(0, 1), null),
+                mutableListOf(null, null, ca(0, 2)),
                 mutableListOf(null, null, null)
             )
         )
@@ -74,9 +74,9 @@ class PlaceWordTest {
             w = 3,
             delta = Pair(Point(2, 0), Pair(UP_LEFT, "Abc")),
             result = mutableListOf<MutableList<CharAddress?>>(
-                mutableListOf(null, null, CharAddress(0, 0)),
-                mutableListOf(null, CharAddress(0, 1), null),
-                mutableListOf(CharAddress(0, 2), null, null),
+                mutableListOf(null, null, ca(0, 0)),
+                mutableListOf(null, ca(0, 1), null),
+                mutableListOf(ca(0, 2), null, null),
                 mutableListOf(null, null, null)
             )
         )
@@ -85,10 +85,10 @@ class PlaceWordTest {
     // | F | . | . |
     // | C | D | E |
     private val persistOnFilledUpValues = listOf(
-        Pair(Point(0, 0), CharAddress(1, 0)),
-        Pair(Point(1, 0), CharAddress(1, 1)),
-        Pair(Point(2, 0), CharAddress(1, 2)),
-        Pair(Point(0, 1), CharAddress(2, 0))
+        cell(0, 0, 1, 0),
+        cell(1, 0, 1, 1),
+        cell(2, 0, 1, 2),
+        cell(0, 1, 2, 0)
     )
 
     @Test
@@ -98,9 +98,9 @@ class PlaceWordTest {
             values = persistOnFilledUpValues,
             delta = Pair(Point(0, 1), Pair(UP, "Ab")),
             result = mutableListOf<MutableList<CharAddress?>>(
-                mutableListOf(CharAddress(1, 0), CharAddress(1, 1), CharAddress(1, 2)),
-                mutableListOf(CharAddress(0, 0), CharAddress(2, 0), null),
-                mutableListOf(CharAddress(0, 1), null, null),
+                mutableListOf(ca(1, 0), ca(1, 1), ca(1, 2)),
+                mutableListOf(ca(0, 0), ca(2, 0), null),
+                mutableListOf(ca(0, 1), null, null),
                 mutableListOf(null, null, null)
             )
         )
@@ -113,8 +113,8 @@ class PlaceWordTest {
             values = persistOnFilledUpValues,
             delta = Pair(Point(0, 1), Pair(RIGHT, "Ab")),
             result = mutableListOf<MutableList<CharAddress?>>(
-                mutableListOf(CharAddress(1, 0), CharAddress(1, 1), CharAddress(1, 2)),
-                mutableListOf(CharAddress(0, 0), CharAddress(0, 1), CharAddress(2, 0)),
+                mutableListOf(ca(1, 0), ca(1, 1), ca(1, 2)),
+                mutableListOf(ca(0, 0), ca(0, 1), ca(2, 0)),
                 mutableListOf(null, null, null)
             )
         )
@@ -127,8 +127,8 @@ class PlaceWordTest {
             values = persistOnFilledUpValues,
             delta = Pair(Point(1, 1), Pair(LEFT, "Ab")),
             result = mutableListOf<MutableList<CharAddress?>>(
-                mutableListOf(CharAddress(1, 0), CharAddress(1, 1), CharAddress(1, 2)),
-                mutableListOf(CharAddress(0, 1), CharAddress(0, 0), CharAddress(2, 0)),
+                mutableListOf(ca(1, 0), ca(1, 1), ca(1, 2)),
+                mutableListOf(ca(0, 1), ca(0, 0), ca(2, 0)),
                 mutableListOf(null, null, null)
             )
         )
@@ -141,8 +141,8 @@ class PlaceWordTest {
             values = persistOnFilledUpValues,
             delta = Pair(Point(2, 0), Pair(LEFT, "Ab")),
             result = mutableListOf<MutableList<CharAddress?>>(
-                mutableListOf(CharAddress(1, 0), CharAddress(0, 1), CharAddress(0, 0)),
-                mutableListOf(CharAddress(2, 0), CharAddress(1, 1), CharAddress(1, 2)),
+                mutableListOf(ca(1, 0), ca(0, 1), ca(0, 0)),
+                mutableListOf(ca(2, 0), ca(1, 1), ca(1, 2)),
                 mutableListOf(null, null, null)
             )
         )
@@ -155,9 +155,9 @@ class PlaceWordTest {
             values = persistOnFilledUpValues,
             delta = Pair(Point(1, 1), Pair(DOWN, "Ab")),
             result = mutableListOf<MutableList<CharAddress?>>(
-                mutableListOf(CharAddress(1, 0), CharAddress(0, 1), CharAddress(1, 2)),
-                mutableListOf(CharAddress(2, 0), CharAddress(0, 0), null),
-                mutableListOf(null, CharAddress(1, 1), null),
+                mutableListOf(ca(1, 0), ca(0, 1), ca(1, 2)),
+                mutableListOf(ca(2, 0), ca(0, 0), null),
+                mutableListOf(null, ca(1, 1), null),
                 mutableListOf(null, null, null)
             )
         )
@@ -170,10 +170,10 @@ class PlaceWordTest {
             values = persistOnFilledUpValues,
             delta = Pair(Point(0, 0), Pair(UP, "Ab")),
             result = mutableListOf<MutableList<CharAddress?>>(
-                mutableListOf(CharAddress(0, 0), CharAddress(1, 1), CharAddress(1, 2)),
-                mutableListOf(CharAddress(0, 1), null, null),
-                mutableListOf(CharAddress(1, 0), null, null),
-                mutableListOf(CharAddress(2, 0), null, null),
+                mutableListOf(ca(0, 0), ca(1, 1), ca(1, 2)),
+                mutableListOf(ca(0, 1), null, null),
+                mutableListOf(ca(1, 0), null, null),
+                mutableListOf(ca(2, 0), null, null),
                 mutableListOf(null, null, null)
             )
         )
@@ -182,11 +182,11 @@ class PlaceWordTest {
     // | E | D |   |   |   |
     // | F | G | H |   |   |
     private val diagValues = listOf(
-        Pair(Point(0, 0), CharAddress(2, 0)),
-        Pair(Point(1, 0), CharAddress(2, 1)),
-        Pair(Point(2, 0), CharAddress(2, 2)),
-        Pair(Point(0, 1), CharAddress(1, 1)),
-        Pair(Point(1, 1), CharAddress(1, 0))
+        Pair(Point(0, 0), ca(2, 0)),
+        Pair(Point(1, 0), ca(2, 1)),
+        Pair(Point(2, 0), ca(2, 2)),
+        Pair(Point(0, 1), ca(1, 1)),
+        Pair(Point(1, 1), ca(1, 0))
     )
 
     @Test
@@ -196,9 +196,9 @@ class PlaceWordTest {
             values = diagValues,
             delta = Pair(Point(2, 0), Pair(UP_LEFT, "Abc")),
             result = mutableListOf<MutableList<CharAddress?>>(
-                mutableListOf(CharAddress(2, 0), CharAddress(2, 1), CharAddress(0, 0), null, null),
-                mutableListOf(CharAddress(1, 1), CharAddress(0, 1), CharAddress(2, 2), null, null),
-                mutableListOf(CharAddress(0, 2), CharAddress(1, 0), null, null, null),
+                mutableListOf(ca(2, 0), ca(2, 1), ca(0, 0), null, null),
+                mutableListOf(ca(1, 1), ca(0, 1), ca(2, 2), null, null),
+                mutableListOf(ca(0, 2), ca(1, 0), null, null, null),
                 mutableListOf(null, null, null, null, null)
             )
         )
@@ -211,9 +211,9 @@ class PlaceWordTest {
             values = diagValues,
             delta = Pair(Point(0, 2), Pair(DOWN_RIGHT, "Abc")),
             result = mutableListOf<MutableList<CharAddress?>>(
-                mutableListOf(CharAddress(2, 0), CharAddress(2, 1), CharAddress(0, 2), null, null),
-                mutableListOf(CharAddress(1, 1), CharAddress(0, 1), CharAddress(2, 2), null, null),
-                mutableListOf(CharAddress(0, 0), CharAddress(1, 0), null, null, null),
+                mutableListOf(ca(2, 0), ca(2, 1), ca(0, 2), null, null),
+                mutableListOf(ca(1, 1), ca(0, 1), ca(2, 2), null, null),
+                mutableListOf(ca(0, 0), ca(1, 0), null, null, null),
                 mutableListOf(null, null, null, null, null)
             )
         )
@@ -226,15 +226,46 @@ class PlaceWordTest {
             values = diagValues,
             delta = Pair(Point(4, 0), Pair(LEFT, "Abc")),
             result = mutableListOf<MutableList<CharAddress?>>(
-                mutableListOf(
-                    CharAddress(2, 0),
-                    CharAddress(2, 1),
-                    CharAddress(0, 2),
-                    CharAddress(0, 1),
-                    CharAddress(0, 0)
-                ),
-                mutableListOf(CharAddress(1, 1), CharAddress(1, 0), CharAddress(2, 2), null, null),
+                mutableListOf(ca(2, 0), ca(2, 1), ca(0, 2), ca(0, 1), ca(0, 0)),
+                mutableListOf(ca(1, 1), ca(1, 0), ca(2, 2), null, null),
                 mutableListOf(null, null, null, null, null)
+            )
+        )
+    }
+
+    // | D | E | F |
+    // | A | B | C |
+    private val manyShiftValues = listOf(
+        cell(0, 0, 10, 0), cell(1, 0, 10, 1), cell(2, 0, 10, 2),
+        cell(0, 1, 11, 0), cell(1, 1, 11, 1), cell(2, 1, 11, 2)
+    )
+
+    @Test
+    fun manyShifts_placeAtRightBottomFillToLeft() {
+        testPlaceWord(
+            w = 3,
+            values = manyShiftValues,
+            delta = Pair(Point(2, 0), Pair(LEFT, "Abc")),
+            result = mutableListOf<MutableList<CharAddress?>>(
+                mutableListOf(ca(0, 2), ca(0, 1), ca(0, 0)),
+                mutableListOf(ca(10, 0), ca(10, 1), ca(10, 2)),
+                mutableListOf(ca(11, 0), ca(11, 1), ca(11, 2)),
+                mutableListOf(null, null, null)
+            )
+        )
+    }
+
+    @Test
+    fun manyShifts_placeWordAtRightBottomToLeft() {
+        testPlaceWord(
+            w = 3,
+            values = manyShiftValues,
+            delta = Pair(Point(2, 0), Pair(LEFT, "Ab")),
+            result = mutableListOf<MutableList<CharAddress?>>(
+                mutableListOf(ca(10, 0), ca(0, 1), ca(0, 0)),
+                mutableListOf(ca(11, 0), ca(10, 1), ca(10, 2)),
+                mutableListOf(null, ca(11, 1), ca(11, 2)),
+                mutableListOf(null, null, null)
             )
         )
     }
@@ -245,18 +276,16 @@ class PlaceWordTest {
         delta: Pair<Point, Pair<Point, String>>,
         result: MutableList<MutableList<CharAddress?>>
     ) {
-        val grid =
-            MutableGrid<CharAddress>(w)
+        val grid = MutableGrid<CharAddress>(w)
         for (v in values) {
             grid.set(v.first.x, v.first.y, v.second)
         }
         val word = Word.fromValue(delta.second.second, 0, false)
         grid.placeWord(delta.first, delta.second.first, word, gravity)
-        assertThat(grid).isEqualTo(
-            MutableGrid(
-                w,
-                result
-            )
-        )
+        assertThat(grid).isEqualTo(MutableGrid(w, result))
     }
+
+    private fun ca(wI: Int, cI: Int) = CharAddress(wI, cI)
+
+    private fun cell(x: Int, y: Int, wI: Int, cI: Int) = Pair(Point(x, y), ca(wI, cI))
 }

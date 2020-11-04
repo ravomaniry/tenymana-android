@@ -4,8 +4,6 @@ import mg.maniry.tenymana.gameLogic.models.*
 import mg.maniry.tenymana.gameLogic.models.Point.Companion.LEFT
 import mg.maniry.tenymana.gameLogic.models.Point.Companion.RIGHT
 import mg.maniry.tenymana.gameLogic.models.Point.Companion.UP
-import mg.maniry.tenymana.gameLogic.models.Grid
-import mg.maniry.tenymana.gameLogic.models.MutableGrid
 
 fun MutableGrid<CharAddress>.placeWord(
     origin: Point,
@@ -139,10 +137,12 @@ private fun MutableList<Move>.addItems(
     slideLen: Int
 ) {
     for (i in 0 until len) {
-        val src = origin + direction * i
-        val dst = src + slideDir * slideLen
-        if (grid[src] != null && grid.canContain(dst)) {
-            add(Move(src, dst))
+        for (y in (grid.h - 1) downTo origin.y) {
+            val src = Point(origin.x, y) + direction * i
+            val dst = src + slideDir * slideLen
+            if (grid[src] != null && grid.canContain(dst)) {
+                add(Move(src, dst))
+            }
         }
     }
 }
