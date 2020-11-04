@@ -143,13 +143,15 @@ class PathsFragmentTest {
         showRightBtn: Boolean,
         pathIndex: Int
     ): GameViewModel {
+        lateinit var fragment: Fragment
         val gameViewModel = mock(GameViewModel::class.java).apply {
             `when`(this.sessions).thenReturn(MutableLiveData(listOf(session)))
             `when`(this.session).thenReturn(MutableLiveData(session))
         }
         val factory = object : FragmentFactory() {
             override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
-                return PathsFragment(gameViewModel)
+                fragment = PathsFragment(gameViewModel)
+                return fragment
             }
         }
         launchFragmentInContainer<PathsFragment>(null, R.style.AppTheme, factory)
@@ -167,9 +169,10 @@ class PathsFragmentTest {
             shouldBeInvisible(R.id.pathsScreenRightBtn)
         }
         // Active path
-        shouldHaveText(R.id.pathsScreenPathTitle, text = session.journey.paths[pathIndex].name)
-        // clicks
         val path = session.journey.paths[pathIndex]
+        shouldHaveText(R.id.pathsScreenPathTitle, text = path.name)
+        shouldHaveText(R.id.pathsScreenPathChapter, text = "${path.book} ${path.chapter}")
+        // clicks
         for (verse in path.start..path.end) {
             val index = verse - path.start
             clickView(R.id.pathsScreenVerse, index)

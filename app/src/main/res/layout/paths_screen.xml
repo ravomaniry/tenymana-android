@@ -66,11 +66,20 @@
                 android:text="@{viewModel.activePath.name}"
                 tools:text="Path 1" />
 
+            <TextView
+                android:id="@+id/pathsScreenPathChapter"
+                style="@style/AppTheme.Title3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@{viewModel.activePathChapter}"
+                tools:text="Matthiew 1" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/pathsGrid"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="48dp"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
 
             <ImageButton

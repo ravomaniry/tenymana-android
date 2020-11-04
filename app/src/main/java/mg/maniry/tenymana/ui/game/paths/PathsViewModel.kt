@@ -23,6 +23,10 @@ class PathsViewModel(
         session.value!!.journey.paths[it]
     }
 
+    val activePathChapter: LiveData<String> = Transformations.map(activePath) {
+        "${it.book} ${it.chapter}"
+    }
+
     val activeScores: LiveData<List<Score>?> = Transformations.map(activePathIndex) {
         session.value!!.progress.scores.getOrNull(it)
     }

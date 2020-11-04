@@ -36,6 +36,11 @@
         <item name="android:textSize">15sp</item>
     </style>
 
+    <style name="AppTheme.Title3" parent="AppTheme.Title1">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
     <style name="AppTheme.Title2Light" parent="AppTheme.Title2">
         <item name="android:textColor">@color/light</item>
     </style>
