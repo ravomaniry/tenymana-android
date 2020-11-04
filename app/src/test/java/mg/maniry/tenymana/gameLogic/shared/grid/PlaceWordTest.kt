@@ -270,6 +270,23 @@ class PlaceWordTest {
         )
     }
 
+    @Test
+    fun noShift_AddUp() {
+        testPlaceWord(
+            w = 3,
+            values = manyShiftValues,
+            delta = Pair(Point(0, 2), Pair(UP, "Abc")),
+            result = mutableListOf<MutableList<CharAddress?>>(
+                mutableListOf(ca(10, 0), ca(10, 1), ca(10, 2)),
+                mutableListOf(ca(11, 0), ca(11, 1), ca(11, 2)),
+                mutableListOf(ca(0, 0), null, null),
+                mutableListOf(ca(0, 1), null, null),
+                mutableListOf(ca(0, 2), null, null),
+                mutableListOf(null, null, null)
+            )
+        )
+    }
+
     private fun testPlaceWord(
         w: Int,
         values: List<Pair<Point, CharAddress>> = listOf(),
