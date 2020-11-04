@@ -53,7 +53,7 @@ class CharGridView : View {
     }
 }
 
-class CharGridViewControl {
+class CharGridViewControl() {
     companion object {
         const val MARGIN = 2
     }
@@ -67,6 +67,7 @@ class CharGridViewControl {
         style = Paint.Style.FILL
     }
     private val textPaint = Paint().apply {
+        isAntiAlias = true
         style = Paint.Style.FILL
         textAlign = Paint.Align.CENTER
         color = Color.WHITE

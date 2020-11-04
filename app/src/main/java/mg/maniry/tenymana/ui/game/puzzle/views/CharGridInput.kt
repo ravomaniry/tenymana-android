@@ -35,7 +35,7 @@ class CharGridInput : View {
     }
 
     fun onColorsChanged(colors: GameColors) {
-        control.onColorChanged(ContextCompat.getColor(context, colors.primary))
+        control.onColorChanged(ContextCompat.getColor(context, colors.accent))
     }
 
     fun onPropose(fn: ProposeFn) {
@@ -73,8 +73,9 @@ class CharGridInputControl {
     private var end: Point? = null
     private var gridWidth = 0
     private val linePaint = Paint().apply {
+        isAntiAlias = true
         style = Paint.Style.STROKE
-        strokeWidth = 4f
+        strokeWidth = 8f
     }
 
     fun onGridChanged(grid: Grid<Character>) {

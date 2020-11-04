@@ -70,6 +70,7 @@ class VerseViewControl {
         style = Paint.Style.FILL
     }
     private val charPaint = Paint().apply {
+        isAntiAlias = true
         style = Paint.Style.FILL
         textAlign = Paint.Align.CENTER
         textSize = H.toFloat()
@@ -130,8 +131,10 @@ class VerseViewControl {
     }
 
     private fun updateHeight() {
-        height = (H + SPACING_V) * cells.size + SPACING_V
-        settings!!.verseViewHeight = height
+        if (settings != null) {
+            height = (H + SPACING_V) * cells.size + SPACING_V
+            settings!!.verseViewHeight = height
+        }
     }
 
     private fun updatePaints() {

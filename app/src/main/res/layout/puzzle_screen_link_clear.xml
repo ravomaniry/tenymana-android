@@ -9,12 +9,17 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <mg.maniry.tenymana.ui.game.puzzle.views.VerseView
-            android:id="@+id/verseView"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/gray"
-            tools:layout_height="60dp" />
+            android:layout_height="wrap_content">
+
+            <mg.maniry.tenymana.ui.game.puzzle.views.VerseView
+                android:id="@+id/verseView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout_height="60dp" />
+
+        </androidx.cardview.widget.CardView>
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -38,5 +43,7 @@
             android:layout_height="wrap_content"
             android:background="@color/blue"
             tools:layout_height="40dp" />
+
     </LinearLayout>
+
 </layout>
