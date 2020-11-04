@@ -31,23 +31,29 @@
             android:layout_height="wrap_content"
             app:isVisible="@{!viewModel.showBigView}">
 
-            <ImageView
-                android:id="@+id/solutionScreenExpandBtn"
-                style="@style/AppTheme.RightFloatingImg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/app_expand_collapse_img_description"
-                android:onClick="@{() -> viewModel.showPreviousVerses()}"
-                android:src="@drawable/ic_open_in_full"
-                app:isVisible="@{viewModel.showExpandBtn}" />
-
-            <TextView
-                android:id="@+id/solutionScreenVerse"
-                style="@style/AppTheme.VerseTexView"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{viewModel.singleVerseText}"
-                tools:text="In the beginning ..." />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/solutionScreenVerse"
+                    style="@style/AppTheme.VerseTexView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.singleVerseText}"
+                    tools:text="In the beginning ..." />
+
+                <ImageView
+                    android:id="@+id/solutionScreenExpandBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/solution_expand_description"
+                    android:onClick="@{() -> viewModel.showPreviousVerses()}"
+                    android:src="@drawable/ic_more_horizontal"
+                    app:isVisible="@{viewModel.showExpandBtn}" />
+
+            </LinearLayout>
 
         </androidx.cardview.widget.CardView>
 
