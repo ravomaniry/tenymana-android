@@ -1,6 +1,8 @@
 package mg.maniry.tenymana.gameLogic.shared.grid
 
 import mg.maniry.tenymana.gameLogic.models.*
+import mg.maniry.tenymana.utils.Random
+import kotlin.math.min
 
 private const val XY_RATIO_W = 2.0
 private const val DIFF_LEN_W = 1.0
@@ -10,14 +12,22 @@ data class MoveWithScore(
     val score: Double
 )
 
-fun Grid<*>.calcOrigins(visibleH: Int): MutableList<Point> {
-    val starts = mutableListOf<Point>()
-    forEachUntilY(visibleH) { x, y, p ->
-        if (y == 0 || p != null || get(x, y - 1) != null) {
-            starts.add(Point(x, y))
+fun List<MoveWithScore>.getRandomByRate(random: Random): Move {
+    var score0 = 0.0
+    forEach {
+        score0 = min(it.score, score0)
+    }
+    score0--
+    var move = get(0).move
+    var maxScore = get(0).score
+    forEach {
+        val score = (it.score - score0) * random.double()
+        if (score > maxScore) {
+            maxScore = score
+            move = it.move
         }
     }
-    return starts
+    return move
 }
 
 fun Grid<CharAddress>.calcScoredMoves(
@@ -44,6 +54,16 @@ fun Grid<CharAddress>.calcScoredMoves(
         }
     }
     return moves
+}
+
+private fun Grid<*>.calcOrigins(visibleH: Int): MutableList<Point> {
+    val starts = mutableListOf<Point>()
+    forEachUntilY(visibleH) { x, y, p ->
+        if (y == 0 || p != null || get(x, y - 1) != null) {
+            starts.add(Point(x, y))
+        }
+    }
+    return starts
 }
 
 private fun Grid<CharAddress>.canContainMove(move: Move, len: Int, visibleH: Int): Boolean {
@@ -84,6 +104,9 @@ private val Grid<*>.xyRatio: Double
                 totalX += x
                 totalY += y
             }
+        }
+        if (totalY == 0.0) {
+            totalY = 1.0
         }
         return totalX / totalY
     }

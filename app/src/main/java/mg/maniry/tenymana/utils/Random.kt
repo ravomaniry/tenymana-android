@@ -6,6 +6,8 @@ import kotlin.math.round
 interface Random {
     fun int(min: Int, max: Int): Int
 
+    fun double(): Double
+
     fun <T> from(list: List<T>): T {
         return if (list.size == 1) list[0] else list[this.int(0, list.size - 1)]
     }
@@ -17,5 +19,9 @@ class RandomImpl : Random {
             return min + round(random() * (max - min)).toInt()
         }
         return min
+    }
+
+    override fun double(): Double {
+        return random()
     }
 }

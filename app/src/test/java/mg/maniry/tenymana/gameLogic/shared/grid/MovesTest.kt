@@ -1,58 +1,17 @@
 package mg.maniry.tenymana.gameLogic.shared.grid
 
 import com.google.common.truth.Truth.assertThat
+import com.nhaarman.mockitokotlin2.doReturnConsecutively
+import com.nhaarman.mockitokotlin2.mock
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
-import mg.maniry.tenymana.gameLogic.models.*
+import mg.maniry.tenymana.gameLogic.models.CharAddress
+import mg.maniry.tenymana.gameLogic.models.Grid
+import mg.maniry.tenymana.gameLogic.models.Move
+import mg.maniry.tenymana.gameLogic.models.Word
+import mg.maniry.tenymana.utils.Random
 import org.junit.Test
 
-class OriginsTest {
-    @Test
-    fun initial() {
-        testOrigins(listOf(), 3, 5, listOf(Point(0, 0), Point(1, 0), Point(2, 0)))
-    }
-
-    @Test
-    fun withValues() {
-        testOrigins(
-            filled = listOf(Point(0, 0), Point(1, 0), Point(0, 1)),
-            width = 3,
-            visibleH = 4,
-            result = listOf(
-                Point(0, 0), Point(1, 0), Point(2, 0),
-                Point(0, 1), Point(1, 1),
-                Point(0, 2)
-            )
-        )
-    }
-
-    @Test
-    fun truncated() {
-        testOrigins(
-            filled = listOf(Point(0, 0), Point(0, 1), Point(0, 2), Point(0, 3)),
-            width = 2,
-            visibleH = 3,
-            result = listOf(
-                Point(0, 0), Point(1, 0),
-                Point(0, 1),
-                Point(0, 2)
-            )
-        )
-    }
-
-    private fun testOrigins(
-        filled: List<Point>,
-        width: Int,
-        visibleH: Int,
-        result: List<Point>
-    ) {
-        val grid =
-            MutableGrid<CharAddress>(width)
-        for (p in filled) {
-            grid.set(p.x, p.y, CharAddress(p.x, p.y))
-        }
-        assertThat(grid.calcOrigins(visibleH)).isEqualTo(result)
-    }
-
+class MovesTest {
     @Test
     fun allMovesTruncatedByH() {
         // |   |   |   |
@@ -116,8 +75,49 @@ class OriginsTest {
     ) {
         val grid = Grid(cells)
         val result =
-            grid.calcScoredMoves(visibleH, word, LinkClearPuzzle.directions, LinkClearPuzzle.gravity)
+            grid.calcScoredMoves(
+                visibleH,
+                word,
+                LinkClearPuzzle.directions,
+                LinkClearPuzzle.gravity
+            )
         assertThat(result).isEqualTo(moves)
+    }
+
+    @Test
+    fun randomMove_AllPositive() {
+        testRandomMove(
+            withscores = listOf(
+                MoveWithScore(Move.xy(0, 0, 0, 0), 1.0),
+                MoveWithScore(Move.xy(1, 1, 1, 1), 2.0),
+                MoveWithScore(Move.xy(2, 2, 2, 2), 2.0)
+            ),
+            randoms = listOf(0.75, 0.81, 0.8),
+            move = Move.xy(1, 1, 1, 1)
+        )
+    }
+
+    @Test
+    fun randomMove_AllNegatives() {
+        testRandomMove(
+            withscores = listOf(
+                MoveWithScore(Move.xy(0, 0, 0, 0), -2.0),
+                MoveWithScore(Move.xy(1, 1, 1, 1), -2.0)
+            ),
+            randoms = listOf(0.1, 0.2),
+            move = Move.xy(1, 1, 1, 1)
+        )
+    }
+
+    private fun testRandomMove(
+        withscores: List<MoveWithScore>,
+        randoms: List<Double>,
+        move: Move
+    ) {
+        val random: Random = mock {
+            on { double() } doReturnConsecutively randoms
+        }
+        assertThat(withscores.getRandomByRate(random)).isEqualTo(move)
     }
 
     private fun ca(wI: Int, cI: Int) = CharAddress(wI, cI)
