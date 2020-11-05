@@ -1,8 +1,9 @@
 package mg.maniry.tenymana.ui.game
 
+import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.runBlocking
 import mg.maniry.tenymana.MainActivity
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.gameLogic.models.BibleVerse
@@ -20,6 +21,8 @@ import org.junit.runner.RunWith
 import org.koin.core.context.stopKoin
 import org.koin.test.KoinTest
 import org.koin.test.inject
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 
 @RunWith(AndroidJUnit4::class)
 class GameTest : KoinTest {
@@ -36,78 +39,82 @@ class GameTest : KoinTest {
     @Test
     fun navigation() {
         // user mock
-        val inUserRepo: UserRepo by inject()
-        val userRepo = inUserRepo as UserRepoMock
-        userRepo.userM.postValue(User("1", ""))
+        val userRepo: UserRepo by inject()
+        whenever(userRepo.user).thenReturn(MutableLiveData(User("1", "")))
         // Puzzle builder
-        val puzzle = LinkClearPuzzleMock(BibleVerse.fromText("Matio", 1, 10, "Ny")).apply {
+        val math110 = BibleVerse.fromText("Matio", 1, 10, "Ny")
+        val math111 = BibleVerse.fromText("Matio", 1, 11, "Ny")
+        val puzzle = LinkClearPuzzleMock(math110).apply {
             proposeFn.mockReturnValue(true)
             completed = true
         }
         val puzzleBuilder: PuzzleBuilder by inject()
-        (puzzleBuilder as PuzzleBuilderMock).linkClearFn.mockReturnValue(puzzle)
+        whenever(puzzleBuilder.linkClear(math110)).thenReturn(puzzle)
+        whenever(puzzleBuilder.linkClear(math111)).thenReturn(puzzle)
         // Bible repo
-        val inBibleRepo: BibleRepo by inject()
-        val bibleRepo = inBibleRepo as BibleRepoMock
-        bibleRepo.getSingleFn.mockReturnValue(BibleVerse.fromText("Matio", 1, 10, "Ny"))
+        val bibleRepo: BibleRepo by inject()
+        runBlocking {
+            whenever(bibleRepo.getSingle("Matio", 1, 10)).thenReturn(math110)
+            whenever(bibleRepo.getSingle("Matio", 1, 11)).thenReturn(math111)
+        }
         // game repo
-        val inGameRepo: GameRepo by inject()
-        val gameRepo = inGameRepo as GameRepoMock
-        gameRepo.sessionsM.postValue(
-            listOf(
-                Session(
-                    Journey(
-                        "11",
-                        title = "Journey 1",
-                        description = "Long text ..",
-                        paths = listOf(
-                            Path("Path 0", "...", "Matio", 1, 10, 20),
-                            Path("Path 1", "...", "Jaona", 1, 1, 10)
-                        )
-                    ),
-                    Progress("11", totalScore = 5)
+        val gameRepo: GameRepo by inject()
+        val sessions = listOf(
+            Session(
+                Journey(
+                    "11",
+                    title = "Journey 1",
+                    description = "Long text ..",
+                    paths = listOf(
+                        Path("Path 0", "...", "Matio", 1, 10, 20),
+                        Path("Path 1", "...", "Jaona", 1, 1, 10)
+                    )
                 ),
-                Session(
-                    Journey(
-                        "22",
-                        title = "Journey 2",
-                        paths = listOf(Path("Path 1", "..", "Marka", 1, 1, 2))
-                    ),
-                    Progress("22", totalScore = 10, scores = listOf(listOf(Score(10, 3))))
-                )
+                Progress("11", totalScore = 5)
+            ),
+            Session(
+                Journey(
+                    "22",
+                    title = "Journey 2",
+                    paths = listOf(Path("Path 1", "..", "Marka", 1, 1, 2))
+                ),
+                Progress("22", totalScore = 10, scores = listOf(listOf(Score(10, 3))))
             )
         )
-        ActivityScenario.launch(MainActivity::class.java)
-        // Init repositories
-        assertThat(bibleRepo.setupFn.called).isTrue()
-        assertThat(userRepo.setupFn.called).isTrue()
-        // Go to game screen
-        clickView(R.id.goToGameBtn)
-        shouldBeVisible(R.id.gamesList)
-        // go to paths screen
-        clickView(R.id.gameListItem, 0)
-        shouldBeVisible(R.id.pathsScreen)
-        // Go to puzzle screen:
-        clickView(R.id.pathsNextBtn)
-        //  - load verse and init puzzle
-        assertThat(bibleRepo.getSingleFn.calledWith("Matio", 1, 10)).isTrue()
-        //  - go to path details screen
-        shouldBeVisible(R.id.pathDetailsScreen)
-        shouldHaveText(R.id.pathDetailsVerseRef, text = "Matio 1:10-20")
-        clickView(R.id.pathDetailsNextBtn)
-        //  - go to puzzle screen
-        shouldBeVisible(R.id.puzzleScreen)
-        // Display headers
-        shouldHaveText(R.id.puzzleHeaderVerseDisplay, text = "Matio 1:10")
-        shouldHaveText(R.id.puzzleHeaderScore, text = "5")
-        // Open LinkClear fragment
-        shouldBeVisible(R.id.linkClearPuzzle)
-        // Propose & complete
-        swipeRight(R.id.charsGridInput)
-        // On solution screen -> tap next -> load next verse + display puzzle screen
-        shouldBeVisible(R.id.solutionScreen)
-        clickView(R.id.solutionSaveAndContinueBtn)
-        shouldBeVisible(R.id.puzzleScreen)
-        assertThat(bibleRepo.getSingleFn.calledWith("Matio", 1, 11)).isTrue()
+        whenever(gameRepo.sessions).thenReturn(MutableLiveData(sessions))
+        runBlocking {
+            ActivityScenario.launch(MainActivity::class.java)
+            // Init repositories
+            verify(bibleRepo, times(1)).setup()
+            verify(userRepo, times(1)).setup()
+            // Go to game screen
+            clickView(R.id.goToGameBtn)
+            shouldBeVisible(R.id.gamesList)
+            // go to paths screen
+            clickView(R.id.gameListItem, 0)
+            shouldBeVisible(R.id.pathsScreen)
+            // Go to puzzle screen:
+            clickView(R.id.pathsNextBtn)
+            //  - load verse and init puzzle
+            verify(bibleRepo, times(1)).getSingle("Matio", 1, 10)
+            //  - go to path details screen
+            shouldBeVisible(R.id.pathDetailsScreen)
+            shouldHaveText(R.id.pathDetailsVerseRef, text = "Matio 1:10-20")
+            clickView(R.id.pathDetailsNextBtn)
+            //  - go to puzzle screen
+            shouldBeVisible(R.id.puzzleScreen)
+            // Display headers
+            shouldHaveText(R.id.puzzleHeaderVerseDisplay, text = "Matio 1:10")
+            shouldHaveText(R.id.puzzleHeaderScore, text = "5")
+            // Open LinkClear fragment
+            shouldBeVisible(R.id.linkClearPuzzle)
+            // Propose & complete
+            swipeRight(R.id.charsGridInput)
+            // On solution screen -> tap next -> load next verse + display puzzle screen
+            shouldBeVisible(R.id.solutionScreen)
+            clickView(R.id.solutionSaveAndContinueBtn)
+            shouldBeVisible(R.id.puzzleScreen)
+            verify(bibleRepo, times(1)).getSingle("Matio", 1, 11)
+        }
     }
 }

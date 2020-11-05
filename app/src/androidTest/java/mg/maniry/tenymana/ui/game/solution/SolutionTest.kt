@@ -16,13 +16,29 @@ import mg.maniry.tenymana.repositories.models.Journey
 import mg.maniry.tenymana.repositories.models.Path
 import mg.maniry.tenymana.repositories.models.Progress
 import mg.maniry.tenymana.repositories.models.Session
+import mg.maniry.tenymana.ui.app.SharedViewModels
 import mg.maniry.tenymana.ui.game.GameViewModel
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.core.context.stopKoin
+import org.koin.test.KoinTest
+import org.koin.test.inject
 import org.mockito.Mockito.*
 
 @RunWith(AndroidJUnit4::class)
-class SolutionTest {
+class SolutionTest : KoinTest {
+    @Before
+    fun before() {
+        setupTestKoin()
+    }
+
+    @After
+    fun after() {
+        stopKoin()
+    }
+
     @Test
     fun noExpand() {
         val session = Session(
@@ -59,7 +75,9 @@ class SolutionTest {
         verses: List<BibleVerse> = emptyList(),
         canExpand: Boolean = false
     ) {
+        val sharedViewModels: SharedViewModels by inject()
         val gameViewModel = mock(GameViewModel::class.java)
+        sharedViewModels.game = gameViewModel
         // session
         whenever(gameViewModel.session).thenReturn(MutableLiveData(session))
         whenever(gameViewModel.position).thenReturn(pos)
@@ -68,9 +86,9 @@ class SolutionTest {
         whenever(puzzle.verse).thenReturn(activeVerse)
         whenever(gameViewModel.puzzle).thenReturn(MutableLiveData(puzzle))
         // repo
+        val bibleRepo: BibleRepo by inject()
         var minV = 0
         var maxV = 0
-        val bibleRepo = mock(BibleRepo::class.java)
         if (verses.isNotEmpty()) {
             minV = verses[0].verse
             maxV = verses.last().verse
@@ -82,7 +100,7 @@ class SolutionTest {
         // render
         val factory = object : FragmentFactory() {
             override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
-                return SolutionFragment(gameViewModel, bibleRepo)
+                return SolutionFragment()
             }
         }
         launchFragmentInContainer<SolutionFragment>(null, R.style.AppTheme, factory)

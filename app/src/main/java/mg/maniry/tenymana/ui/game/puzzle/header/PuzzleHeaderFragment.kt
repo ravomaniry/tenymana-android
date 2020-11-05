@@ -6,13 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.PuzzleScreenHeaderBinding
-import mg.maniry.tenymana.ui.game.puzzle.PuzzleViewModel
+import mg.maniry.tenymana.ui.app.SharedViewModels
+import org.koin.android.ext.android.inject
 
-class PuzzleHeaderFragment(
-    private val viewModel: PuzzleViewModel
-) : Fragment() {
+class PuzzleHeaderFragment : Fragment() {
+    private lateinit var viewModel: PuzzleHeaderViewModel
     private lateinit var binding: PuzzleScreenHeaderBinding
 
     override fun onCreateView(
@@ -21,8 +22,15 @@ class PuzzleHeaderFragment(
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
+        initViewModel()
         initBinding(inflater, container)
         return binding.root
+    }
+
+    private fun initViewModel() {
+        val sharedVMs: SharedViewModels by inject()
+        val factory = PuzzleHeaderViewModel.factory(sharedVMs.game)
+        viewModel = ViewModelProvider(this, factory).get(PuzzleHeaderViewModel::class.java)
     }
 
     private fun initBinding(inflater: LayoutInflater, container: ViewGroup?) {

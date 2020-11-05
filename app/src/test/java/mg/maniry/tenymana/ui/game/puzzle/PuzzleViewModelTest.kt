@@ -27,7 +27,7 @@ class PuzzleViewModelTest {
     @Test
     fun gamePlay() {
         val verse = BibleVerse.fromText("Maio", 1, 1, "Abc de")
-        var score = 0
+        val score = MutableLiveData(0)
         var proposeResult = false
         var isComplete = false
         val puzzle: Puzzle = mock {
@@ -52,16 +52,15 @@ class PuzzleViewModelTest {
         assertThat(viewModel.invalidate.value).isFalse()
         // true
         proposeResult = true
-        score = 10
+        score.postValue(10)
         viewModel.propose(Move.xy(0, 0, 2, 0))
         assertThat(viewModel.invalidate.value).isTrue()
-        assertThat(viewModel.score.value).isEqualTo("10")
         // Bonus tests here ...
         // End
         verifyNever(gameVm).onPuzzleCompleted()
         // complete
         isComplete = true
-        score = 20
+        score.postValue(20)
         viewModel.propose(Move.xy(0, 0, 1, 0))
         verifyOnce(gameVm).onPuzzleCompleted()
     }

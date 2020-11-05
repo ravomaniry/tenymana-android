@@ -1,5 +1,6 @@
 package mg.maniry.tenymana.gameLogic.linkClear
 
+import androidx.lifecycle.MutableLiveData
 import mg.maniry.tenymana.gameLogic.models.*
 import mg.maniry.tenymana.gameLogic.shared.grid.*
 import mg.maniry.tenymana.gameLogic.shared.words.resolveWith
@@ -45,7 +46,7 @@ class LinkClearPuzzleImpl(
 
     private var usedHelp = false
     override var completed = false
-    override var score = 0
+    override var score = MutableLiveData(0)
 
     override fun propose(move: Move): Boolean {
         reset()
@@ -90,10 +91,10 @@ class LinkClearPuzzleImpl(
 
     private fun incrementScore(resolved: List<Int>) {
         resolved.forEach {
-            score += words[it].size
+            score.postValue((score.value ?: 0) + words[it].size)
         }
         if (completed && !usedHelp) {
-            score *= 2
+            score.postValue((score.value ?: 0) * 2)
         }
     }
 }

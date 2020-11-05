@@ -10,13 +10,11 @@ import androidx.lifecycle.ViewModelProvider
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.GameSolutionScreenBinding
 import mg.maniry.tenymana.repositories.BibleRepo
-import mg.maniry.tenymana.ui.game.GameViewModel
+import mg.maniry.tenymana.ui.app.SharedViewModels
 import mg.maniry.tenymana.utils.bindTo
+import org.koin.android.ext.android.inject
 
-class SolutionFragment(
-    private val gameViewModel: GameViewModel,
-    private val bibleRepo: BibleRepo
-) : Fragment() {
+class SolutionFragment : Fragment() {
     private lateinit var viewModel: SolutionViewModel
     private lateinit var binding: GameSolutionScreenBinding
 
@@ -32,7 +30,9 @@ class SolutionFragment(
     }
 
     private fun initViewModel() {
-        val factory = SolutionViewModel.factory(gameViewModel, bibleRepo)
+        val viewModels: SharedViewModels by inject()
+        val bibleRepo: BibleRepo by inject()
+        val factory = SolutionViewModel.factory(viewModels.game, bibleRepo)
         viewModel = ViewModelProvider(this, factory).get(SolutionViewModel::class.java)
     }
 

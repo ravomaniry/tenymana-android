@@ -10,16 +10,17 @@ import androidx.lifecycle.Observer
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.PuzzleScreenLinkClearBinding
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
-import mg.maniry.tenymana.ui.game.puzzle.PuzzleViewModel
+import mg.maniry.tenymana.ui.app.SharedViewModels
 import mg.maniry.tenymana.ui.game.puzzle.views.DrawingSettings
 import mg.maniry.tenymana.utils.bindTo
+import org.koin.android.ext.android.inject
 
-class LinkClearFragment(
-    private val puzzleViewModel: PuzzleViewModel,
-    private val puzzle: LinkClearPuzzle
-) : Fragment() {
+class LinkClearFragment : Fragment() {
     private lateinit var binding: PuzzleScreenLinkClearBinding
     private val drawingSettings = DrawingSettings()
+    private val viewModels: SharedViewModels by inject()
+    private val puzzleViewModel = viewModels.puzzle
+    private val puzzle = puzzleViewModel.puzzle.value!! as LinkClearPuzzle
 
     override fun onCreateView(
         inflater: LayoutInflater,

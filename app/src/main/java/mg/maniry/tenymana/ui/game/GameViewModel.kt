@@ -15,6 +15,7 @@ import mg.maniry.tenymana.repositories.models.User
 import mg.maniry.tenymana.ui.app.AppViewModel
 import mg.maniry.tenymana.ui.app.Screen
 import mg.maniry.tenymana.utils.KDispatchers
+import mg.maniry.tenymana.utils.newViewModelFactory
 
 interface GameViewModel {
     val sessions: LiveData<List<Session>>
@@ -81,7 +82,6 @@ class GameViewModelImpl(
             position = session.value!!.next(position!!, puzzle.value!!)
             gameRepo.saveProgress(position!!.value.progress)
             session.postValue(position!!.value)
-            shouldNavigate = true
             when {
                 position?.isCompleted!! -> {
                     puzzle.postValue(null)
@@ -128,5 +128,25 @@ class GameViewModelImpl(
     override fun onCleared() {
         super.onCleared()
         userRepo.user.removeObserver(userObserver)
+    }
+
+    companion object {
+        fun factory(
+            appViewModel: AppViewModel,
+            userRepo: UserRepo,
+            gameRepo: GameRepo,
+            bibleRepo: BibleRepo,
+            puzzleBuilder: PuzzleBuilder,
+            dispatchers: KDispatchers
+        ) = newViewModelFactory {
+            GameViewModelImpl(
+                appViewModel,
+                userRepo,
+                gameRepo,
+                bibleRepo,
+                puzzleBuilder,
+                dispatchers
+            )
+        }
     }
 }

@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import mg.maniry.tenymana.repositories.BibleRepo
 import mg.maniry.tenymana.repositories.UserRepo
+import mg.maniry.tenymana.utils.newViewModelFactory
 
 enum class Screen {
     HOME,
@@ -31,6 +32,12 @@ class AppViewModel(
             userRepo.setup()
             bibleRepo.setup()
             _isReady.postValue(true)
+        }
+    }
+
+    companion object {
+        fun factory(bibleRepo: BibleRepo, userRepo: UserRepo) = newViewModelFactory {
+            AppViewModel(bibleRepo, userRepo)
         }
     }
 }

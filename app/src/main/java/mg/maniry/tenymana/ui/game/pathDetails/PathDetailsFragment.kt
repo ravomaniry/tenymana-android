@@ -8,14 +8,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.PathDetailsScreenBinding
-import mg.maniry.tenymana.gameLogic.shared.session.SessionPosition
-import mg.maniry.tenymana.ui.game.GameViewModel
+import mg.maniry.tenymana.ui.app.SharedViewModels
+import org.koin.android.ext.android.inject
 
-class PathDetailsFragment(
-    private val gameViewModel: GameViewModel,
-    position: SessionPosition?
-) : Fragment() {
+class PathDetailsFragment : Fragment() {
     private lateinit var binding: PathDetailsScreenBinding
+    private val viewModels: SharedViewModels by inject()
+    private val gameViewModel = viewModels.game
+    private val position = gameViewModel.position
     private val path = gameViewModel.session.value?.journey?.paths?.get(position?.pathIndex ?: 0)
 
     override fun onCreateView(

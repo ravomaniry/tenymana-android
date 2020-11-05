@@ -38,12 +38,13 @@ private fun Journey.nextVerse(pos: SessionPosition): Pair<Int, Int>? {
 }
 
 private fun Progress.updateScore(pos: SessionPosition, puzzle: Puzzle): Progress {
+    val score = puzzle.score.value ?: 0
     val nextScores = scores.toMutableList()
     nextScores.addUpTo(pos.pathIndex, ::listOf)
     val active = nextScores[pos.pathIndex].toMutableList()
     active.addUpTo(pos.verseIndex) { Score.ZERO }
-    val stars = puzzle.verse.calcStars(puzzle.score)
-    active[pos.verseIndex] = Score(puzzle.score, stars)
+    val stars = puzzle.verse.calcStars(score)
+    active[pos.verseIndex] = Score(score, stars)
     nextScores[pos.pathIndex] = active
     return copy(scores = nextScores, totalScore = nextScores.total)
 }

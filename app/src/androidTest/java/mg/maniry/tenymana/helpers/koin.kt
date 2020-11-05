@@ -11,6 +11,7 @@ import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.core.module.Module
 import org.koin.dsl.module
+import org.mockito.Mockito.mock
 
 fun setupTestKoin(testModules: Module = createTestModule()) {
     try {
@@ -22,12 +23,16 @@ fun setupTestKoin(testModules: Module = createTestModule()) {
 }
 
 fun createTestModule(): Module {
+    val userRepo = mock(UserRepo::class.java)
+    val gameRepo = mock(GameRepo::class.java)
+    val puzzleBuilder = mock(PuzzleBuilder::class.java)
+    val bibleRepo = mock(BibleRepo::class.java)
     return module {
-        single<UserRepo> { UserRepoMock() }
-        single<GameRepo> { GameRepoMock() }
+        single<UserRepo> { userRepo }
+        single<GameRepo> { gameRepo }
         single { SharedViewModels() }
-        single<PuzzleBuilder> { PuzzleBuilderMock() }
-        single<BibleRepo> { BibleRepoMock() }
+        single<PuzzleBuilder> { puzzleBuilder }
+        single<BibleRepo> { bibleRepo }
         single<KDispatchers> { RealDispatchers }
     }
 }

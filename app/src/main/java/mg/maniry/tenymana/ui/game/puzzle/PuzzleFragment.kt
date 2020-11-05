@@ -11,15 +11,14 @@ import androidx.lifecycle.ViewModelProvider
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.PuzzleScreenBinding
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
-import mg.maniry.tenymana.ui.game.GameViewModel
+import mg.maniry.tenymana.ui.app.SharedViewModels
 import mg.maniry.tenymana.ui.game.puzzle.header.PuzzleHeaderFragment
 import mg.maniry.tenymana.ui.game.puzzle.linkClear.LinkClearFragment
 import mg.maniry.tenymana.ui.game.puzzle.loader.PuzzleLoaderFragment
 import mg.maniry.tenymana.utils.mountChild
+import org.koin.android.ext.android.inject
 
-class PuzzleFragment(
-    private val gameViewModel: GameViewModel
-) : Fragment() {
+class PuzzleFragment : Fragment() {
     private lateinit var binding: PuzzleScreenBinding
     private lateinit var viewModel: PuzzleViewModel
 
@@ -43,18 +42,20 @@ class PuzzleFragment(
     }
 
     private fun initViewModel() {
-        val fct = PuzzleViewModelFactory(gameViewModel)
+        val viewModels: SharedViewModels by inject()
+        val fct = PuzzleViewModel.factory(viewModels.game)
         viewModel = ViewModelProvider(this, fct).get(PuzzleViewModel::class.java)
+        viewModels.puzzle = viewModel
     }
 
     private fun initHeader() {
-        mountChild(PuzzleHeaderFragment(viewModel), R.id.puzzleHeaderPlaceHolder)
+        mountChild(PuzzleHeaderFragment(), R.id.puzzleHeaderPlaceHolder)
     }
 
     private fun observeRoute() {
         viewModel.puzzle.observe(viewLifecycleOwner, Observer {
             val body = when (it) {
-                is LinkClearPuzzle -> LinkClearFragment(viewModel, it)
+                is LinkClearPuzzle -> LinkClearFragment()
                 else -> PuzzleLoaderFragment()
             }
             mountChild(body, R.id.puzzleBodyPlaceHolder)

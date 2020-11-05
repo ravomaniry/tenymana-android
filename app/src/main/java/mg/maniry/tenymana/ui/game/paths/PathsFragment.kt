@@ -10,12 +10,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.PathsScreenBinding
-import mg.maniry.tenymana.ui.game.GameViewModel
+import mg.maniry.tenymana.ui.app.SharedViewModels
 import mg.maniry.tenymana.utils.bindTo
+import org.koin.android.ext.android.inject
 
-class PathsFragment(
-    private val gameViewModel: GameViewModel
-) : Fragment() {
+class PathsFragment : Fragment() {
     private lateinit var viewModel: PathsViewModel
     private lateinit var binding: PathsScreenBinding
 
@@ -31,7 +30,8 @@ class PathsFragment(
     }
 
     private fun initViewModel() {
-        val factory = PathsViewModelFactory(gameViewModel)
+        val viewModels: SharedViewModels by inject()
+        val factory = PathsViewModelFactory(viewModels.game)
         viewModel = ViewModelProvider(this, factory).get(PathsViewModel::class.java)
     }
 

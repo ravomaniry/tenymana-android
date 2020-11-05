@@ -7,21 +7,33 @@ import androidx.lifecycle.MutableLiveData
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.gameLogic.models.Score
-import mg.maniry.tenymana.helpers.clickView
-import mg.maniry.tenymana.helpers.shouldBeInvisible
-import mg.maniry.tenymana.helpers.shouldBeVisible
-import mg.maniry.tenymana.helpers.shouldHaveText
+import mg.maniry.tenymana.helpers.*
 import mg.maniry.tenymana.repositories.models.Journey
 import mg.maniry.tenymana.repositories.models.Path
 import mg.maniry.tenymana.repositories.models.Progress
 import mg.maniry.tenymana.repositories.models.Session
+import mg.maniry.tenymana.ui.app.SharedViewModels
 import mg.maniry.tenymana.ui.game.GameViewModel
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.core.context.stopKoin
+import org.koin.test.KoinTest
+import org.koin.test.inject
 import org.mockito.Mockito.*
 
 @RunWith(AndroidJUnit4::class)
-class PathsFragmentTest {
+class PathsFragmentTest : KoinTest {
+    @Before
+    fun setup() {
+        setupTestKoin()
+    }
+
+    @After
+    fun cleanup() {
+        stopKoin()
+    }
 
     @Test
     fun newGame_interactions() {
@@ -143,14 +155,16 @@ class PathsFragmentTest {
         showRightBtn: Boolean,
         pathIndex: Int
     ): GameViewModel {
+        val sharedViewModel: SharedViewModels by inject()
         lateinit var fragment: Fragment
         val gameViewModel = mock(GameViewModel::class.java).apply {
             `when`(this.sessions).thenReturn(MutableLiveData(listOf(session)))
             `when`(this.session).thenReturn(MutableLiveData(session))
         }
+        sharedViewModel.game = gameViewModel
         val factory = object : FragmentFactory() {
             override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
-                fragment = PathsFragment(gameViewModel)
+                fragment = PathsFragment()
                 return fragment
             }
         }

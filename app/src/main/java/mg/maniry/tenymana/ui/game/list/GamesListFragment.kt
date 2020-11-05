@@ -9,11 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.GamesListScreenBinding
-import mg.maniry.tenymana.ui.game.GameViewModel
+import mg.maniry.tenymana.ui.app.SharedViewModels
+import org.koin.android.ext.android.inject
 
-class GamesListFragment(
-    private val gameViewModel: GameViewModel
-) : Fragment() {
+class GamesListFragment : Fragment() {
     private lateinit var binding: GamesListScreenBinding
 
     override fun onCreateView(
@@ -32,6 +31,8 @@ class GamesListFragment(
     }
 
     private fun initRecyclerView() {
+        val viewModels: SharedViewModels by inject()
+        val gameViewModel = viewModels.game
         val adapter = SessionAdapter(gameViewModel.onSessionClick)
         binding.gamesList.adapter = adapter
         gameViewModel.sessions.observe(viewLifecycleOwner, Observer {

@@ -73,7 +73,7 @@ class GameViewModelTest {
                 }
             }
             // Puzzle builder
-            var score = 0
+            val score = MutableLiveData(0)
             val puzzle: LinkClearPuzzle = mock {
                 on { this.score } doAnswer { score }
                 on { this.verse } doReturn BibleVerse.fromText("", 1, 1, "Abc de")
@@ -101,7 +101,7 @@ class GameViewModelTest {
             assertThat(viewModel.screen.value).isEqualTo(Screen.PUZZLE)
             assertThat(viewModel.puzzle.value).isNotNull()
             // 4- Increment score (3 stars) & complete: go to SOLUTION screen
-            score = 20
+            score.postValue(20)
             viewModel.onPuzzleCompleted()
             assertThat(viewModel.screen.value).isEqualTo(Screen.PUZZLE_SOLUTION)
             assertThat(viewModel.shouldNavigate).isTrue()
@@ -118,7 +118,7 @@ class GameViewModelTest {
             assertThat(viewModel.session.value!!.progress).isEqualTo(progress)
             assertThat(viewModel.shouldNavigate).isTrue()
             // Next once again: (1 star)
-            score = 3
+            score.postValue(3)
             viewModel.onPuzzleCompleted()
             viewModel.saveAndContinue()
             progress = Progress(
@@ -133,7 +133,7 @@ class GameViewModelTest {
             assertThat(viewModel.shouldNavigate).isTrue()
             // Complete path: 2 stars
             val prevPzz = viewModel.puzzle.value
-            score = 6
+            score.postValue(6)
             viewModel.onPuzzleCompleted()
             viewModel.saveAndContinue()
             progress = Progress(
@@ -154,7 +154,7 @@ class GameViewModelTest {
             assertThat(viewModel.session.value!!.progress).isEqualTo(progress)
             assertThat(viewModel.shouldNavigate).isTrue()
             // Complete the journey
-            score = 30
+            score.postValue(30)
             viewModel.onPuzzleCompleted()
             viewModel.saveAndContinue()
             progress = Progress(

@@ -6,22 +6,12 @@ import mg.maniry.tenymana.gameLogic.models.BibleVerse
 import mg.maniry.tenymana.gameLogic.models.Puzzle
 import mg.maniry.tenymana.repositories.BibleRepo
 import mg.maniry.tenymana.ui.game.GameViewModel
+import mg.maniry.tenymana.utils.newViewModelFactory
 
 class SolutionViewModel(
     private val gameViewModel: GameViewModel,
     private val bibleRepo: BibleRepo
 ) : ViewModel() {
-    companion object {
-        fun factory(gameViewModel: GameViewModel, bibleRepo: BibleRepo): ViewModelProvider.Factory {
-            return object : ViewModelProvider.Factory {
-                override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                    @Suppress("unchecked_cast")
-                    return SolutionViewModel(gameViewModel, bibleRepo) as T
-                }
-            }
-        }
-    }
-
     private val _verses = MutableLiveData<List<BibleVerse>>()
     val verses: LiveData<List<BibleVerse>> get() = _verses
     private val _showBigView = MutableLiveData(false)
@@ -70,6 +60,14 @@ class SolutionViewModel(
         }
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        gameViewModel.puzzle.removeObserver(reset)
+        gameViewModel.puzzle.removeObserver(updateTitle)
+        gameViewModel.puzzle.removeObserver(expandBtnObserver)
+        _showBigView.removeObserver(updateTitle)
+    }
+
     init {
         gameViewModel.puzzle.observeForever(reset)
         gameViewModel.puzzle.observeForever(updateTitle)
@@ -77,11 +75,9 @@ class SolutionViewModel(
         _showBigView.observeForever(updateTitle)
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        gameViewModel.puzzle.removeObserver(reset)
-        gameViewModel.puzzle.removeObserver(updateTitle)
-        gameViewModel.puzzle.removeObserver(expandBtnObserver)
-        _showBigView.removeObserver(updateTitle)
+    companion object {
+        fun factory(gameViewModel: GameViewModel, bibleRepo: BibleRepo) = newViewModelFactory {
+            SolutionViewModel(gameViewModel, bibleRepo)
+        }
     }
 }

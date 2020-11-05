@@ -1,14 +1,17 @@
 package mg.maniry.tenymana.ui.game.puzzle
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.gameLogic.models.Move
 import mg.maniry.tenymana.gameLogic.models.Word
-import mg.maniry.tenymana.repositories.models.Session
 import mg.maniry.tenymana.ui.game.GameViewModel
 import mg.maniry.tenymana.ui.game.colors.DefaultColors
 import mg.maniry.tenymana.ui.game.colors.GameColors
 import mg.maniry.tenymana.ui.game.colors.LinkClearColors
+import mg.maniry.tenymana.utils.newViewModelFactory
 
 class PuzzleViewModel(
     private val gameViewModel: GameViewModel
@@ -21,12 +24,6 @@ class PuzzleViewModel(
         }
     }
 
-    private val _score = MutableLiveData<String>()
-    val score: LiveData<String> = _score
-
-    val displayVerse = Transformations.map(gameViewModel.puzzle) {
-        if (it == null) "" else "${it.verse.book} ${it.verse.chapter}:${it.verse.verse}"
-    }
     val words: LiveData<List<Word>?> = Transformations.map(gameViewModel.puzzle) {
         it?.verse?.words
     }
@@ -40,7 +37,6 @@ class PuzzleViewModel(
                 gameViewModel.onPuzzleCompleted()
             } else {
                 triggerReRender()
-                syncScore()
             }
         }
     }
@@ -49,23 +45,9 @@ class PuzzleViewModel(
         invalidate.postValue(true)
     }
 
-    private fun syncScore() {
-        val totalScore = gameViewModel.session.value!!.progress.totalScore
-        _score.postValue((puzzle.value!!.score + totalScore).toString())
-    }
-
-    private val initScore = Observer<Session?> {
-        if (it != null) {
-            _score.postValue((it.progress.totalScore).toString())
+    companion object {
+        fun factory(gameViewModel: GameViewModel) = newViewModelFactory {
+            PuzzleViewModel(gameViewModel)
         }
-    }
-
-    init {
-        gameViewModel.session.observeForever(initScore)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        gameViewModel.session.removeObserver(initScore)
     }
 }

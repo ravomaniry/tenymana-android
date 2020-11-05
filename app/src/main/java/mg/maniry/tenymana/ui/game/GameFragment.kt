@@ -44,7 +44,7 @@ class GameFragment : Fragment() {
         val gameRepo: GameRepo by inject()
         val puzzleBuilder: PuzzleBuilder by inject()
         val dispatchers: KDispatchers by inject()
-        val fct = GameViewModelFactory(
+        val fct = GameViewModelImpl.factory(
             viewModels.app,
             userRepo,
             gameRepo,
@@ -53,16 +53,17 @@ class GameFragment : Fragment() {
             dispatchers
         )
         viewModel = ViewModelProvider(this, fct).get(GameViewModelImpl::class.java)
+        viewModels.game = viewModel
     }
 
     private fun observeRoute() {
         viewModel.screen.observe(viewLifecycleOwner, Observer {
             val child = when (it) {
-                Screen.GAMES_LIST -> GamesListFragment(viewModel)
-                Screen.PATHS_LIST -> PathsFragment(viewModel)
-                Screen.PATH_DETAILS -> PathDetailsFragment(viewModel, viewModel.position)
-                Screen.PUZZLE -> PuzzleFragment(viewModel)
-                Screen.PUZZLE_SOLUTION -> SolutionFragment(viewModel, bibleRepo)
+                Screen.GAMES_LIST -> GamesListFragment()
+                Screen.PATHS_LIST -> PathsFragment()
+                Screen.PATH_DETAILS -> PathDetailsFragment()
+                Screen.PUZZLE -> PuzzleFragment()
+                Screen.PUZZLE_SOLUTION -> SolutionFragment()
                 else -> null
             }
             if (child != null) {
