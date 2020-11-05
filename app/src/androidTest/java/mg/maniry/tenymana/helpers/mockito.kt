@@ -1,8 +1,8 @@
 package mg.maniry.tenymana.helpers
 
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
 import org.mockito.Mockito
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 import org.mockito.stubbing.OngoingStubbing
 
 fun <T> whenever(methodCall: T): OngoingStubbing<T> {

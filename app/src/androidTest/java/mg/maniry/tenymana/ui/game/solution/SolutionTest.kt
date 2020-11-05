@@ -25,7 +25,8 @@ import org.junit.runner.RunWith
 import org.koin.core.context.stopKoin
 import org.koin.test.KoinTest
 import org.koin.test.inject
-import org.mockito.Mockito.*
+import org.mockito.Mockito.clearInvocations
+import org.mockito.Mockito.mock
 
 @RunWith(AndroidJUnit4::class)
 class SolutionTest : KoinTest {
@@ -114,7 +115,7 @@ class SolutionTest : KoinTest {
         shouldBeInvisible(R.id.solutionScreenBigView)
         // 2- click on btn call viewModel's function
         clickView(R.id.solutionSaveAndContinueBtn)
-        verify(gameViewModel, times(1)).saveAndContinue()
+        verifyOnce(gameViewModel).saveAndContinue()
         if (canExpand) {
             // Expand
             clearInvocations(gameViewModel)
@@ -122,7 +123,7 @@ class SolutionTest : KoinTest {
             clickView(R.id.solutionScreenExpandBtn)
             // 1- fetch verses from bible repository
             runBlocking {
-                verify(bibleRepo, times(1)).get(activeVerse.book, activeVerse.chapter, minV, maxV)
+                verifyOnce(bibleRepo).get(activeVerse.book, activeVerse.chapter, minV, maxV)
             }
             // 2- update title
             shouldHaveText(
@@ -137,7 +138,7 @@ class SolutionTest : KoinTest {
             }
             // 4- click is available
             clickView(R.id.solutionSaveAndContinueBtn)
-            verify(gameViewModel, times(1)).saveAndContinue()
+            verifyOnce(gameViewModel).saveAndContinue()
         } else {
             shouldBeInvisible(R.id.solutionScreenExpandBtn)
         }

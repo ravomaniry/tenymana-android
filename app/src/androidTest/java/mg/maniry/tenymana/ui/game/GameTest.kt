@@ -21,8 +21,6 @@ import org.junit.runner.RunWith
 import org.koin.core.context.stopKoin
 import org.koin.test.KoinTest
 import org.koin.test.inject
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
 
 @RunWith(AndroidJUnit4::class)
 class GameTest : KoinTest {
@@ -85,8 +83,8 @@ class GameTest : KoinTest {
         runBlocking {
             ActivityScenario.launch(MainActivity::class.java)
             // Init repositories
-            verify(bibleRepo, times(1)).setup()
-            verify(userRepo, times(1)).setup()
+            verifyOnce(bibleRepo).setup()
+            verifyOnce(userRepo).setup()
             // Go to game screen
             clickView(R.id.goToGameBtn)
             shouldBeVisible(R.id.gamesList)
@@ -96,7 +94,7 @@ class GameTest : KoinTest {
             // Go to puzzle screen:
             clickView(R.id.pathsNextBtn)
             //  - load verse and init puzzle
-            verify(bibleRepo, times(1)).getSingle("Matio", 1, 10)
+            verifyOnce(bibleRepo).getSingle("Matio", 1, 10)
             //  - go to path details screen
             shouldBeVisible(R.id.pathDetailsScreen)
             shouldHaveText(R.id.pathDetailsVerseRef, text = "Matio 1:10-20")
@@ -114,7 +112,7 @@ class GameTest : KoinTest {
             shouldBeVisible(R.id.solutionScreen)
             clickView(R.id.solutionSaveAndContinueBtn)
             shouldBeVisible(R.id.puzzleScreen)
-            verify(bibleRepo, times(1)).getSingle("Matio", 1, 11)
+            verifyOnce(bibleRepo).getSingle("Matio", 1, 11)
         }
     }
 }

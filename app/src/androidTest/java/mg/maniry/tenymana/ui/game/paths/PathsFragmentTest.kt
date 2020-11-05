@@ -58,13 +58,13 @@ class PathsFragmentTest : KoinTest {
         shouldBeVisible(R.id.pathsScreenLeftBtn)
         shouldBeInvisible(R.id.pathsScreenRightBtn)
         clickView(R.id.pathsScreenVerse, 0)
-        verify(gameVM, times(1)).onPathVerseSelect(1, 0)
+        verifyOnce(gameVM).onPathVerseSelect(1, 0)
         // Go back to path 1 && select
         clearInvocations(gameVM)
         clickView(R.id.pathsScreenLeftBtn)
         shouldHaveText(R.id.pathsScreenPathTitle, text = session.journey.paths[0].name)
         clickView(R.id.pathsScreenVerse, 2)
-        verify(gameVM, times(1)).onPathVerseSelect(0, 2)
+        verifyOnce(gameVM).onPathVerseSelect(0, 2)
     }
 
     @Test
@@ -191,7 +191,7 @@ class PathsFragmentTest : KoinTest {
             val index = verse - path.start
             clickView(R.id.pathsScreenVerse, index)
             shouldHaveText(R.id.pathsScreenVerseNumber, index, text = verse.toString())
-            verify(gameViewModel, times(1)).onPathVerseSelect(pathIndex, index)
+            verifyOnce(gameViewModel).onPathVerseSelect(pathIndex, index)
         }
         return gameViewModel
     }
