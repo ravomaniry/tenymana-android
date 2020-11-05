@@ -3,10 +3,7 @@ package mg.maniry.tenymana.ui.game
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.google.common.truth.Truth.assertThat
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.doAnswer
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
@@ -180,7 +177,13 @@ class GameViewModelTest {
                 Path("path 0", "", "Marka", 1, 1, 10)
             ),
             scores = listOf(),
-            firstVerse = BibleVerse.fromText("Jaona", 2, 2, "")
+            firstVerse = BibleVerse.fromText("Jaona", 2, 2, ""),
+            selections = listOf(
+                Selection(0, 0, true, "Jaona", 2, 2),
+                Selection(1, 0, true, "Marka", 1, 1),
+                Selection(0, 1), Selection(0, 2), Selection(0, 3),
+                Selection(1, 1), Selection(1, 2), Selection(1, 3)
+            )
         )
     }
 
@@ -192,7 +195,15 @@ class GameViewModelTest {
                 Path("path 0", "", "Marka", 1, 1, 10)
             ),
             scores = listOf(scores(2, 3)),
-            firstVerse = BibleVerse.fromText("Jaona", 2, 4, "")
+            firstVerse = BibleVerse.fromText("Jaona", 2, 4, ""),
+            selections = listOf(
+                Selection(0, 0, true, "Jaona", 2, 2),
+                Selection(0, 1, true, "Jaona", 2, 3),
+                Selection(0, 2, true, "Jaona", 2, 4),
+                Selection(1, 0, true, "Marka", 1, 1),
+                Selection(0, 3), Selection(0, 4),
+                Selection(1, 1), Selection(1, 2)
+            )
         )
     }
 
@@ -204,7 +215,10 @@ class GameViewModelTest {
                 Path("path 0", "", "Marka", 1, 1, 10)
             ),
             scores = listOf(scores(2, 3, 4, 5, 6), scores(1)),
-            firstVerse = BibleVerse.fromText("Marka", 1, 2, "")
+            firstVerse = BibleVerse.fromText("Marka", 1, 2, ""),
+            selections = listOf(
+                Selection(1, 1, true, "Marka", 1, 2), Selection(1, 2)
+            )
         )
     }
 
@@ -224,30 +238,40 @@ class GameViewModelTest {
     fun resumeCompletedGameSinglePath() {
         testResume(
             paths = listOf(
-                Path("path 0", "", "Jaona", 2, 2, 6),
-                Path("path 0", "", "Marka", 1, 1, 3)
+                Path("path 0", "", "Jaona", 2, 2, 6)
             ),
-            scores = listOf(scores(1, 2, 3, 4, 5), scores(1, 2, 3)),
-            firstVerse = BibleVerse.fromText("Jaona", 2, 2, "")
+            scores = listOf(scores(1, 2, 3, 4, 5)),
+            firstVerse = BibleVerse.fromText("Jaona", 2, 2, ""),
+            selections = listOf(
+                Selection(0, 0, true, "Jaona", 2, 2),
+                Selection(0, 3, true, "Jaona", 2, 5),
+                Selection(0, 4, true, "Jaona", 2, 6)
+            )
         )
     }
 
     @Test
-    fun resumeCompletedGameMultiPath() {
+    fun resumeCompletedGameMultiPaths() {
         testResume(
             paths = listOf(
                 Path("path 0", "", "Jaona", 1, 1, 5),
                 Path("path 0", "", "Marka", 1, 4, 6)
             ),
             scores = listOf(scores(1, 2, 3, 4, 5), scores(1, 2, 3)),
-            firstVerse = BibleVerse.fromText("Jaona", 1, 1, "")
+            firstVerse = BibleVerse.fromText("Jaona", 1, 1, ""),
+            selections = listOf(
+                Selection(0, 3, true, "Jaona", 1, 4),
+                Selection(1, 0, true, "Marka", 1, 4),
+                Selection(1, 2, true, "Marka", 1, 6)
+            )
         )
     }
 
     private fun testResume(
         paths: List<Path>,
         scores: List<List<Score>>,
-        firstVerse: BibleVerse
+        firstVerse: BibleVerse,
+        selections: List<Selection> = emptyList()
     ) {
         runBlocking {
             // App viewmodel
@@ -285,14 +309,36 @@ class GameViewModelTest {
                 puzzleBuilder,
                 TestDispatchers
             )
-            viewModel.apply {
-                onSessionClick(session)
-                viewModel.onPathSelected(viewModel.position!!.pathIndex, null)
-            }
-            // query correct verse
+            viewModel.onSessionClick(session)
+            // Resme default path
+            viewModel.onPathSelected(viewModel.position!!.pathIndex, null)
             verifyOnce(bibleRepo).getSingle(firstVerse.book, firstVerse.chapter, firstVerse.verse)
+            clearInvocations(bibleRepo)
+            // Select verses
+            for (s in selections) {
+                viewModel.onPathSelected(s.pathI, s.verseI)
+                val pos = viewModel.position!!
+                if (s.isValid) {
+                    assertThat(pos.pathIndex).isEqualTo(s.pathI)
+                    assertThat(pos.verseIndex).isEqualTo(s.verseI)
+                    verifyOnce(bibleRepo).getSingle(s.book, s.chapter, s.verse)
+                } else {
+                    assertThat(pos.pathIndex == s.pathI && pos.verseIndex == s.verseI).isFalse()
+                    verifyZeroInteractions(bibleRepo)
+                }
+                clearInvocations(bibleRepo)
+            }
         }
     }
+
+    private data class Selection(
+        val pathI: Int,
+        val verseI: Int,
+        val isValid: Boolean = false,
+        val book: String = "",
+        val chapter: Int = 0,
+        val verse: Int = 0
+    )
 
     private fun scores(vararg values: Int): List<Score> {
         return values.map { Score(it, 2) }
