@@ -3,7 +3,7 @@ package mg.maniry.tenymana.gameLogic.models
 private typealias ForEachCb<T> = (x: Int, y: Int, p: T?) -> Unit
 
 open class Grid<T>(
-    private val cells: List<List<T?>>
+    val cells: List<List<T?>>
 ) {
     val h: Int get() = cells.size
     val w: Int get() = if (cells.isEmpty()) 0 else cells[0].size
@@ -48,30 +48,30 @@ open class Grid<T>(
 
 data class MutableGrid<T>(
     private val width: Int,
-    private val cells: MutableList<MutableList<T?>> = mutableListOf()
-) : Grid<T>(cells) {
+    private val mutableCells: MutableList<MutableList<T?>> = mutableListOf()
+) : Grid<T>(mutableCells) {
     fun toGrid(): Grid<T> {
         return Grid(
-            cells.map { it.toList() }
+            mutableCells.map { it.toList() }
         )
     }
 
     fun set(x: Int, y: Int, value: T?) {
         addMissingRows(y)
-        cells[y][x] = value
+        mutableCells[y][x] = value
     }
 
     private fun addMissingRows(y: Int) {
         // always add an empty row at the top
-        while (cells.size <= y + 1) {
-            cells.add(MutableList(width) { null })
+        while (mutableCells.size <= y + 1) {
+            mutableCells.add(MutableList(width) { null })
         }
     }
 
     override fun toString() = super.toString()
 
     init {
-        if (cells.isEmpty()) {
+        if (mutableCells.isEmpty()) {
             set(0, 0, null)
         }
     }

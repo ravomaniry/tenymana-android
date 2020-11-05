@@ -13,9 +13,12 @@ interface LinkClearPuzzle : Puzzle {
     val diff: List<Move>?
     val cleared: List<Point>?
 
+    fun undo(): Boolean
+
     companion object {
         const val visibleH = 12
         const val width = 10
+        const val historySize = 10
         val gravity = listOf(Point.DOWN, Point.LEFT)
         val directions = listOf(Point.UP, Point.RIGHT, Point.DOWN, Point.LEFT)
 
@@ -35,6 +38,7 @@ class LinkClearPuzzleImpl(
     private val directions = LinkClearPuzzle.directions
 
     private val random = RandomImpl()
+    private val history = mutableListOf<HistoryItem>()
 
     private val hidden = initialGrid.calcHiddenWords(initialVerse.words)
     override val grid: MutableGrid<Character> = initialGrid.toCharGrid(initialVerse.words)
@@ -52,14 +56,29 @@ class LinkClearPuzzleImpl(
         reset()
         val selection = grid.calcSelection(move, directions)
         if (selection.isNotEmpty) {
+            val historyItem = HistoryItem(words.toList(), score.value!!, grid.copyCells())
             val indexes = words.resolveWith(selection.chars, hidden)
             if (indexes.isNotEmpty()) {
                 updateResult(selection.points)
                 incrementScore(indexes)
+                history.add(historyItem)
+                history.trimLeft(LinkClearPuzzle.historySize)
                 return true
             }
         }
         return false
+    }
+
+    override fun undo(): Boolean {
+        if (history.isEmpty()) {
+            return false
+        }
+        val item = history.last()
+        score.postValue(item.score)
+        item.words.overWrite(words)
+        item.chars.overWrite(grid)
+        history.removeLastIfNotEmpty()
+        return true
     }
 
     private fun reset() {
@@ -95,6 +114,40 @@ class LinkClearPuzzleImpl(
         }
         if (completed && !usedHelp) {
             score.postValue((score.value ?: 0) * 2)
+        }
+    }
+}
+
+private class HistoryItem(
+    val words: List<Word>,
+    val score: Int,
+    val chars: List<List<Character?>>
+)
+
+private fun List<Word>.overWrite(words: MutableList<Word>) {
+    forEachIndexed { index, word -> words[index] = word }
+}
+
+private fun MutableList<HistoryItem>.trimLeft(len: Int) {
+    while (size > len) {
+        removeAt(0)
+    }
+}
+
+private fun MutableList<HistoryItem>.removeLastIfNotEmpty() {
+    if (size > 0) {
+        removeAt(size - 1)
+    }
+}
+
+private fun Grid<Character>.copyCells(): List<List<Character?>> {
+    return cells.map { it.toList() }
+}
+
+private fun List<List<Character?>>.overWrite(grid: MutableGrid<Character>) {
+    for (y in indices) {
+        for (x in this[y].indices) {
+            grid.set(x, y, this[y][x])
         }
     }
 }

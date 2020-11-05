@@ -218,6 +218,69 @@ class PuzzleTest {
         assertThat(puzzle.completed).isEqualTo(completed)
     }
 
+    @Test
+    fun history() {
+        val verse = BibleVerse.fromText("", 1, 1, "ab cd ef gh ij kl mn op qr st uv xy za")
+        val cells = mutableListOf<List<CharAddress>>()
+        verse.words.forEachIndexed { i, word ->
+            if (!word.isSeparator) {
+                cells.add(listOf(ca(i, 0), ca(i, 1)))
+            }
+        }
+        val grid = Grid(cells)
+        val puzzle = LinkClearPuzzleImpl(grid, verse)
+        // propose word[0] and cancel
+        val wSnap = puzzle.verse.words.snapshot
+        val gridSnapshot = puzzle.grid.snapshot
+        puzzle.propose(Move.xy(0, 0, 1, 0))
+        assertThat(puzzle.verse.words[0].resolved).isTrue()
+        assertThat(puzzle.score.value).isEqualTo(2)
+        var canceled = puzzle.undo()
+        assertThat(canceled).isTrue()
+        assertThat(puzzle.verse.words.snapshot).isEqualTo(wSnap)
+        assertThat(puzzle.score.value).isEqualTo(0)
+        assertThat(puzzle.grid.snapshot).isEqualTo(gridSnapshot)
+        // cancel now do nothing
+        canceled = puzzle.undo()
+        assertThat(canceled).isFalse()
+        assertThat(puzzle.score.value).isEqualTo(0)
+        // Propose 5 times
+        val wordsSnapthots = mutableListOf<String>()
+        val gridSnapshots = mutableListOf<String>()
+        val scoreSnapthots = mutableListOf<Int?>()
+        for (i in 0..11) {
+            val changed = puzzle.propose(Move.xy(0, 0, 1, 0))
+            assertThat(changed).isTrue()
+            assertThat(puzzle.verse.words[i * 2].resolved).isTrue()
+            wordsSnapthots.add(puzzle.verse.words.snapshot)
+            gridSnapshots.add(puzzle.grid.snapshot)
+            scoreSnapthots.add(puzzle.score.value)
+        }
+        // cancel
+        for (i in 0..9) {
+            val changed = puzzle.undo()
+            assertThat(changed).isTrue()
+            assertThat(puzzle.verse.words.snapshot).isEqualTo(wordsSnapthots[10 - i])
+            assertThat(puzzle.score.value).isEqualTo(scoreSnapthots[10 - i])
+            assertThat(puzzle.grid.snapshot).isEqualTo(gridSnapshots[10 - i])
+        }
+        assertThat(puzzle.undo()).isFalse()
+    }
+
+    private val Grid<*>.snapshot: String get() = toString().trimNulls()
+    private val List<Word>.snapshot: String get() = joinToString { "$it\n" }
+
+    private fun String.trimNulls(): String {
+        return split('\n')
+            .filter { !it.allElementsAreNull() }
+            .joinToString { "$it\n" }
+    }
+
+    private fun String.allElementsAreNull(): Boolean {
+        val elements = substring(1, length - 1).split(", ")
+        return elements.find { it != "null" } == null
+    }
+
     private fun ca(wI: Int, cI: Int) = CharAddress(wI, cI)
     private fun c(v: Char) = Character(v.toUpperCase(), v.toLowerCase())
 }
