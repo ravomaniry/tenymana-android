@@ -37,4 +37,3 @@ class BibleDao(
 
     private fun buildPath(book: String, chapter: Int) = "$dir/$book-$chapter.json"
 }
-
