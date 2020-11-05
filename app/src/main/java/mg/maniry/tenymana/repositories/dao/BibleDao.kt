@@ -8,9 +8,10 @@ class BibleDao(
     private val fs: FsHelper
 ) {
     private val dir = "bible"
+    private var cache: Pair<String, BibleChapter>? = null
 
     suspend fun get(book: String, chapter: Int, minV: Int, maxV: Int): List<BibleVerse> {
-        val content = fs.readJson(buildPath(book, chapter), BibleChapter::class.java)
+        val content = readChapter(book, chapter)
         val res = mutableListOf<BibleVerse>()
         if (content != null) {
             for (v in minV..maxV) {
@@ -20,6 +21,18 @@ class BibleDao(
             }
         }
         return res
+    }
+
+    private suspend fun readChapter(book: String, chapter: Int): BibleChapter? {
+        val path = buildPath(book, chapter)
+        if (path == cache?.first) {
+            return cache!!.second
+        }
+        val content = fs.readJson(path, BibleChapter::class.java)
+        if (content != null) {
+            cache = Pair(path, content)
+        }
+        return content
     }
 
     private fun buildPath(book: String, chapter: Int) = "$dir/$book-$chapter.json"

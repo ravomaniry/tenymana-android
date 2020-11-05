@@ -5,6 +5,7 @@ import kotlinx.coroutines.withContext
 import mg.maniry.tenymana.api.FsHelper
 import mg.maniry.tenymana.gameLogic.models.BibleVerse
 import mg.maniry.tenymana.repositories.dao.BibleDao
+import mg.maniry.tenymana.repositories.models.BibleChapter
 import mg.maniry.tenymana.repositories.setupUtils.copyAssets
 
 interface BibleRepo {

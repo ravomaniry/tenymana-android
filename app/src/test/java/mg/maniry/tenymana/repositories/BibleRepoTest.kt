@@ -15,13 +15,19 @@ import org.junit.Test
 class BibleRepoTest {
     @Test
     fun get() {
-        val chapter = BibleChapter(
+        val ch1 = BibleChapter(
             "Matio",
             1,
             listOf("1", "2", "3", "4", "5", "6")
         )
+        val ch2 = BibleChapter(
+            "Matio",
+            2,
+            listOf("1", "2", "3", "4", "5", "6")
+        )
         val fs: FsHelper = mock {
-            onBlocking { readJson("bible/Matio-1.json", BibleChapter::class.java) } doReturn chapter
+            onBlocking { readJson("bible/Matio-1.json", BibleChapter::class.java) } doReturn ch1
+            onBlocking { readJson("bible/Matio-2.json", BibleChapter::class.java) } doReturn ch2
         }
         runBlocking {
             val repo = BibleRepoImpl(fs)
@@ -38,6 +44,14 @@ class BibleRepoTest {
                     BibleVerse.fromText("Matio", 1, 5, "5")
                 )
             )
+            assertThat(repo.get("Matio", 2, 4, 5)).isEqualTo(
+                listOf(
+                    BibleVerse.fromText("Matio", 2, 4, "4"),
+                    BibleVerse.fromText("Matio", 2, 5, "5")
+                )
+            )
+            verifyOnce(fs).readJson("bible/Matio-1.json", BibleChapter::class.java)
+            verifyOnce(fs).readJson("bible/Matio-2.json", BibleChapter::class.java)
         }
     }
 
