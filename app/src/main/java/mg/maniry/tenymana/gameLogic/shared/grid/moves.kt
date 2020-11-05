@@ -47,7 +47,7 @@ fun Grid<CharAddress>.calcScoredMoves(
                 val withG = next.toMutable().apply { applyGravity(gravity) }
                 if (next == withG) {
                     val xyRatioScore = next.calcXYRatioScore(this)
-                    val diffsScore = next.calcDiffScore(this, wordLen)
+                    val diffsScore = calcDiffScore(move, wordLen)
                     moves.add(MoveWithScore(move, xyRatioScore + diffsScore))
                 }
             }
@@ -80,11 +80,11 @@ private fun Grid<CharAddress>.canContainMove(move: Move, len: Int, visibleH: Int
     return true
 }
 
-private fun Grid<*>.calcDiffScore(old: Grid<*>, wordLen: Int): Double {
+private fun Grid<*>.calcDiffScore(move: Move, wordLen: Int): Double {
     var count = 0
-    forEach { x, y, v ->
-        val oldV = old[x, y]
-        if (v != null && oldV != null && v != oldV) {
+    for (i in 1..wordLen) {
+        val p = move.a + move.b * (i - 1)
+        if (get(p) != null) {
             count++
         }
     }
