@@ -51,20 +51,24 @@ class PathsFragmentTest : KoinTest {
         )
         // Initial render
         val gameVM = testPathsList(session, showLeftBtn = false, showRightBtn = true, pathIndex = 0)
-        // Select path 2 and click on a view
+        // Select path 2 and click on continue button and verse item
         clearInvocations(gameVM)
         clickView(R.id.pathsScreenRightBtn)
         shouldHaveText(R.id.pathsScreenPathTitle, text = session.journey.paths[1].name)
         shouldBeVisible(R.id.pathsScreenLeftBtn)
         shouldBeInvisible(R.id.pathsScreenRightBtn)
+        clickView(R.id.pathsScreenContinueBtn)
+        verifyOnce(gameVM).onPathSelected(1, null)
         clickView(R.id.pathsScreenVerse, 0)
-        verifyOnce(gameVM).onPathVerseSelect(1, 0)
-        // Go back to path 1 && select
+        verifyOnce(gameVM).onPathSelected(1, 0)
+        // Go back to path 1 && continie && select
         clearInvocations(gameVM)
         clickView(R.id.pathsScreenLeftBtn)
         shouldHaveText(R.id.pathsScreenPathTitle, text = session.journey.paths[0].name)
+        clickView(R.id.pathsScreenContinueBtn)
+        verifyOnce(gameVM).onPathSelected(0, null)
         clickView(R.id.pathsScreenVerse, 2)
-        verifyOnce(gameVM).onPathVerseSelect(0, 2)
+        verifyOnce(gameVM).onPathSelected(0, 2)
     }
 
     @Test
@@ -186,12 +190,15 @@ class PathsFragmentTest : KoinTest {
         val path = session.journey.paths[pathIndex]
         shouldHaveText(R.id.pathsScreenPathTitle, text = path.name)
         shouldHaveText(R.id.pathsScreenPathChapter, text = "${path.book} ${path.chapter}")
-        // clicks
+        // Click on continue button
+        clickView(R.id.pathsScreenContinueBtn)
+        verifyOnce(gameViewModel).onPathSelected(pathIndex, null)
+        // Clicks on verses
         for (verse in path.start..path.end) {
             val index = verse - path.start
             clickView(R.id.pathsScreenVerse, index)
             shouldHaveText(R.id.pathsScreenVerseNumber, index, text = verse.toString())
-            verifyOnce(gameViewModel).onPathVerseSelect(pathIndex, index)
+            verifyOnce(gameViewModel).onPathSelected(pathIndex, index)
         }
         return gameViewModel
     }

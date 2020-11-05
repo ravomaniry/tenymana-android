@@ -30,3 +30,33 @@ fun Session.resume(): SessionPosition {
     }
     return SessionPosition(this, false, pathIndex, verseIndex)
 }
+
+fun Session.resumePath(pathIndex: Int): SessionPosition {
+    val verseIndex = when {
+        hasScoreAt(pathIndex) && !pathIsCompletedAt(pathIndex) ->
+            progress.scores[pathIndex].size
+        else -> 0
+    }
+    return SessionPosition(
+        this,
+        isCompleted,
+        pathIndex,
+        verseIndex
+    )
+}
+
+fun Session.canOpenVerse(pathIndex: Int, verseIndex: Int): Boolean {
+    return verseIndex == 0 ||
+            (progress.scores.size > pathIndex && progress.scores[pathIndex].size >= verseIndex)
+}
+
+private val Session.isCompleted: Boolean get() = progress.size >= journey.size
+
+private fun Session.hasScoreAt(pathIndex: Int): Boolean {
+    return progress.scores.size > pathIndex
+}
+
+private fun Session.pathIsCompletedAt(pathIndex: Int): Boolean {
+    return progress.scores.size > pathIndex &&
+            progress.scores[pathIndex].size >= journey.paths[pathIndex].size
+}

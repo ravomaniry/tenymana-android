@@ -4,9 +4,7 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import mg.maniry.tenymana.gameLogic.models.Puzzle
 import mg.maniry.tenymana.gameLogic.shared.puzzleBuilder.PuzzleBuilder
-import mg.maniry.tenymana.gameLogic.shared.session.SessionPosition
-import mg.maniry.tenymana.gameLogic.shared.session.next
-import mg.maniry.tenymana.gameLogic.shared.session.resume
+import mg.maniry.tenymana.gameLogic.shared.session.*
 import mg.maniry.tenymana.repositories.BibleRepo
 import mg.maniry.tenymana.repositories.GameRepo
 import mg.maniry.tenymana.repositories.UserRepo
@@ -25,10 +23,9 @@ interface GameViewModel {
     val onSessionClick: (Session) -> Unit
     val position: SessionPosition?
 
-    fun continueSession()
     fun onPuzzleCompleted()
     fun saveAndContinue()
-    fun onPathVerseSelect(pathIndex: Int, verseIndex: Int)
+    fun onPathSelected(pathIndex: Int, verseIndex: Int?)
     fun closePathDetails()
 }
 
@@ -62,10 +59,20 @@ class GameViewModelImpl(
         navigateTo(Screen.PATHS_LIST)
     }
 
-    override fun continueSession() {
-        shouldNavigate = true
-        navigateTo(Screen.PATH_DETAILS)
-        initPuzzle()
+    override fun onPathSelected(pathIndex: Int, verseIndex: Int?) {
+        var canOpenVerse = verseIndex == null
+        if (verseIndex == null) {
+            position = session.value!!.resumePath(pathIndex)
+        } else {
+            canOpenVerse = session.value!!.canOpenVerse(pathIndex, verseIndex)
+            if (canOpenVerse) {
+                position = position!!.copy(pathIndex = pathIndex, verseIndex = verseIndex)
+            }
+        }
+        if (canOpenVerse) {
+            navigateTo(Screen.PATH_DETAILS)
+            initPuzzle()
+        }
     }
 
     override fun onPuzzleCompleted() {
@@ -87,20 +94,15 @@ class GameViewModelImpl(
                     puzzle.postValue(null)
                     navigateTo(Screen.JOURNEY_COMPLETE)
                 }
-                position?.pathIndex != prevPathI -> navigateTo(Screen.PATHS_LIST)
+                position?.pathIndex != prevPathI -> {
+                    navigateTo(Screen.PATHS_LIST)
+                }
                 else -> {
                     initPuzzle()
                     navigateTo(Screen.PUZZLE)
                 }
             }
         }
-    }
-
-    override fun onPathVerseSelect(pathIndex: Int, verseIndex: Int) {
-        // check here before navigating
-        //        position = SessionPosition(session.value!!, false, pathIndex, verseIndex)
-        //        initPuzzle()
-        //        navigateTo(Screen.PUZZLE)
     }
 
     private fun initPuzzle() {

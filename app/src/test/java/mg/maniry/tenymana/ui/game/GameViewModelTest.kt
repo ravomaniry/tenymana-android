@@ -95,7 +95,7 @@ class GameViewModelTest {
             assertThat(viewModel.sessions.value).isEqualTo(listOf(session))
             // 2- Select session and resume
             viewModel.onSessionClick(session)
-            viewModel.continueSession()
+            viewModel.onPathSelected(viewModel.position!!.pathIndex, null)
             assertThat(viewModel.screen.value).isEqualTo(Screen.PATH_DETAILS)
             viewModel.closePathDetails()
             assertThat(viewModel.screen.value).isEqualTo(Screen.PUZZLE)
@@ -146,7 +146,7 @@ class GameViewModelTest {
             assertThat(viewModel.puzzle.value).isEqualTo(prevPzz)
             assertThat(viewModel.shouldNavigate).isTrue()
             // resume on paths screen load verse + go to path details
-            viewModel.continueSession()
+            viewModel.onPathSelected(viewModel.position!!.pathIndex, null)
             assertThat(viewModel.screen.value).isEqualTo(Screen.PATH_DETAILS)
             viewModel.closePathDetails()
             assertThat(viewModel.screen.value).isEqualTo(Screen.PUZZLE)
@@ -221,7 +221,7 @@ class GameViewModelTest {
     }
 
     @Test
-    fun resumeCompletedGame() {
+    fun resumeCompletedGameSinglePath() {
         testResume(
             paths = listOf(
                 Path("path 0", "", "Jaona", 2, 2, 6),
@@ -230,6 +230,10 @@ class GameViewModelTest {
             scores = listOf(scores(1, 2, 3, 4, 5), scores(1, 2, 3)),
             firstVerse = BibleVerse.fromText("Jaona", 2, 2, "")
         )
+    }
+
+    @Test
+    fun resumeCompletedGameMultiPath() {
         testResume(
             paths = listOf(
                 Path("path 0", "", "Jaona", 1, 1, 5),
@@ -283,7 +287,7 @@ class GameViewModelTest {
             )
             viewModel.apply {
                 onSessionClick(session)
-                continueSession()
+                viewModel.onPathSelected(viewModel.position!!.pathIndex, null)
             }
             // query correct verse
             verifyOnce(bibleRepo).getSingle(firstVerse.book, firstVerse.chapter, firstVerse.verse)

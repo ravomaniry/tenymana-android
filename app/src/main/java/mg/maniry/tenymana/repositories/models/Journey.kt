@@ -21,4 +21,6 @@ data class Path(
     val chapter: Int,
     val start: Int,
     val end: Int
-)
+) {
+    val size: Int get() = end - start + 1
+}

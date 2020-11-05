@@ -43,7 +43,7 @@ class PathsViewModel(
     }
 
     val verseClickHandler = { index: Int ->
-        gameViewModel.onPathVerseSelect(activePathIndex.value!!, index)
+        gameViewModel.onPathSelected(activePathIndex.value!!, index)
     }
 
     private val updateDescription = Observer<Any?> {
@@ -78,7 +78,7 @@ class PathsViewModel(
     }
 
     fun continueSession() {
-        gameViewModel.continueSession()
+        gameViewModel.onPathSelected(activePathIndex.value!!, null)
     }
 
     init {

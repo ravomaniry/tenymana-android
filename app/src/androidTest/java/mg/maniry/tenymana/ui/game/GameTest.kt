@@ -92,7 +92,7 @@ class GameTest : KoinTest {
             clickView(R.id.gameListItem, 0)
             shouldBeVisible(R.id.pathsScreen)
             // Go to puzzle screen:
-            clickView(R.id.pathsNextBtn)
+            clickView(R.id.pathsScreenContinueBtn)
             //  - load verse and init puzzle
             verifyOnce(bibleRepo).getSingle("Matio", 1, 10)
             //  - go to path details screen
