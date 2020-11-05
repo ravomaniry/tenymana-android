@@ -4,14 +4,17 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import mg.maniry.tenymana.gameLogic.models.BibleVerse
 import mg.maniry.tenymana.gameLogic.models.Puzzle
+import mg.maniry.tenymana.gameLogic.shared.bibleVerse.calcStars
 import mg.maniry.tenymana.repositories.BibleRepo
 import mg.maniry.tenymana.ui.game.GameViewModel
+import mg.maniry.tenymana.utils.Memo
 import mg.maniry.tenymana.utils.newViewModelFactory
 
 class SolutionViewModel(
     private val gameViewModel: GameViewModel,
     private val bibleRepo: BibleRepo
 ) : ViewModel() {
+    private val puzzle = gameViewModel.puzzle
     private val _verses = MutableLiveData<List<BibleVerse>>()
     val verses: LiveData<List<BibleVerse>> get() = _verses
     private val _showBigView = MutableLiveData(false)
@@ -24,6 +27,18 @@ class SolutionViewModel(
     val singleVerseText = Transformations.map(gameViewModel.puzzle) {
         it?.verse?.text ?: ""
     }
+
+    private val scoreMemo = Memo(
+        { listOf(puzzle.value?.score?.value) },
+        { puzzle.value?.score?.value ?: 0 }
+    )
+    private val starsMemo = Memo(
+        { listOf(puzzle.value?.verse, puzzle.value?.score) },
+        { buildStarsList(puzzle.value?.verse, puzzle.value?.score?.value) }
+    )
+
+    val score: String get() = scoreMemo.value.toString()
+    val stars: List<Boolean> = starsMemo.value
 
     private val reset = Observer<Puzzle?> {
         _showBigView.postValue(false)
@@ -58,6 +73,14 @@ class SolutionViewModel(
             val values = bibleRepo.get(path.book, path.chapter, minV, maxV)
             _verses.postValue(values)
         }
+    }
+
+    private fun buildStarsList(verse: BibleVerse?, score: Int?): List<Boolean> {
+        if (verse != null && score != null) {
+            val stars = verse.calcStars(score)
+            return listOf(stars >= 1, stars >= 2, stars >= 3)
+        }
+        return listOf(false, false, false)
     }
 
     override fun onCleared() {

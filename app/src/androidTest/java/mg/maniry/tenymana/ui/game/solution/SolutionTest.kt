@@ -41,38 +41,42 @@ class SolutionTest : KoinTest {
     }
 
     @Test
-    fun noExpand() {
-        val session = Session(
-            Journey(
-                "ab",
-                paths = listOf(Path("path0", book = "Marka", chapter = 2, start = 10, end = 20))
-            ),
-            Progress("ab")
-        )
+    fun noExpand_twoStars() {
+        val session = newSession(Path("path0", book = "Marka", chapter = 2, start = 10, end = 20))
         val pos = SessionPosition(session, isCompleted = false, pathIndex = 0, verseIndex = 0)
         val activeVerse = BibleVerse.fromText("Marka", 2, 10, "Abcd ef")
-        testSolutionScreen(session, pos, activeVerse, canExpand = false)
+        val score = 4
+        val stars = 2
+        testSolutionScreen(session, pos, activeVerse, score, stars, canExpand = false)
     }
 
     @Test
-    fun expand() {
-        val session = Session(
-            Journey(
-                "ab",
-                paths = listOf(Path("path0", book = "Matio", chapter = 10, start = 2, end = 10))
-            ),
-            Progress("ab")
-        )
+    fun noExpand_oneStar() {
+        val session = newSession(Path("path0", book = "Marka", chapter = 2, start = 10, end = 20))
+        val pos = SessionPosition(session, isCompleted = false, pathIndex = 0, verseIndex = 0)
+        val activeVerse = BibleVerse.fromText("Marka", 2, 10, "Abcd ef")
+        val score = 1
+        val stars = 1
+        testSolutionScreen(session, pos, activeVerse, score, stars, canExpand = false)
+    }
+
+    @Test
+    fun expand_threeStars() {
+        val session = newSession(Path("path0", book = "Matio", chapter = 10, start = 2, end = 10))
         val pos = SessionPosition(session, isCompleted = false, pathIndex = 0, verseIndex = 4)
         val activeVerse = BibleVerse.fromText("Matio", 10, 6, "Abcd ef")
+        val score = 100
+        val stars = 3
         val verses = (2..6).map { BibleVerse.fromText("Matio", 10, it, "verse $it") }
-        testSolutionScreen(session, pos, activeVerse, verses, canExpand = true)
+        testSolutionScreen(session, pos, activeVerse, score, stars, verses, canExpand = true)
     }
 
     private fun testSolutionScreen(
         session: Session,
         pos: SessionPosition,
         activeVerse: BibleVerse,
+        score: Int,
+        stars: Int,
         verses: List<BibleVerse> = emptyList(),
         canExpand: Boolean = false
     ) {
@@ -85,6 +89,7 @@ class SolutionTest : KoinTest {
         // puzzle
         val puzzle = mock(Puzzle::class.java)
         whenever(puzzle.verse).thenReturn(activeVerse)
+        whenever(puzzle.score).thenReturn(MutableLiveData(score))
         whenever(gameViewModel.puzzle).thenReturn(MutableLiveData(puzzle))
         // repo
         val bibleRepo: BibleRepo by inject()
@@ -116,6 +121,20 @@ class SolutionTest : KoinTest {
         // 2- click on btn call viewModel's function
         clickView(R.id.solutionSaveAndContinueBtn)
         verifyOnce(gameViewModel).saveAndContinue()
+        // Score && stars
+        shouldHaveText(R.id.solutionScreenScore, text = "$score")
+        shouldBeVisible(R.id.solutionScreenStar0)
+        if (stars >= 2) {
+            shouldBeVisible(R.id.solutionScreenStar1)
+        } else {
+            shouldBeInvisible(R.id.solutionScreenStar1)
+        }
+        if (stars >= 3) {
+            shouldBeVisible(R.id.solutionScreenStar2)
+        } else {
+            shouldBeInvisible(R.id.solutionScreenStar2)
+        }
+        // Expand
         if (canExpand) {
             // Expand
             clearInvocations(gameViewModel)
@@ -143,4 +162,9 @@ class SolutionTest : KoinTest {
             shouldBeInvisible(R.id.solutionScreenExpandBtn)
         }
     }
+
+    private fun newSession(path: Path) = Session(
+        Journey("ab", paths = listOf(path)),
+        Progress("ab")
+    )
 }

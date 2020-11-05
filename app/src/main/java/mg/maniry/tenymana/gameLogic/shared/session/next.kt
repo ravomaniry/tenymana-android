@@ -1,9 +1,8 @@
 package mg.maniry.tenymana.gameLogic.shared.session
 
-import mg.maniry.tenymana.gameLogic.models.BibleVerse
 import mg.maniry.tenymana.gameLogic.models.Puzzle
 import mg.maniry.tenymana.gameLogic.models.Score
-import mg.maniry.tenymana.gameLogic.models.Word
+import mg.maniry.tenymana.gameLogic.shared.bibleVerse.calcStars
 import mg.maniry.tenymana.repositories.models.Journey
 import mg.maniry.tenymana.repositories.models.Path
 import mg.maniry.tenymana.repositories.models.Progress
@@ -55,25 +54,6 @@ private fun <T> MutableList<T>.addUpTo(n: Int, builder: () -> T) {
     while (size <= n) {
         add(builder())
     }
-}
-
-private fun BibleVerse.calcStars(score: Int): Int {
-    val charsN = words.countChars { !it.isSeparator }
-    return when {
-        score <= 0.5 * charsN -> 1
-        score <= 1 * charsN -> 2
-        else -> 3
-    }
-}
-
-private fun List<Word>.countChars(filter: (Word) -> Boolean): Int {
-    var count = 0
-    forEach {
-        if (filter(it)) {
-            count += it.size
-        }
-    }
-    return count
 }
 
 private val List<List<Score>>.total: Int
