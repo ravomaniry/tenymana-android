@@ -115,13 +115,13 @@ class GameViewModelTest {
             assertThat(viewModel.session.value!!.progress).isEqualTo(progress)
             assertThat(viewModel.shouldNavigate).isTrue()
             // Next once again: (1 star)
-            score.postValue(3)
+            score.postValue(2)
             viewModel.onPuzzleCompleted()
             viewModel.saveAndContinue()
             progress = Progress(
                 "ab",
-                totalScore = 23,
-                scores = listOf(listOf(Score(20, 3), Score(3, 1)))
+                totalScore = 20 + 2,
+                scores = listOf(listOf(Score(20, 3), Score(2, 1)))
             )
             verifyOnce(gameRepo).saveProgress(progress)
             verifyOnce(puzzleBuilder).linkClear(verses["Matio/1/3"] ?: error("1"))
@@ -130,13 +130,13 @@ class GameViewModelTest {
             assertThat(viewModel.shouldNavigate).isTrue()
             // Complete path: 2 stars
             val prevPzz = viewModel.puzzle.value
-            score.postValue(6)
+            score.postValue(3)
             viewModel.onPuzzleCompleted()
             viewModel.saveAndContinue()
             progress = Progress(
                 "ab",
-                totalScore = 29,
-                scores = listOf(listOf(Score(20, 3), Score(3, 1), Score(6, 2)))
+                totalScore = 20 + 2 + 3,
+                scores = listOf(listOf(Score(20, 3), Score(2, 1), Score(3, 2)))
             )
             verifyOnce(gameRepo).saveProgress(progress)
             assertThat(viewModel.screen.value).isEqualTo(Screen.PATHS_LIST)
@@ -156,9 +156,9 @@ class GameViewModelTest {
             viewModel.saveAndContinue()
             progress = Progress(
                 "ab",
-                totalScore = 59,
+                totalScore = 20 + 2 + 3 + 30,
                 scores = listOf(
-                    listOf(Score(20, 3), Score(3, 1), Score(6, 2)),
+                    listOf(Score(20, 3), Score(2, 1), Score(3, 2)),
                     listOf(Score(30, 3))
                 )
             )

@@ -60,8 +60,8 @@ private fun <T> MutableList<T>.addUpTo(n: Int, builder: () -> T) {
 private fun BibleVerse.calcStars(score: Int): Int {
     val charsN = words.countChars { !it.isSeparator }
     return when {
-        score <= 0.75 * charsN -> 1
-        score <= 1.2 * charsN -> 2
+        score <= 0.5 * charsN -> 1
+        score <= 1 * charsN -> 2
         else -> 3
     }
 }
