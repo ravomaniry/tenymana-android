@@ -39,6 +39,7 @@ class LinkClearFragment : Fragment() {
         binding = DataBindingUtil
             .inflate(inflater, R.layout.puzzle_screen_link_clear, container, false)
         binding.lifecycleOwner = this
+        binding.viewModel = puzzleViewModel
     }
 
     private fun initVerseView() {

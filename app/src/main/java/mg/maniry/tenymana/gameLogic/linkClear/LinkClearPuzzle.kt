@@ -13,8 +13,6 @@ interface LinkClearPuzzle : Puzzle {
     val diff: List<Move>?
     val cleared: List<Point>?
 
-    fun undo(): Boolean
-
     companion object {
         const val visibleH = 12
         const val width = 10

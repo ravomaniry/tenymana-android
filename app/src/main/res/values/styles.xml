@@ -120,6 +120,10 @@
         <item name="android:padding">4dp</item>
     </style>
 
+    <style name="AppTheme.BonusBtn">
+        <item name="android:background">@color/transparent</item>
+    </style>
+
     <!-- Solution screen -->
     <style name="AppTheme.VerseTexView" parent="TextAppearance.AppCompat.Body1">
         <item name="android:layout_margin">5dp</item>

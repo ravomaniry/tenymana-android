@@ -7,4 +7,5 @@ interface Puzzle {
     val completed: Boolean
     val verse: BibleVerse
     fun propose(move: Move): Boolean
+    fun undo(): Boolean
 }

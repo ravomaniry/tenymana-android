@@ -10,4 +10,5 @@
     <color name="darkGray">#555555</color>
     <color name="lightGray">#BBB</color>
     <color name="halfLight">#66FFFFFF</color>
+    <color name="transparent">#0000</color>
 </resources>

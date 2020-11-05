@@ -41,6 +41,13 @@ class PuzzleViewModel(
         }
     }
 
+    fun undo() {
+        val didUpdate = puzzle.value?.undo()
+        if (didUpdate == true) {
+            triggerReRender()
+        }
+    }
+
     private fun triggerReRender() {
         invalidate.postValue(true)
     }

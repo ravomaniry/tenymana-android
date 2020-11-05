@@ -8,6 +8,7 @@ class LinkClearPuzzleMock(
     override val verse: BibleVerse
 ) : LinkClearPuzzle {
     val proposeFn = Fn<Boolean>()
+    val undoFn = Fn<Boolean>()
     override var grid: MutableGrid<Character> = MutableGrid(10)
     override var diff: List<Move>? = null
     override var cleared: List<Point>? = null
@@ -15,4 +16,5 @@ class LinkClearPuzzleMock(
     override var completed = false
 
     override fun propose(move: Move) = proposeFn(move)
+    override fun undo() = undoFn()
 }

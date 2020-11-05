@@ -8,6 +8,7 @@
     <string name="app_action_play">Hilalao</string>
     <string name="app_action_next">Tohizana</string>
     <string name="app_expand_collapse_img_description">Angezana na akelezina</string>
+    <string name="app_undo_desc">Averina</string>
 
     <string name="paths_screen_prev_description">Aseho ny teo aloha</string>
     <string name="paths_screen_next_description">Aseho ny manaraka</string>

@@ -2,6 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="viewModel"
+            type="mg.maniry.tenymana.ui.game.puzzle.PuzzleViewModel" />
+    </data>
+
     <LinearLayout
         android:id="@+id/linkClearPuzzle"
         style="@style/AppTheme.PuzzleBody"
@@ -38,11 +45,21 @@
 
         </FrameLayout>
 
-        <mg.maniry.tenymana.ui.game.puzzle.views.BonusView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/blue"
-            tools:layout_height="40dp" />
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/linkClearUndoBtn"
+                style="@style/AppTheme.BonusBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/app_undo_desc"
+                android:onClick="@{() -> viewModel.undo()}"
+                android:src="@drawable/ic_undo" />
+        </LinearLayout>
 
     </LinearLayout>
 
