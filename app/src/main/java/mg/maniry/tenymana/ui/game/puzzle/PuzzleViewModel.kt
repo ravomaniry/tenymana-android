@@ -25,7 +25,7 @@ class PuzzleViewModel(
     val score: LiveData<String> = _score
 
     val displayVerse = Transformations.map(gameViewModel.puzzle) {
-        "${it?.verse?.book} ${it?.verse?.chapter}:${it?.verse?.verse}"
+        if (it == null) "" else "${it.verse.book} ${it.verse.chapter}:${it.verse.verse}"
     }
     val words: LiveData<List<Word>?> = Transformations.map(gameViewModel.puzzle) {
         it?.verse?.words

@@ -8,3 +8,9 @@ fun <T> List<T>.findIndex(criteria: (e: T) -> Boolean): Int {
     }
     return -1
 }
+
+fun List<List<*>>.countSubItems(): Int {
+    var count = 0
+    forEach { count += it.size }
+    return count
+}

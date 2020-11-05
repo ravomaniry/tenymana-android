@@ -37,7 +37,7 @@ class SessionViewHolder private constructor(
     fun bind(item: Session, onClick: OnSessionClick) {
         binding.session = item
         binding.onClick = onClick
-        binding.sessionProgress.progress = item.displayProgress
+        binding.sessionProgress.progress = item.percentage
         binding.executePendingBindings()
     }
 
@@ -57,10 +57,10 @@ class OnSessionClick(
     fun onClick(session: Session) = handler(session)
 }
 
-private val Session.displayProgress: Int
+private val Session.percentage: Int
     get() {
         return when (journey.size) {
             0 -> 0
-            else -> (100 * progress.scores.size / journey.size)
+            else -> (100 * progress.size / journey.size)
         }
     }
