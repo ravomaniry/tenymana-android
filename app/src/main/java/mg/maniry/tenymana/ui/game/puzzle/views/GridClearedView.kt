@@ -18,7 +18,7 @@ class GridClearedView : View {
             super(context, attributeSet, defStyleAttr)
 
     private val animator = ValueAnimator.ofFloat(0f, 1f).apply {
-        duration = animDuration
+        duration = GridClearedViewControl.animDuration.toLong()
     }
     private val control = GridClearedViewControl(animator)
 
@@ -27,7 +27,7 @@ class GridClearedView : View {
     }
 
     fun onValue(value: List<Point>?) {
-        control.onValue(value)
+        control.onValue(value, Date().time)
     }
 
     fun onColor(value: GameColors) {
@@ -42,18 +42,12 @@ class GridClearedView : View {
     }
 
     init {
-        val t0 = Date().time
         animator.addUpdateListener {
-            val t = (Date().time - t0).toDouble() / animDuration
-            val reRender = control.onTick(t)
+            val reRender = control.onTick(Date().time)
             if (reRender) {
                 invalidate()
             }
         }
-    }
-
-    companion object {
-        const val animDuration = 500L
     }
 }
 
@@ -62,6 +56,7 @@ class GridClearedViewControl(
 ) {
     enum class Mode { GROW, IDLE, SHRINK }
 
+    var t0: Long = 0
     var t: Double = 0.0
     var settings: DrawingSettings? = null
     private var sizes: MutableList<Float> = mutableListOf()
@@ -78,7 +73,8 @@ class GridClearedViewControl(
         paint.color = color
     }
 
-    fun onValue(value: List<Point>?) {
+    fun onValue(value: List<Point>?, now: Long) {
+        t0 = now
         this.value = value
         stopAnimator()
         if (value != null) {
@@ -89,8 +85,8 @@ class GridClearedViewControl(
         }
     }
 
-    fun onTick(t: Double): Boolean {
-        this.t = t
+    fun onTick(now: Long): Boolean {
+        this.t = (now - t0) / animDuration
         val nextMode = when {
             t < .5 -> Mode.GROW
             t <= 0.8 -> Mode.IDLE
@@ -183,5 +179,6 @@ class GridClearedViewControl(
         const val maxDelay = 0.25
         const val maxGrow = 0.5
         const val shrink0 = 0.8
+        const val animDuration = 500.0
     }
 }

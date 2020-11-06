@@ -22,7 +22,7 @@ class GridClearedViewTest {
             }
         }
 
-        fun GridClearedViewControl.reRender(t: Double) {
+        fun GridClearedViewControl.reRender(t: Long) {
             val should = onTick(t)
             if (should) {
                 onDraw(canvas)
@@ -49,40 +49,36 @@ class GridClearedViewTest {
             charGridOrigin = Point(x0.toInt(), y0.toInt())
         }
         // on null value does nothing
-        control.onValue(null)
+        control.onValue(null, 1000)
         verifyNever(animator).cancel()
         verifyNever(animator).start()
         // positive value
-        control.onValue(listOf(Point(0, 0), Point(1, 1)))
+        control.onValue(listOf(Point(0, 0), Point(1, 1)), 1000)
         verifyNever(animator).cancel()
         verifyOnce(animator).start()
         // positive again stops and then starts
         clearInvocations(animator)
-        control.onValue(listOf(Point(0, 0), Point(1, 1)))
+        control.onValue(listOf(Point(0, 0), Point(1, 1)), 1000)
         verifyOnce(animator).cancel()
         verifyOnce(animator).start()
         // Null stops
         clearInvocations(animator)
-        control.onValue(null)
+        control.onValue(null, 1000)
         verifyOnce(animator).cancel()
         verifyNever(animator).start()
-
-        control.onValue(listOf(Point(0, 0), Point(1, 1)))
-        control.apply {
-            onTick(0.0)
-            onDraw(canvas)
-        }
+        control.onValue(listOf(Point(0, 0), Point(1, 1)), 1000)
+        control.reRender(1000)
         assertThat(rects).isEmpty()
         // t = 0.1: draw cells[0] = 4, cells[1] = 0
-        control.reRender(0.1)
+        control.reRender(1050)
         assertThat(rects).isEqualTo(listOf(TestRect.xywh(20f - 2, 90f - 2, 4f, 4f)))
         // t = 0.25: cells[0] = 10
         rects.removeAll { true }
-        control.reRender(0.25)
+        control.reRender(1125)
         assertThat(rects).isEqualTo(listOf(TestRect.xywh(20f - 5, 90f - 5, 10f, 10f)))
         // t = 0.3: cells[0] = 12; cells[1] = 4
         rects.removeAll { true }
-        control.reRender(0.3)
+        control.reRender(1150)
         assertThat(rects).isEqualTo(
             listOf(
                 TestRect.xywh(20f - 6, 90f - 6, 12f, 12f),
@@ -91,7 +87,7 @@ class GridClearedViewTest {
         )
         rects.removeAll { true }
         // t = 0.4: cells[0] = 16, cells[1] = 12
-        control.reRender(0.4)
+        control.reRender(1200)
         assertThat(rects).isEqualTo(
             listOf(
                 TestRect.xywh(20f - 8, 90f - 8, 16f, 16f),
@@ -100,7 +96,7 @@ class GridClearedViewTest {
         )
         rects.removeAll { true }
         // t = 0.5: cells[0] = 20, cells[1] = 20
-        control.reRender(0.5)
+        control.reRender(1250)
         assertThat(rects).isEqualTo(
             listOf(
                 TestRect.xywh(20f - 10, 90f - 10, 20f, 20f),
@@ -110,21 +106,21 @@ class GridClearedViewTest {
         // onTick till 0.8 does nothing
         clearInvocations(canvas)
         rects.removeAll { true }
-        control.reRender(0.6)
-        control.reRender(0.8)
+        control.reRender(1300)
+        control.reRender(1400)
         verifyZeroInteractions(canvas)
         // shrink
         // t=0.9; size = 10
-        control.reRender(0.9)
+        control.reRender(1450)
         assertThat(rects).isEqualTo(
             listOf(
                 TestRect.xywh(20f - 5, 90f - 5, 10f, 10f),
                 TestRect.xywh(40f - 5, 70f - 5, 10f, 10f)
             )
         )
-        // t=95; size = 5
+        // t=9.5; size = 5
         rects.removeAll { true }
-        control.reRender(0.95)
+        control.reRender(1475)
         assertThat(rects).isEqualTo(
             listOf(
                 TestRect.xywh(20f - 2.5f, 90f - 2.5f, 5f, 5f),
@@ -133,7 +129,7 @@ class GridClearedViewTest {
         )
         // t=1; size = 0
         clearInvocations(canvas)
-        control.reRender(1.0)
+        control.reRender(1500)
         verifyZeroInteractions(canvas)
     }
 }
