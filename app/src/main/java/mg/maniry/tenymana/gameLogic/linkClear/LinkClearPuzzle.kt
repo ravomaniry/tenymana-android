@@ -20,14 +20,13 @@ interface LinkClearPuzzle : Puzzle {
     val solution: List<SolutionItem<Character>>
 
     companion object {
-        const val visibleH = 12
-        const val width = 10
+        const val gridSize = 10
         const val historySize = 10
         val gravity = listOf(Point.DOWN, Point.LEFT)
         val directions = listOf(Point.UP, Point.RIGHT, Point.DOWN, Point.LEFT)
 
         fun build(verse: BibleVerse, random: Random): LinkClearPuzzle {
-            val result = buildLinkGrid(verse, random, width, visibleH)
+            val result = buildLinkGrid(verse, random, gridSize, gridSize)
             val solution = result.second.map { it.toCharSolution(verse) }
             return LinkClearPuzzleImpl(result.first, verse, solution)
         }
@@ -39,7 +38,7 @@ class LinkClearPuzzleImpl(
     initialVerse: BibleVerse,
     override val solution: List<SolutionItem<Character>>
 ) : LinkClearPuzzle {
-    private val visibleH = LinkClearPuzzle.visibleH
+    private val visibleH = LinkClearPuzzle.gridSize
     private val gravity = LinkClearPuzzle.gravity
     private val directions = LinkClearPuzzle.directions
 

@@ -53,7 +53,7 @@ class LinkClearFragment : Fragment() {
     private fun initCharsGridView() {
         binding.charsGrid.apply {
             onSettingsChanged(drawingSettings)
-            onVisibleHChanged(LinkClearPuzzle.visibleH)
+            onVisibleHChanged(LinkClearPuzzle.gridSize)
             onGridChanged(puzzle.grid)
             bindTo(puzzleViewModel.colors, ::onColorsChanged)
         }

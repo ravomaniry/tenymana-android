@@ -12,16 +12,16 @@ import kotlin.math.max
 fun buildLinkGrid(
     verse: BibleVerse,
     random: Random,
-    width: Int,
-    visibleH: Int
+    gridWidth: Int,
+    gridHeight: Int
 ): Pair<Grid<CharAddress>, List<SolutionItem<CharAddress>>> {
-    val grid = MutableGrid<CharAddress>(width)
+    val grid = MutableGrid<CharAddress>(gridWidth)
     val solution = mutableListOf<SolutionItem<CharAddress>>()
-    val validWordLen = 2..(max(visibleH, width))
+    val validWordLen = 2..(max(gridHeight, gridWidth))
     val words = verse.uniqueWords.filter { it.size in validWordLen }.toMutableList()
     while (words.isNotEmpty()) {
         val word = random.from(words)
-        val moves = grid.calcScoredMoves(visibleH, word, directions, gravity)
+        val moves = grid.calcScoredMoves(gridHeight, word, directions, gravity)
         if (moves.isNotEmpty()) {
             val move = moves.getRandomByRate(random)
             grid.placeWord(move.a, move.b, word, gravity)

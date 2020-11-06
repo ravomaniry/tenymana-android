@@ -56,7 +56,7 @@ class CharGridView : View {
 class CharGridViewControl {
     var settings: DrawingSettings? = null
     private var grid: Grid<Character>? = null
-    private var visibleH = 0
+    private var boardHeight = 0
     private var w = 0f
     private var h = 0f
     private val bgPaint = Paint().apply {
@@ -85,7 +85,7 @@ class CharGridViewControl {
     }
 
     fun onVisibleHChanged(h: Int) {
-        this.visibleH = h
+        this.boardHeight = h
         updateDrawingSettings()
     }
 
@@ -94,8 +94,8 @@ class CharGridViewControl {
     }
 
     private fun updateDrawingSettings() {
-        if (settings != null && grid != null && visibleH > 0 && w > 0 && h > 0) {
-            val cellSize = floor(min(w.toDouble() / grid!!.w, h.toDouble() / visibleH)).toFloat()
+        if (settings != null && grid != null && boardHeight > 0 && w > 0 && h > 0) {
+            val cellSize = floor(min(w.toDouble() / grid!!.w, h.toDouble() / boardHeight)).toFloat()
             val totalW = cellSize * grid!!.w
             val x0 = (w - totalW) / 2
             textPaint.textSize = cellSize
@@ -106,7 +106,7 @@ class CharGridViewControl {
 
     fun draw(canvas: Canvas) {
         if (grid != null) {
-            for (y in 0 until visibleH) {
+            for (y in 0 until boardHeight) {
                 for (x in 0 until grid!!.w) {
                     val char = grid!![x, y]
                     if (char == null) {
