@@ -1,57 +1,13 @@
 package mg.maniry.tenymana.ui.game.puzzle.views
 
-import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.util.AttributeSet
-import android.view.View
-import androidx.core.content.ContextCompat
 import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.gameLogic.models.Grid
 import mg.maniry.tenymana.gameLogic.models.Point
-import mg.maniry.tenymana.ui.game.colors.GameColors
 import kotlin.math.floor
 import kotlin.math.min
-
-class CharGridView : View {
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet)
-    constructor(context: Context, attributeSet: AttributeSet, defStyleAttr: Int) :
-            super(context, attributeSet, defStyleAttr)
-
-    private val control = CharGridViewControl()
-
-    fun onSettingsChanged(settings: DrawingSettings) {
-        control.settings = settings
-    }
-
-    fun onGridChanged(grid: Grid<Character>?) {
-        control.onGridChanged(grid)
-        invalidate()
-    }
-
-    fun onVisibleHChanged(h: Int) {
-        control.onVisibleHChanged(h)
-        invalidate()
-    }
-
-    fun onColorsChanged(colors: GameColors) {
-        control.onColorChanged(ContextCompat.getColor(context, colors.primary))
-    }
-
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
-        control.onSizeChanged(w, h)
-    }
-
-    override fun onDraw(canvas: Canvas?) {
-        super.onDraw(canvas)
-        if (canvas != null) {
-            control.draw(canvas)
-        }
-    }
-}
 
 class CharGridViewControl {
     var settings: DrawingSettings? = null
@@ -104,16 +60,21 @@ class CharGridViewControl {
         }
     }
 
-    fun draw(canvas: Canvas) {
+    fun draw(canvas: Canvas, mode: DrawMode) {
         if (grid != null) {
             for (y in 0 until boardHeight) {
                 for (x in 0 until grid!!.w) {
                     val char = grid!![x, y]
                     if (char == null) {
-                        drawBG(canvas, x, y, emptyBgPaint)
+                        if (mode == DrawMode.BG) {
+                            drawBG(canvas, x, y, emptyBgPaint)
+                        }
                     } else {
-                        drawBG(canvas, x, y, bgPaint)
-                        drawChar(canvas, char.value, x, y)
+                        if (mode == DrawMode.BG) {
+                            drawBG(canvas, x, y, bgPaint)
+                        } else {
+                            drawChar(canvas, char.value, x, y)
+                        }
                     }
                 }
             }
@@ -136,6 +97,11 @@ class CharGridViewControl {
 
     private fun calcTop(y: Int): Float {
         return origin.y - (y * cellSize) - cellSize - MARGIN
+    }
+
+    enum class DrawMode {
+        BG,
+        TEXT
     }
 
     companion object {

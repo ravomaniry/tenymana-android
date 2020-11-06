@@ -14,7 +14,7 @@ import mg.maniry.tenymana.utils.TestRect
 import mg.maniry.tenymana.utils.TestTextShape
 import org.junit.Test
 
-class CharGridViewTest {
+class CharGridControlTest {
     private val rectSize = 20f - MARGIN
     private val cellSize = 20f
     private val textDX = (cellSize - MARGIN) / 2
@@ -166,7 +166,13 @@ class CharGridViewTest {
                 Unit
             }
         }
-        control.draw(canvas)
+        // draw backgrounds
+        control.draw(canvas, CharGridViewControl.DrawMode.BG)
+        assertThat(drawnRects).isEqualTo(rects)
+        assertThat(drawnEmptyRects).isEqualTo(emptyRects)
+        assertThat(drawnTexts).isEmpty()
+        // draw texts
+        control.draw(canvas, CharGridViewControl.DrawMode.TEXT)
         assertThat(drawnTexts).isEqualTo(texts)
         assertThat(drawnRects).isEqualTo(rects)
         assertThat(drawnEmptyRects).isEqualTo(emptyRects)

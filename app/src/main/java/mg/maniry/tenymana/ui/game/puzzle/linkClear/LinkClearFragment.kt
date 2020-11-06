@@ -12,6 +12,7 @@ import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.PuzzleScreenLinkClearBinding
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.ui.app.SharedViewModels
+import mg.maniry.tenymana.ui.game.puzzle.views.CharGridBackground
 import mg.maniry.tenymana.ui.game.puzzle.views.DrawingSettings
 import mg.maniry.tenymana.utils.KDispatchers
 import mg.maniry.tenymana.utils.bindTo
@@ -30,7 +31,7 @@ class LinkClearFragment : Fragment() {
         initViewModel()
         initBinding(inflater, container)
         initVerseView()
-        initCharsGridView()
+        initCharsGridViews()
         initCharsGridInput()
         observeReRender()
         return binding.root
@@ -58,8 +59,13 @@ class LinkClearFragment : Fragment() {
         }
     }
 
-    private fun initCharsGridView() {
-        binding.charsGrid.apply {
+    private fun initCharsGridViews() {
+        initCharsGridView(binding.charsGridBg)
+        initCharsGridView(binding.charsGridText)
+    }
+
+    private fun initCharsGridView(view: CharGridBackground) {
+        view.apply {
             onSettingsChanged(drawingSettings)
             onVisibleHChanged(LinkClearPuzzle.gridSize)
             bindTo(viewModel.grid, ::onGridChanged)
@@ -79,7 +85,8 @@ class LinkClearFragment : Fragment() {
     private fun observeReRender() {
         viewModel.invalidate.observe(viewLifecycleOwner, Observer {
             if (it) {
-                binding.charsGrid.invalidate()
+                binding.charsGridBg.invalidate()
+                binding.charsGridText.invalidate()
                 binding.verseView.invalidate()
                 viewModel.invalidate.postValue(false)
             }

@@ -33,8 +33,13 @@
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <mg.maniry.tenymana.ui.game.puzzle.views.CharGridView
-                android:id="@+id/charsGrid"
+            <mg.maniry.tenymana.ui.game.puzzle.views.CharGridBackground
+                android:id="@+id/charsGridBg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <mg.maniry.tenymana.ui.game.puzzle.views.CharGridText
+                android:id="@+id/charsGridText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
