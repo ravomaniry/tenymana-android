@@ -17,8 +17,10 @@ class PuzzleViewModel(
     private val gameViewModel: GameViewModel,
     private val kDispatchers: KDispatchers
 ) : ViewModel() {
+
     private var lockPropose = false
     val puzzle = gameViewModel.puzzle
+
     val colors: LiveData<GameColors> = Transformations.map(gameViewModel.puzzle) {
         when (it) {
             is LinkClearPuzzle -> LinkClearColors()

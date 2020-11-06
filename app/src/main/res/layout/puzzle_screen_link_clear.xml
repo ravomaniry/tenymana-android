@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="mg.maniry.tenymana.ui.game.puzzle.PuzzleViewModel" />
+            type="mg.maniry.tenymana.ui.game.puzzle.linkClear.LinkClearViewModel" />
     </data>
 
     <LinearLayout

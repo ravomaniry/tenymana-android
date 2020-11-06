@@ -8,4 +8,6 @@ object TestDispatchers : KDispatchers {
     override val main = TestCoroutineDispatcher()
     override val default = TestCoroutineDispatcher()
     override val io = TestCoroutineDispatcher()
+
+    override suspend fun delay(millis: Long) {}
 }

@@ -7,26 +7,27 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.PuzzleScreenLinkClearBinding
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.ui.app.SharedViewModels
 import mg.maniry.tenymana.ui.game.puzzle.views.DrawingSettings
+import mg.maniry.tenymana.utils.KDispatchers
 import mg.maniry.tenymana.utils.bindTo
 import org.koin.android.ext.android.inject
 
 class LinkClearFragment : Fragment() {
     private lateinit var binding: PuzzleScreenLinkClearBinding
+    private lateinit var viewModel: LinkClearViewModel
     private val drawingSettings = DrawingSettings()
-    private val viewModels: SharedViewModels by inject()
-    private val puzzleViewModel = viewModels.puzzle
-    private val puzzle = puzzleViewModel.puzzle.value!! as LinkClearPuzzle
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        initViewModels()
         initBinding(inflater, container)
         initVerseView()
         initCharsGridView()
@@ -35,18 +36,25 @@ class LinkClearFragment : Fragment() {
         return binding.root
     }
 
+    private fun initViewModels() {
+        val kDispatchers: KDispatchers by inject()
+        val viewModels: SharedViewModels by inject()
+        val factory = LinkClearViewModel.factory(viewModels.puzzle, kDispatchers)
+        viewModel = ViewModelProvider(this, factory).get(LinkClearViewModel::class.java)
+    }
+
     private fun initBinding(inflater: LayoutInflater, container: ViewGroup?) {
         binding = DataBindingUtil
             .inflate(inflater, R.layout.puzzle_screen_link_clear, container, false)
         binding.lifecycleOwner = this
-        binding.viewModel = puzzleViewModel
+        binding.viewModel = viewModel
     }
 
     private fun initVerseView() {
         binding.verseView.apply {
             onSettingsChanged(drawingSettings)
-            onWordsChange(puzzle.verse.words)
-            bindTo(puzzleViewModel.colors, ::onColorsChanged)
+            bindTo(viewModel.colors, ::onColorsChanged)
+            bindTo(viewModel.words, ::onWordsChange)
         }
     }
 
@@ -54,26 +62,26 @@ class LinkClearFragment : Fragment() {
         binding.charsGrid.apply {
             onSettingsChanged(drawingSettings)
             onVisibleHChanged(LinkClearPuzzle.gridSize)
-            onGridChanged(puzzle.grid)
-            bindTo(puzzleViewModel.colors, ::onColorsChanged)
+            bindTo(viewModel.grid, ::onGridChanged)
+            bindTo(viewModel.colors, ::onColorsChanged)
         }
     }
 
     private fun initCharsGridInput() {
         binding.charsGridInput.apply {
             onSettingsChanged(drawingSettings)
-            onPropose(puzzleViewModel::propose)
-            onGridChanged(puzzle.grid)
-            bindTo(puzzleViewModel.colors, ::onColorsChanged)
+            bindTo(viewModel.propose, ::onPropose)
+            bindTo(viewModel.grid, ::onGridChanged)
+            bindTo(viewModel.colors, ::onColorsChanged)
         }
     }
 
     private fun observeReRender() {
-        puzzleViewModel.invalidate.observe(viewLifecycleOwner, Observer {
+        viewModel.invalidate.observe(viewLifecycleOwner, Observer {
             if (it) {
                 binding.charsGrid.invalidate()
                 binding.verseView.invalidate()
-                puzzleViewModel.invalidate.postValue(false)
+                viewModel.invalidate.postValue(false)
             }
         })
     }

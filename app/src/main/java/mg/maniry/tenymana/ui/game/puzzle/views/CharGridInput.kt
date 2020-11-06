@@ -14,7 +14,7 @@ import mg.maniry.tenymana.gameLogic.models.Point
 import mg.maniry.tenymana.ui.game.colors.GameColors
 import kotlin.math.floor
 
-private typealias ProposeFn = (Move) -> Unit
+typealias ProposeFn = (Move) -> Unit
 
 class CharGridInput : View {
     constructor(context: Context) : super(context)
