@@ -152,23 +152,12 @@ class CharGridViewTest {
         val drawnEmptyRects = mutableListOf<TestRect>()
         val canvas: Canvas = mock {
             on { drawText(any(), any(), any(), any()) } doAnswer {
-                drawnTexts.add(
-                    TestTextShape(
-                        it.arguments[0] as String,
-                        it.arguments[1] as Float,
-                        it.arguments[2] as Float
-                    )
-                )
+                drawnTexts.add(TestTextShape.fromMock(it.arguments))
                 Unit
             }
             on { drawRect(any(), any(), any(), any(), any()) } doAnswer {
                 val paint = it.arguments[4] as Paint
-                val rect = TestRect(
-                    it.arguments[0] as Float,
-                    it.arguments[1] as Float,
-                    it.arguments[2] as Float,
-                    it.arguments[3] as Float
-                )
+                val rect = TestRect.fromMock(it.arguments)
                 if (paint == emptyBgPaint) {
                     drawnEmptyRects.add(rect)
                 } else {
