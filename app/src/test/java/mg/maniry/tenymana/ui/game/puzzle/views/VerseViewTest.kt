@@ -21,13 +21,13 @@ class VerseViewTest {
         assertThat(control.settings?.verseViewHeight).isEqualTo(VerseViewControl.SPACING_V)
         // One row
         val words = listOf(
-            Word.fromValue("Abc", 0), // 16 * 3 + 4 * 2 = 56
-            Word.fromValue(", ", 1, true), // 16 * 2 = 32
-            Word.fromValue("de", 2), // 16 * 2 + 4 = 36
-            Word.fromValue(" ", 3, true), // 16
-            Word.fromValue("fgh", 4) // 16 * 3 + 4 * 2 = 56
+            Word.fromValue("Abc", 0), // 12 * 3 + 2 * 2 = 40
+            Word.fromValue(", ", 1, true), // 12 * 2 = 24
+            Word.fromValue("de", 2), // 12 * 2 + 2 = 26
+            Word.fromValue(" ", 3, true), // 12
+            Word.fromValue("fgh", 4) // 12 * 3 + 2 * 2 = 40
         )
-        control.onMeasure(124)
+        control.onMeasure(90)
         assertThat(control.settings?.verseViewHeight).isEqualTo(VerseViewControl.SPACING_V)
         control.onWordsChange(words)
         assertThat(control.settings?.verseViewHeight)
@@ -39,7 +39,7 @@ class VerseViewTest {
     private val h = VerseViewControl.H.toFloat()
     private val hPlusMrg = h + VerseViewControl.SPACING_V
     private val wPlusMrg = w + VerseViewControl.SPACING_H.toFloat()
-    private val textDx = VerseViewControl.W.toFloat() / 2
+    private val textDx = (VerseViewControl.W + VerseViewControl.SPACING_H).toFloat() / 2
     private val textDy = VerseViewControl.H.toFloat() - VerseViewControl.SPACING_V
 
     @Test
@@ -73,7 +73,7 @@ class VerseViewTest {
     @Test
     fun draw_wrap_LeadingSpace_break_initialState() {
         testDraw(
-            width = 104,
+            width = 76, // 12*2+2 + 12*2 + 12*2+2
             words = listOf(
                 Word.fromValue("ab", 0),
                 Word.fromValue(", ", 1, true),
@@ -105,7 +105,7 @@ class VerseViewTest {
     @Test
     fun draw_wrap_LeadingSpace_break_revealed_wordsAfterWrap() {
         testDraw(
-            width = 104,
+            width = 76, // 12*2+2 + 12*2 + 12*2+2
             words = listOf(
                 Word.fromValue("ab", 0).resolvedVersion,
                 Word.fromValue(", ", 1, true),
@@ -137,7 +137,7 @@ class VerseViewTest {
     @Test
     fun draw_wrapAtEndOfRow() {
         testDraw(
-            width = 40,
+            width = 28,
             words = listOf(
                 Word.fromValue("Abcd", 0).resolvedVersion,
                 Word.fromValue("-", 1, true),

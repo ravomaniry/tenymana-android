@@ -52,9 +52,9 @@ class VerseView : View {
 
 class VerseViewControl {
     companion object {
-        const val W = 16
+        const val W = 12
         const val H = 20
-        const val SPACING_H = 4
+        const val SPACING_H = 2
         const val SPACING_V = 5
         const val LINE_H = H + SPACING_V
     }
@@ -77,7 +77,7 @@ class VerseViewControl {
     }
 
     private var height = 0
-    private val textDx = W / 2
+    private val textDx = (W + SPACING_H) / 2
     private val textDy = H - SPACING_V
 
     fun onMeasure(w: Int) {
