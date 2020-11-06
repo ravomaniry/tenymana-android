@@ -38,6 +38,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
+            <mg.maniry.tenymana.ui.game.puzzle.views.GridClearedView
+                android:id="@+id/gridClearedView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
             <mg.maniry.tenymana.ui.game.puzzle.views.CharGridText
                 android:id="@+id/charsGridText"
                 android:layout_width="match_parent"

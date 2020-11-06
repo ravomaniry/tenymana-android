@@ -3,11 +3,12 @@ package mg.maniry.tenymana.ui.game.puzzle.views
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.content.res.ResourcesCompat
 import mg.maniry.tenymana.gameLogic.models.Point
+import mg.maniry.tenymana.ui.game.colors.GameColors
 import java.util.*
 
 class GridClearedView : View {
@@ -27,6 +28,10 @@ class GridClearedView : View {
 
     fun onValue(value: List<Point>?) {
         control.onValue(value)
+    }
+
+    fun onColor(value: GameColors) {
+        control.onColor(ResourcesCompat.getColor(resources, value.accent, null))
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -67,7 +72,10 @@ class GridClearedViewControl(
     private val cellSize: Float get() = settings?.charGridCellSize ?: 0f
     private val paint = Paint().apply {
         style = Paint.Style.FILL
-        color = Color.BLUE
+    }
+
+    fun onColor(color: Int) {
+        paint.color = color
     }
 
     fun onValue(value: List<Point>?) {

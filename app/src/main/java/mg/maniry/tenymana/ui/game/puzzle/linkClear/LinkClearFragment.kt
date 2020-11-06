@@ -33,6 +33,7 @@ class LinkClearFragment : Fragment() {
         initVerseView()
         initCharsGridViews()
         initCharsGridInput()
+        initGridClearedVew()
         observeReRender()
         return binding.root
     }
@@ -82,12 +83,21 @@ class LinkClearFragment : Fragment() {
         }
     }
 
+    private fun initGridClearedVew() {
+        binding.gridClearedView.apply {
+            onSettingsChanged(drawingSettings)
+            bindTo(viewModel.colors, ::onColor)
+            bindTo(viewModel.cleared, ::onValue)
+        }
+    }
+
     private fun observeReRender() {
         viewModel.invalidate.observe(viewLifecycleOwner, Observer {
             if (it) {
                 binding.charsGridBg.invalidate()
                 binding.charsGridText.invalidate()
                 binding.verseView.invalidate()
+                binding.gridClearedView.invalidate()
                 viewModel.invalidate.postValue(false)
             }
         })
