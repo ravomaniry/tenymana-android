@@ -53,11 +53,7 @@ class CharGridView : View {
     }
 }
 
-class CharGridViewControl() {
-    companion object {
-        const val MARGIN = 2
-    }
-
+class CharGridViewControl {
     var settings: DrawingSettings? = null
     private var grid: Grid<Character>? = null
     private var visibleH = 0
@@ -109,18 +105,25 @@ class CharGridViewControl() {
     }
 
     fun draw(canvas: Canvas) {
-        grid?.forEachUntilY(visibleH) { x, y, char ->
-            if (char != null) {
-                drawBG(canvas, x, y)
-                drawChar(canvas, char.value, x, y)
+        if (grid != null) {
+            for (y in 0 until visibleH) {
+                for (x in 0 until grid!!.w) {
+                    val char = grid!![x, y]
+                    if (char == null) {
+                        drawBG(canvas, x, y, emptyBgPaint)
+                    } else {
+                        drawBG(canvas, x, y, bgPaint)
+                        drawChar(canvas, char.value, x, y)
+                    }
+                }
             }
         }
     }
 
-    private fun drawBG(canvas: Canvas, x: Int, y: Int) {
+    private fun drawBG(canvas: Canvas, x: Int, y: Int, paint: Paint) {
         val left = calcLeft(x)
         val top = calcTop(y)
-        canvas.drawRect(left, top, left + cellSize - MARGIN, top + cellSize - MARGIN, bgPaint)
+        canvas.drawRect(left, top, left + cellSize - MARGIN, top + cellSize - MARGIN, paint)
     }
 
     private fun drawChar(canvas: Canvas, char: Char, x: Int, y: Int) {
@@ -133,5 +136,13 @@ class CharGridViewControl() {
 
     private fun calcTop(y: Int): Float {
         return origin.y - (y * cellSize) - cellSize - MARGIN
+    }
+
+    companion object {
+        const val MARGIN = 2
+        val emptyBgPaint = Paint().apply {
+            style = Paint.Style.FILL
+            color = Color.rgb(120, 120, 120)
+        }
     }
 }

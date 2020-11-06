@@ -1,6 +1,7 @@
 package mg.maniry.tenymana.ui.game.puzzle.views
 
 import android.graphics.Canvas
+import android.graphics.Paint
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doAnswer
@@ -8,6 +9,7 @@ import com.nhaarman.mockitokotlin2.mock
 import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.gameLogic.models.Grid
 import mg.maniry.tenymana.ui.game.puzzle.views.CharGridViewControl.Companion.MARGIN
+import mg.maniry.tenymana.ui.game.puzzle.views.CharGridViewControl.Companion.emptyBgPaint
 import mg.maniry.tenymana.utils.TestRect
 import mg.maniry.tenymana.utils.TestTextShape
 import org.junit.Test
@@ -24,7 +26,7 @@ class CharGridViewTest {
             grid = listOf(
                 chars('a', 'b', 'c', null, null),
                 chars('d', 'e', null, null, null),
-                chars(null, null, null, null)
+                chars(null, null, null, null, null)
             ),
             visibleH = 4,
             width = 100,
@@ -35,6 +37,23 @@ class CharGridViewTest {
                 TestRect.xywh(cellSize * 2, 100f - cellSize - MARGIN, rectSize, rectSize), // c
                 TestRect.xywh(0f, 100f - 2 * cellSize - MARGIN, rectSize, rectSize), // d
                 TestRect.xywh(cellSize, 100f - 2 * cellSize - MARGIN, rectSize, rectSize) // e
+            ),
+            emptyRects = listOf(
+                TestRect.xywh(cellSize * 3, 100f - cellSize - MARGIN, rectSize, rectSize), // 0
+                TestRect.xywh(cellSize * 4, 100f - cellSize - MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 2, 100f - 2 * cellSize - MARGIN, rectSize, rectSize), // 1
+                TestRect.xywh(cellSize * 3, 100f - 2 * cellSize - MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 4, 100f - 2 * cellSize - MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 0, 100f - 3 * cellSize - MARGIN, rectSize, rectSize), // 2
+                TestRect.xywh(cellSize * 1, 100f - 3 * cellSize - MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 2, 100f - 3 * cellSize - MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 3, 100f - 3 * cellSize - MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 4, 100f - 3 * cellSize - MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 0, 100f - 4 * cellSize - MARGIN, rectSize, rectSize), // 3
+                TestRect.xywh(cellSize * 1, 100f - 4 * cellSize - MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 2, 100f - 4 * cellSize - MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 3, 100f - 4 * cellSize - MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 4, 100f - 4 * cellSize - MARGIN, rectSize, rectSize)
             ),
             texts = listOf(
                 TestTextShape("A", textDX, 100f - cellSize - MARGIN + textDY),
@@ -61,6 +80,10 @@ class CharGridViewTest {
                 TestRect.xywh(0f, 50f - cellSize - MARGIN, rectSize, rectSize),
                 TestRect.xywh(0f, 50f - 2 * cellSize - MARGIN, rectSize, rectSize)
             ),
+            emptyRects = listOf(
+                TestRect.xywh(cellSize, 50f - cellSize - MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize, 50f - 2 * cellSize - MARGIN, rectSize, rectSize)
+            ),
             texts = listOf(
                 TestTextShape("A", textDX, 50f - cellSize - MARGIN + textDY),
                 TestTextShape("B", textDX, 50f - 2 * cellSize - MARGIN + textDY)
@@ -69,7 +92,7 @@ class CharGridViewTest {
     }
 
     @Test
-    fun draw_contraintY() {
+    fun draw_constraintY() {
         testDraw(
             grid = listOf(
                 chars('a', null, null),
@@ -81,6 +104,26 @@ class CharGridViewTest {
             rects = listOf(
                 TestRect.xywh(70f, 102f - cellSize - MARGIN, rectSize, rectSize), // a
                 TestRect.xywh(70f, 102f - 2 * cellSize - MARGIN, rectSize, rectSize) // d
+            ),
+            emptyRects = listOf(
+                // 0
+                TestRect.xywh(cellSize * 1 + 70, 102f - cellSize * 1 - MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 2 + 70, 102f - cellSize * 1 - MARGIN, rectSize, rectSize),
+                // 1
+                TestRect.xywh(cellSize * 1 + 70, 102f - cellSize * 2 - MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 2 + 70, 102f - cellSize * 2 - MARGIN, rectSize, rectSize),
+                // 2
+                TestRect.xywh(cellSize * 0 + 70, 102f - cellSize * 3 - MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 1 + 70, 102f - cellSize * 3 - MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 2 + 70, 102f - cellSize * 3 - MARGIN, rectSize, rectSize),
+                // 3
+                TestRect.xywh(cellSize * 0 + 70, 102f - cellSize * 4 - MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 1 + 70, 102f - cellSize * 4 - MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 2 + 70, 102f - cellSize * 4 - MARGIN, rectSize, rectSize),
+                // 4
+                TestRect.xywh(cellSize * 0 + 70, 102f - cellSize * 5 - MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 1 + 70, 102f - cellSize * 5 - MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 2 + 70, 102f - cellSize * 5 - MARGIN, rectSize, rectSize)
             ),
             texts = listOf(
                 TestTextShape("A", 70f + textDX, 102f - cellSize - MARGIN + textDY),
@@ -95,7 +138,8 @@ class CharGridViewTest {
         height: Int,
         visibleH: Int,
         texts: List<TestTextShape>,
-        rects: List<TestRect>
+        rects: List<TestRect>,
+        emptyRects: List<TestRect>
     ) {
         val control = CharGridViewControl().apply {
             settings = DrawingSettings()
@@ -105,6 +149,7 @@ class CharGridViewTest {
         }
         val drawnTexts = mutableListOf<TestTextShape>()
         val drawnRects = mutableListOf<TestRect>()
+        val drawnEmptyRects = mutableListOf<TestRect>()
         val canvas: Canvas = mock {
             on { drawText(any(), any(), any(), any()) } doAnswer {
                 drawnTexts.add(
@@ -117,20 +162,25 @@ class CharGridViewTest {
                 Unit
             }
             on { drawRect(any(), any(), any(), any(), any()) } doAnswer {
-                drawnRects.add(
-                    TestRect(
-                        it.arguments[0] as Float,
-                        it.arguments[1] as Float,
-                        it.arguments[2] as Float,
-                        it.arguments[3] as Float
-                    )
+                val paint = it.arguments[4] as Paint
+                val rect = TestRect(
+                    it.arguments[0] as Float,
+                    it.arguments[1] as Float,
+                    it.arguments[2] as Float,
+                    it.arguments[3] as Float
                 )
+                if (paint == emptyBgPaint) {
+                    drawnEmptyRects.add(rect)
+                } else {
+                    drawnRects.add(rect)
+                }
                 Unit
             }
         }
         control.draw(canvas)
         assertThat(drawnTexts).isEqualTo(texts)
         assertThat(drawnRects).isEqualTo(rects)
+        assertThat(drawnEmptyRects).isEqualTo(emptyRects)
     }
 
     private fun chars(vararg values: Char?): List<Character?> {
