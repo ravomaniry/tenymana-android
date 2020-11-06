@@ -47,6 +47,28 @@ class CharGridViewTest {
     }
 
     @Test
+    fun drawUntilVisibleH() {
+        testDraw(
+            grid = listOf(
+                chars('a', null),
+                chars('b', null),
+                chars('c', null)
+            ),
+            visibleH = 2,
+            width = 40,
+            height = 50,
+            rects = listOf(
+                TestRect.xywh(0f, 50f - cellSize - MARGIN, rectSize, rectSize),
+                TestRect.xywh(0f, 50f - 2 * cellSize - MARGIN, rectSize, rectSize)
+            ),
+            texts = listOf(
+                TestTextShape("A", textDX, 50f - cellSize - MARGIN + textDY),
+                TestTextShape("B", textDX, 50f - 2 * cellSize - MARGIN + textDY)
+            )
+        )
+    }
+
+    @Test
     fun draw_contraintY() {
         testDraw(
             grid = listOf(

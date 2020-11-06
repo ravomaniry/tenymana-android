@@ -109,7 +109,7 @@ class CharGridViewControl() {
     }
 
     fun draw(canvas: Canvas) {
-        grid?.forEach { x, y, char ->
+        grid?.forEachUntilY(visibleH) { x, y, char ->
             if (char != null) {
                 drawBG(canvas, x, y)
                 drawChar(canvas, char.value, x, y)
