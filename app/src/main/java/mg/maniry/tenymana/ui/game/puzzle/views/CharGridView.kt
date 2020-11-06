@@ -26,7 +26,7 @@ class CharGridView : View {
         control.settings = settings
     }
 
-    fun onGridChanged(grid: Grid<Character>) {
+    fun onGridChanged(grid: Grid<Character>?) {
         control.onGridChanged(grid)
         invalidate()
     }
@@ -79,7 +79,7 @@ class CharGridViewControl {
         updateDrawingSettings()
     }
 
-    fun onGridChanged(grid: Grid<Character>) {
+    fun onGridChanged(grid: Grid<Character>?) {
         this.grid = grid
         updateDrawingSettings()
     }

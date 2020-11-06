@@ -23,14 +23,14 @@ class LinkClearViewModel(
     val colors = puzzleViewModel.colors
     val words = puzzleViewModel.words
 
-    private val _grid = MutableLiveData<Grid<Character>>()
-    val grid: LiveData<Grid<Character>> = _grid
+    private val _grid = MutableLiveData<Grid<Character>?>()
+    val grid: LiveData<Grid<Character>?> = _grid
 
     private val _move = MutableLiveData<Move>()
     val move: LiveData<Move> = _move
 
-    private val _propose = MutableLiveData<ProposeFn>()
-    val propose: LiveData<ProposeFn> = _propose
+    private val _propose = MutableLiveData<ProposeFn?>()
+    val propose: LiveData<ProposeFn?> = _propose
 
     private val puzzleObserver = Observer<Puzzle?> {
         if (it != null && prevPuzzle == null && it is LinkClearPuzzle) {

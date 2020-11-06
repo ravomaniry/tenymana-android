@@ -30,7 +30,7 @@ class CharGridInput : View {
         settings.subscribe(DrawingSettings.Event.CHAR_GRID, this)
     }
 
-    fun onGridChanged(grid: Grid<Character>) {
+    fun onGridChanged(grid: Grid<Character>?) {
         control.onGridChanged(grid)
     }
 
@@ -38,7 +38,7 @@ class CharGridInput : View {
         control.onColorChanged(ContextCompat.getColor(context, colors.accent))
     }
 
-    fun onPropose(fn: ProposeFn) {
+    fun onPropose(fn: ProposeFn?) {
         control.propose = fn
     }
 
@@ -78,8 +78,8 @@ class CharGridInputControl {
         strokeWidth = 8f
     }
 
-    fun onGridChanged(grid: Grid<Character>) {
-        gridWidth = grid.w
+    fun onGridChanged(grid: Grid<Character>?) {
+        gridWidth = grid?.w ?: 0
     }
 
     fun onColorChanged(color: Int) {
