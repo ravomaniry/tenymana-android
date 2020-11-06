@@ -5,6 +5,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.gameLogic.models.Move
+import mg.maniry.tenymana.gameLogic.models.Point
 import mg.maniry.tenymana.gameLogic.models.Word
 import mg.maniry.tenymana.ui.game.GameViewModel
 import mg.maniry.tenymana.ui.game.colors.DefaultColors
@@ -33,6 +34,8 @@ class PuzzleViewModel(
     }
 
     val invalidate = MutableLiveData(false)
+    private val _cleared = MutableLiveData<List<Point>?>()
+    val cleared: LiveData<List<Point>?> = _cleared
 
     fun propose(move: Move) {
         if (!lockPropose) {

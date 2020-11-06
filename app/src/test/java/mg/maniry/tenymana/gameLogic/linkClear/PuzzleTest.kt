@@ -136,7 +136,7 @@ class PuzzleTest {
         )
         val board = LinkClearPuzzleImpl(grid, verse, emptyList())
         board.propose(Move.xy(0, 0, 1, 0))
-        assertThat(board.cleared).isEqualTo(
+        assertThat(board.cleared.value).isEqualTo(
             listOf(
                 Point(0, 0),
                 Point(1, 0),
@@ -214,7 +214,7 @@ class PuzzleTest {
         assertThat(resp).isEqualTo(didUpdate)
         assertThat(puzzle.verse.words).isEqualTo(words)
         assertThat(puzzle.diff).isEqualTo(diff)
-        assertThat(puzzle.cleared).isEqualTo(cleared)
+        assertThat(puzzle.cleared.value).isEqualTo(cleared)
         assertThat(puzzle.completed).isEqualTo(completed)
     }
 

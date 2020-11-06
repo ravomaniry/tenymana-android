@@ -25,13 +25,17 @@ fun buildLinkGrid(
         if (moves.isNotEmpty()) {
             val move = moves.getRandomByRate(random)
             grid.placeWord(move.a, move.b, word, gravity)
-            solution.add(SolutionItem(grid.toGrid(), move.toStartEnd(word.size)))
+            solution.add(SolutionItem(grid.toGrid(), move.toPoints(word.size)))
         }
         words.remove(word)
     }
     return Pair(grid.toGrid(), solution)
 }
 
-private fun Move.toStartEnd(len: Int): Move {
-    return Move(a, a + b * (len - 1))
+private fun Move.toPoints(len: Int): List<Point> {
+    val points = mutableListOf(a)
+    for (i in 1 until len) {
+        points.add(a + b * i)
+    }
+    return points
 }

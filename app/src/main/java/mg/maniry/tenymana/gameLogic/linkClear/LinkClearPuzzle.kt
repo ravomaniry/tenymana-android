@@ -1,5 +1,6 @@
 package mg.maniry.tenymana.gameLogic.linkClear
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import mg.maniry.tenymana.gameLogic.models.*
 import mg.maniry.tenymana.gameLogic.shared.grid.*
@@ -10,13 +11,13 @@ import mg.maniry.tenymana.utils.RandomImpl
 
 data class SolutionItem<T>(
     val grid: Grid<T>,
-    val move: Move
+    val points: List<Point>
 )
 
 interface LinkClearPuzzle : Puzzle {
     val grid: Grid<Character>
     val diff: List<Move>?
-    val cleared: List<Point>?
+    val cleared: LiveData<List<Point>?>
     val solution: List<SolutionItem<Character>>
 
     companion object {
@@ -51,7 +52,8 @@ class LinkClearPuzzleImpl(
     private val words = initialVerse.words.toMutableList()
     override val verse = initialVerse.copy(words = words)
     override var diff: List<Move>? = null
-    override var cleared: List<Point>? = null
+    private var _cleared: List<Point>? = null
+    override val cleared = MutableLiveData<List<Point>?>()
 
     private var usedHelp = false
     override var completed = false
@@ -66,11 +68,13 @@ class LinkClearPuzzleImpl(
             if (indexes.isNotEmpty()) {
                 updateResult(selection.points)
                 incrementScore(indexes)
+                syncLiveData()
                 history.add(historyItem)
                 history.trimLeft(LinkClearPuzzle.historySize)
                 return true
             }
         }
+        syncLiveData()
         return false
     }
 
@@ -88,7 +92,7 @@ class LinkClearPuzzleImpl(
 
     private fun reset() {
         completed = false
-        cleared = null
+        _cleared = null
         diff = null
     }
 
@@ -105,11 +109,11 @@ class LinkClearPuzzleImpl(
                 diff = match.diff
                 words[match.word] = words[match.word].resolvedVersion
                 completed = words.resolved
-                cleared = points.toMutableList().apply { addAll(match.cleared) }.toSet().toList()
+                _cleared = points.toMutableList().apply { addAll(match.cleared) }.toSet().toList()
             }
         } else {
             diff = diff0
-            cleared = points
+            _cleared = points
         }
     }
 
@@ -119,6 +123,12 @@ class LinkClearPuzzleImpl(
         }
         if (completed && !usedHelp) {
             score.postValue((score.value ?: 0) * 2)
+        }
+    }
+
+    private fun syncLiveData() {
+        if (_cleared != cleared.value) {
+            cleared.postValue(_cleared)
         }
     }
 }
@@ -158,5 +168,5 @@ private fun List<List<Character?>>.overWrite(grid: MutableGrid<Character>) {
 }
 
 private fun SolutionItem<CharAddress>.toCharSolution(verse: BibleVerse): SolutionItem<Character> {
-    return SolutionItem(grid.toCharGrid(verse.words), move)
+    return SolutionItem(grid.toCharGrid(verse.words), points)
 }
