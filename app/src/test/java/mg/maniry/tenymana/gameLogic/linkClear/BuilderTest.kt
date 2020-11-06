@@ -5,10 +5,7 @@ import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.doReturnConsecutively
 import com.nhaarman.mockitokotlin2.mock
-import mg.maniry.tenymana.gameLogic.models.BibleVerse
-import mg.maniry.tenymana.gameLogic.models.CharAddress
-import mg.maniry.tenymana.gameLogic.models.Grid
-import mg.maniry.tenymana.gameLogic.models.Word
+import mg.maniry.tenymana.gameLogic.models.*
 import mg.maniry.tenymana.utils.Random
 import org.junit.Test
 
@@ -16,14 +13,16 @@ import org.junit.Test
 class BuilderTest {
     @Test
     fun oneWord() {
+        val cells = listOf(
+            listOf(charA(0, 0), charA(0, 1), charA(0, 2), null),
+            listOf(null, null, null, null)
+        )
         testBuildGrid(
             text = "Abc àbc",
             wordsOrder = listOf("Abc"),
             randoms = listOf(1.0, 1.0, 0.5),
-            cells = listOf(
-                listOf(charA(0, 0), charA(0, 1), charA(0, 2), null),
-                listOf(null, null, null, null)
-            )
+            cells = cells,
+            solutions = listOf(SolutionItem(Grid(cells), Move.xy(0, 0, 2, 0)))
         )
     }
 
@@ -68,8 +67,9 @@ class BuilderTest {
     private fun testBuildGrid(
         text: String,
         wordsOrder: List<String>,
+        randoms: List<Double>,
         cells: List<List<CharAddress?>>,
-        randoms: List<Double>
+        solutions: List<SolutionItem<CharAddress>>
     ) {
         val verse = BibleVerse.fromText("Matio", 1, 1, text)
         var wI = -1
@@ -81,7 +81,7 @@ class BuilderTest {
             }
         }
         val grid = buildLinkGrid(verse, random, 4, 8)
-        assertThat(grid).isEqualTo(Grid(cells))
+        assertThat(grid).isEqualTo(Pair(Grid(cells), solutions))
     }
 
     private fun charA(wI: Int, cI: Int) = CharAddress(wI, cI)

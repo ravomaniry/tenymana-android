@@ -25,7 +25,7 @@ class PuzzleTest {
     @Test
     fun wrongReponses() {
         val verse = BibleVerse.fromText("Matio", 1, 1, "Abc de àbc fghi, ij")
-        val board = LinkClearPuzzleImpl(grid(), verse)
+        val board = LinkClearPuzzleImpl(grid(), verse, emptyList())
         val lines = listOf(
             Move.xy(0, 0, 2, 1),
             Move.xy(0, 0, 0, 1),
@@ -45,7 +45,7 @@ class PuzzleTest {
     @Test
     fun adjust() {
         val verse = BibleVerse.fromText("Matio", 1, 1, "Abc de àbc fghi, ij")
-        val puzzle = LinkClearPuzzleImpl(grid(), verse)
+        val puzzle = LinkClearPuzzleImpl(grid(), verse, emptyList())
         testPropose(
             puzzle,
             move = Move.xy(-2, 0, 5, 0),
@@ -72,7 +72,7 @@ class PuzzleTest {
     @Test
     fun basic() {
         val verse = BibleVerse.fromText("Matio", 1, 1, "Abc de àbc fghi, ij")
-        val puzzle = LinkClearPuzzleImpl(grid(), verse)
+        val puzzle = LinkClearPuzzleImpl(grid(), verse, emptyList())
         // Resolve rows[0]: words[0] && words[4]
         val w1 = puzzle.verse.words.toMutableList()
         w1[0] = w1[0].resolvedVersion
@@ -134,7 +134,7 @@ class PuzzleTest {
                 listOf(ca(4, 3), null, null, null)
             )
         )
-        val board = LinkClearPuzzleImpl(grid, verse)
+        val board = LinkClearPuzzleImpl(grid, verse, emptyList())
         board.propose(Move.xy(0, 0, 1, 0))
         assertThat(board.cleared).isEqualTo(
             listOf(
@@ -180,7 +180,7 @@ class PuzzleTest {
                 listOf(null, null, null, null)
             )
         )
-        val puzzle = LinkClearPuzzleImpl(grid, verse)
+        val puzzle = LinkClearPuzzleImpl(grid, verse, emptyList())
         puzzle.propose(Move.xy(1, 1, 2, 1))
         assertThat(puzzle.completed).isTrue()
         assertThat(puzzle.score.value).isEqualTo(2)
@@ -197,7 +197,7 @@ class PuzzleTest {
                 listOf(ca(2, 0), ca(0, 1))
             )
         )
-        val puzzle = LinkClearPuzzleImpl(grid, verse)
+        val puzzle = LinkClearPuzzleImpl(grid, verse, emptyList())
         testPropose(puzzle, Move.xy(0, 0, 1, 1), verse.words)
     }
 
@@ -228,7 +228,7 @@ class PuzzleTest {
             }
         }
         val grid = Grid(cells)
-        val puzzle = LinkClearPuzzleImpl(grid, verse)
+        val puzzle = LinkClearPuzzleImpl(grid, verse, emptyList())
         // propose word[0] and cancel
         val wSnap = puzzle.verse.words.snapshot
         val gridSnapshot = puzzle.grid.snapshot

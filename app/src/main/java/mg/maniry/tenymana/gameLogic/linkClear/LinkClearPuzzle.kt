@@ -8,10 +8,16 @@ import mg.maniry.tenymana.gameLogic.shared.words.resolved
 import mg.maniry.tenymana.utils.Random
 import mg.maniry.tenymana.utils.RandomImpl
 
+data class SolutionItem<T>(
+    val grid: Grid<T>,
+    val move: Move
+)
+
 interface LinkClearPuzzle : Puzzle {
     val grid: Grid<Character>
     val diff: List<Move>?
     val cleared: List<Point>?
+    val solution: List<SolutionItem<Character>>
 
     companion object {
         const val visibleH = 12
@@ -21,15 +27,17 @@ interface LinkClearPuzzle : Puzzle {
         val directions = listOf(Point.UP, Point.RIGHT, Point.DOWN, Point.LEFT)
 
         fun build(verse: BibleVerse, random: Random): LinkClearPuzzle {
-            val grid = buildLinkGrid(verse, random, width, visibleH)
-            return LinkClearPuzzleImpl(grid, verse)
+            val result = buildLinkGrid(verse, random, width, visibleH)
+            val solution = result.second.map { it.toCharSolution(verse) }
+            return LinkClearPuzzleImpl(result.first, verse, solution)
         }
     }
 }
 
 class LinkClearPuzzleImpl(
     initialGrid: Grid<CharAddress>,
-    initialVerse: BibleVerse
+    initialVerse: BibleVerse,
+    override val solution: List<SolutionItem<Character>>
 ) : LinkClearPuzzle {
     private val visibleH = LinkClearPuzzle.visibleH
     private val gravity = LinkClearPuzzle.gravity
@@ -148,4 +156,8 @@ private fun List<List<Character?>>.overWrite(grid: MutableGrid<Character>) {
             grid.set(x, y, this[y][x])
         }
     }
+}
+
+private fun SolutionItem<CharAddress>.toCharSolution(verse: BibleVerse): SolutionItem<Character> {
+    return SolutionItem(grid.toCharGrid(verse.words), move)
 }
