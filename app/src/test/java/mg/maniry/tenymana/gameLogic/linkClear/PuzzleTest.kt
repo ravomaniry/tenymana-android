@@ -156,7 +156,7 @@ class PuzzleTest {
                 )
             )
         )
-        assertThat(board.diff).isEqualTo(
+        assertThat(board.diff.value).isEqualTo(
             listOf(
                 Move.xy(0, 1, 0, 0),
                 Move.xy(3, 0, 2, 0),
@@ -213,7 +213,7 @@ class PuzzleTest {
         val resp = puzzle.propose(move)
         assertThat(resp).isEqualTo(didUpdate)
         assertThat(puzzle.verse.words).isEqualTo(words)
-        assertThat(puzzle.diff).isEqualTo(diff)
+        assertThat(puzzle.diff.value).isEqualTo(diff)
         assertThat(puzzle.cleared.value).isEqualTo(cleared)
         assertThat(puzzle.completed).isEqualTo(completed)
     }
