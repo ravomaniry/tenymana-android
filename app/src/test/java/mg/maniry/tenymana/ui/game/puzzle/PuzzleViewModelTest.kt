@@ -30,10 +30,12 @@ class PuzzleViewModelTest {
         val score = MutableLiveData(0)
         var proposeResult = false
         var isComplete = false
+        var undoResult = false
         val puzzle: Puzzle = mock {
             on { this.verse } doReturn verse
             on { this.score } doAnswer { score }
             on { this.completed } doAnswer { isComplete }
+            on { undo() } doAnswer { undoResult }
             on { propose(any()) } doAnswer { proposeResult }
         }
         val puzzleLD = MutableLiveData(puzzle)
@@ -55,6 +57,15 @@ class PuzzleViewModelTest {
         score.postValue(10)
         viewModel.propose(Move.xy(0, 0, 2, 0))
         assertThat(viewModel.invalidate.value).isTrue()
+        viewModel.invalidate.postValue(false)
+        // Undo
+        undoResult = false
+        viewModel.undo()
+        assertThat(viewModel.invalidate.value).isFalse()
+        undoResult = true
+        viewModel.undo()
+        assertThat(viewModel.invalidate.value).isTrue()
+        viewModel.invalidate.postValue(false)
         // Bonus tests here ...
         // End
         verifyNever(gameVm).onPuzzleCompleted()
