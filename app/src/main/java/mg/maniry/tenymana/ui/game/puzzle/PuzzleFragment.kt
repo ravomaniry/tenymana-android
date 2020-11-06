@@ -15,6 +15,7 @@ import mg.maniry.tenymana.ui.app.SharedViewModels
 import mg.maniry.tenymana.ui.game.puzzle.header.PuzzleHeaderFragment
 import mg.maniry.tenymana.ui.game.puzzle.linkClear.LinkClearFragment
 import mg.maniry.tenymana.ui.game.puzzle.loader.PuzzleLoaderFragment
+import mg.maniry.tenymana.utils.KDispatchers
 import mg.maniry.tenymana.utils.mountChild
 import org.koin.android.ext.android.inject
 
@@ -42,8 +43,9 @@ class PuzzleFragment : Fragment() {
     }
 
     private fun initViewModel() {
+        val kDispatchers: KDispatchers by inject()
         val viewModels: SharedViewModels by inject()
-        val fct = PuzzleViewModel.factory(viewModels.game)
+        val fct = PuzzleViewModel.factory(viewModels.game, kDispatchers)
         viewModel = ViewModelProvider(this, fct).get(PuzzleViewModel::class.java)
         viewModels.puzzle = viewModel
     }
