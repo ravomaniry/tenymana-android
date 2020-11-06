@@ -2,6 +2,7 @@ package mg.maniry.tenymana.ui.game.puzzle.linkClear
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.gameLogic.models.Grid
@@ -46,10 +47,12 @@ class LinkClearViewModel(
                     _cleared.postValue(it.solution[i].points)
                     kDispatchers.delay(animDuration)
                 }
-                _grid.postValue(it.grid)
-                _propose.postValue(puzzleViewModel::propose)
-                it.cleared.observeForever(clearedObserver)
-                removeClearObserver = { it.cleared.removeObserver(clearedObserver) }
+                withContext(kDispatchers.main) {
+                    _grid.postValue(it.grid)
+                    _propose.postValue(puzzleViewModel::propose)
+                    it.cleared.observeForever(clearedObserver)
+                    removeClearObserver = { it.cleared.removeObserver(clearedObserver) }
+                }
             }
         }
         prevPuzzle = it

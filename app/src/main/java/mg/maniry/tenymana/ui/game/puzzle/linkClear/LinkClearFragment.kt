@@ -27,7 +27,7 @@ class LinkClearFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        initViewModels()
+        initViewModel()
         initBinding(inflater, container)
         initVerseView()
         initCharsGridView()
@@ -36,7 +36,7 @@ class LinkClearFragment : Fragment() {
         return binding.root
     }
 
-    private fun initViewModels() {
+    private fun initViewModel() {
         val kDispatchers: KDispatchers by inject()
         val viewModels: SharedViewModels by inject()
         val factory = LinkClearViewModel.factory(viewModels.puzzle, kDispatchers)
