@@ -26,43 +26,52 @@ class BuilderTest {
         )
     }
 
-//    @Test
-//    fun manyWords() {
-//        testBuildGrid(
-//            text = "Abc de fgh ij IJ",
-//            wordsOrder = listOf("de", "Abc", "ij", "fgh"),
-//            randoms = //
-//            directionsQ = listOf(
-//                mutableListOf(LEFT),
-//                mutableListOf(UP),
-//                mutableListOf(RIGHT, UP_LEFT),
-//                mutableListOf(UP, RIGHT)
-//            ),
-//            cells = listOf(
-//                listOf(charA(2, 1), charA(2, 0), charA(6, 0), charA(6, 1)),
-//                listOf(charA(0, 0), charA(4, 0), charA(4, 1), charA(4, 2)),
-//                listOf(charA(0, 1), null, null, null),
-//                listOf(charA(0, 2), null, null, null),
-//                listOf(null, null, null, null)
-//            )
-//        )
-//    }
-
-//    @Test
-//    fun ingoreLong_and_OneChar_Words() {
-//        // one-char words are filtered out before loop and random
-//        testBuildGrid(
-//            text = "An'i cdefghijklmn",
-//            wordsOrder = listOf("cdefghijklmn", "An"),
-//            origins = listOf(0, 1),
-//            directions = listOf(LEFT),
-//            directionsQ = listOf(mutableListOf(LEFT)),
-//            cells = listOf(
-//                listOf(charA(0, 1), charA(0, 0), null, null),
-//                listOf(null, null, null, null)
-//            )
-//        )
-//    }
+    @Test
+    fun manyWords_ingoreTooShortAndTooLong() {
+        val solutions = listOf(
+            SolutionItem( // de
+                Grid(
+                    listOf(
+                        listOf(charA(2, 0), null, null, null),
+                        listOf(charA(2, 1), null, null, null),
+                        listOf(null, null, null, null)
+                    )
+                ),
+                Move.xy(0, 0, 0, 1)
+            ),
+            SolutionItem( // Abc
+                Grid(
+                    listOf(
+                        listOf(charA(2, 0), charA(0, 2), charA(0, 1), charA(0, 0)),
+                        listOf(charA(2, 1), null, null, null),
+                        listOf(null, null, null, null)
+                    )
+                ),
+                Move.xy(3, 0, 1, 0)
+            ),
+            SolutionItem( // ij
+                Grid(
+                    listOf(
+                        listOf(charA(2, 0), charA(4, 0), charA(4, 1), charA(0, 0)),
+                        listOf(charA(2, 1), charA(0, 2), charA(0, 1), null),
+                        listOf(null, null, null, null)
+                    )
+                ),
+                Move.xy(1, 0, 2, 0)
+            )
+        )
+        testBuildGrid(
+            text = "Abc de ij'k lmnopqrst",
+            wordsOrder = listOf("de", "Abc", "ij"),
+            randoms = listOf(
+                1.0, 0.1, 0.1,
+                0.1, 0.1, 0.01, 0.1, 1.0, 0.1, 0.1, 0.1,
+                0.1, 0.1, 1.0, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1
+            ),
+            cells = solutions.last().grid.cells,
+            solutions = solutions
+        )
+    }
 
     private fun testBuildGrid(
         text: String,

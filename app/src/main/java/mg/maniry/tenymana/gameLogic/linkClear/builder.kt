@@ -7,6 +7,7 @@ import mg.maniry.tenymana.gameLogic.shared.grid.calcScoredMoves
 import mg.maniry.tenymana.gameLogic.shared.grid.getRandomByRate
 import mg.maniry.tenymana.gameLogic.shared.grid.placeWord
 import mg.maniry.tenymana.utils.Random
+import kotlin.math.max
 
 fun buildLinkGrid(
     verse: BibleVerse,
@@ -16,7 +17,8 @@ fun buildLinkGrid(
 ): Pair<Grid<CharAddress>, List<SolutionItem<CharAddress>>> {
     val grid = MutableGrid<CharAddress>(width)
     val solution = mutableListOf<SolutionItem<CharAddress>>()
-    val words = verse.uniqueWords.filter { it.size > 1 }.toMutableList()
+    val validWordLen = 2..(max(visibleH, width))
+    val words = verse.uniqueWords.filter { it.size in validWordLen }.toMutableList()
     while (words.isNotEmpty()) {
         val word = random.from(words)
         val moves = grid.calcScoredMoves(visibleH, word, directions, gravity)
