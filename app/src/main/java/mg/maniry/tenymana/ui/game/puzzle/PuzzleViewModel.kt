@@ -5,7 +5,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.gameLogic.models.Move
-import mg.maniry.tenymana.gameLogic.models.Point
 import mg.maniry.tenymana.gameLogic.models.Word
 import mg.maniry.tenymana.ui.game.GameViewModel
 import mg.maniry.tenymana.ui.game.colors.DefaultColors
@@ -34,8 +33,6 @@ class PuzzleViewModel(
     }
 
     val invalidate = MutableLiveData(false)
-    private val _cleared = MutableLiveData<List<Point>?>()
-    val cleared: LiveData<List<Point>?> = _cleared
 
     fun propose(move: Move) {
         if (!lockPropose) {
@@ -61,11 +58,19 @@ class PuzzleViewModel(
         }
     }
 
+    fun canUseBonusOne(): Boolean {
+        val totalScore = gameViewModel.session.value?.progress?.totalScore ?: 0
+        val puzzleScore = puzzle.value?.score?.value ?: 0
+        return totalScore + puzzleScore >= bonusOnePrice
+    }
+
     private fun triggerReRender() {
         invalidate.postValue(true)
     }
 
     companion object {
+        const val bonusOnePrice = 5
+
         fun factory(gameViewModel: GameViewModel, kDispatchers: KDispatchers) =
             newViewModelFactory { PuzzleViewModel(gameViewModel, kDispatchers) }
     }

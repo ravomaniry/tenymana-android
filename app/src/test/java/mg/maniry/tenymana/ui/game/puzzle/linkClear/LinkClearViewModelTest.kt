@@ -3,6 +3,7 @@ package mg.maniry.tenymana.ui.game.puzzle.linkClear
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.google.common.truth.Truth.assertThat
+import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -29,6 +30,7 @@ class LinkClearViewModelTest {
         val puzzleCont = MutableLiveData<Puzzle>()
         val puzzleViewModel: PuzzleViewModel = mock {
             on { this.puzzle } doReturn puzzleCont
+            on { this.canUseBonusOne() } doReturn true
         }
         val viewModel = LinkClearViewModel(puzzleViewModel, TestDispatchers)
         assertThat(viewModel.grid.value).isNull()
@@ -37,17 +39,20 @@ class LinkClearViewModelTest {
             SolutionItem(Grid(listOf(chars('A', 'B'))), listOf(Point(0, 0), Point(1, 0))),
             SolutionItem(Grid(listOf(chars('A', 'B', 'C', 'D'))), listOf(Point(2, 0), Point(3, 0)))
         )
+        var bonusOneResult: List<Point>? = null
+        val cleared = MutableLiveData<List<Point>?>(null)
         val puzzle: LinkClearPuzzle = mock {
             on { this.solution } doReturn solution
             on { this.grid } doReturn solution.last().grid
-            on { this.cleared } doReturn MutableLiveData<List<Point>?>(null)
+            on { this.cleared } doReturn cleared
+            on { this.useBonusOne(PuzzleViewModel.bonusOnePrice) } doAnswer { bonusOneResult }
         }
         val grids = mutableListOf<Grid<*>?>()
         val highlights = mutableListOf<List<Point>?>()
         val proposes = mutableListOf<ProposeFn?>()
         val animDrations = mutableListOf<Double>()
         viewModel.grid.observeForever { grids.add(it) }
-        viewModel.highlight.observeForever { highlights.add(it) }
+        viewModel.highlighted.observeForever { highlights.add(it) }
         viewModel.propose.observeForever { proposes.add(it) }
         viewModel.animDuration.observeForever { animDrations.add(it) }
         runBlocking { puzzleCont.postValue(puzzle) }
@@ -57,8 +62,18 @@ class LinkClearViewModelTest {
         assertThat(animDrations).isEqualTo(listOf(300.0, 500.0))
         // Animation is done
         // - Puzzle grid & grid.cleared are displayed
-        (puzzle.cleared as MutableLiveData).postValue(listOf(Point(2, 2), Point(2, 3)))
+        cleared.postValue(listOf(Point(2, 2), Point(2, 3)))
         assertThat(viewModel.grid.value).isEqualTo(puzzle.grid)
-        assertThat(viewModel.highlight.value).isEqualTo(listOf(Point(2, 2), Point(2, 3)))
+        assertThat(viewModel.highlighted.value).isEqualTo(listOf(Point(2, 2), Point(2, 3)))
+        // Bonus one but not available
+        viewModel.useBonusOne()
+        assertThat(viewModel.highlighted.value).isNull()
+        // Bonus one available
+        bonusOneResult = listOf(Point(0, 1))
+        viewModel.useBonusOne()
+        assertThat(viewModel.highlighted.value).isEqualTo(bonusOneResult)
+        // Grid clear should update again the highlights
+        cleared.postValue(listOf(Point(0, 0), Point(1, 0)))
+        assertThat(viewModel.highlighted.value).isEqualTo(listOf(Point(0, 0), Point(1, 0)))
     }
 }

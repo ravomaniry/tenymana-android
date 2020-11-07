@@ -267,6 +267,24 @@ class PuzzleTest {
         assertThat(puzzle.undo()).isFalse()
     }
 
+    @Test
+    fun useBonusOne() {
+        val words = BibleVerse.fromText("", 1, 1, "Ab").words.toMutableList()
+        val cells = listOf(
+            listOf(ca(0, 0), ca(0, 1))
+        )
+        val grid = Grid(cells)
+        val verse = BibleVerse("", 1, 1, words.joinToString { "${it.value} " }, words)
+        val puzzle = LinkClearPuzzleImpl(grid, verse, emptyList())
+        // use bonus once
+        assertThat(puzzle.useBonusOne(10)).isEqualTo(listOf(Point(0, 0)))
+        assertThat(puzzle.score.value).isEqualTo(-10)
+        // use bonus but not avail (not real case)
+        (puzzle.verse.words as MutableList).apply { this[0] = this[0].resolvedVersion }
+        assertThat(puzzle.useBonusOne(10)).isNull()
+        assertThat(puzzle.score.value).isEqualTo(-10)
+    }
+
     private val Grid<*>.snapshot: String get() = toString().trimNulls()
     private val List<Word>.snapshot: String get() = joinToString { "$it\n" }
 

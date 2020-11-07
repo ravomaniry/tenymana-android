@@ -18,6 +18,7 @@ class LinkClearViewModel(
     private val kDispatchers: KDispatchers
 ) : ViewModel() {
     private var prevPuzzle: Puzzle? = null
+    private val puzzle: LinkClearPuzzle? get() = puzzleViewModel.puzzle.value as LinkClearPuzzle?
 
     val invalidate = puzzleViewModel.invalidate
     val colors = puzzleViewModel.colors
@@ -26,8 +27,8 @@ class LinkClearViewModel(
     private val _grid = MutableLiveData<Grid<Character>?>()
     val grid: LiveData<Grid<Character>?> = _grid
 
-    private val _highlight = MutableLiveData<List<Point>?>()
-    val highlight: LiveData<List<Point>?> = _highlight
+    private val _highlighted = MutableLiveData<List<Point>?>()
+    val highlighted: LiveData<List<Point>?> = _highlighted
 
     private val inGameAnimDuration = 500.0
     private val helpAnimDuration = 300L
@@ -37,7 +38,7 @@ class LinkClearViewModel(
     private val _propose = MutableLiveData<ProposeFn?>()
     val propose: LiveData<ProposeFn?> = _propose
 
-    private val clearedObserver = Observer<List<Point>?> { _highlight.postValue(it) }
+    private val clearedObserver = Observer<List<Point>?> { _highlighted.postValue(it) }
     private var removeClearObserver = {}
 
     private val puzzleObserver = Observer<Puzzle?> {
@@ -49,7 +50,7 @@ class LinkClearViewModel(
                 for (i in (it.solution.size - 1).downTo(0)) {
                     _grid.postValue(it.solution[i].grid)
                     kDispatchers.delay(helpAnimDuration)
-                    _highlight.postValue(it.solution[i].points)
+                    _highlighted.postValue(it.solution[i].points)
                     kDispatchers.delay(helpAnimDuration)
                 }
                 withContext(kDispatchers.main) {
@@ -66,6 +67,12 @@ class LinkClearViewModel(
 
     fun undo() {
         puzzleViewModel.undo()
+    }
+
+    fun useBonusOne() {
+        if (puzzleViewModel.canUseBonusOne()) {
+            _highlighted.postValue(puzzle?.useBonusOne(PuzzleViewModel.bonusOnePrice))
+        }
     }
 
     init {

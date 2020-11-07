@@ -81,4 +81,35 @@ class PuzzleViewModelTest {
             verifyOnce(gameVm).onPuzzleCompleted()
         }
     }
+
+    @Test
+    fun bonusOne() {
+        testCanUseBonus(0, 0, false)
+        testCanUseBonus(PuzzleViewModel.bonusOnePrice, 0, true)
+        testCanUseBonus(PuzzleViewModel.bonusOnePrice - 1, 1, true)
+        testCanUseBonus(PuzzleViewModel.bonusOnePrice, -PuzzleViewModel.bonusOnePrice, false)
+    }
+
+    private fun testCanUseBonus(
+        puzzleScore: Int,
+        progressScore: Int,
+        bonusOne: Boolean
+    ) {
+        val score = MutableLiveData(puzzleScore)
+        val puzzle: Puzzle = mock {
+            on { this.score } doAnswer { score }
+        }
+        val puzzleLD = MutableLiveData(puzzle)
+        val session = Session(
+            Journey("0"),
+            Progress("0", progressScore, emptyList(), emptyList())
+        )
+        val sessionLD = MutableLiveData(session)
+        val gameVm: GameViewModel = mock {
+            on { this.puzzle } doReturn puzzleLD
+            on { this.session } doReturn sessionLD
+        }
+        val viewModel = PuzzleViewModel(gameVm, TestDispatchers)
+        assertThat(viewModel.canUseBonusOne()).isEqualTo(bonusOne)
+    }
 }

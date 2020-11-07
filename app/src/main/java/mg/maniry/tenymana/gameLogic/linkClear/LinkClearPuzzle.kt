@@ -60,6 +60,7 @@ class LinkClearPuzzleImpl(
     private var usedHelp = false
     override var completed = false
     override var score = MutableLiveData(0)
+    private val scoreValue: Int get() = score.value ?: 0
 
     override fun propose(move: Move): Boolean {
         reset()
@@ -92,6 +93,14 @@ class LinkClearPuzzleImpl(
         return true
     }
 
+    override fun useBonusOne(price: Int): List<Point>? {
+        val points = grid.randomMatch(words, visibleH, directions, random)
+        return points?.let {
+            score.postValue(scoreValue - price)
+            listOf(points[0])
+        }
+    }
+
     private fun reset() {
         completed = false
         _cleared = null
@@ -121,10 +130,10 @@ class LinkClearPuzzleImpl(
 
     private fun incrementScore(resolved: List<Int>) {
         resolved.forEach {
-            score.postValue((score.value ?: 0) + words[it].size)
+            score.postValue(scoreValue + words[it].size)
         }
         if (completed && !usedHelp) {
-            score.postValue((score.value ?: 0) * (1.0 + words.bonusRatio).toInt())
+            score.postValue(scoreValue * (1.0 + words.bonusRatio).toInt())
         }
     }
 

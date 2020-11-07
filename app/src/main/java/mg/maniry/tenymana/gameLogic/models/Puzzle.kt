@@ -8,4 +8,5 @@ interface Puzzle {
     val verse: BibleVerse
     fun propose(move: Move): Boolean
     fun undo(): Boolean
+    fun useBonusOne(price: Int): List<Point>?
 }

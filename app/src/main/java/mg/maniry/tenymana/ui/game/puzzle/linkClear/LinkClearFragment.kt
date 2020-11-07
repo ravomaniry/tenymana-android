@@ -88,7 +88,7 @@ class LinkClearFragment : Fragment() {
             onSettingsChanged(drawingSettings)
             bindTo(viewModel.animDuration, ::onAnimDurationChanged)
             bindTo(viewModel.colors, ::onColor)
-            bindTo(viewModel.highlight, ::onValue)
+            bindTo(viewModel.highlighted, ::onValue)
         }
     }
 
