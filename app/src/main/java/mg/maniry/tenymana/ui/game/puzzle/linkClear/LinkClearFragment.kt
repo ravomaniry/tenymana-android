@@ -33,7 +33,7 @@ class LinkClearFragment : Fragment() {
         initVerseView()
         initCharsGridViews()
         initCharsGridInput()
-        initGridClearedVew()
+        initGridHighlightVew()
         observeReRender()
         return binding.root
     }
@@ -83,11 +83,12 @@ class LinkClearFragment : Fragment() {
         }
     }
 
-    private fun initGridClearedVew() {
+    private fun initGridHighlightVew() {
         binding.gridClearedView.apply {
             onSettingsChanged(drawingSettings)
+            bindTo(viewModel.animDuration, ::onAnimDurationChanged)
             bindTo(viewModel.colors, ::onColor)
-            bindTo(viewModel.cleared, ::onValue)
+            bindTo(viewModel.highlight, ::onValue)
         }
     }
 

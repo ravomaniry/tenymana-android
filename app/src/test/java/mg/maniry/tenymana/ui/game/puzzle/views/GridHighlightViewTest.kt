@@ -10,7 +10,7 @@ import mg.maniry.tenymana.utils.verifyNever
 import mg.maniry.tenymana.utils.verifyOnce
 import org.junit.Test
 
-class GridClearedViewTest {
+class GridHighlightViewTest {
     @Test
     fun simpleAnim() {
         // canvas
@@ -22,7 +22,7 @@ class GridClearedViewTest {
             }
         }
 
-        fun GridClearedViewControl.reRender(t: Long) {
+        fun GridHighlightControl.reRender(t: Long) {
             val should = onTick(t)
             if (should) {
                 onDraw(canvas)
@@ -40,10 +40,11 @@ class GridClearedViewTest {
             }
         }
         // control
-        val control = GridClearedViewControl(animator)
+        val control = GridHighlightControl(animator)
         val cellSize = 20f
         val x0 = 10f
         val y0 = 100f
+        control.animDuration = 500.0
         control.settings = DrawingSettings().apply {
             charGridCellSize = cellSize
             charGridOrigin = Point(x0.toInt(), y0.toInt())

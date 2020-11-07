@@ -43,15 +43,18 @@ class LinkClearViewModelTest {
             on { this.cleared } doReturn MutableLiveData<List<Point>?>(null)
         }
         val grids = mutableListOf<Grid<*>?>()
-        val clearedValues = mutableListOf<List<Point>?>()
+        val highlights = mutableListOf<List<Point>?>()
         val proposes = mutableListOf<ProposeFn?>()
+        val animDrations = mutableListOf<Double>()
         viewModel.grid.observeForever { grids.add(it) }
-        viewModel.cleared.observeForever { clearedValues.add(it) }
+        viewModel.highlight.observeForever { highlights.add(it) }
         viewModel.propose.observeForever { proposes.add(it) }
+        viewModel.animDuration.observeForever { animDrations.add(it) }
         runBlocking { puzzleCont.postValue(puzzle) }
         assertThat(viewModel.grid.value).isEqualTo(puzzle.grid)
         assertThat(grids).isEqualTo(listOf(solution[1].grid, solution[0].grid, solution[1].grid))
-        assertThat(clearedValues).isEqualTo(listOf(solution[1].points, solution[0].points, null))
+        assertThat(highlights).isEqualTo(listOf(solution[1].points, solution[0].points, null))
         assertThat(proposes).isEqualTo(listOf(null, puzzleViewModel::propose))
+        assertThat(animDrations).isEqualTo(listOf(300.0, 500.0))
     }
 }

@@ -17,7 +17,6 @@ class LinkClearViewModel(
     private val puzzleViewModel: PuzzleViewModel,
     private val kDispatchers: KDispatchers
 ) : ViewModel() {
-    private val animDuration = 500L
     private var prevPuzzle: Puzzle? = null
 
     val invalidate = puzzleViewModel.invalidate
@@ -27,29 +26,36 @@ class LinkClearViewModel(
     private val _grid = MutableLiveData<Grid<Character>?>()
     val grid: LiveData<Grid<Character>?> = _grid
 
-    private val _cleared = MutableLiveData<List<Point>?>()
-    val cleared: LiveData<List<Point>?> = _cleared
+    private val _highlight = MutableLiveData<List<Point>?>()
+    val highlight: LiveData<List<Point>?> = _highlight
+
+    private val inGameAnimDuration = 500.0
+    private val helpAnimDuration = 300L
+    private val _animDuration = MutableLiveData<Double>()
+    val animDuration: LiveData<Double> = _animDuration
 
     private val _propose = MutableLiveData<ProposeFn?>()
     val propose: LiveData<ProposeFn?> = _propose
 
-    private val clearedObserver = Observer<List<Point>?> { _cleared.postValue(it) }
+    private val clearedObserver = Observer<List<Point>?> { _highlight.postValue(it) }
     private var removeClearObserver = {}
 
     private val puzzleObserver = Observer<Puzzle?> {
         removeClearObserver()
         if (it != null && prevPuzzle == null && it is LinkClearPuzzle) {
             _propose.postValue(null)
+            _animDuration.postValue(helpAnimDuration.toDouble())
             viewModelScope.launch(kDispatchers.default) {
                 for (i in (it.solution.size - 1).downTo(0)) {
                     _grid.postValue(it.solution[i].grid)
-                    kDispatchers.delay(animDuration)
-                    _cleared.postValue(it.solution[i].points)
-                    kDispatchers.delay(animDuration)
+                    kDispatchers.delay(helpAnimDuration)
+                    _highlight.postValue(it.solution[i].points)
+                    kDispatchers.delay(helpAnimDuration)
                 }
                 withContext(kDispatchers.main) {
                     _grid.postValue(it.grid)
                     _propose.postValue(puzzleViewModel::propose)
+                    _animDuration.postValue(inGameAnimDuration)
                     it.cleared.observeForever(clearedObserver)
                     removeClearObserver = { it.cleared.removeObserver(clearedObserver) }
                 }

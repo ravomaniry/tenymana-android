@@ -11,16 +11,18 @@ import mg.maniry.tenymana.gameLogic.models.Point
 import mg.maniry.tenymana.ui.game.colors.GameColors
 import java.util.*
 
-class GridClearedView : View {
+class GridHighlightView : View {
     constructor(context: Context) : super(context)
     constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet)
     constructor(context: Context, attributeSet: AttributeSet, defStyleAttr: Int) :
             super(context, attributeSet, defStyleAttr)
 
-    private val animator = ValueAnimator.ofFloat(0f, 1f).apply {
-        duration = GridClearedViewControl.animDuration.toLong()
+    private val animator = ValueAnimator.ofFloat(0f, 1f)
+    private val control = GridHighlightControl(animator)
+
+    fun onAnimDurationChanged(duration: Double) {
+        control.animDuration = duration
     }
-    private val control = GridClearedViewControl(animator)
 
     fun onSettingsChanged(settings: DrawingSettings) {
         control.settings = settings
@@ -51,7 +53,7 @@ class GridClearedView : View {
     }
 }
 
-class GridClearedViewControl(
+class GridHighlightControl(
     private val animator: ValueAnimator
 ) {
     enum class Mode { GROW, IDLE, SHRINK }
@@ -68,6 +70,12 @@ class GridClearedViewControl(
     private val paint = Paint().apply {
         style = Paint.Style.FILL
     }
+
+    var animDuration = 500.0
+        set(value) {
+            field = value
+            animator.duration = value.toLong()
+        }
 
     fun onColor(color: Int) {
         paint.color = color
@@ -179,6 +187,5 @@ class GridClearedViewControl(
         const val maxDelay = 0.25
         const val maxGrow = 0.5
         const val shrink0 = 0.8
-        const val animDuration = 500.0
     }
 }

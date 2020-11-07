@@ -38,7 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-            <mg.maniry.tenymana.ui.game.puzzle.views.GridClearedView
+            <mg.maniry.tenymana.ui.game.puzzle.views.GridHighlightView
                 android:id="@+id/gridClearedView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
