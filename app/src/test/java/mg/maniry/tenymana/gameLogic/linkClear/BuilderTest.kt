@@ -34,11 +34,11 @@ class BuilderTest {
     @Test
     fun manyWords_ingoreTooShortAndTooLong() {
         val solutions = listOf(
-            SolutionItem( // de
+            SolutionItem( // ij
                 Grid(
                     listOf(
-                        listOf(charA(0, 0), null, null, null),
-                        listOf(charA(0, 1), null, null, null),
+                        listOf(charA(4, 0), null, null, null),
+                        listOf(charA(4, 1), null, null, null),
                         listOf(null, null, null, null)
                     )
                 ),
@@ -47,18 +47,18 @@ class BuilderTest {
             SolutionItem( // Abc
                 Grid(
                     listOf(
-                        listOf(charA(0, 0), charA(2, 2), charA(2, 1), charA(2, 0)),
-                        listOf(charA(0, 1), null, null, null),
+                        listOf(charA(4, 0), charA(2, 2), charA(2, 1), charA(2, 0)),
+                        listOf(charA(4, 1), null, null, null),
                         listOf(null, null, null, null)
                     )
                 ),
                 listOf(Point(3, 0), Point(2, 0), Point(1, 0))
             ),
-            SolutionItem( // ij
+            SolutionItem( // de
                 Grid(
                     listOf(
-                        listOf(charA(0, 0), charA(4, 0), charA(4, 1), charA(2, 0)),
-                        listOf(charA(0, 1), charA(2, 2), charA(2, 1), null),
+                        listOf(charA(4, 0), charA(0, 0), charA(0, 1), charA(2, 0)),
+                        listOf(charA(4, 1), charA(2, 2), charA(2, 1), null),
                         listOf(null, null, null, null)
                     )
                 ),

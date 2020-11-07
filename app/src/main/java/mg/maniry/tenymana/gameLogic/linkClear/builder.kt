@@ -18,7 +18,7 @@ fun buildLinkGrid(
     val grid = MutableGrid<CharAddress>(gridWidth)
     val solution = mutableListOf<SolutionItem<CharAddress>>()
     val validWordLen = 2..(max(gridHeight, gridWidth))
-    val words = verse.uniqueWords.filter { it.size in validWordLen }
+    val words = verse.uniqueWords.filter { it.size in validWordLen }.reversed()
     for (word in words) {
         val moves = grid.calcScoredMoves(gridHeight, word, directions, gravity)
         if (moves.isNotEmpty()) {
