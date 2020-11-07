@@ -11,7 +11,7 @@ import mg.maniry.tenymana.gameLogic.models.Score
 import mg.maniry.tenymana.repositories.models.Journey
 import mg.maniry.tenymana.repositories.models.Progress
 import mg.maniry.tenymana.repositories.models.Session
-import mg.maniry.tenymana.utils.AssetWrapper
+import mg.maniry.tenymana.utils.AssetsWrapper
 import mg.maniry.tenymana.utils.verifyOnce
 import mg.maniry.tenymana.utils.verifyTimes
 import org.junit.Rule
@@ -45,7 +45,7 @@ class GameRepoTest {
     @Test
     fun init_newUser() {
         val content = "{\"id\": \"1\"}"
-        val assets: AssetWrapper = mock {
+        val assets: AssetsWrapper = mock {
             on { list("journey") } doReturn arrayOf("test.json")
             on { readText("journey/test.json") } doReturn content
         }

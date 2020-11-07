@@ -20,4 +20,4 @@ val appModules = module {
     single<KDispatchers> { RealDispatchers }
 }
 
-private fun fs(context: Context) = FsHelperImpl(FileApiImpl(context), AssetWrapperImpl(context))
+private fun fs(context: Context) = FsHelperImpl(FileApiImpl(context), AssetsWrapperImpl(context))

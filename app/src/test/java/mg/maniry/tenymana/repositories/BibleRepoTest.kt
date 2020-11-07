@@ -6,7 +6,7 @@ import kotlinx.coroutines.runBlocking
 import mg.maniry.tenymana.api.FsHelper
 import mg.maniry.tenymana.gameLogic.models.BibleVerse
 import mg.maniry.tenymana.repositories.models.BibleChapter
-import mg.maniry.tenymana.utils.AssetWrapper
+import mg.maniry.tenymana.utils.AssetsWrapper
 import mg.maniry.tenymana.utils.verifyNever
 import mg.maniry.tenymana.utils.verifyOnce
 import mg.maniry.tenymana.utils.verifyTimes
@@ -86,7 +86,7 @@ class BibleRepoTest {
         writeLockFile: Boolean = false
     ) {
         val content = "{\"a\": 1}"
-        val assets: AssetWrapper = mock {
+        val assets: AssetsWrapper = mock {
             on { list("bible") } doReturn files
             on { readText(any()) } doReturn content
         }

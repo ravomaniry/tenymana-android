@@ -4,10 +4,10 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import mg.maniry.tenymana.utils.AssetWrapper
+import mg.maniry.tenymana.utils.AssetsWrapper
 
 interface FsHelper {
-    val assets: AssetWrapper
+    val assets: AssetsWrapper
     suspend fun exists(path: String): Boolean
     suspend fun <T> readJson(path: String, type: Class<T>): T?
     suspend fun <T> writeJson(path: String, data: T, type: Class<T>)
@@ -18,7 +18,7 @@ interface FsHelper {
 
 class FsHelperImpl(
     private val fileApi: FileApi,
-    override val assets: AssetWrapper
+    override val assets: AssetsWrapper
 ) : FsHelper {
     private val json = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())

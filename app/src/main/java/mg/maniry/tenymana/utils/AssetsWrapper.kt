@@ -2,14 +2,14 @@ package mg.maniry.tenymana.utils
 
 import android.content.Context
 
-interface AssetWrapper {
+interface AssetsWrapper {
     fun list(dir: String): Array<String>?
     fun readText(path: String): String
 }
 
-class AssetWrapperImpl(
+class AssetsWrapperImpl(
     context: Context
-) : AssetWrapper {
+) : AssetsWrapper {
     private val assets = context.assets
 
     override fun list(dir: String): Array<String>? {
