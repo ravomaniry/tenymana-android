@@ -18,16 +18,14 @@ fun buildLinkGrid(
     val grid = MutableGrid<CharAddress>(gridWidth)
     val solution = mutableListOf<SolutionItem<CharAddress>>()
     val validWordLen = 2..(max(gridHeight, gridWidth))
-    val words = verse.uniqueWords.filter { it.size in validWordLen }.toMutableList()
-    while (words.isNotEmpty()) {
-        val word = random.from(words)
+    val words = verse.uniqueWords.filter { it.size in validWordLen }
+    for (word in words) {
         val moves = grid.calcScoredMoves(gridHeight, word, directions, gravity)
         if (moves.isNotEmpty()) {
             val move = moves.getRandomByRate(random)
             grid.placeWord(move.a, move.b, word, gravity)
             solution.add(SolutionItem(grid.toGrid(), move.toPoints(word.size)))
         }
-        words.remove(word)
     }
     return Pair(grid.toGrid(), solution)
 }
