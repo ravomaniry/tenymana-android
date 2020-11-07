@@ -18,6 +18,8 @@
     <string name="solution_verse_item">%d- %s</string>
     <string name="solution_expand_description">Sokafana manontolo</string>
 
+    <string name="puzzle_bonus_desc">Mila fanampiana</string>
+
     <!-- Loader-->
     <string name="loader_text">Jesosy Kristy no lalana sy fahamarinana ary fiainana.</string>
 </resources>

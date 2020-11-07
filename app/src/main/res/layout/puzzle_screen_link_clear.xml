@@ -69,6 +69,16 @@
                 android:contentDescription="@string/app_undo_desc"
                 android:onClick="@{() -> viewModel.undo()}"
                 android:src="@drawable/ic_undo" />
+
+            <mg.maniry.tenymana.ui.game.puzzle.views.BonusOneButtonView
+                android:id="@+id/puzzleBonusOneBtn"
+                style="@style/AppTheme.BonusBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/puzzle_bonus_desc"
+                android:onClick="@{() -> viewModel.useBonusOne()}"
+                android:src="@drawable/ic_search" />
+
         </LinearLayout>
 
     </LinearLayout>

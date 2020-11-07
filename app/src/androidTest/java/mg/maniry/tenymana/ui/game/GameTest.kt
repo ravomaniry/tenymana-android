@@ -3,6 +3,7 @@ package mg.maniry.tenymana.ui.game
 import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
 import mg.maniry.tenymana.MainActivity
 import mg.maniry.tenymana.R
@@ -14,6 +15,7 @@ import mg.maniry.tenymana.repositories.BibleRepo
 import mg.maniry.tenymana.repositories.GameRepo
 import mg.maniry.tenymana.repositories.UserRepo
 import mg.maniry.tenymana.repositories.models.*
+import mg.maniry.tenymana.ui.game.puzzle.PuzzleViewModel
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -68,7 +70,7 @@ class GameTest : KoinTest {
                         Path("Path 1", "...", "Jaona", 1, 1, 10)
                     )
                 ),
-                Progress("11", totalScore = 5)
+                Progress("11", totalScore = 50)
             ),
             Session(
                 Journey(
@@ -103,9 +105,12 @@ class GameTest : KoinTest {
             shouldBeVisible(R.id.puzzleScreen)
             // Display headers
             shouldHaveText(R.id.puzzleHeaderVerseDisplay, text = "Matio 1:10")
-            shouldHaveText(R.id.puzzleHeaderScore, text = "5")
+            shouldHaveText(R.id.puzzleHeaderScore, text = "50")
             // Open LinkClear fragment
             shouldBeVisible(R.id.linkClearPuzzle)
+            // Bonus
+            clickView(R.id.puzzleBonusOneBtn)
+            assertThat(puzzle.useBonusOneFn.calledWith(PuzzleViewModel.bonusOnePrice)).isTrue()
             // Propose & complete
             swipeRight(R.id.charsGridInput)
             // On solution screen -> tap next -> load next verse + display puzzle screen
