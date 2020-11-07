@@ -11,7 +11,6 @@ open class CharGridText : CharGridBackground {
             super(context, attributeSet, defStyleAttr)
 
     override fun onDraw(canvas: Canvas?) {
-        super.onDraw(canvas)
         if (canvas != null) {
             control.draw(canvas, CharGridViewControl.DrawMode.TEXT)
         }

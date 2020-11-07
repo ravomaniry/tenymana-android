@@ -36,12 +36,10 @@ open class CharGridBackground : View {
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
         control.onSizeChanged(w, h)
     }
 
     override fun onDraw(canvas: Canvas?) {
-        super.onDraw(canvas)
         if (canvas != null) {
             control.draw(canvas, CharGridViewControl.DrawMode.BG)
         }
