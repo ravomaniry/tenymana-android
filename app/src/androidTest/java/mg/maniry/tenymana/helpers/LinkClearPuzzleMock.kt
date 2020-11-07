@@ -10,6 +10,7 @@ class LinkClearPuzzleMock(
 ) : LinkClearPuzzle {
     val proposeFn = Fn<Boolean>()
     val undoFn = Fn<Boolean>()
+    val useBonusOneFn = Fn<List<Point>?>()
     override var grid: MutableGrid<Character> = MutableGrid(10)
     override var diff = MutableLiveData<List<Move>?>()
     override val cleared = MutableLiveData<List<Point>?>()
@@ -19,4 +20,5 @@ class LinkClearPuzzleMock(
 
     override fun propose(move: Move) = proposeFn(move)
     override fun undo() = undoFn()
+    override fun useBonusOne(price: Int) = useBonusOneFn(price)
 }
