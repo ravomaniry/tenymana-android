@@ -6,28 +6,8 @@
     <data>
 
         <variable
-            name="verse"
-            type="String" />
-
-        <variable
-            name="index"
-            type="Integer" />
-
-        <variable
-            name="score"
-            type="mg.maniry.tenymana.gameLogic.models.Score" />
-
-        <variable
-            name="star0"
-            type="Integer" />
-
-        <variable
-            name="star1"
-            type="Integer" />
-
-        <variable
-            name="star2"
-            type="Integer" />
+            name="item"
+            type="mg.maniry.tenymana.ui.game.paths.PathVerseItem" />
 
         <variable
             name="onClick"
@@ -44,7 +24,7 @@
         style="@style/AppTheme.PathsListCont"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{() -> onClick.onClick(index)}"
+        android:onClick="@{() -> onClick.onClick(item.index)}"
         android:orientation="vertical"
         app:backgroundDrawableID="@{background}"
         tools:background="@drawable/bg_paths_screen_item_done">
@@ -54,7 +34,7 @@
             style="@style/AppTheme.PathsListVerse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{verse}"
+            android:text="@{item.value}"
             tools:text="1" />
 
         <LinearLayout
@@ -68,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:contentDescription="@string/app_start_desc"
-                app:srcResID="@{star0}"
+                app:srcResID="@{item.star1}"
                 tools:src="@drawable/ic_star_rate" />
 
             <ImageView
@@ -76,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:contentDescription="@string/app_start_desc"
-                app:srcResID="@{star1}"
+                app:srcResID="@{item.star1}"
                 tools:src="@drawable/ic_star_rate" />
 
             <ImageView
@@ -84,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:contentDescription="@string/app_start_desc"
-                app:srcResID="@{star2}"
+                app:srcResID="@{item.star2}"
                 tools:src="@drawable/ic_star_rate_white" />
 
         </LinearLayout>
