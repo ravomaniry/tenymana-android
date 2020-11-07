@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import mg.maniry.tenymana.gameLogic.models.*
 import mg.maniry.tenymana.gameLogic.shared.grid.*
+import mg.maniry.tenymana.gameLogic.shared.words.bonusRatio
 import mg.maniry.tenymana.gameLogic.shared.words.resolveWith
 import mg.maniry.tenymana.gameLogic.shared.words.resolved
 import mg.maniry.tenymana.utils.Random
@@ -123,7 +124,7 @@ class LinkClearPuzzleImpl(
             score.postValue((score.value ?: 0) + words[it].size)
         }
         if (completed && !usedHelp) {
-            score.postValue((score.value ?: 0) * 2)
+            score.postValue((score.value ?: 0) * (1.0 + words.bonusRatio).toInt())
         }
     }
 

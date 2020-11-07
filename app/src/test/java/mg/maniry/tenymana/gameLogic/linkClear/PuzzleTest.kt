@@ -118,7 +118,7 @@ class PuzzleTest {
             diff = listOf(),
             completed = true
         )
-        assertThat(puzzle.score.value).isEqualTo(14 * 2) // total = 10 * (resolved words = 2)
+        assertThat(puzzle.score.value).isEqualTo(14 * 2) // total = 10 + 10 * 1
     }
 
     @Test
