@@ -37,11 +37,11 @@ class DrawingSettingsTest {
         verifyOnce(charGridSub1).invalidate()
         verifyZeroInteractions(verseViewSub)
         // Verse view
-        settings.verseViewHeight = 10
+        settings.verseViewHeight = 50
         verifyOnce(verseViewSub).invalidate()
         clearInvocations(verseViewSub)
         settings.forget(DrawingSettings.Event.VERSE_VIEW, verseViewSub)
-        settings.verseViewHeight = 10
+        settings.verseViewHeight = 50
         verifyZeroInteractions(verseViewSub)
     }
 }

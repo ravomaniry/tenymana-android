@@ -10,6 +10,7 @@ import mg.maniry.tenymana.gameLogic.models.CharAddress
 import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.gameLogic.models.Word
 import mg.maniry.tenymana.ui.game.colors.GameColors
+import kotlin.math.max
 
 class VerseView : View {
     constructor(context: Context) : super(context)
@@ -51,14 +52,6 @@ class VerseView : View {
 }
 
 class VerseViewControl {
-    companion object {
-        const val W = 12
-        const val H = 20
-        const val SPACING_H = 2
-        const val SPACING_V = 5
-        const val LINE_H = H + SPACING_V
-    }
-
     var settings: DrawingSettings? = null
     private var width = 0
     private var words: List<Word>? = null
@@ -81,7 +74,7 @@ class VerseViewControl {
     private val textDy = H - SPACING_V
 
     fun onMeasure(w: Int) {
-        width = w
+        width = w - PADDING * 2
         computeCells()
         updateHeight()
     }
@@ -104,14 +97,14 @@ class VerseViewControl {
         if (words != null && width > 0) {
             var currentW = 0
             var rowI = 0
-            var y = SPACING_V.toFloat()
+            var y = 0f
             next.add(mutableListOf())
             for (word in words!!) {
                 val w = word.width
                 if (w > width) {
                     currentW = next.appendAndWrap(word, y, width)
                     rowI = next.size - 1
-                    y = rowI.toFloat() * LINE_H + SPACING_V
+                    y = rowI.toFloat() * LINE_H
                 } else {
                     val totalW = currentW + w
                     if (totalW <= width) {
@@ -132,7 +125,8 @@ class VerseViewControl {
 
     private fun updateHeight() {
         if (settings != null) {
-            height = (H + SPACING_V) * cells.size + SPACING_V
+            val linesN = cells.size
+            height = 2 * PADDING + H * linesN + SPACING_V * max(0, linesN - 1)
             settings!!.verseViewHeight = height
         }
     }
@@ -163,13 +157,34 @@ class VerseViewControl {
     private fun drawChar(canvas: Canvas, cell: Cell, char: Character) {
         canvas.drawText(char.value.toString(), cell.x + textDx, cell.y + textDy, charPaint)
     }
+
+    companion object {
+        const val W = 12
+        const val H = 20
+        const val SPACING_H = 2
+        const val SPACING_V = 5
+        const val PADDING = 5
+        const val LINE_H = H + SPACING_V
+    }
 }
 
-private data class Cell(
+private data class Cell constructor(
     val x: Float,
     val y: Float,
     val char: CharAddress
-)
+) {
+    val relativeX: Float get() = x - VerseViewControl.PADDING
+
+    companion object {
+        fun relative(x: Float, y: Float, wI: Int, cI: Int): Cell {
+            return Cell(
+                x + VerseViewControl.PADDING,
+                y + VerseViewControl.PADDING,
+                CharAddress(wI, cI)
+            )
+        }
+    }
+}
 
 private val Word.width: Int
     get() {
@@ -195,9 +210,12 @@ private fun Word.charWidthAt(i: Int): Int {
 
 private fun MutableList<Cell>.append(words: List<Word>, wI: Int, y: Float) {
     val word = words[wI]
-    var x = if (isEmpty()) 0f else last().x + words[wI - 1].charWidthAt(words[wI - 1].size - 1)
+    var x = when {
+        isEmpty() -> 0f
+        else -> last().relativeX + words[wI - 1].charWidthAt(words[wI - 1].size - 1)
+    }
     for (i in 0 until word.size) {
-        add(Cell(x, y, CharAddress(word.index, i)))
+        add(Cell.relative(x, y, word.index, i))
         x += word.charWidthAt(i)
     }
 }
@@ -217,7 +235,7 @@ private fun MutableList<MutableList<Cell>>.appendAndWrap(word: Word, y0: Float, 
             row = mutableListOf()
             add(row)
         }
-        row.add(Cell(x, y, CharAddress(word.index, i)))
+        row.add(Cell.relative(x, y, word.index, i))
         x += word.charWidthAt(i)
     }
     return (x + word.charWidthAt(word.size - 1)).toInt()
