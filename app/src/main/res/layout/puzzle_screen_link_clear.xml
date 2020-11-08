@@ -11,7 +11,7 @@
 
     <LinearLayout
         android:id="@+id/linkClearPuzzle"
-        style="@style/AppTheme.PuzzleBody"
+        style="@style/AppTheme.LinkClearPuzzleBody"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -56,9 +56,9 @@
         </FrameLayout>
 
         <LinearLayout
+            style="@style/AppTheme.BonusBtnCont"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:orientation="horizontal">
 
             <ImageButton

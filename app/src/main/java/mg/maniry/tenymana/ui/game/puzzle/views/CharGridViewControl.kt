@@ -108,7 +108,7 @@ class CharGridViewControl {
         const val MARGIN = 2
         val emptyBgPaint = Paint().apply {
             style = Paint.Style.FILL
-            color = Color.rgb(120, 120, 120)
+            color = Color.argb(50, 0, 0, 0)
         }
     }
 }
