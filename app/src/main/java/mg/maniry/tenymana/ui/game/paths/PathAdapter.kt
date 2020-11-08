@@ -37,11 +37,16 @@ class PathAdapter(
     }
 
     class DiffUtilCb : DiffUtil.ItemCallback<PathVerseItem>() {
-        override fun areItemsTheSame(oldItem: PathVerseItem, newItem: PathVerseItem) =
-            oldItem == newItem
+        override fun areItemsTheSame(oldItem: PathVerseItem, newItem: PathVerseItem): Boolean {
+            return oldItem == newItem
+        }
 
-        override fun areContentsTheSame(oldItem: PathVerseItem, newItem: PathVerseItem) =
-            oldItem == newItem
+        override fun areContentsTheSame(oldItem: PathVerseItem, newItem: PathVerseItem): Boolean {
+            return oldItem.value == newItem.value &&
+                    oldItem.star0 == newItem.star0 &&
+                    oldItem.star1 == newItem.star1 &&
+                    oldItem.star2 == newItem.star2
+        }
     }
 
     class ViewHolder private constructor(
