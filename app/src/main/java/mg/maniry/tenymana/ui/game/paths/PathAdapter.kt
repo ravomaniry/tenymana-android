@@ -17,10 +17,6 @@ class PathAdapter(
     private val onClick = OnVerseClick(verseClickHandler)
 
     var scores: List<Score>? = null
-        set(value) {
-            field = value
-            submitList(path?.toVerseItems(value))
-        }
 
     var path: Path? = null
         set(value) {

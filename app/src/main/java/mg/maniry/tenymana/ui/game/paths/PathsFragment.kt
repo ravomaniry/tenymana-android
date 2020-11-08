@@ -47,7 +47,9 @@ class PathsFragment : Fragment() {
             adapter = pathsAdapter
             (layoutManager as GridLayoutManager).spanCount = 8
         }
-        bindTo(viewModel.activePath) { pathsAdapter.path = it }
-        bindTo(viewModel.activeScores) { pathsAdapter.scores = it }
+        bindTo(viewModel.activePath) {
+            pathsAdapter.scores = viewModel.activeScores
+            pathsAdapter.path = it
+        }
     }
 }

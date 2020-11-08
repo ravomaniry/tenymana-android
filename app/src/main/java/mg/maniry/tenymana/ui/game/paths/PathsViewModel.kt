@@ -26,9 +26,8 @@ class PathsViewModel(
         "${it.book} ${it.chapter}"
     }
 
-    val activeScores: LiveData<List<Score>?> = Transformations.map(activePathIndex) {
-        session.value!!.progress.scores.getOrNull(it)
-    }
+    val activeScores: List<Score>?
+        get() = session.value?.progress?.scores?.getOrNull(activePathIndex.value ?: 0)
 
     val showLeftBtn: LiveData<Boolean> = Transformations.map(activePathIndex) {
         it > 0
