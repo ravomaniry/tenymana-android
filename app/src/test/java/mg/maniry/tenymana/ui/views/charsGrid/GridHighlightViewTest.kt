@@ -1,14 +1,11 @@
 package mg.maniry.tenymana.ui.views.charsGrid
 
-import android.animation.ValueAnimator
 import android.graphics.Canvas
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.*
 import mg.maniry.tenymana.gameLogic.models.Point
 import mg.maniry.tenymana.ui.views.DrawingSettings
 import mg.maniry.tenymana.utils.TestRect
-import mg.maniry.tenymana.utils.verifyNever
-import mg.maniry.tenymana.utils.verifyOnce
 import org.junit.Test
 
 class GridHighlightViewTest {
@@ -29,19 +26,8 @@ class GridHighlightViewTest {
                 onDraw(canvas)
             }
         }
-        // animator
-        var isRunning = false
-        val animator: ValueAnimator = mock {
-            on { this.isRunning } doAnswer { isRunning }
-            on { start() } doAnswer {
-                isRunning = true; Unit
-            }
-            on { cancel() } doAnswer {
-                isRunning = false; Unit
-            }
-        }
         // control
-        val control = GridHighlightControl(animator)
+        val control = GridHighlightControl()
         val cellSize = 20f
         val x0 = 10f
         val y0 = 100f
@@ -50,24 +36,7 @@ class GridHighlightViewTest {
             charGridCellSize = cellSize
             charGridOrigin = Point(x0.toInt(), y0.toInt())
         }
-        // on null value does nothing
-        control.onValue(null, 1000)
-        verifyNever(animator).cancel()
-        verifyNever(animator).start()
-        // positive value
-        control.onValue(listOf(Point(0, 0), Point(1, 1)), 1000)
-        verifyNever(animator).cancel()
-        verifyOnce(animator).start()
-        // positive again stops and then starts
-        clearInvocations(animator)
-        control.onValue(listOf(Point(0, 0), Point(1, 1)), 1000)
-        verifyOnce(animator).cancel()
-        verifyOnce(animator).start()
-        // Null stops
-        clearInvocations(animator)
-        control.onValue(null, 1000)
-        verifyOnce(animator).cancel()
-        verifyNever(animator).start()
+        // add value and ticks
         control.onValue(listOf(Point(0, 0), Point(1, 1)), 1000)
         control.reRender(1000)
         assertThat(rects).isEmpty()

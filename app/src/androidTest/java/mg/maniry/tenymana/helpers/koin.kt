@@ -4,6 +4,7 @@ import mg.maniry.tenymana.gameLogic.shared.puzzleBuilder.PuzzleBuilder
 import mg.maniry.tenymana.repositories.BibleRepo
 import mg.maniry.tenymana.repositories.GameRepo
 import mg.maniry.tenymana.repositories.UserRepo
+import mg.maniry.tenymana.ui.app.AnimatorWrapper
 import mg.maniry.tenymana.ui.app.SharedViewModels
 import mg.maniry.tenymana.utils.KDispatchers
 import mg.maniry.tenymana.utils.RealDispatchers
@@ -34,6 +35,7 @@ fun createTestModule(): Module {
         single<PuzzleBuilder> { puzzleBuilder }
         single<BibleRepo> { bibleRepo }
         single<KDispatchers> { RealDispatchers }
+        single { AnimatorWrapper() }
     }
 }
 

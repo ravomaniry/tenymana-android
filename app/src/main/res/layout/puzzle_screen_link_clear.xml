@@ -39,7 +39,7 @@
                 android:layout_height="match_parent" />
 
             <mg.maniry.tenymana.ui.views.charsGrid.GridHighlightView
-                android:id="@+id/gridClearedView"
+                android:id="@+id/gridHighlightView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 

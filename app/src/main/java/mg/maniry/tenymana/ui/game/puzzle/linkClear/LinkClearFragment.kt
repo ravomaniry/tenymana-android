@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.PuzzleScreenLinkClearBinding
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
+import mg.maniry.tenymana.ui.app.AnimatorWrapper
 import mg.maniry.tenymana.ui.app.SharedViewModels
 import mg.maniry.tenymana.ui.views.DrawingSettings
 import mg.maniry.tenymana.ui.views.charsGrid.BaseCharGridView
@@ -85,7 +86,9 @@ class LinkClearFragment : Fragment() {
     }
 
     private fun initGridHighlightVew() {
-        binding.gridClearedView.apply {
+        val anim: AnimatorWrapper by inject()
+        binding.gridHighlightView.apply {
+            animator = anim.value
             onSettingsChanged(drawingSettings)
             bindTo(viewModel.animDuration, ::onAnimDurationChanged)
             bindTo(viewModel.colors, ::onColor)
@@ -103,7 +106,7 @@ class LinkClearFragment : Fragment() {
                 binding.charsGridBg.invalidate()
                 binding.charsGridText.invalidate()
                 binding.verseView.invalidate()
-                binding.gridClearedView.invalidate()
+                binding.gridHighlightView.invalidate()
                 viewModel.invalidate.postValue(false)
             }
         })

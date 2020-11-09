@@ -1,25 +1,23 @@
 package mg.maniry.tenymana.ui.views.charsGrid
 
-import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.AttributeSet
-import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import mg.maniry.tenymana.gameLogic.models.Point
 import mg.maniry.tenymana.ui.game.colors.GameColors
 import mg.maniry.tenymana.ui.views.DrawingSettings
+import mg.maniry.tenymana.ui.views.animator.AnimatedView
 import java.util.*
 
-class GridHighlightView : View {
+class GridHighlightView : AnimatedView {
     constructor(context: Context) : super(context)
     constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet)
     constructor(context: Context, attributeSet: AttributeSet, defStyleAttr: Int) :
             super(context, attributeSet, defStyleAttr)
 
-    private val animator = ValueAnimator.ofFloat(0f, 1f)
-    private val control = GridHighlightControl(animator)
+    private val control = GridHighlightControl()
 
     fun onAnimDurationChanged(duration: Double) {
         control.animDuration = duration
@@ -31,6 +29,9 @@ class GridHighlightView : View {
 
     fun onValue(value: List<Point>?) {
         control.onValue(value, Date().time)
+        if (value == null) {
+            animator?.forget(this)
+        }
     }
 
     fun onColor(value: GameColors) {
@@ -44,19 +45,16 @@ class GridHighlightView : View {
         }
     }
 
-    init {
-        animator.addUpdateListener {
-            val reRender = control.onTick(Date().time)
-            if (reRender) {
-                invalidate()
-            }
+    override fun onTick(t: Long): Boolean {
+        val shouldInvalidate = control.onTick(t)
+        if (!shouldInvalidate) {
+            animator?.forget(this)
         }
+        return shouldInvalidate
     }
 }
 
-class GridHighlightControl(
-    private val animator: ValueAnimator
-) {
+class GridHighlightControl {
     enum class Mode { GROW, IDLE, SHRINK }
 
     var t0: Long = 0
@@ -73,10 +71,6 @@ class GridHighlightControl(
     }
 
     var animDuration = 500.0
-        set(value) {
-            field = value
-            animator.duration = value.toLong()
-        }
 
     fun onColor(color: Int) {
         paint.color = color
@@ -85,12 +79,10 @@ class GridHighlightControl(
     fun onValue(value: List<Point>?, now: Long) {
         t0 = now
         this.value = value
-        stopAnimator()
         if (value != null) {
             calcStarts()
             initSizes()
             initCenters()
-            animator.start()
         }
     }
 
@@ -119,12 +111,6 @@ class GridHighlightControl(
             if (mode != null) {
                 draw(canvas)
             }
-        }
-    }
-
-    private fun stopAnimator() {
-        if (animator.isRunning) {
-            animator.cancel()
         }
     }
 
