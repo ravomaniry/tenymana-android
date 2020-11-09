@@ -12,8 +12,8 @@ import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.PuzzleScreenLinkClearBinding
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.ui.app.SharedViewModels
-import mg.maniry.tenymana.ui.views.charsGrid.CharGridBackground
 import mg.maniry.tenymana.ui.views.DrawingSettings
+import mg.maniry.tenymana.ui.views.charsGrid.CharGridBackground
 import mg.maniry.tenymana.utils.KDispatchers
 import mg.maniry.tenymana.utils.bindTo
 import org.koin.android.ext.android.inject
