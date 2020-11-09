@@ -44,7 +44,7 @@ class LinkClearPuzzleTest : KoinTest {
         val userRepo: UserRepo by inject()
         whenever(userRepo.user).thenReturn(MutableLiveData(User("1", "")))
         // Puzzle builder
-        val verse = BibleVerse.fromText("Matio", 1, 10, "Ny filazana ny razan'i Jesisy Kristy")
+        val verse = BibleVerse.fromText("Matio", 1, 10, "Ny filazana ny razan'i Jesosy Kristy")
         val puzzle = LinkClearPuzzle.build(verse, RandomImpl())
         val puzzleBuilder: PuzzleBuilder by inject()
         whenever(puzzleBuilder.random(verse)).thenReturn(puzzle)
@@ -80,6 +80,6 @@ class LinkClearPuzzleTest : KoinTest {
             clickView(R.id.pathDetailsNextBtn)
             shouldBeVisible(R.id.linkClearPuzzle)
         }
-        Thread.sleep(2000)
+        Thread.sleep(3000)
     }
 }

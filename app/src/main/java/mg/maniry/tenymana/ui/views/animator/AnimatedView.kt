@@ -11,28 +11,11 @@ abstract class AnimatedView : View {
             super(context, attributeSet, defStyleAttr)
 
     var animator: Animator? = null
-        set(value) {
-            field = value
-            listenAnimation()
-        }
 
     abstract fun onTick(t: Long): Boolean
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        listenAnimation()
-    }
-
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        forgetAnimation()
-    }
-
-    private fun listenAnimation() {
-        animator?.register(this)
-    }
-
-    private fun forgetAnimation() {
         animator?.forget(this)
     }
 }

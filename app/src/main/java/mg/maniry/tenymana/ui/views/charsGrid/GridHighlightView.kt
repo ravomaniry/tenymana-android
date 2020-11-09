@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.AttributeSet
+import android.util.Log
 import androidx.core.content.res.ResourcesCompat
 import mg.maniry.tenymana.gameLogic.models.Point
 import mg.maniry.tenymana.ui.game.colors.GameColors
@@ -31,6 +32,8 @@ class GridHighlightView : AnimatedView {
         control.onValue(value, Date().time)
         if (value == null) {
             animator?.forget(this)
+        } else {
+            animator?.register(this)
         }
     }
 
@@ -49,6 +52,7 @@ class GridHighlightView : AnimatedView {
         val shouldInvalidate = control.onTick(t)
         if (!shouldInvalidate) {
             animator?.forget(this)
+            invalidate()
         }
         return shouldInvalidate
     }
@@ -78,6 +82,7 @@ class GridHighlightControl {
 
     fun onValue(value: List<Point>?, now: Long) {
         t0 = now
+        Log.d("AnimationView", "onValue: $now $value")
         this.value = value
         if (value != null) {
             calcStarts()
@@ -88,17 +93,13 @@ class GridHighlightControl {
 
     fun onTick(now: Long): Boolean {
         this.t = (now - t0) / animDuration
-        val nextMode = when {
+        mode = when {
             t < .5 -> Mode.GROW
             t <= 0.8 -> Mode.IDLE
             t < 1 -> Mode.SHRINK
             else -> null
         }
-        if ((mode == Mode.IDLE && nextMode == Mode.IDLE) || mode == null && nextMode == null) {
-            return false
-        }
-        mode = nextMode
-        return true
+        return mode != null
     }
 
     fun onDraw(canvas: Canvas) {

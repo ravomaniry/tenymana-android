@@ -67,21 +67,26 @@ class GridHighlightViewTest {
         )
         rects.removeAll { true }
         // t = 0.5: cells[0] = 20, cells[1] = 20
-        control.reRender(1250)
-        assertThat(rects).isEqualTo(
-            listOf(
-                TestRect.xywh(20f - 10, 90f - 10, 20f, 20f),
-                TestRect.xywh(40f - 10, 70f - 10, 20f, 20f)
-            )
+        val filledRects = listOf(
+            TestRect.xywh(20f - 10, 90f - 10, 20f, 20f),
+            TestRect.xywh(40f - 10, 70f - 10, 20f, 20f)
         )
-        // onTick till 0.8 does nothing
+        control.reRender(1250)
+        assertThat(rects).isEqualTo(filledRects)
+        // onTick draws same shape
         clearInvocations(canvas)
         rects.removeAll { true }
         control.reRender(1300)
         control.reRender(1400)
-        verifyZeroInteractions(canvas)
+        assertThat(rects).isEqualTo(
+            listOf(
+                filledRects[0], filledRects[1],
+                filledRects[0], filledRects[1]
+            )
+        )
         // shrink
         // t=0.9; size = 10
+        rects.removeAll { true }
         control.reRender(1450)
         assertThat(rects).isEqualTo(
             listOf(
