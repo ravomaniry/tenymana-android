@@ -76,7 +76,7 @@ class GameViewModelTest {
                 on { this.verse } doReturn BibleVerse.fromText("", 1, 1, "Abc de")
             }
             val puzzleBuilder: PuzzleBuilder = mock {
-                on { this.linkClear(any()) } doReturn puzzle
+                on { this.random(any()) } doReturn puzzle
             }
             // test
             val viewModel =
@@ -110,7 +110,7 @@ class GameViewModelTest {
                 scores = listOf(listOf(Score(20, 3)))
             )
             verifyOnce(gameRepo).saveProgress(progress)
-            verifyOnce(puzzleBuilder).linkClear(verses["Matio/1/2"] ?: error("1"))
+            verifyOnce(puzzleBuilder).random(verses["Matio/1/2"] ?: error("1"))
             assertThat(viewModel.screen.value).isEqualTo(Screen.PUZZLE)
             assertThat(viewModel.session.value!!.progress).isEqualTo(progress)
             assertThat(viewModel.shouldNavigate).isTrue()
@@ -124,7 +124,7 @@ class GameViewModelTest {
                 scores = listOf(listOf(Score(20, 3), Score(2, 1)))
             )
             verifyOnce(gameRepo).saveProgress(progress)
-            verifyOnce(puzzleBuilder).linkClear(verses["Matio/1/3"] ?: error("1"))
+            verifyOnce(puzzleBuilder).random(verses["Matio/1/3"] ?: error("1"))
             assertThat(viewModel.screen.value).isEqualTo(Screen.PUZZLE)
             assertThat(viewModel.session.value!!.progress).isEqualTo(progress)
             assertThat(viewModel.shouldNavigate).isTrue()
@@ -147,7 +147,7 @@ class GameViewModelTest {
             assertThat(viewModel.screen.value).isEqualTo(Screen.PATH_DETAILS)
             viewModel.closePathDetails()
             assertThat(viewModel.screen.value).isEqualTo(Screen.PUZZLE)
-            verifyOnce(puzzleBuilder).linkClear(verses["Marka/1/1"] ?: error("1"))
+            verifyOnce(puzzleBuilder).random(verses["Marka/1/1"] ?: error("1"))
             assertThat(viewModel.session.value!!.progress).isEqualTo(progress)
             assertThat(viewModel.shouldNavigate).isTrue()
             // Complete the journey
@@ -299,7 +299,7 @@ class GameViewModelTest {
             }
             val puzzle: LinkClearPuzzle = mock()
             val puzzleBuilder: PuzzleBuilder = mock {
-                on { linkClear(any()) } doReturn puzzle
+                on { random(any()) } doReturn puzzle
             }
             val viewModel = GameViewModelImpl(
                 appViewModel,

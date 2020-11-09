@@ -49,8 +49,8 @@ class GameTest : KoinTest {
             completed = true
         }
         val puzzleBuilder: PuzzleBuilder by inject()
-        whenever(puzzleBuilder.linkClear(math110)).thenReturn(puzzle)
-        whenever(puzzleBuilder.linkClear(math111)).thenReturn(puzzle)
+        whenever(puzzleBuilder.random(math110)).thenReturn(puzzle)
+        whenever(puzzleBuilder.random(math111)).thenReturn(puzzle)
         // Bible repo
         val bibleRepo: BibleRepo by inject()
         runBlocking {

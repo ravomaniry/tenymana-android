@@ -113,7 +113,7 @@ class GameViewModelImpl(
             val verseNum = path.start + position!!.verseIndex
             val verse = bibleRepo.getSingle(path.book, path.chapter, verseNum)
             if (verse != null) {
-                puzzle.postValue(puzzleBuilder.linkClear(verse))
+                puzzle.postValue(puzzleBuilder.random(verse))
             }
         }
     }
