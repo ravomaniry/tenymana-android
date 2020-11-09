@@ -63,11 +63,11 @@ abstract class BaseCharGridControl {
         }
     }
 
-    protected fun drawFilledBG(canvas: Canvas, x: Int, y: Int, left0: Int, top0: Int) {
+    protected fun drawFilledBG(canvas: Canvas, x: Int, y: Int, left0: Int = 0, top0: Int = 0) {
         drawBG(canvas, x, y, left0, top0, bgPaint)
     }
 
-    protected fun drawEmptyBG(canvas: Canvas, x: Int, y: Int, left0: Int, top0: Int) {
+    protected fun drawEmptyBG(canvas: Canvas, x: Int, y: Int, left0: Int = 0, top0: Int = 0) {
         drawBG(canvas, x, y, left0, top0, emptyBgPaint)
     }
 
@@ -83,7 +83,14 @@ abstract class BaseCharGridControl {
         )
     }
 
-    protected fun drawChar(canvas: Canvas, char: Char, x: Int, y: Int, left0: Int, top0: Int) {
+    protected fun drawChar(
+        canvas: Canvas,
+        char: Char,
+        x: Int,
+        y: Int,
+        left0: Int = 0,
+        top0: Int = 0
+    ) {
         canvas.drawText(
             char.toString(),
             left0 + calcLeft(x) + textDX,

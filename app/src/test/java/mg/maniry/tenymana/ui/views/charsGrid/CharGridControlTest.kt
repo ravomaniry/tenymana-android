@@ -142,7 +142,7 @@ class CharGridControlTest {
         rects: List<TestRect>,
         emptyRects: List<TestRect>
     ) {
-        val control = CharGridViewControl().apply {
+        val control = FixedCharGridControl().apply {
             settings = DrawingSettings()
             onGridChanged(Grid(grid))
             onSizeChanged(width, height)

@@ -60,8 +60,8 @@ class CharGridInputControl : BaseCharGridControl() {
         for (p in highlights) {
             val char = grid?.get(p)
             if (char != null) {
-                drawFilledBG(canvas, p.x, p.y, 0, 0)
-                drawChar(canvas, char.value, p.x, p.y, 0, 0)
+                drawFilledBG(canvas, p.x, p.y)
+                drawChar(canvas, char.value, p.x, p.y)
             }
         }
     }
