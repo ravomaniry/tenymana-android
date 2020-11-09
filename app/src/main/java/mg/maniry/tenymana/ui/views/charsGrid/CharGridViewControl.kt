@@ -1,4 +1,4 @@
-package mg.maniry.tenymana.ui.game.puzzle.views
+package mg.maniry.tenymana.ui.views.charsGrid
 
 import android.graphics.Canvas
 import android.graphics.Color
@@ -6,6 +6,7 @@ import android.graphics.Paint
 import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.gameLogic.models.Grid
 import mg.maniry.tenymana.gameLogic.models.Point
+import mg.maniry.tenymana.ui.views.DrawingSettings
 import kotlin.math.floor
 import kotlin.math.min
 

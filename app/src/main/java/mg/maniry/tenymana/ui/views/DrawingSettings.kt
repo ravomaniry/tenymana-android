@@ -1,7 +1,8 @@
-package mg.maniry.tenymana.ui.game.puzzle.views
+package mg.maniry.tenymana.ui.views
 
 import android.view.View
 import mg.maniry.tenymana.gameLogic.models.Point
+import mg.maniry.tenymana.ui.views.verse.VerseViewControl
 
 class DrawingSettings {
     private val charGridSubs = mutableSetOf<View>()

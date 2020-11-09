@@ -1,4 +1,4 @@
-package mg.maniry.tenymana.ui.game.puzzle.views
+package mg.maniry.tenymana.ui.views.charsGrid
 
 import android.content.Context
 import android.graphics.Canvas
@@ -12,6 +12,7 @@ import mg.maniry.tenymana.gameLogic.models.Grid
 import mg.maniry.tenymana.gameLogic.models.Move
 import mg.maniry.tenymana.gameLogic.models.Point
 import mg.maniry.tenymana.ui.game.colors.GameColors
+import mg.maniry.tenymana.ui.views.DrawingSettings
 import kotlin.math.floor
 
 typealias ProposeFn = (Move) -> Unit

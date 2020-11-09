@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <mg.maniry.tenymana.ui.game.puzzle.views.VerseView
+            <mg.maniry.tenymana.ui.views.verse.VerseView
                 android:id="@+id/verseView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -33,22 +33,22 @@
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <mg.maniry.tenymana.ui.game.puzzle.views.CharGridBackground
+            <mg.maniry.tenymana.ui.views.charsGrid.CharGridBackground
                 android:id="@+id/charsGridBg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-            <mg.maniry.tenymana.ui.game.puzzle.views.GridHighlightView
+            <mg.maniry.tenymana.ui.views.charsGrid.GridHighlightView
                 android:id="@+id/gridClearedView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-            <mg.maniry.tenymana.ui.game.puzzle.views.CharGridText
+            <mg.maniry.tenymana.ui.views.charsGrid.CharGridText
                 android:id="@+id/charsGridText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-            <mg.maniry.tenymana.ui.game.puzzle.views.CharGridInput
+            <mg.maniry.tenymana.ui.views.charsGrid.CharGridInput
                 android:id="@+id/charsGridInput"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
@@ -70,7 +70,7 @@
                 android:onClick="@{() -> viewModel.undo()}"
                 android:src="@drawable/ic_undo" />
 
-            <mg.maniry.tenymana.ui.game.puzzle.views.BonusOneButtonView
+            <mg.maniry.tenymana.ui.views.bonusBtn.BonusOneButtonView
                 android:id="@+id/puzzleBonusOneBtn"
                 style="@style/AppTheme.BonusBtn"
                 android:layout_width="wrap_content"

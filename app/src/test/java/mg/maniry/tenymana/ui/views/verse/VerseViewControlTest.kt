@@ -1,4 +1,4 @@
-package mg.maniry.tenymana.ui.game.puzzle.views
+package mg.maniry.tenymana.ui.views.verse
 
 import android.graphics.Canvas
 import android.graphics.Color
@@ -7,17 +7,18 @@ import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.mock
 import mg.maniry.tenymana.gameLogic.models.Word
-import mg.maniry.tenymana.ui.game.puzzle.views.VerseViewControl.Companion.H
-import mg.maniry.tenymana.ui.game.puzzle.views.VerseViewControl.Companion.PADDING
-import mg.maniry.tenymana.ui.game.puzzle.views.VerseViewControl.Companion.SPACING_H
-import mg.maniry.tenymana.ui.game.puzzle.views.VerseViewControl.Companion.SPACING_V
-import mg.maniry.tenymana.ui.game.puzzle.views.VerseViewControl.Companion.W
+import mg.maniry.tenymana.ui.views.DrawingSettings
+import mg.maniry.tenymana.ui.views.verse.VerseViewControl.Companion.H
+import mg.maniry.tenymana.ui.views.verse.VerseViewControl.Companion.PADDING
+import mg.maniry.tenymana.ui.views.verse.VerseViewControl.Companion.SPACING_H
+import mg.maniry.tenymana.ui.views.verse.VerseViewControl.Companion.SPACING_V
+import mg.maniry.tenymana.ui.views.verse.VerseViewControl.Companion.W
 import mg.maniry.tenymana.utils.TestRect
 import mg.maniry.tenymana.utils.TestTextShape
 import org.junit.Test
 import org.mockito.invocation.InvocationOnMock
 
-class VerseViewTest {
+class VerseViewControlTest {
     @Test
     fun measure() {
         // words is null

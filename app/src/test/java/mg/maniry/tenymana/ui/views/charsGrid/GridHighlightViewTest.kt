@@ -1,10 +1,11 @@
-package mg.maniry.tenymana.ui.game.puzzle.views
+package mg.maniry.tenymana.ui.views.charsGrid
 
 import android.animation.ValueAnimator
 import android.graphics.Canvas
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.*
 import mg.maniry.tenymana.gameLogic.models.Point
+import mg.maniry.tenymana.ui.views.DrawingSettings
 import mg.maniry.tenymana.utils.TestRect
 import mg.maniry.tenymana.utils.verifyNever
 import mg.maniry.tenymana.utils.verifyOnce

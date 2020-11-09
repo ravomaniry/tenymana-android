@@ -1,4 +1,4 @@
-package mg.maniry.tenymana.ui.game.puzzle.views
+package mg.maniry.tenymana.ui.views.charsGrid
 
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -8,8 +8,9 @@ import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.mock
 import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.gameLogic.models.Grid
-import mg.maniry.tenymana.ui.game.puzzle.views.CharGridViewControl.Companion.MARGIN
-import mg.maniry.tenymana.ui.game.puzzle.views.CharGridViewControl.Companion.emptyBgPaint
+import mg.maniry.tenymana.ui.views.DrawingSettings
+import mg.maniry.tenymana.ui.views.charsGrid.CharGridViewControl.Companion.MARGIN
+import mg.maniry.tenymana.ui.views.charsGrid.CharGridViewControl.Companion.emptyBgPaint
 import mg.maniry.tenymana.utils.TestRect
 import mg.maniry.tenymana.utils.TestTextShape
 import org.junit.Test

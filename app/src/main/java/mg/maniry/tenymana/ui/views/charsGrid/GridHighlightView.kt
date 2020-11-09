@@ -1,4 +1,4 @@
-package mg.maniry.tenymana.ui.game.puzzle.views
+package mg.maniry.tenymana.ui.views.charsGrid
 
 import android.animation.ValueAnimator
 import android.content.Context
@@ -9,6 +9,7 @@ import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import mg.maniry.tenymana.gameLogic.models.Point
 import mg.maniry.tenymana.ui.game.colors.GameColors
+import mg.maniry.tenymana.ui.views.DrawingSettings
 import java.util.*
 
 class GridHighlightView : View {
@@ -18,7 +19,8 @@ class GridHighlightView : View {
             super(context, attributeSet, defStyleAttr)
 
     private val animator = ValueAnimator.ofFloat(0f, 1f)
-    private val control = GridHighlightControl(animator)
+    private val control =
+        GridHighlightControl(animator)
 
     fun onAnimDurationChanged(duration: Double) {
         control.animDuration = duration

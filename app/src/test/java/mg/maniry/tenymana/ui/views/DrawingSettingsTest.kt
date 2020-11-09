@@ -1,4 +1,4 @@
-package mg.maniry.tenymana.ui.game.puzzle.views
+package mg.maniry.tenymana.ui.views
 
 import android.view.View
 import com.google.common.truth.Truth.assertThat

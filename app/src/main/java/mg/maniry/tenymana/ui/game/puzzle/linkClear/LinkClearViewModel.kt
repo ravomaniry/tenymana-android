@@ -9,7 +9,7 @@ import mg.maniry.tenymana.gameLogic.models.Grid
 import mg.maniry.tenymana.gameLogic.models.Point
 import mg.maniry.tenymana.gameLogic.models.Puzzle
 import mg.maniry.tenymana.ui.game.puzzle.PuzzleViewModel
-import mg.maniry.tenymana.ui.game.puzzle.views.ProposeFn
+import mg.maniry.tenymana.ui.views.charsGrid.ProposeFn
 import mg.maniry.tenymana.utils.KDispatchers
 import mg.maniry.tenymana.utils.newViewModelFactory
 

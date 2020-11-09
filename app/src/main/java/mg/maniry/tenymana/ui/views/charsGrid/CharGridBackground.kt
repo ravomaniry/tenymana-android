@@ -1,4 +1,4 @@
-package mg.maniry.tenymana.ui.game.puzzle.views
+package mg.maniry.tenymana.ui.views.charsGrid
 
 import android.content.Context
 import android.graphics.Canvas
@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.gameLogic.models.Grid
 import mg.maniry.tenymana.ui.game.colors.GameColors
+import mg.maniry.tenymana.ui.views.DrawingSettings
 
 open class CharGridBackground : View {
     constructor(context: Context) : super(context)
