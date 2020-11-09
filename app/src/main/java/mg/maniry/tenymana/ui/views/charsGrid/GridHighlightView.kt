@@ -19,8 +19,7 @@ class GridHighlightView : View {
             super(context, attributeSet, defStyleAttr)
 
     private val animator = ValueAnimator.ofFloat(0f, 1f)
-    private val control =
-        GridHighlightControl(animator)
+    private val control = GridHighlightControl(animator)
 
     fun onAnimDurationChanged(duration: Double) {
         control.animDuration = duration

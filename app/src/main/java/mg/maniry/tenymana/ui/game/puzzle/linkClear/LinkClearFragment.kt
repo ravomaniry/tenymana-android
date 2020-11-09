@@ -13,7 +13,7 @@ import mg.maniry.tenymana.databinding.PuzzleScreenLinkClearBinding
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.ui.app.SharedViewModels
 import mg.maniry.tenymana.ui.views.DrawingSettings
-import mg.maniry.tenymana.ui.views.charsGrid.CharGridBackground
+import mg.maniry.tenymana.ui.views.charsGrid.BaseCharGridView
 import mg.maniry.tenymana.utils.KDispatchers
 import mg.maniry.tenymana.utils.bindTo
 import org.koin.android.ext.android.inject
@@ -66,7 +66,7 @@ class LinkClearFragment : Fragment() {
         initCharsGridView(binding.charsGridText)
     }
 
-    private fun initCharsGridView(view: CharGridBackground) {
+    private fun initCharsGridView(view: BaseCharGridView) {
         view.apply {
             onSettingsChanged(drawingSettings)
             onVisibleHChanged(LinkClearPuzzle.gridSize)

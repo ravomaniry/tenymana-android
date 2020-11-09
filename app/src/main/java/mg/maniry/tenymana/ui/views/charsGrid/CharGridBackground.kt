@@ -3,42 +3,14 @@ package mg.maniry.tenymana.ui.views.charsGrid
 import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
-import android.view.View
-import androidx.core.content.ContextCompat
-import mg.maniry.tenymana.gameLogic.models.Character
-import mg.maniry.tenymana.gameLogic.models.Grid
-import mg.maniry.tenymana.ui.game.colors.GameColors
-import mg.maniry.tenymana.ui.views.DrawingSettings
 
-open class CharGridBackground : View {
+class CharGridBackground : BaseCharGridView {
     constructor(context: Context) : super(context)
     constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet)
     constructor(context: Context, attributeSet: AttributeSet, defStyleAttr: Int) :
             super(context, attributeSet, defStyleAttr)
 
-    protected val control = CharGridViewControl()
-
-    fun onSettingsChanged(settings: DrawingSettings) {
-        control.settings = settings
-    }
-
-    fun onGridChanged(grid: Grid<Character>?) {
-        control.onGridChanged(grid)
-        invalidate()
-    }
-
-    fun onVisibleHChanged(h: Int) {
-        control.onVisibleHChanged(h)
-        invalidate()
-    }
-
-    fun onColorsChanged(colors: GameColors) {
-        control.onColorChanged(ContextCompat.getColor(context, colors.primary))
-    }
-
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        control.onSizeChanged(w, h)
-    }
+    override val control: CharGridViewControl = CharGridViewControl()
 
     override fun onDraw(canvas: Canvas?) {
         if (canvas != null) {
