@@ -9,8 +9,8 @@ import com.nhaarman.mockitokotlin2.mock
 import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.gameLogic.models.Grid
 import mg.maniry.tenymana.ui.views.DrawingSettings
-import mg.maniry.tenymana.ui.views.charsGrid.CharGridViewControl.Companion.MARGIN
-import mg.maniry.tenymana.ui.views.charsGrid.CharGridViewControl.Companion.emptyBgPaint
+import mg.maniry.tenymana.ui.views.charsGrid.BaseCharGridControl.Companion.MARGIN
+import mg.maniry.tenymana.ui.views.charsGrid.BaseCharGridControl.Companion.emptyBgPaint
 import mg.maniry.tenymana.utils.TestRect
 import mg.maniry.tenymana.utils.TestTextShape
 import org.junit.Test
@@ -168,15 +168,10 @@ class CharGridControlTest {
             }
         }
         // draw backgrounds
-        control.draw(canvas, CharGridViewControl.DrawMode.BG)
+        control.draw(canvas)
         assertThat(drawnRects).isEqualTo(rects)
         assertThat(drawnEmptyRects).isEqualTo(emptyRects)
-        assertThat(drawnTexts).isEmpty()
-        // draw texts
-        control.draw(canvas, CharGridViewControl.DrawMode.TEXT)
         assertThat(drawnTexts).isEqualTo(texts)
-        assertThat(drawnRects).isEqualTo(rects)
-        assertThat(drawnEmptyRects).isEqualTo(emptyRects)
     }
 
     private fun chars(vararg values: Char?): List<Character?> {

@@ -33,18 +33,13 @@
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <mg.maniry.tenymana.ui.views.charsGrid.CharGridBackground
+            <mg.maniry.tenymana.ui.views.charsGrid.FixedCharGrid
                 android:id="@+id/charsGridBg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
             <mg.maniry.tenymana.ui.views.charsGrid.GridHighlightView
                 android:id="@+id/gridHighlightView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <mg.maniry.tenymana.ui.views.charsGrid.CharGridText
-                android:id="@+id/charsGridText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 

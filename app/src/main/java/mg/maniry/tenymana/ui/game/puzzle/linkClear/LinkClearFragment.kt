@@ -14,7 +14,6 @@ import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.ui.app.AnimatorWrapper
 import mg.maniry.tenymana.ui.app.SharedViewModels
 import mg.maniry.tenymana.ui.views.DrawingSettings
-import mg.maniry.tenymana.ui.views.charsGrid.BaseCharGridView
 import mg.maniry.tenymana.utils.KDispatchers
 import mg.maniry.tenymana.utils.bindTo
 import org.koin.android.ext.android.inject
@@ -32,7 +31,7 @@ class LinkClearFragment : Fragment() {
         initViewModel()
         initBinding(inflater, container)
         initVerseView()
-        initCharsGridViews()
+        initCharsGridView()
         initCharsGridInput()
         initGridHighlightVew()
         initBonusViews()
@@ -62,13 +61,8 @@ class LinkClearFragment : Fragment() {
         }
     }
 
-    private fun initCharsGridViews() {
-        initCharsGridView(binding.charsGridBg)
-        initCharsGridView(binding.charsGridText)
-    }
-
-    private fun initCharsGridView(view: BaseCharGridView) {
-        view.apply {
+    private fun initCharsGridView() {
+        binding.charsGridBg.apply {
             onSettingsChanged(drawingSettings)
             onVisibleHChanged(LinkClearPuzzle.gridSize)
             bindTo(viewModel.grid, ::onGridChanged)
@@ -79,6 +73,7 @@ class LinkClearFragment : Fragment() {
     private fun initCharsGridInput() {
         binding.charsGridInput.apply {
             onSettingsChanged(drawingSettings)
+            onVisibleHChanged(LinkClearPuzzle.gridSize)
             bindTo(viewModel.propose, ::onPropose)
             bindTo(viewModel.grid, ::onGridChanged)
             bindTo(viewModel.colors, ::onColorsChanged)
@@ -104,7 +99,6 @@ class LinkClearFragment : Fragment() {
         viewModel.invalidate.observe(viewLifecycleOwner, Observer {
             if (it) {
                 binding.charsGridBg.invalidate()
-                binding.charsGridText.invalidate()
                 binding.verseView.invalidate()
                 binding.gridHighlightView.invalidate()
                 viewModel.invalidate.postValue(false)

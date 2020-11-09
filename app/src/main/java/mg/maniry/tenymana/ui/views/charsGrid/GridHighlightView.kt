@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.AttributeSet
-import android.util.Log
 import androidx.core.content.res.ResourcesCompat
 import mg.maniry.tenymana.gameLogic.models.Point
 import mg.maniry.tenymana.ui.game.colors.GameColors
@@ -61,9 +60,9 @@ class GridHighlightView : AnimatedView {
 class GridHighlightControl {
     enum class Mode { GROW, IDLE, SHRINK }
 
-    var t0: Long = 0
-    var t: Double = 0.0
     var settings: DrawingSettings? = null
+    private var t: Double = 0.0
+    private var t0: Long = 0
     private var sizes: MutableList<Float> = mutableListOf()
     private var centers: List<Point> = mutableListOf()
     private var tZeroes: MutableList<Double> = mutableListOf()
@@ -82,7 +81,6 @@ class GridHighlightControl {
 
     fun onValue(value: List<Point>?, now: Long) {
         t0 = now
-        Log.d("AnimationView", "onValue: $now $value")
         this.value = value
         if (value != null) {
             calcStarts()

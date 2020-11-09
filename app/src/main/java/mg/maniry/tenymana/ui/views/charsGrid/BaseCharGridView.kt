@@ -15,7 +15,7 @@ abstract class BaseCharGridView : View {
     constructor(context: Context, attributeSet: AttributeSet, defStyleAttr: Int) :
             super(context, attributeSet, defStyleAttr)
 
-    protected abstract val control: CharGridViewControl
+    protected abstract val control: BaseCharGridControl
 
     fun onSettingsChanged(settings: DrawingSettings) {
         control.settings = settings
@@ -31,7 +31,7 @@ abstract class BaseCharGridView : View {
         invalidate()
     }
 
-    fun onColorsChanged(colors: GameColors) {
+    open fun onColorsChanged(colors: GameColors) {
         control.onColorChanged(ContextCompat.getColor(context, colors.primary))
     }
 
