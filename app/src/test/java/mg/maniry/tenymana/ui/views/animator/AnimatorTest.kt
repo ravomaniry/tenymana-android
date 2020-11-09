@@ -19,7 +19,7 @@ class AnimatorTest {
             on { this.cancel() } doAnswer { isRunning = false; Unit }
             on { this.start() } doAnswer { isRunning = true; Unit }
         }
-        val animator = AnimatorImpl(animation)
+        val animator = Animator(animation)
         verifyNever(animation).start()
         // Register starts the animation
         var onView1Tick = false
