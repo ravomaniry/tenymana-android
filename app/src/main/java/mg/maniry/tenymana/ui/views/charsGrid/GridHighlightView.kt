@@ -3,7 +3,9 @@ package mg.maniry.tenymana.ui.views.charsGrid
 import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
+import androidx.core.content.res.ResourcesCompat
 import mg.maniry.tenymana.gameLogic.models.Point
+import mg.maniry.tenymana.ui.game.colors.GameColors
 import mg.maniry.tenymana.ui.views.animator.AnimatedView
 import mg.maniry.tenymana.ui.views.animator.Animator
 import java.util.*
@@ -19,6 +21,10 @@ class GridHighlightView : BaseCharGridView, AnimatedView {
 
     fun onAnimDurationChanged(duration: Double) {
         control.animDuration = duration
+    }
+
+    override fun onColorsChanged(colors: GameColors) {
+        control.onColorChanged(ResourcesCompat.getColor(resources, colors.accent, null))
     }
 
     fun onValue(value: List<Point>?) {

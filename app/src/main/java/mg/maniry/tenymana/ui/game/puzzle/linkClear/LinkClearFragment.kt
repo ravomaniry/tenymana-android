@@ -56,8 +56,8 @@ class LinkClearFragment : Fragment() {
     private fun initVerseView() {
         binding.verseView.apply {
             onSettingsChanged(drawingSettings)
-            bindTo(viewModel.colors, ::onColorsChanged)
-            bindTo(viewModel.words, ::onWordsChange)
+            bindTo(viewModel.colors, this::onColorsChanged)
+            bindTo(viewModel.words, this::onWordsChange)
         }
     }
 
@@ -65,8 +65,8 @@ class LinkClearFragment : Fragment() {
         binding.charsGridBg.apply {
             onSettingsChanged(drawingSettings)
             onVisibleHChanged(LinkClearPuzzle.gridSize)
-            bindTo(viewModel.grid, ::onGridChanged)
-            bindTo(viewModel.colors, ::onColorsChanged)
+            bindTo(viewModel.grid, this::onGridChanged)
+            bindTo(viewModel.colors, this::onColorsChanged)
         }
     }
 
@@ -74,9 +74,9 @@ class LinkClearFragment : Fragment() {
         binding.charsGridInput.apply {
             onSettingsChanged(drawingSettings)
             onVisibleHChanged(LinkClearPuzzle.gridSize)
-            bindTo(viewModel.propose, ::onPropose)
-            bindTo(viewModel.grid, ::onGridChanged)
-            bindTo(viewModel.colors, ::onColorsChanged)
+            bindTo(viewModel.propose, this::onPropose)
+            bindTo(viewModel.grid, this::onGridChanged)
+            bindTo(viewModel.colors, this::onColorsChanged)
         }
     }
 
@@ -85,9 +85,10 @@ class LinkClearFragment : Fragment() {
         binding.gridHighlightView.apply {
             animator = anim.value
             onSettingsChanged(drawingSettings)
-            bindTo(viewModel.animDuration, ::onAnimDurationChanged)
-            bindTo(viewModel.colors, ::onColorsChanged)
-            bindTo(viewModel.highlighted, ::onValue)
+            bindTo(viewModel.grid, this::onGridChanged)
+            bindTo(viewModel.animDuration, this::onAnimDurationChanged)
+            bindTo(viewModel.colors, this::onColorsChanged)
+            bindTo(viewModel.highlighted, this::onValue)
         }
     }
 
