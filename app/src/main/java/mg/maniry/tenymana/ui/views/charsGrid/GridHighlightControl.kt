@@ -1,14 +1,12 @@
 package mg.maniry.tenymana.ui.views.charsGrid
 
 import android.graphics.Canvas
-import android.graphics.Paint
 import mg.maniry.tenymana.gameLogic.models.Point
-import mg.maniry.tenymana.ui.views.DrawingSettings
 
-class GridHighlightControl {
+class GridHighlightControl : BaseCharGridControl() {
     enum class Mode { GROW, IDLE, SHRINK }
 
-    var settings: DrawingSettings? = null
+    var animDuration = 500.0
     private var t: Double = 0.0
     private var t0: Long = 0
     private var sizes: MutableList<Float> = mutableListOf()
@@ -17,15 +15,6 @@ class GridHighlightControl {
     private var mode: Mode? = null
     private var value: List<Point>? = null
     private val cellSize: Float get() = settings?.charGridCellSize ?: 0f
-    private val paint = Paint().apply {
-        style = Paint.Style.FILL
-    }
-
-    var animDuration = 500.0
-
-    fun onColor(color: Int) {
-        paint.color = color
-    }
 
     fun onValue(value: List<Point>?, now: Long) {
         t0 = now
@@ -103,16 +92,14 @@ class GridHighlightControl {
         }
     }
 
-    private fun draw(canvas: Canvas) {
+    override fun draw(canvas: Canvas) {
         for (i in sizes.indices) {
-            if (sizes[i] > 0) {
-                canvas.drawRect(
-                    centers[i].x - sizes[i] / 2,
-                    centers[i].y - sizes[i] / 2,
-                    centers[i].x + sizes[i] / 2,
-                    centers[i].y + sizes[i] / 2,
-                    paint
-                )
+            val point = value?.get(i)
+            if (sizes[i] > 0 && point != null) {
+                val size = sizes[i]
+                val offset = (cellSize - size) / 2
+                drawFilledBG(canvas, point.x, point.y, offset, offset - MARGIN, size)
+                drawCharAt(canvas, point.x, point.y)
             }
         }
     }

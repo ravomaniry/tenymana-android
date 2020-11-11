@@ -3,9 +3,13 @@ package mg.maniry.tenymana.ui.views.charsGrid
 import android.graphics.Canvas
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.*
+import mg.maniry.tenymana.gameLogic.models.Grid
 import mg.maniry.tenymana.gameLogic.models.Point
 import mg.maniry.tenymana.ui.views.DrawingSettings
+import mg.maniry.tenymana.ui.views.charsGrid.BaseCharGridControl.Companion.MARGIN
 import mg.maniry.tenymana.utils.TestRect
+import mg.maniry.tenymana.utils.TestTextShape
+import mg.maniry.tenymana.utils.chars
 import org.junit.Test
 
 class GridHighlightViewTest {
@@ -14,9 +18,13 @@ class GridHighlightViewTest {
         // canvas
         // Add value and draw
         val rects = mutableListOf<TestRect>()
+        val texts = mutableListOf<TestTextShape>()
         val canvas: Canvas = mock {
             on { drawRect(any(), any(), any(), any(), any()) } doAnswer {
                 rects.add(TestRect.fromMock(it.arguments)); Unit
+            }
+            on { drawText(any(), any(), any(), any()) } doAnswer {
+                texts.add(TestTextShape.fromMock(it.arguments)); Unit
             }
         }
 
@@ -27,33 +35,47 @@ class GridHighlightViewTest {
             }
         }
         // control
-        val control = GridHighlightControl()
         val cellSize = 20f
+        val textDY = cellSize - MARGIN * 4
+        val textDX = (cellSize - MARGIN) / 2
         val x0 = 10f
         val y0 = 100f
+        val control = GridHighlightControl()
         control.animDuration = 500.0
         control.settings = DrawingSettings().apply {
             charGridCellSize = cellSize
             charGridOrigin = Point(x0.toInt(), y0.toInt())
         }
+        control.onGridChanged(Grid(listOf(chars('A', 'B'), chars('C', 'D'))))
         // add value and ticks
         control.onValue(listOf(Point(0, 0), Point(1, 1)), 1000)
         control.reRender(1000)
         assertThat(rects).isEmpty()
+        assertThat(texts).isEmpty()
         // t = 0.1: draw cells[0] = 4, cells[1] = 0
         control.reRender(1050)
         assertThat(rects).isEqualTo(listOf(TestRect.xywh(20f - 2, 90f - 2, 4f, 4f)))
+        assertThat(texts).isEqualTo(listOf(TestTextShape("A", 10f + textDX, 82f + textDY)))
         // t = 0.25: cells[0] = 10
         rects.removeAll { true }
+        texts.removeAll { true }
         control.reRender(1125)
         assertThat(rects).isEqualTo(listOf(TestRect.xywh(20f - 5, 90f - 5, 10f, 10f)))
+        assertThat(texts).isEqualTo(listOf(TestTextShape("A", 10f + textDX, 82f + textDY)))
         // t = 0.3: cells[0] = 12; cells[1] = 4
         rects.removeAll { true }
+        texts.removeAll { true }
         control.reRender(1150)
         assertThat(rects).isEqualTo(
             listOf(
                 TestRect.xywh(20f - 6, 90f - 6, 12f, 12f),
                 TestRect.xywh(40f - 2, 70f - 2, 4f, 4f)
+            )
+        )
+        assertThat(texts).isEqualTo(
+            listOf(
+                TestTextShape("A", 10f + textDX, 82f + textDY),
+                TestTextShape("D", 30f + textDX, 62f + textDY)
             )
         )
         rects.removeAll { true }

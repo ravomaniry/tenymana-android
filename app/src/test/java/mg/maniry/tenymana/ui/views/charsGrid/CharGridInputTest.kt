@@ -28,10 +28,10 @@ class CharGridInputTest {
         val cellSize = 20f
         val textDY = cellSize - MARGIN * 4
         val textDX = (cellSize - MARGIN) / 2
-        val aText = TestTextShape("A", textDX + 100f, 78f + textDY)
-        val bText = TestTextShape("B", textDX + 120f, 78f + textDY)
-        val aRect = TestRect.xywh(100f, 78f, cellSize - MARGIN, cellSize - MARGIN)
-        val bRect = TestRect.xywh(120f, 78f, cellSize - MARGIN, cellSize - MARGIN)
+        val aText = TestTextShape("A", textDX + 100f, 82f + textDY)
+        val bText = TestTextShape("B", textDX + 120f, 82f + textDY)
+        val aRect = TestRect.xywh(100f, 82f, cellSize - MARGIN, cellSize - MARGIN)
+        val bRect = TestRect.xywh(120f, 82f, cellSize - MARGIN, cellSize - MARGIN)
         testInput(
             cells = listOf(chars('A', 'B'), chars(null, null)),
             origin = Point(100, 100),
@@ -52,8 +52,8 @@ class CharGridInputTest {
         val cellSize = 25f
         val textDY = cellSize - MARGIN * 4
         val textDX = (cellSize - MARGIN) / 2
-        val dRect = TestRect.xywh(25f, 148f, cellSize - MARGIN, cellSize - MARGIN)
-        val dText = TestTextShape("D", 25f + textDX, 148f + textDY)
+        val dRect = TestRect.xywh(25f, 152f, cellSize - MARGIN, cellSize - MARGIN)
+        val dText = TestTextShape("D", 25f + textDX, 152f + textDY)
         testInput(
             cells = listOf(
                 chars('A', 'B', null),
@@ -82,8 +82,8 @@ class CharGridInputTest {
         val cellSize = 10f
         val textDY = cellSize - MARGIN * 4
         val textDX = (cellSize - MARGIN) / 2
-        val aRect = TestRect.xywh(50f, 88f, cellSize - MARGIN, cellSize - MARGIN)
-        val aText = TestTextShape("A", 50f + textDX, 88f + textDY)
+        val aRect = TestRect.xywh(50f, 92f, cellSize - MARGIN, cellSize - MARGIN)
+        val aText = TestTextShape("A", 50f + textDX, 92f + textDY)
         testInput(
             cells = listOf(
                 chars('A', 'B', null),

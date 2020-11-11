@@ -33,35 +33,35 @@ class CharGridControlTest {
             width = 100,
             height = 100,
             rects = listOf(
-                TestRect.xywh(0f, 100f - cellSize - MARGIN, rectSize, rectSize), // a
-                TestRect.xywh(cellSize, 100f - cellSize - MARGIN, rectSize, rectSize), // b
-                TestRect.xywh(cellSize * 2, 100f - cellSize - MARGIN, rectSize, rectSize), // c
-                TestRect.xywh(0f, 100f - 2 * cellSize - MARGIN, rectSize, rectSize), // d
-                TestRect.xywh(cellSize, 100f - 2 * cellSize - MARGIN, rectSize, rectSize) // e
+                TestRect.xywh(0f, 100f - cellSize + MARGIN, rectSize, rectSize), // a
+                TestRect.xywh(cellSize, 100f - cellSize + MARGIN, rectSize, rectSize), // b
+                TestRect.xywh(cellSize * 2, 100f - cellSize + MARGIN, rectSize, rectSize), // c
+                TestRect.xywh(0f, 100f - 2 * cellSize + MARGIN, rectSize, rectSize), // d
+                TestRect.xywh(cellSize, 100f - 2 * cellSize + MARGIN, rectSize, rectSize) // e
             ),
             emptyRects = listOf(
-                TestRect.xywh(cellSize * 3, 100f - cellSize - MARGIN, rectSize, rectSize), // 0
-                TestRect.xywh(cellSize * 4, 100f - cellSize - MARGIN, rectSize, rectSize),
-                TestRect.xywh(cellSize * 2, 100f - 2 * cellSize - MARGIN, rectSize, rectSize), // 1
-                TestRect.xywh(cellSize * 3, 100f - 2 * cellSize - MARGIN, rectSize, rectSize),
-                TestRect.xywh(cellSize * 4, 100f - 2 * cellSize - MARGIN, rectSize, rectSize),
-                TestRect.xywh(cellSize * 0, 100f - 3 * cellSize - MARGIN, rectSize, rectSize), // 2
-                TestRect.xywh(cellSize * 1, 100f - 3 * cellSize - MARGIN, rectSize, rectSize),
-                TestRect.xywh(cellSize * 2, 100f - 3 * cellSize - MARGIN, rectSize, rectSize),
-                TestRect.xywh(cellSize * 3, 100f - 3 * cellSize - MARGIN, rectSize, rectSize),
-                TestRect.xywh(cellSize * 4, 100f - 3 * cellSize - MARGIN, rectSize, rectSize),
-                TestRect.xywh(cellSize * 0, 100f - 4 * cellSize - MARGIN, rectSize, rectSize), // 3
-                TestRect.xywh(cellSize * 1, 100f - 4 * cellSize - MARGIN, rectSize, rectSize),
-                TestRect.xywh(cellSize * 2, 100f - 4 * cellSize - MARGIN, rectSize, rectSize),
-                TestRect.xywh(cellSize * 3, 100f - 4 * cellSize - MARGIN, rectSize, rectSize),
-                TestRect.xywh(cellSize * 4, 100f - 4 * cellSize - MARGIN, rectSize, rectSize)
+                TestRect.xywh(cellSize * 3, 100f - cellSize + MARGIN, rectSize, rectSize), // 0
+                TestRect.xywh(cellSize * 4, 100f - cellSize + MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 2, 100f - 2 * cellSize + MARGIN, rectSize, rectSize), // 1
+                TestRect.xywh(cellSize * 3, 100f - 2 * cellSize + MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 4, 100f - 2 * cellSize + MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 0, 100f - 3 * cellSize + MARGIN, rectSize, rectSize), // 2
+                TestRect.xywh(cellSize * 1, 100f - 3 * cellSize + MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 2, 100f - 3 * cellSize + MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 3, 100f - 3 * cellSize + MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 4, 100f - 3 * cellSize + MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 0, 100f - 4 * cellSize + MARGIN, rectSize, rectSize), // 3
+                TestRect.xywh(cellSize * 1, 100f - 4 * cellSize + MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 2, 100f - 4 * cellSize + MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 3, 100f - 4 * cellSize + MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 4, 100f - 4 * cellSize + MARGIN, rectSize, rectSize)
             ),
             texts = listOf(
-                TestTextShape("A", textDX, 100f - cellSize - MARGIN + textDY),
-                TestTextShape("B", cellSize + textDX, 100f - cellSize - MARGIN + textDY),
-                TestTextShape("C", 2 * cellSize + textDX, 100f - cellSize - MARGIN + textDY),
-                TestTextShape("D", textDX, 100f - 2 * cellSize - MARGIN + textDY),
-                TestTextShape("E", cellSize + textDX, 100f - 2 * cellSize - MARGIN + textDY)
+                TestTextShape("A", textDX, 100f - cellSize + MARGIN + textDY),
+                TestTextShape("B", cellSize + textDX, 100f - cellSize + MARGIN + textDY),
+                TestTextShape("C", 2 * cellSize + textDX, 100f - cellSize + MARGIN + textDY),
+                TestTextShape("D", textDX, 100f - 2 * cellSize + MARGIN + textDY),
+                TestTextShape("E", cellSize + textDX, 100f - 2 * cellSize + MARGIN + textDY)
             )
         )
     }
@@ -78,16 +78,16 @@ class CharGridControlTest {
             width = 40,
             height = 50,
             rects = listOf(
-                TestRect.xywh(0f, 50f - cellSize - MARGIN, rectSize, rectSize),
-                TestRect.xywh(0f, 50f - 2 * cellSize - MARGIN, rectSize, rectSize)
+                TestRect.xywh(0f, 50f - cellSize + MARGIN, rectSize, rectSize),
+                TestRect.xywh(0f, 50f - 2 * cellSize + MARGIN, rectSize, rectSize)
             ),
             emptyRects = listOf(
-                TestRect.xywh(cellSize, 50f - cellSize - MARGIN, rectSize, rectSize),
-                TestRect.xywh(cellSize, 50f - 2 * cellSize - MARGIN, rectSize, rectSize)
+                TestRect.xywh(cellSize, 50f - cellSize + MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize, 50f - 2 * cellSize + MARGIN, rectSize, rectSize)
             ),
             texts = listOf(
-                TestTextShape("A", textDX, 50f - cellSize - MARGIN + textDY),
-                TestTextShape("B", textDX, 50f - 2 * cellSize - MARGIN + textDY)
+                TestTextShape("A", textDX, 50f - cellSize + MARGIN + textDY),
+                TestTextShape("B", textDX, 50f - 2 * cellSize + MARGIN + textDY)
             )
         )
     }
@@ -103,32 +103,32 @@ class CharGridControlTest {
             width = 200,
             height = 102,
             rects = listOf(
-                TestRect.xywh(70f, 102f - cellSize - MARGIN, rectSize, rectSize), // a
-                TestRect.xywh(70f, 102f - 2 * cellSize - MARGIN, rectSize, rectSize) // d
+                TestRect.xywh(70f, 102f - cellSize + MARGIN, rectSize, rectSize), // a
+                TestRect.xywh(70f, 102f - 2 * cellSize + MARGIN, rectSize, rectSize) // d
             ),
             emptyRects = listOf(
                 // 0
-                TestRect.xywh(cellSize * 1 + 70, 102f - cellSize * 1 - MARGIN, rectSize, rectSize),
-                TestRect.xywh(cellSize * 2 + 70, 102f - cellSize * 1 - MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 1 + 70, 102f - cellSize * 1 + MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 2 + 70, 102f - cellSize * 1 + MARGIN, rectSize, rectSize),
                 // 1
-                TestRect.xywh(cellSize * 1 + 70, 102f - cellSize * 2 - MARGIN, rectSize, rectSize),
-                TestRect.xywh(cellSize * 2 + 70, 102f - cellSize * 2 - MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 1 + 70, 102f - cellSize * 2 + MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 2 + 70, 102f - cellSize * 2 + MARGIN, rectSize, rectSize),
                 // 2
-                TestRect.xywh(cellSize * 0 + 70, 102f - cellSize * 3 - MARGIN, rectSize, rectSize),
-                TestRect.xywh(cellSize * 1 + 70, 102f - cellSize * 3 - MARGIN, rectSize, rectSize),
-                TestRect.xywh(cellSize * 2 + 70, 102f - cellSize * 3 - MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 0 + 70, 102f - cellSize * 3 + MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 1 + 70, 102f - cellSize * 3 + MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 2 + 70, 102f - cellSize * 3 + MARGIN, rectSize, rectSize),
                 // 3
-                TestRect.xywh(cellSize * 0 + 70, 102f - cellSize * 4 - MARGIN, rectSize, rectSize),
-                TestRect.xywh(cellSize * 1 + 70, 102f - cellSize * 4 - MARGIN, rectSize, rectSize),
-                TestRect.xywh(cellSize * 2 + 70, 102f - cellSize * 4 - MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 0 + 70, 102f - cellSize * 4 + MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 1 + 70, 102f - cellSize * 4 + MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 2 + 70, 102f - cellSize * 4 + MARGIN, rectSize, rectSize),
                 // 4
-                TestRect.xywh(cellSize * 0 + 70, 102f - cellSize * 5 - MARGIN, rectSize, rectSize),
-                TestRect.xywh(cellSize * 1 + 70, 102f - cellSize * 5 - MARGIN, rectSize, rectSize),
-                TestRect.xywh(cellSize * 2 + 70, 102f - cellSize * 5 - MARGIN, rectSize, rectSize)
+                TestRect.xywh(cellSize * 0 + 70, 102f - cellSize * 5 + MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 1 + 70, 102f - cellSize * 5 + MARGIN, rectSize, rectSize),
+                TestRect.xywh(cellSize * 2 + 70, 102f - cellSize * 5 + MARGIN, rectSize, rectSize)
             ),
             texts = listOf(
-                TestTextShape("A", 70f + textDX, 102f - cellSize - MARGIN + textDY),
-                TestTextShape("D", 70f + textDX, 102f - 2 * cellSize - MARGIN + textDY)
+                TestTextShape("A", 70f + textDX, 102f - cellSize + MARGIN + textDY),
+                TestTextShape("D", 70f + textDX, 102f - 2 * cellSize + MARGIN + textDY)
             )
         )
     }

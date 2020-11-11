@@ -48,8 +48,8 @@ abstract class BaseCharGridControl {
         updateDrawingSettings()
     }
 
-    fun onColorChanged(primary: Int) {
-        bgPaint.color = primary
+    open fun onColorChanged(color: Int) {
+        bgPaint.color = color
     }
 
     private fun updateDrawingSettings() {
@@ -63,24 +63,46 @@ abstract class BaseCharGridControl {
         }
     }
 
-    protected fun drawFilledBG(canvas: Canvas, x: Int, y: Int, left0: Int = 0, top0: Int = 0) {
-        drawBG(canvas, x, y, left0, top0, bgPaint)
+    protected fun drawFilledBG(
+        canvas: Canvas,
+        x: Int,
+        y: Int,
+        xOffset: Float = 0f,
+        yOffset: Float = 0f,
+        size: Float = cellSize - MARGIN
+    ) {
+        drawBG(canvas, x, y, xOffset, yOffset, size, bgPaint)
     }
 
-    protected fun drawEmptyBG(canvas: Canvas, x: Int, y: Int, left0: Int = 0, top0: Int = 0) {
-        drawBG(canvas, x, y, left0, top0, emptyBgPaint)
+    protected fun drawEmptyBG(
+        canvas: Canvas,
+        x: Int,
+        y: Int,
+        xOffset: Float = 0f,
+        yOffset: Float = 0f
+    ) {
+        drawBG(canvas, x, y, xOffset, yOffset, paint = emptyBgPaint)
     }
 
-    private fun drawBG(canvas: Canvas, x: Int, y: Int, left0: Int, top0: Int, paint: Paint) {
-        val left = calcLeft(x)
-        val top = calcTop(y)
-        canvas.drawRect(
-            left,
-            top,
-            left0 + left + cellSize - MARGIN,
-            top0 + top + cellSize - MARGIN,
-            paint
-        )
+    private fun drawBG(
+        canvas: Canvas,
+        x: Int,
+        y: Int,
+        xOffset: Float,
+        yOffset: Float,
+        size: Float = cellSize - MARGIN,
+        paint: Paint
+    ) {
+        val left = calcLeft(x) + xOffset
+        val top = calcTop(y) + yOffset
+        canvas.drawRect(left, top, left + size, top + size, paint)
+    }
+
+    protected fun drawCharAt(canvas: Canvas, x: Int, y: Int) {
+        val char = grid?.get(x, y)
+        if (char != null) {
+            drawChar(canvas, char.value, x, y)
+        }
     }
 
     protected fun drawChar(
@@ -91,12 +113,9 @@ abstract class BaseCharGridControl {
         left0: Int = 0,
         top0: Int = 0
     ) {
-        canvas.drawText(
-            char.toString(),
-            left0 + calcLeft(x) + textDX,
-            top0 + calcTop(y) + textDY,
-            textPaint
-        )
+        val left = left0 + calcLeft(x) + textDX
+        val top = top0 + calcTop(y) + textDY
+        canvas.drawText(char.toString(), left, top, textPaint)
     }
 
     private fun calcLeft(x: Int): Float {
@@ -104,7 +123,7 @@ abstract class BaseCharGridControl {
     }
 
     private fun calcTop(y: Int): Float {
-        return origin.y - (y * cellSize) - cellSize - MARGIN
+        return origin.y - (y * cellSize) - cellSize + MARGIN
     }
 
     companion object {

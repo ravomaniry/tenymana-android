@@ -3,27 +3,22 @@ package mg.maniry.tenymana.ui.views.charsGrid
 import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
-import androidx.core.content.res.ResourcesCompat
 import mg.maniry.tenymana.gameLogic.models.Point
-import mg.maniry.tenymana.ui.game.colors.GameColors
-import mg.maniry.tenymana.ui.views.DrawingSettings
 import mg.maniry.tenymana.ui.views.animator.AnimatedView
+import mg.maniry.tenymana.ui.views.animator.Animator
 import java.util.*
 
-class GridHighlightView : AnimatedView {
+class GridHighlightView : BaseCharGridView, AnimatedView {
     constructor(context: Context) : super(context)
     constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet)
     constructor(context: Context, attributeSet: AttributeSet, defStyleAttr: Int) :
             super(context, attributeSet, defStyleAttr)
 
-    private val control = GridHighlightControl()
+    override val control = GridHighlightControl()
+    override var animator: Animator? = null
 
     fun onAnimDurationChanged(duration: Double) {
         control.animDuration = duration
-    }
-
-    fun onSettingsChanged(settings: DrawingSettings) {
-        control.settings = settings
     }
 
     fun onValue(value: List<Point>?) {
@@ -33,10 +28,6 @@ class GridHighlightView : AnimatedView {
         } else {
             animator?.register(this)
         }
-    }
-
-    fun onColor(value: GameColors) {
-        control.onColor(ResourcesCompat.getColor(resources, value.accent, null))
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -53,5 +44,9 @@ class GridHighlightView : AnimatedView {
             invalidate()
         }
         return shouldInvalidate
+    }
+
+    override fun reRender() {
+        invalidate()
     }
 }

@@ -1,21 +1,13 @@
 package mg.maniry.tenymana.ui.views.animator
 
-import android.content.Context
-import android.util.AttributeSet
-import android.view.View
+interface AnimatedView {
+    var animator: Animator?
 
-abstract class AnimatedView : View {
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet)
-    constructor(context: Context, attributeSet: AttributeSet, defStyleAttr: Int) :
-            super(context, attributeSet, defStyleAttr)
+    fun reRender()
 
-    var animator: Animator? = null
+    fun onTick(t: Long): Boolean
 
-    abstract fun onTick(t: Long): Boolean
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
+    fun onDispose() {
         animator?.forget(this)
     }
 }

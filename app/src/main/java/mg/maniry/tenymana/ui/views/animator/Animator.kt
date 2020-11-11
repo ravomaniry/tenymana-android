@@ -27,7 +27,7 @@ class Animator(
         for (v in views) {
             val invalidate = v.onTick(t)
             if (invalidate) {
-                v.invalidate()
+                v.reRender()
             }
         }
     }
