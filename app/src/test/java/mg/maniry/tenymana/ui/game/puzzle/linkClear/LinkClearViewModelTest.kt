@@ -28,9 +28,11 @@ class LinkClearViewModelTest {
     @Test
     fun animationSimulation() {
         val puzzleCont = MutableLiveData<Puzzle>()
+        val invalidate = MutableLiveData(false)
         val puzzleViewModel: PuzzleViewModel = mock {
             on { this.puzzle } doReturn puzzleCont
             on { this.canUseBonusOne() } doReturn true
+            on { this.invalidate } doReturn invalidate
         }
         val viewModel = LinkClearViewModel(puzzleViewModel, TestDispatchers)
         assertThat(viewModel.grid.value).isNull()
@@ -75,5 +77,12 @@ class LinkClearViewModelTest {
         // Grid clear should update again the highlights
         cleared.postValue(listOf(Point(0, 0), Point(1, 0)))
         assertThat(viewModel.highlighted.value).isEqualTo(listOf(Point(0, 0), Point(1, 0)))
+        // Invalidate: update local invalidate + update viewModel's invalidate after onUpdateDone()
+        assertThat(viewModel.invalidate.value).isFalse()
+        invalidate.postValue(true)
+        assertThat(viewModel.invalidate.value).isTrue()
+        viewModel.onUpdateDone()
+        assertThat(viewModel.invalidate.value).isFalse()
+        assertThat(invalidate.value).isFalse()
     }
 }

@@ -20,7 +20,6 @@ class LinkClearViewModel(
     private var prevPuzzle: Puzzle? = null
     private val puzzle: LinkClearPuzzle? get() = puzzleViewModel.puzzle.value as LinkClearPuzzle?
 
-    val invalidate = puzzleViewModel.invalidate
     val colors = puzzleViewModel.colors
     val words = puzzleViewModel.words
 
@@ -65,6 +64,24 @@ class LinkClearViewModel(
         prevPuzzle = it
     }
 
+    private val _invalidate = MutableLiveData(false)
+    val invalidate: LiveData<Boolean> = _invalidate
+
+    private val invalidateObserver = Observer<Boolean> {
+        viewModelScope.launch(kDispatchers.default) {
+            if (it == true) {
+                _highlighted.postValue(puzzle?.cleared?.value)
+                kDispatchers.delay(inGameAnimDuration.toLong())
+                _invalidate.postValue(true)
+            }
+        }
+    }
+
+    fun onUpdateDone() {
+        puzzleViewModel.invalidate.postValue(false)
+        _invalidate.postValue(false)
+    }
+
     fun undo() {
         puzzleViewModel.undo()
     }
@@ -77,11 +94,13 @@ class LinkClearViewModel(
 
     init {
         puzzleViewModel.puzzle.observeForever(puzzleObserver)
+        puzzleViewModel.invalidate.observeForever(invalidateObserver)
     }
 
     override fun onCleared() {
         super.onCleared()
         puzzleViewModel.puzzle.removeObserver(puzzleObserver)
+        puzzleViewModel.invalidate.removeObserver(invalidateObserver)
         removeClearObserver()
     }
 

@@ -102,7 +102,7 @@ class LinkClearFragment : Fragment() {
                 binding.charsGridBg.invalidate()
                 binding.verseView.invalidate()
                 binding.gridHighlightView.invalidate()
-                viewModel.invalidate.postValue(false)
+                viewModel.onUpdateDone()
             }
         })
     }
