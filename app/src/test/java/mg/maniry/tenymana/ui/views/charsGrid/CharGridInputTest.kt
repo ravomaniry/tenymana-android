@@ -13,8 +13,8 @@ import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.gameLogic.models.Grid
 import mg.maniry.tenymana.gameLogic.models.Move
 import mg.maniry.tenymana.gameLogic.models.Point
-import mg.maniry.tenymana.ui.views.settings.DrawingSettings
 import mg.maniry.tenymana.ui.views.charsGrid.BaseCharGridControl.Companion.MARGIN
+import mg.maniry.tenymana.ui.views.settings.DrawingSettings
 import mg.maniry.tenymana.utils.TestMotionEvent
 import mg.maniry.tenymana.utils.TestRect
 import mg.maniry.tenymana.utils.TestTextShape
@@ -22,10 +22,10 @@ import mg.maniry.tenymana.utils.chars
 import org.junit.Test
 
 class CharGridInputTest {
-
     @Test
-    fun singleHorizontalMove_cells_are_filled() {
+    fun horizontal_cells_are_filled() {
         val cellSize = 20f
+        val cells = listOf(chars('A', 'B'), chars(null, null))
         val textDY = cellSize - MARGIN * 4
         val textDX = (cellSize - MARGIN) / 2
         val aText = TestTextShape("A", textDX + 100f, 82f + textDY)
@@ -33,7 +33,7 @@ class CharGridInputTest {
         val aRect = TestRect.xywh(100f, 82f, cellSize - MARGIN, cellSize - MARGIN)
         val bRect = TestRect.xywh(120f, 82f, cellSize - MARGIN, cellSize - MARGIN)
         testInput(
-            cells = listOf(chars('A', 'B'), chars(null, null)),
+            cells = cells,
             origin = Point(100, 100),
             cellSize = cellSize,
             events = listOf(
@@ -45,35 +45,63 @@ class CharGridInputTest {
             texts = listOf(aText, aText, bText),
             move = Move.xy(0, 0, 1, 0)
         )
+        testInput(
+            cells = cells,
+            origin = Point(100, 100),
+            cellSize = cellSize,
+            events = listOf(
+                TestMotionEvent(ACTION_DOWN, 121f, 94f),
+                TestMotionEvent(ACTION_MOVE, 110f, 95f),
+                TestMotionEvent(ACTION_UP, 110f, 95f)
+            ),
+            rects = listOf(bRect, bRect, aRect),
+            texts = listOf(bText, bText, aText),
+            move = Move.xy(1, 0, 0, 0)
+        )
     }
 
     @Test
-    fun simpleVerticalMoves_one_cells_filled() {
+    fun simpleVerticalMoves_one_cell_filled() {
         val cellSize = 25f
         val textDY = cellSize - MARGIN * 4
         val textDX = (cellSize - MARGIN) / 2
         val dRect = TestRect.xywh(25f, 152f, cellSize - MARGIN, cellSize - MARGIN)
         val dText = TestTextShape("D", 25f + textDX, 152f + textDY)
+        val fRect = TestRect.xywh(25f, 127f, cellSize - MARGIN, cellSize - MARGIN)
+        val fText = TestTextShape("F", 25f + textDX, 127f + textDY)
+        val cells = listOf(
+            chars('A', 'B', null),
+            chars('C', 'D', null),
+            chars('E', 'F', null),
+            chars('F', null, null),
+            chars(null, null, null),
+            chars(null, null, null)
+        )
         testInput(
-            cells = listOf(
-                chars('A', 'B', null),
-                chars('C', 'D', null),
-                chars('E', null, null),
-                chars('F', null, null),
-                chars(null, null, null),
-                chars(null, null, null)
-            ),
+            cells = cells,
             origin = Point(0, 200),
             cellSize = cellSize,
             events = listOf(
                 TestMotionEvent(ACTION_MOVE, 25f, 155f),
-                TestMotionEvent(ACTION_MOVE, 25f, 101f),
                 TestMotionEvent(ACTION_MOVE, 28f, 55f),
                 TestMotionEvent(ACTION_UP, 28f, 55f)
             ),
-            rects = listOf(dRect, dRect, dRect),
-            texts = listOf(dText, dText, dText),
+            rects = listOf(dRect, dRect, fRect),
+            texts = listOf(dText, dText, fText),
             move = Move.xy(1, 1, 1, 5)
+        )
+        testInput(
+            cells = cells,
+            origin = Point(0, 200),
+            cellSize = cellSize,
+            events = listOf(
+                TestMotionEvent(ACTION_MOVE, 28f, 55f),
+                TestMotionEvent(ACTION_MOVE, 25f, 155f),
+                TestMotionEvent(ACTION_UP, 25f, 155f)
+            ),
+            rects = listOf(fRect, dRect),
+            texts = listOf(fText, dText),
+            move = Move.xy(1, 5, 1, 1)
         )
     }
 
@@ -84,24 +112,38 @@ class CharGridInputTest {
         val textDX = (cellSize - MARGIN) / 2
         val aRect = TestRect.xywh(50f, 92f, cellSize - MARGIN, cellSize - MARGIN)
         val aText = TestTextShape("A", 50f + textDX, 92f + textDY)
+        val dRect = TestRect.xywh(60f, 82f, cellSize - MARGIN, cellSize - MARGIN)
+        val dText = TestTextShape("D", 60f + textDX, 82f + textDY)
+        val cells = listOf(
+            chars('A', 'B', null),
+            chars('C', 'D', null),
+            chars(null, null, null)
+        )
         testInput(
-            cells = listOf(
-                chars('A', 'B', null),
-                chars('C', null, null),
-                chars(null, null, null)
-            ),
+            cells = cells,
             origin = Point(50, 100),
             cellSize = cellSize,
             events = listOf(
-                TestMotionEvent(ACTION_MOVE, 45f, 106f),
-                TestMotionEvent(ACTION_MOVE, 52f, 98f),
-                TestMotionEvent(ACTION_MOVE, 65f, 82f),
-                TestMotionEvent(ACTION_MOVE, 75f, 75f),
+                TestMotionEvent(ACTION_MOVE, 45f, 106f), // -
+                TestMotionEvent(ACTION_MOVE, 75f, 75f), // a d
                 TestMotionEvent(ACTION_UP, 92f, 55f)
             ),
-            rects = listOf(aRect, aRect, aRect),
-            texts = listOf(aText, aText, aText),
+            rects = listOf(aRect, dRect),
+            texts = listOf(aText, dText),
             move = Move.xy(-1, -1, 4, 4)
+        )
+        testInput(
+            cells = cells,
+            origin = Point(50, 100),
+            cellSize = cellSize,
+            events = listOf(
+                TestMotionEvent(ACTION_MOVE, 92f, 55f), // -
+                TestMotionEvent(ACTION_MOVE, 45f, 106f),
+                TestMotionEvent(ACTION_UP, 45f, 106f)
+            ),
+            rects = listOf(dRect, aRect),
+            texts = listOf(dText, aText),
+            move = Move.xy(4, 4, -1, -1)
         )
     }
 
@@ -125,9 +167,9 @@ class CharGridInputTest {
         // settings
         control.settings = DrawingSettings()
             .apply {
-            charGridCellSize = cellSize
-            charGridOrigin = origin
-        }
+                charGridCellSize = cellSize
+                charGridOrigin = origin
+            }
         // Canvas
         val drawnRects = mutableListOf<TestRect>()
         val drawsTexts = mutableListOf<TestTextShape>()

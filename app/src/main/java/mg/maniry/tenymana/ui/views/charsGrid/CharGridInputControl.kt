@@ -6,6 +6,8 @@ import mg.maniry.tenymana.gameLogic.models.Move
 import mg.maniry.tenymana.gameLogic.models.Point
 import mg.maniry.tenymana.ui.views.settings.DrawingSettings
 import kotlin.math.floor
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 class CharGridInputControl : BaseCharGridControl() {
     var propose: ProposeFn? = null
@@ -22,28 +24,25 @@ class CharGridInputControl : BaseCharGridControl() {
             handleStart(x, y)
             handleMove(x, y)
         }
+        updateHighlights()
     }
 
     private fun handleStart(x: Int, y: Int) {
         if (start == null) {
             start = Point(x, y)
-            highlights = mutableSetOf(start!!.toGridCoordinate(settings!!))
         }
     }
 
     private fun handleMove(x: Int, y: Int) {
         val p = Point(x, y)
         end = p
-        val gridP = p.toGridCoordinate(settings!!)
-        if (!highlights.contains(gridP)) {
-            highlights.add(gridP)
-        }
     }
 
     private fun handleEnd(x: Int, y: Int) {
         end = Point(x, y)
         submit()
-        highlights = mutableSetOf()
+        start = null
+        end = null
     }
 
     private fun submit() {
@@ -62,6 +61,24 @@ class CharGridInputControl : BaseCharGridControl() {
             if (char != null) {
                 drawFilledBG(canvas, p.x, p.y)
                 drawChar(canvas, char.value, p.x, p.y)
+            }
+        }
+    }
+
+    private fun updateHighlights() {
+        val pA = start?.toGridCoordinate(settings!!)
+        val pB = end?.toGridCoordinate(settings!!)
+        highlights = mutableSetOf()
+        if (pA != null && pB != null) {
+            val dX = (pB.x - pA.x).toDouble()
+            val dY = (pB.y - pA.y).toDouble()
+            val dXY = sqrt(dX.pow(2.0) + dY.pow(2.0))
+            var l = 0f
+            while (l <= dXY) {
+                val x = (dX * l / dXY).toInt()
+                val y = (dY * l / dXY).toInt()
+                highlights.add(Point(pA.x + x, pA.y + y))
+                l++
             }
         }
     }
