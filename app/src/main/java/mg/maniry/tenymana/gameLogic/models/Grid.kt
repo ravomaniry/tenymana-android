@@ -30,6 +30,12 @@ open class Grid<T>(
 
     operator fun get(point: Point) = get(point.x, point.y)
 
+    fun toGrid(): Grid<T> {
+        return Grid(
+            cells.map { it.toList() }
+        )
+    }
+
     fun toMutable(): MutableGrid<T> {
         return MutableGrid(
             w,
@@ -50,12 +56,6 @@ data class MutableGrid<T>(
     private val width: Int,
     private val mutableCells: MutableList<MutableList<T?>> = mutableListOf()
 ) : Grid<T>(mutableCells) {
-    fun toGrid(): Grid<T> {
-        return Grid(
-            mutableCells.map { it.toList() }
-        )
-    }
-
     fun set(x: Int, y: Int, value: T?) {
         addMissingRows(y)
         mutableCells[y][x] = value

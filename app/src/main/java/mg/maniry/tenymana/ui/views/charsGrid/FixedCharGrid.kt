@@ -17,4 +17,8 @@ class FixedCharGrid : BaseCharGridView {
             control.draw(canvas)
         }
     }
+
+    override fun update() {
+        invalidate()
+    }
 }

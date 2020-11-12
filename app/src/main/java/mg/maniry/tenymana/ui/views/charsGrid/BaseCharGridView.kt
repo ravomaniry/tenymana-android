@@ -38,4 +38,6 @@ abstract class BaseCharGridView : View {
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         control.onSizeChanged(w, h)
     }
+
+    abstract fun update()
 }

@@ -100,9 +100,9 @@ class LinkClearFragment : Fragment() {
     private fun observeReRender() {
         viewModel.invalidate.observe(viewLifecycleOwner, Observer {
             if (it) {
-                binding.charsGridBg.invalidate()
+                binding.charsGridBg.update()
                 binding.verseView.invalidate()
-                binding.gridHighlightView.invalidate()
+                binding.gridHighlightView.update()
                 viewModel.onUpdateDone()
             }
         })

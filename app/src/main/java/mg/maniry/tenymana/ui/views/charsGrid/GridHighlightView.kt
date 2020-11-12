@@ -55,4 +55,9 @@ class GridHighlightView : BaseCharGridView, AnimatedView {
     override fun reRender() {
         invalidate()
     }
+
+    override fun update() {
+        control.onUpdate()
+        invalidate()
+    }
 }

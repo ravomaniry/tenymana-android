@@ -3,10 +3,11 @@ package mg.maniry.tenymana.ui.views.charsGrid
 import android.graphics.Canvas
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.*
+import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.gameLogic.models.Grid
 import mg.maniry.tenymana.gameLogic.models.Point
-import mg.maniry.tenymana.ui.views.settings.DrawingSettings
 import mg.maniry.tenymana.ui.views.charsGrid.BaseCharGridControl.Companion.MARGIN
+import mg.maniry.tenymana.ui.views.settings.DrawingSettings
 import mg.maniry.tenymana.utils.TestRect
 import mg.maniry.tenymana.utils.TestTextShape
 import mg.maniry.tenymana.utils.chars
@@ -44,10 +45,14 @@ class GridHighlightViewTest {
         control.animDuration = 500.0
         control.settings = DrawingSettings()
             .apply {
-            charGridCellSize = cellSize
-            charGridOrigin = Point(x0.toInt(), y0.toInt())
-        }
-        control.onGridChanged(Grid(listOf(chars('A', 'B'), chars('C', 'D'))))
+                charGridCellSize = cellSize
+                charGridOrigin = Point(x0.toInt(), y0.toInt())
+            }
+        val grid = Grid(listOf(chars('A', 'B'), chars('C', 'D'))).toMutable()
+        control.onGridChanged(grid)
+        // Update
+        control.onUpdate()
+        grid.set(0, 0, Character('E', 'e', false))
         // add value and ticks
         control.onValue(listOf(Point(0, 0), Point(1, 1)), 1000)
         control.reRender(1000)

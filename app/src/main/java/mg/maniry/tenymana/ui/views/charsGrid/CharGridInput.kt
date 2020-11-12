@@ -48,4 +48,8 @@ class CharGridInput : BaseCharGridView {
         super.performClick()
         return true
     }
+
+    override fun update() {
+        invalidate()
+    }
 }
