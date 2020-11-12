@@ -5,7 +5,7 @@ import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.*
 import mg.maniry.tenymana.gameLogic.models.Grid
 import mg.maniry.tenymana.gameLogic.models.Point
-import mg.maniry.tenymana.ui.views.DrawingSettings
+import mg.maniry.tenymana.ui.views.settings.DrawingSettings
 import mg.maniry.tenymana.ui.views.charsGrid.BaseCharGridControl.Companion.MARGIN
 import mg.maniry.tenymana.utils.TestRect
 import mg.maniry.tenymana.utils.TestTextShape
@@ -42,7 +42,8 @@ class GridHighlightViewTest {
         val y0 = 100f
         val control = GridHighlightControl()
         control.animDuration = 500.0
-        control.settings = DrawingSettings().apply {
+        control.settings = DrawingSettings()
+            .apply {
             charGridCellSize = cellSize
             charGridOrigin = Point(x0.toInt(), y0.toInt())
         }

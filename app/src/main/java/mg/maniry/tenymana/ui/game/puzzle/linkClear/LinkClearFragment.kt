@@ -13,7 +13,7 @@ import mg.maniry.tenymana.databinding.PuzzleScreenLinkClearBinding
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.ui.app.AnimatorWrapper
 import mg.maniry.tenymana.ui.app.SharedViewModels
-import mg.maniry.tenymana.ui.views.DrawingSettings
+import mg.maniry.tenymana.ui.views.settings.DrawingSettings
 import mg.maniry.tenymana.utils.KDispatchers
 import mg.maniry.tenymana.utils.bindTo
 import org.koin.android.ext.android.inject
@@ -21,7 +21,8 @@ import org.koin.android.ext.android.inject
 class LinkClearFragment : Fragment() {
     private lateinit var binding: PuzzleScreenLinkClearBinding
     private lateinit var viewModel: LinkClearViewModel
-    private val drawingSettings = DrawingSettings()
+    private val drawingSettings =
+        DrawingSettings()
 
     override fun onCreateView(
         inflater: LayoutInflater,

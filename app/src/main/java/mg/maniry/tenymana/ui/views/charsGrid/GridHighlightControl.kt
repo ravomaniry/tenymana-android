@@ -2,8 +2,10 @@ package mg.maniry.tenymana.ui.views.charsGrid
 
 import android.graphics.Canvas
 import mg.maniry.tenymana.gameLogic.models.Point
+import mg.maniry.tenymana.ui.views.settings.DrawingSettings
+import mg.maniry.tenymana.ui.views.settings.DrawingSettingsObserver
 
-class GridHighlightControl : BaseCharGridControl() {
+class GridHighlightControl : BaseCharGridControl(), DrawingSettingsObserver {
     enum class Mode { GROW, IDLE, SHRINK }
 
     var animDuration = 500.0
@@ -15,6 +17,12 @@ class GridHighlightControl : BaseCharGridControl() {
     private var mode: Mode? = null
     private var value: List<Point>? = null
     private val cellSize: Float get() = settings?.charGridCellSize ?: 0f
+
+    override var settings: DrawingSettings? = null
+        set(value) {
+            field = value
+            observeSettingsChange(value)
+        }
 
     fun onValue(value: List<Point>?, now: Long) {
         t0 = now
@@ -102,6 +110,14 @@ class GridHighlightControl : BaseCharGridControl() {
                 drawCharAt(canvas, point.x, point.y)
             }
         }
+    }
+
+    private fun observeSettingsChange(value: DrawingSettings?) {
+        value?.subscribe(DrawingSettings.Event.CHAR_GRID, this)
+    }
+
+    override fun onDrawingSettingsChanged() {
+        updateTextSize()
     }
 
     companion object {

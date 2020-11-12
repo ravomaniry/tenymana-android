@@ -5,7 +5,7 @@ import android.graphics.Paint
 import mg.maniry.tenymana.gameLogic.models.CharAddress
 import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.gameLogic.models.Word
-import mg.maniry.tenymana.ui.views.DrawingSettings
+import mg.maniry.tenymana.ui.views.settings.DrawingSettings
 import kotlin.math.max
 
 class VerseViewControl {

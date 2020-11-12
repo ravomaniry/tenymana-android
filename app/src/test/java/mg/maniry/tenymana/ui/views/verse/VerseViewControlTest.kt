@@ -7,7 +7,7 @@ import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.mock
 import mg.maniry.tenymana.gameLogic.models.Word
-import mg.maniry.tenymana.ui.views.DrawingSettings
+import mg.maniry.tenymana.ui.views.settings.DrawingSettings
 import mg.maniry.tenymana.ui.views.verse.VerseViewControl.Companion.H
 import mg.maniry.tenymana.ui.views.verse.VerseViewControl.Companion.PADDING
 import mg.maniry.tenymana.ui.views.verse.VerseViewControl.Companion.SPACING_H

@@ -13,7 +13,7 @@ import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.gameLogic.models.Grid
 import mg.maniry.tenymana.gameLogic.models.Move
 import mg.maniry.tenymana.gameLogic.models.Point
-import mg.maniry.tenymana.ui.views.DrawingSettings
+import mg.maniry.tenymana.ui.views.settings.DrawingSettings
 import mg.maniry.tenymana.ui.views.charsGrid.BaseCharGridControl.Companion.MARGIN
 import mg.maniry.tenymana.utils.TestMotionEvent
 import mg.maniry.tenymana.utils.TestRect
@@ -123,7 +123,8 @@ class CharGridInputTest {
         var resMove: Move? = null
         control.propose = { resMove = it }
         // settings
-        control.settings = DrawingSettings().apply {
+        control.settings = DrawingSettings()
+            .apply {
             charGridCellSize = cellSize
             charGridOrigin = origin
         }

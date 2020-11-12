@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat
 import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.gameLogic.models.Grid
 import mg.maniry.tenymana.ui.game.colors.GameColors
-import mg.maniry.tenymana.ui.views.DrawingSettings
+import mg.maniry.tenymana.ui.views.settings.DrawingSettings
 
 abstract class BaseCharGridView : View {
     constructor(context: Context) : super(context)

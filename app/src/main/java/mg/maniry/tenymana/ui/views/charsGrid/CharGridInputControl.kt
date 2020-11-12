@@ -4,7 +4,7 @@ import android.graphics.Canvas
 import android.view.MotionEvent
 import mg.maniry.tenymana.gameLogic.models.Move
 import mg.maniry.tenymana.gameLogic.models.Point
-import mg.maniry.tenymana.ui.views.DrawingSettings
+import mg.maniry.tenymana.ui.views.settings.DrawingSettings
 import kotlin.math.floor
 
 class CharGridInputControl : BaseCharGridControl() {

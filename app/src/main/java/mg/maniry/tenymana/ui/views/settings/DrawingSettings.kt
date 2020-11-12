@@ -1,12 +1,11 @@
-package mg.maniry.tenymana.ui.views
+package mg.maniry.tenymana.ui.views.settings
 
-import android.view.View
 import mg.maniry.tenymana.gameLogic.models.Point
 import mg.maniry.tenymana.ui.views.verse.VerseViewControl
 
 class DrawingSettings {
-    private val charGridSubs = mutableSetOf<View>()
-    private val verseViewSubs = mutableSetOf<View>()
+    private val charGridSubs = mutableSetOf<DrawingSettingsObserver>()
+    private val verseViewSubs = mutableSetOf<DrawingSettingsObserver>()
 
     private var _charGridOrigin = Point(0, 0)
     var charGridOrigin: Point
@@ -38,23 +37,23 @@ class DrawingSettings {
             }
         }
 
-    fun subscribe(e: Event, view: View) {
+    fun subscribe(e: Event, observer: DrawingSettingsObserver) {
         when (e) {
-            Event.CHAR_GRID -> charGridSubs.add(view)
-            Event.VERSE_VIEW -> verseViewSubs.add(view)
+            Event.CHAR_GRID -> charGridSubs.add(observer)
+            Event.VERSE_VIEW -> verseViewSubs.add(observer)
         }
     }
 
-    fun forget(e: Event, view: View) {
+    fun forget(e: Event, observer: DrawingSettingsObserver) {
         when (e) {
-            Event.CHAR_GRID -> charGridSubs.remove(view)
-            Event.VERSE_VIEW -> verseViewSubs.remove(view)
+            Event.CHAR_GRID -> charGridSubs.remove(observer)
+            Event.VERSE_VIEW -> verseViewSubs.remove(observer)
         }
     }
 
-    private fun notify(views: Set<View>) {
-        for (v in views) {
-            v.invalidate()
+    private fun notify(observers: MutableSet<DrawingSettingsObserver>) {
+        for (v in observers) {
+            v.onDrawingSettingsChanged()
         }
     }
 

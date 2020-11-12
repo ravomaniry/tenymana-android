@@ -6,12 +6,12 @@ import android.graphics.Paint
 import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.gameLogic.models.Grid
 import mg.maniry.tenymana.gameLogic.models.Point
-import mg.maniry.tenymana.ui.views.DrawingSettings
+import mg.maniry.tenymana.ui.views.settings.DrawingSettings
 import kotlin.math.floor
 import kotlin.math.min
 
 abstract class BaseCharGridControl {
-    var settings: DrawingSettings? = null
+    open var settings: DrawingSettings? = null
     protected var grid: Grid<Character>? = null
     protected var boardHeight = 0
     private var w = 0f
@@ -57,9 +57,15 @@ abstract class BaseCharGridControl {
             val cellSize = floor(min(w.toDouble() / grid!!.w, h.toDouble() / boardHeight)).toFloat()
             val totalW = cellSize * grid!!.w
             val x0 = (w - totalW) / 2
-            textPaint.textSize = cellSize
             settings!!.charGridOrigin = Point(x0.toInt(), h.toInt())
             settings!!.charGridCellSize = cellSize
+            updateTextSize()
+        }
+    }
+
+    protected fun updateTextSize() {
+        if (settings != null) {
+            textPaint.textSize = settings!!.charGridCellSize
         }
     }
 

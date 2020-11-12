@@ -7,7 +7,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import mg.maniry.tenymana.gameLogic.models.Word
 import mg.maniry.tenymana.ui.game.colors.GameColors
-import mg.maniry.tenymana.ui.views.DrawingSettings
+import mg.maniry.tenymana.ui.views.settings.DrawingSettings
 
 class VerseView : View {
     constructor(context: Context) : super(context)
