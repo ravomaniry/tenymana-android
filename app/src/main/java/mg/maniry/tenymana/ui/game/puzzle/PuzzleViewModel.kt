@@ -5,6 +5,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.gameLogic.models.Move
+import mg.maniry.tenymana.gameLogic.models.Puzzle
 import mg.maniry.tenymana.gameLogic.models.Word
 import mg.maniry.tenymana.ui.game.GameViewModel
 import mg.maniry.tenymana.ui.game.colors.DefaultColors
@@ -20,6 +21,7 @@ class PuzzleViewModel(
 
     private var lockPropose = false
     val puzzle = gameViewModel.puzzle
+    private val _prevPuzzle = MutableLiveData<Puzzle?>(null)
 
     val colors: LiveData<GameColors> = Transformations.map(gameViewModel.puzzle) {
         when (it) {

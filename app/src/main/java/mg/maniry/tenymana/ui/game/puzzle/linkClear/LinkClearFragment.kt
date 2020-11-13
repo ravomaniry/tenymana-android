@@ -86,7 +86,7 @@ class LinkClearFragment : Fragment() {
         binding.gridHighlightView.apply {
             animator = anim.value
             onSettingsChanged(drawingSettings)
-            bindTo(viewModel.grid, this::onGridChanged)
+            bindTo(viewModel.prevGrid, this::onGridChanged)
             bindTo(viewModel.animDuration, this::onAnimDurationChanged)
             bindTo(viewModel.colors, this::onColorsChanged)
             bindTo(viewModel.highlighted, this::onValue)

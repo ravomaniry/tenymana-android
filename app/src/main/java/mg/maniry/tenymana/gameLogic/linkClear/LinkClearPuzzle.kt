@@ -20,6 +20,7 @@ interface LinkClearPuzzle : Puzzle {
     val diff: LiveData<List<Move>?>
     val cleared: LiveData<List<Point>?>
     val solution: List<SolutionItem<Character>>
+    val prevGrid: Grid<Character>
 
     companion object {
         const val gridSize = 10
@@ -49,6 +50,9 @@ class LinkClearPuzzleImpl(
 
     private val hidden = initialGrid.calcHiddenWords(initialVerse.words)
     override val grid: MutableGrid<Character> = initialGrid.toCharGrid(initialVerse.words)
+    private val _prevGrid = grid.toMutable()
+    override val prevGrid: Grid<Character> get() = _prevGrid
+    private var prevCells: List<List<Character?>> = grid.cells
 
     private val words = initialVerse.words.toMutableList()
     override val verse = initialVerse.copy(words = words)
@@ -64,6 +68,7 @@ class LinkClearPuzzleImpl(
 
     override fun propose(move: Move): Boolean {
         reset()
+        takeGridSnapshot()
         val selection = grid.calcSelection(move, directions)
         if (selection.isNotEmpty) {
             val historyItem = HistoryItem(words.toList(), score.value!!, grid.copyCells())
@@ -72,6 +77,7 @@ class LinkClearPuzzleImpl(
                 updateResult(selection.points)
                 incrementScore(indexes)
                 syncLiveData()
+                updatePrevGrid()
                 history.add(historyItem)
                 history.trimLeft(LinkClearPuzzle.historySize)
                 return true
@@ -85,6 +91,8 @@ class LinkClearPuzzleImpl(
         if (history.isEmpty()) {
             return false
         }
+        takeGridSnapshot()
+        updatePrevGrid()
         val item = history.last()
         score.postValue(item.score)
         item.words.overWrite(words)
@@ -99,6 +107,14 @@ class LinkClearPuzzleImpl(
             score.postValue(scoreValue - price)
             listOf(points[0])
         }
+    }
+
+    private fun takeGridSnapshot() {
+        prevCells = grid.copyCells()
+    }
+
+    private fun updatePrevGrid() {
+        prevCells.overWrite(_prevGrid)
     }
 
     private fun reset() {

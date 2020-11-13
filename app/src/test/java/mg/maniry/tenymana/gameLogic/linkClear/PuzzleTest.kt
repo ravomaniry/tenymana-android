@@ -230,20 +230,26 @@ class PuzzleTest {
         val grid = Grid(cells)
         val puzzle = LinkClearPuzzleImpl(grid, verse, emptyList())
         // propose word[0] and cancel
+        var prevGrid = puzzle.grid.toGrid()
         val wSnap = puzzle.verse.words.snapshot
         val gridSnapshot = puzzle.grid.snapshot
         puzzle.propose(Move.xy(0, 0, 1, 0))
         assertThat(puzzle.verse.words[0].resolved).isTrue()
         assertThat(puzzle.score.value).isEqualTo(2)
+        assertThat(puzzle.prevGrid.snapshot).isEqualTo(prevGrid.snapshot)
+        // cancel
+        prevGrid = puzzle.grid.toGrid()
         var canceled = puzzle.undo()
         assertThat(canceled).isTrue()
         assertThat(puzzle.verse.words.snapshot).isEqualTo(wSnap)
         assertThat(puzzle.score.value).isEqualTo(0)
         assertThat(puzzle.grid.snapshot).isEqualTo(gridSnapshot)
+        assertThat(puzzle.prevGrid.snapshot).isEqualTo(prevGrid.snapshot)
         // cancel now do nothing
         canceled = puzzle.undo()
         assertThat(canceled).isFalse()
         assertThat(puzzle.score.value).isEqualTo(0)
+        assertThat(puzzle.prevGrid.snapshot).isEqualTo(prevGrid.snapshot)
         // Propose 5 times
         val wordsSnapthots = mutableListOf<String>()
         val gridSnapshots = mutableListOf<String>()

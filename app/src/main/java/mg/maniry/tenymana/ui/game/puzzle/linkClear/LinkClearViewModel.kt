@@ -25,6 +25,9 @@ class LinkClearViewModel(
 
     private val _grid = MutableLiveData<Grid<Character>?>()
     val grid: LiveData<Grid<Character>?> = _grid
+    val prevGrid: LiveData<Grid<Character>?> = Transformations.map(puzzleViewModel.puzzle) {
+        if (it is LinkClearPuzzle) it.prevGrid else null
+    }
 
     private val _highlighted = MutableLiveData<List<Point>?>()
     val highlighted: LiveData<List<Point>?> = _highlighted

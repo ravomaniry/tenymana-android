@@ -58,10 +58,6 @@ class GridHighlightControl : BaseCharGridControl(), DrawingSettingsObserver {
         }
     }
 
-    fun onUpdate() {
-        grid = grid?.toGrid()
-    }
-
     private fun calcStarts() {
         tZeroes = mutableListOf()
         val interval = maxDelay / (value!!.size - 1)

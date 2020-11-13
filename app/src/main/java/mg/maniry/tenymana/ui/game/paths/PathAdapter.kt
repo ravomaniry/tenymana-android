@@ -34,7 +34,7 @@ class PathAdapter(
 
     class DiffUtilCb : DiffUtil.ItemCallback<PathVerseItem>() {
         override fun areItemsTheSame(oldItem: PathVerseItem, newItem: PathVerseItem): Boolean {
-            return oldItem == newItem
+            return oldItem.value == newItem.value && oldItem.index == newItem.index
         }
 
         override fun areContentsTheSame(oldItem: PathVerseItem, newItem: PathVerseItem): Boolean {

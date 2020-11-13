@@ -3,7 +3,6 @@ package mg.maniry.tenymana.ui.views.charsGrid
 import android.graphics.Canvas
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.*
-import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.gameLogic.models.Grid
 import mg.maniry.tenymana.gameLogic.models.Point
 import mg.maniry.tenymana.ui.views.charsGrid.BaseCharGridControl.Companion.MARGIN
@@ -50,9 +49,6 @@ class GridHighlightViewTest {
             }
         val grid = Grid(listOf(chars('A', 'B'), chars('C', 'D'))).toMutable()
         control.onGridChanged(grid)
-        // Update
-        control.onUpdate()
-        grid.set(0, 0, Character('E', 'e', false))
         // add value and ticks
         control.onValue(listOf(Point(0, 0), Point(1, 1)), 1000)
         control.reRender(1000)
