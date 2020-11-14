@@ -25,9 +25,8 @@ class LinkClearViewModel(
 
     private val _grid = MutableLiveData<Grid<Character>?>()
     val grid: LiveData<Grid<Character>?> = _grid
-    val prevGrid: LiveData<Grid<Character>?> = Transformations.map(puzzleViewModel.puzzle) {
-        if (it is LinkClearPuzzle) it.prevGrid else null
-    }
+    private val _prevGrid = MutableLiveData<Grid<Character>?>()
+    val prevGrid: LiveData<Grid<Character>?> = _prevGrid
 
     private val _highlighted = MutableLiveData<List<Point>?>()
     val highlighted: LiveData<List<Point>?> = _highlighted
@@ -51,12 +50,14 @@ class LinkClearViewModel(
             viewModelScope.launch(kDispatchers.default) {
                 for (i in (it.solution.size - 1).downTo(0)) {
                     _grid.postValue(it.solution[i].grid)
+                    _prevGrid.postValue(it.solution[i].grid)
                     kDispatchers.delay(helpAnimDuration)
                     _highlighted.postValue(it.solution[i].points)
                     kDispatchers.delay(helpAnimDuration)
                 }
                 withContext(kDispatchers.main) {
                     _grid.postValue(it.grid)
+                    _prevGrid.postValue(it.prevGrid)
                     _propose.postValue(puzzleViewModel::propose)
                     _animDuration.postValue(inGameAnimDuration)
                     it.cleared.observeForever(clearedObserver)

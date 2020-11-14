@@ -43,22 +43,29 @@ class LinkClearViewModelTest {
         )
         var bonusOneResult: List<Point>? = null
         val cleared = MutableLiveData<List<Point>?>(null)
+        val prevGrid = solution.last().grid.toMutable()
         val puzzle: LinkClearPuzzle = mock {
             on { this.solution } doReturn solution
             on { this.grid } doReturn solution.last().grid
+            on { this.prevGrid } doReturn prevGrid
             on { this.cleared } doReturn cleared
             on { this.useBonusOne(PuzzleViewModel.bonusOnePrice) } doAnswer { bonusOneResult }
         }
         val grids = mutableListOf<Grid<*>?>()
+        val prevGrids = mutableListOf<Grid<*>?>()
         val highlights = mutableListOf<List<Point>?>()
         val proposes = mutableListOf<ProposeFn?>()
         val animDrations = mutableListOf<Double>()
         viewModel.grid.observeForever { grids.add(it) }
+        viewModel.prevGrid.observeForever { prevGrids.add(it) }
         viewModel.highlighted.observeForever { highlights.add(it) }
         viewModel.propose.observeForever { proposes.add(it) }
         viewModel.animDuration.observeForever { animDrations.add(it) }
         runBlocking { puzzleCont.postValue(puzzle) }
         assertThat(grids).isEqualTo(listOf(solution[1].grid, solution[0].grid, solution[1].grid))
+        assertThat(prevGrids).isEqualTo(
+            listOf(solution[1].grid, solution[0].grid, solution[1].grid.toMutable())
+        )
         assertThat(highlights).isEqualTo(listOf(solution[1].points, solution[0].points, null))
         assertThat(proposes).isEqualTo(listOf(null, puzzleViewModel::propose))
         assertThat(animDrations).isEqualTo(listOf(300.0, 500.0))
@@ -66,6 +73,7 @@ class LinkClearViewModelTest {
         // - Puzzle grid & grid.cleared are displayed
         cleared.postValue(listOf(Point(2, 2), Point(2, 3)))
         assertThat(viewModel.grid.value).isEqualTo(puzzle.grid)
+        assertThat(viewModel.prevGrid.value).isEqualTo(prevGrid)
         assertThat(viewModel.highlighted.value).isEqualTo(listOf(Point(2, 2), Point(2, 3)))
         // Bonus one but not available
         viewModel.useBonusOne()
