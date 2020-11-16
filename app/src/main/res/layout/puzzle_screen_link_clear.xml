@@ -33,7 +33,7 @@
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <mg.maniry.tenymana.ui.views.charsGrid.FixedCharGrid
+            <mg.maniry.tenymana.ui.views.charsGrid.CharGrid
                 android:id="@+id/charsGridBg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

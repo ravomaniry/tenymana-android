@@ -2,7 +2,7 @@ package mg.maniry.tenymana.ui.views.charsGrid
 
 import android.graphics.Canvas
 
-class FixedCharGridControl : BaseCharGridControl() {
+class CharGridControl : BaseCharGridControl() {
     override fun draw(canvas: Canvas) {
         if (grid != null) {
             for (y in 0 until boardHeight) {
