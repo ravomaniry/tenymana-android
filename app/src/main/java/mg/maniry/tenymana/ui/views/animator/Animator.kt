@@ -12,6 +12,7 @@ class Animator(
 
     fun register(view: AnimatedView) {
         views.add(view)
+        toForget.remove(view)
         if (views.size == 1) {
             animation.startIfNotRunning()
         }
@@ -26,6 +27,7 @@ class Animator(
         if (toForget.isNotEmpty() && frameDone) {
             for (v in toForget) {
                 views.remove(v)
+                toForget.remove(v)
             }
             if (views.isEmpty()) {
                 animation.stopIfRunning()
