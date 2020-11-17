@@ -208,21 +208,41 @@ class CharGridControlTest {
         // Diffs & ticks
         val diffs = listOf(Move.xy(0, 2, 0, 1), Move.xy(2, 2, 1, 0))
         control.onDiffs(diffs, 1000)
-        val invalidate = control.onTick(1000)
+        var invalidate = control.onTick(1000)
         assertThat(invalidate).isTrue()
         control.draw(canvas)
         assertThat(rects).isEqualTo(
             listOf(
-                TestRect.xywh(0f, 82f, cellSize - MARGIN, cellSize - MARGIN),
-                TestRect.xywh(40f, 42f, cellSize - MARGIN, cellSize - MARGIN),
-                TestRect.xywh(0f, 42f, cellSize - MARGIN, cellSize - MARGIN)
+                TestRect.xywh(0f, 82f, rectSize, rectSize),
+                TestRect.xywh(20f + cellSize, 82f - cellSize * 2, rectSize, rectSize),
+                TestRect.xywh(0f, 62f - cellSize, rectSize, rectSize)
             )
         )
         assertThat(texts).isEqualTo(
             listOf(
                 TestTextShape("A", textDX, 82f + textDY),
-                TestTextShape("B", 40f + textDX, 42f + textDY),
-                TestTextShape("C", textDX, 42f + textDY)
+                TestTextShape("B", 20f + cellSize + textDX, 82f - cellSize * 2 + textDY),
+                TestTextShape("C", textDX, 62f - cellSize + textDY)
+            )
+        )
+        // half ticks
+        rects.removeAll { true }
+        texts.removeAll { true }
+        invalidate = control.onTick(1200)
+        control.draw(canvas)
+        assertThat(invalidate).isTrue()
+        assertThat(rects).isEqualTo(
+            listOf(
+                TestRect.xywh(0f, 82f, rectSize, rectSize),
+                TestRect.xywh(20f + cellSize / 2, 82f - cellSize, rectSize, rectSize),
+                TestRect.xywh(0f, 62f - cellSize / 2, rectSize, rectSize)
+            )
+        )
+        assertThat(texts).isEqualTo(
+            listOf(
+                TestTextShape("A", textDX, 82f + textDY),
+                TestTextShape("B", 20f + cellSize / 2 + textDX, 82f - cellSize + textDY),
+                TestTextShape("C", textDX, 62f - cellSize / 2 + textDY)
             )
         )
     }

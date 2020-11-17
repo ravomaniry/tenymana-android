@@ -22,7 +22,7 @@ class CharGridControl : BaseCharGridControl() {
     }
 
     fun onTick(now: Long): Boolean {
-        val t = (now - t0).toDouble() / animDuration
+        t = (now - t0).toDouble() / animDuration
         animate = t < 1
         return animate
     }
@@ -61,8 +61,9 @@ private fun List<Move>.toOffsetsMap(settings: DrawingSettings): Map<Point, Point
 }
 
 private fun Int?.toOffset(t: Double): Float {
+    val fValue = this?.toFloat() ?: 0f
     if (this == null) {
-        return 0f
+        return fValue
     }
-    return (this - this * t).toFloat()
+    return (fValue - fValue * t).toFloat()
 }
