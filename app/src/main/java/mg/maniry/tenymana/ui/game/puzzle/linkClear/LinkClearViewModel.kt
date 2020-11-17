@@ -4,10 +4,7 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
-import mg.maniry.tenymana.gameLogic.models.Character
-import mg.maniry.tenymana.gameLogic.models.Grid
-import mg.maniry.tenymana.gameLogic.models.Point
-import mg.maniry.tenymana.gameLogic.models.Puzzle
+import mg.maniry.tenymana.gameLogic.models.*
 import mg.maniry.tenymana.ui.game.puzzle.PuzzleViewModel
 import mg.maniry.tenymana.ui.views.charsGrid.ProposeFn
 import mg.maniry.tenymana.utils.KDispatchers
@@ -31,6 +28,9 @@ class LinkClearViewModel(
     private val _highlighted = MutableLiveData<List<Point>?>()
     val highlighted: LiveData<List<Point>?> = _highlighted
 
+    private val _diffs = MutableLiveData<List<Move>?>()
+    val diffs: LiveData<List<Move>?> = _diffs
+
     private val inGameAnimDuration = 500.0
     private val helpAnimDuration = 300L
     private val _animDuration = MutableLiveData<Double>()
@@ -39,11 +39,16 @@ class LinkClearViewModel(
     private val _propose = MutableLiveData<ProposeFn?>()
     val propose: LiveData<ProposeFn?> = _propose
 
-    private val clearedObserver = Observer<List<Point>?> { _highlighted.postValue(it) }
-    private var removeClearObserver = {}
+    private val clearedObserver = Observer<List<Point>?> {
+        _highlighted.postValue(it)
+    }
+    private val diffsObserver = Observer<List<Move>?> {
+        _diffs.postValue(it)
+    }
+    private var removePuzzleObserver = {}
 
     private val puzzleObserver = Observer<Puzzle?> {
-        removeClearObserver()
+        removePuzzleObserver()
         if (it != null && prevPuzzle == null && it is LinkClearPuzzle) {
             _propose.postValue(null)
             _animDuration.postValue(helpAnimDuration.toDouble())
@@ -61,7 +66,11 @@ class LinkClearViewModel(
                     _propose.postValue(puzzleViewModel::propose)
                     _animDuration.postValue(inGameAnimDuration)
                     it.cleared.observeForever(clearedObserver)
-                    removeClearObserver = { it.cleared.removeObserver(clearedObserver) }
+                    it.diff.observeForever(diffsObserver)
+                    removePuzzleObserver = {
+                        it.cleared.removeObserver(clearedObserver)
+                        it.diff.removeObserver(diffsObserver)
+                    }
                 }
             }
         }
@@ -105,7 +114,7 @@ class LinkClearViewModel(
         super.onCleared()
         puzzleViewModel.puzzle.removeObserver(puzzleObserver)
         puzzleViewModel.invalidate.removeObserver(invalidateObserver)
-        removeClearObserver()
+        removePuzzleObserver()
     }
 
     companion object {

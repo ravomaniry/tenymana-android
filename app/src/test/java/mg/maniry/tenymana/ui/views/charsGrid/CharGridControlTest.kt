@@ -245,5 +245,25 @@ class CharGridControlTest {
                 TestTextShape("C", textDX, 62f - cellSize / 2 + textDY)
             )
         )
+        // done ticks
+        rects.removeAll { true }
+        texts.removeAll { true }
+        invalidate = control.onTick(1400)
+        control.draw(canvas)
+        assertThat(invalidate).isFalse()
+        assertThat(rects).isEqualTo(
+            listOf(
+                TestRect.xywh(0f, 82f, rectSize, rectSize),
+                TestRect.xywh(20f, 82f, rectSize, rectSize),
+                TestRect.xywh(0f, 62f, rectSize, rectSize)
+            )
+        )
+        assertThat(texts).isEqualTo(
+            listOf(
+                TestTextShape("A", textDX, 82f + textDY),
+                TestTextShape("B", 20f + textDX, 82f + textDY),
+                TestTextShape("C", textDX, 62f + textDY)
+            )
+        )
     }
 }

@@ -68,6 +68,7 @@ class LinkClearFragment : Fragment() {
             onVisibleHChanged(LinkClearPuzzle.gridSize)
             bindTo(viewModel.grid, this::onGridChanged)
             bindTo(viewModel.colors, this::onColorsChanged)
+            bindTo(viewModel.diffs, this::onDiffs)
         }
     }
 
