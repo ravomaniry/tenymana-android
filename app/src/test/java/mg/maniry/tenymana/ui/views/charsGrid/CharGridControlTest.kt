@@ -248,7 +248,7 @@ class CharGridControlTest {
         // done ticks
         rects.removeAll { true }
         texts.removeAll { true }
-        invalidate = control.onTick(1400)
+        invalidate = control.onTick(1420)
         control.draw(canvas)
         assertThat(invalidate).isFalse()
         assertThat(rects).isEqualTo(

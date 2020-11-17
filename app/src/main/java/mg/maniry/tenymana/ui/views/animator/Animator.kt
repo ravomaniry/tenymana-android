@@ -12,7 +12,6 @@ class Animator(
 
     fun register(view: AnimatedView) {
         views.add(view)
-        toForget.remove(view)
         if (views.size == 1) {
             animation.startIfNotRunning()
         }

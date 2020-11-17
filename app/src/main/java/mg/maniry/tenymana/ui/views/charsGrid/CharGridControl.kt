@@ -24,6 +24,9 @@ class CharGridControl : BaseCharGridControl() {
     fun onTick(now: Long): Boolean {
         t = (now - t0).toDouble() / animDuration
         animate = t < 1
+        if (!animate) {
+            offsets = hashMapOf()
+        }
         return animate
     }
 
