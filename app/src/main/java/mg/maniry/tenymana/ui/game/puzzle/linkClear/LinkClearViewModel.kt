@@ -66,10 +66,10 @@ class LinkClearViewModel(
                     _propose.postValue(puzzleViewModel::propose)
                     _animDuration.postValue(inGameAnimDuration)
                     it.cleared.observeForever(clearedObserver)
-                    it.diff.observeForever(diffsObserver)
+                    it.diffs.observeForever(diffsObserver)
                     removePuzzleObserver = {
                         it.cleared.removeObserver(clearedObserver)
-                        it.diff.removeObserver(diffsObserver)
+                        it.diffs.removeObserver(diffsObserver)
                     }
                 }
             }

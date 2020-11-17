@@ -11,6 +11,7 @@ import kotlinx.coroutines.runBlocking
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.gameLogic.linkClear.SolutionItem
 import mg.maniry.tenymana.gameLogic.models.Grid
+import mg.maniry.tenymana.gameLogic.models.Move
 import mg.maniry.tenymana.gameLogic.models.Point
 import mg.maniry.tenymana.gameLogic.models.Puzzle
 import mg.maniry.tenymana.ui.game.puzzle.PuzzleViewModel
@@ -44,11 +45,13 @@ class LinkClearViewModelTest {
         var bonusOneResult: List<Point>? = null
         val cleared = MutableLiveData<List<Point>?>(null)
         val prevGrid = solution.last().grid.toMutable()
+        val diffs = MutableLiveData<List<Move>>()
         val puzzle: LinkClearPuzzle = mock {
             on { this.solution } doReturn solution
             on { this.grid } doReturn solution.last().grid
             on { this.prevGrid } doReturn prevGrid
             on { this.cleared } doReturn cleared
+            on { this.diffs } doReturn diffs
             on { this.useBonusOne(PuzzleViewModel.bonusOnePrice) } doAnswer { bonusOneResult }
         }
         val grids = mutableListOf<Grid<*>?>()
@@ -92,5 +95,9 @@ class LinkClearViewModelTest {
         viewModel.onUpdateDone()
         assertThat(viewModel.invalidate.value).isFalse()
         assertThat(invalidate.value).isFalse()
+        // Diffs observation
+        assertThat(viewModel.diffs.value).isNull()
+        diffs.postValue(emptyList())
+        assertThat(viewModel.diffs.value).isEqualTo(emptyList<Move>())
     }
 }

@@ -17,7 +17,7 @@ data class SolutionItem<T>(
 
 interface LinkClearPuzzle : Puzzle {
     val grid: Grid<Character>
-    val diff: LiveData<List<Move>?>
+    val diffs: LiveData<List<Move>?>
     val cleared: LiveData<List<Point>?>
     val solution: List<SolutionItem<Character>>
     val prevGrid: Grid<Character>
@@ -57,7 +57,7 @@ class LinkClearPuzzleImpl(
     private val words = initialVerse.words.toMutableList()
     override val verse = initialVerse.copy(words = words)
     private var _diff: List<Move>? = null
-    override val diff = MutableLiveData<List<Move>?>()
+    override val diffs = MutableLiveData<List<Move>?>()
     private var _cleared: List<Point>? = null
     override val cleared = MutableLiveData<List<Point>?>()
 
@@ -157,8 +157,8 @@ class LinkClearPuzzleImpl(
         if (_cleared != cleared.value) {
             cleared.postValue(_cleared)
         }
-        if (_diff != diff.value) {
-            diff.postValue(_diff)
+        if (_diff != diffs.value) {
+            diffs.postValue(_diff)
         }
     }
 }
