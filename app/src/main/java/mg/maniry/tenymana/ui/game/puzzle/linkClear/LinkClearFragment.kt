@@ -21,8 +21,7 @@ import org.koin.android.ext.android.inject
 class LinkClearFragment : Fragment() {
     private lateinit var binding: PuzzleScreenLinkClearBinding
     private lateinit var viewModel: LinkClearViewModel
-    private val drawingSettings =
-        DrawingSettings()
+    private val drawingSettings = DrawingSettings()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,7 +62,9 @@ class LinkClearFragment : Fragment() {
     }
 
     private fun initCharsGridView() {
+        val anim: AnimatorWrapper by inject()
         binding.charsGridBg.apply {
+            animator = anim.value
             onSettingsChanged(drawingSettings)
             onVisibleHChanged(LinkClearPuzzle.gridSize)
             bindTo(viewModel.grid, this::onGridChanged)

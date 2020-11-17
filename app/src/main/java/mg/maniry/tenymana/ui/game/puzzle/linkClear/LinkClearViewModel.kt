@@ -42,9 +42,7 @@ class LinkClearViewModel(
     private val clearedObserver = Observer<List<Point>?> {
         _highlighted.postValue(it)
     }
-    private val diffsObserver = Observer<List<Move>?> {
-        _diffs.postValue(it)
-    }
+
     private var removePuzzleObserver = {}
 
     private val puzzleObserver = Observer<Puzzle?> {
@@ -66,10 +64,8 @@ class LinkClearViewModel(
                     _propose.postValue(puzzleViewModel::propose)
                     _animDuration.postValue(inGameAnimDuration)
                     it.cleared.observeForever(clearedObserver)
-                    it.diffs.observeForever(diffsObserver)
                     removePuzzleObserver = {
                         it.cleared.removeObserver(clearedObserver)
-                        it.diffs.removeObserver(diffsObserver)
                     }
                 }
             }
@@ -85,6 +81,7 @@ class LinkClearViewModel(
             if (it == true) {
                 _highlighted.postValue(puzzle?.cleared?.value)
                 kDispatchers.delay(inGameAnimDuration.toLong())
+                _diffs.postValue(puzzle?.diffs)
                 _invalidate.postValue(true)
             }
         }

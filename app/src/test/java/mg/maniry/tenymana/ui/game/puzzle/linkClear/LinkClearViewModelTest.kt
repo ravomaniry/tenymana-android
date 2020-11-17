@@ -45,13 +45,13 @@ class LinkClearViewModelTest {
         var bonusOneResult: List<Point>? = null
         val cleared = MutableLiveData<List<Point>?>(null)
         val prevGrid = solution.last().grid.toMutable()
-        val diffs = MutableLiveData<List<Move>>()
+        var diffs: List<Move>? = null
         val puzzle: LinkClearPuzzle = mock {
             on { this.solution } doReturn solution
             on { this.grid } doReturn solution.last().grid
             on { this.prevGrid } doReturn prevGrid
             on { this.cleared } doReturn cleared
-            on { this.diffs } doReturn diffs
+            on { this.diffs } doAnswer { diffs }
             on { this.useBonusOne(PuzzleViewModel.bonusOnePrice) } doAnswer { bonusOneResult }
         }
         val grids = mutableListOf<Grid<*>?>()
@@ -96,8 +96,9 @@ class LinkClearViewModelTest {
         assertThat(viewModel.invalidate.value).isFalse()
         assertThat(invalidate.value).isFalse()
         // Diffs observation
+        diffs = emptyList()
         assertThat(viewModel.diffs.value).isNull()
-        diffs.postValue(emptyList())
+        invalidate.postValue(true)
         assertThat(viewModel.diffs.value).isEqualTo(emptyList<Move>())
     }
 }
