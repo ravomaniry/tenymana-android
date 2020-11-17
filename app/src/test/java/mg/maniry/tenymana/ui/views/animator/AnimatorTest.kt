@@ -59,8 +59,14 @@ class AnimatorTest {
         // Forget view1 stops animation
         animator.forget(view1)
         verifyOnce(animation).cancel()
-        // views are empty: register starts animation
+        // Concurrent modif + views are empty: starts animation
+        clearInvocations(animation)
+        val view3: AnimatedView = mock()
+        whenever(view3.onTick(any())).doAnswer { animator.forget(view3);false }
+        animator.register(view3)
         animator.register(view1)
         verifyOnce(animation).start()
+        listener.onAnimationUpdate(animation)
+        verifyOnce(animation).cancel()
     }
 }

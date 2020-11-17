@@ -7,6 +7,8 @@ class Animator(
     private val animation: ValueAnimator
 ) {
     private val views = mutableSetOf<AnimatedView>()
+    private val toForget = mutableSetOf<AnimatedView>()
+    private var frameDone = true
 
     fun register(view: AnimatedView) {
         views.add(view)
@@ -16,13 +18,23 @@ class Animator(
     }
 
     fun forget(view: AnimatedView) {
-        views.remove(view)
-        if (views.isEmpty()) {
-            animation.stopIfRunning()
+        toForget.add(view)
+        applyForget()
+    }
+
+    private fun applyForget() {
+        if (toForget.isNotEmpty() && frameDone) {
+            for (v in toForget) {
+                views.remove(v)
+            }
+            if (views.isEmpty()) {
+                animation.stopIfRunning()
+            }
         }
     }
 
     private fun onTick() {
+        frameDone = false
         val t = Date().time
         for (v in views) {
             val invalidate = v.onTick(t)
@@ -30,6 +42,8 @@ class Animator(
                 v.reRender()
             }
         }
+        frameDone = true
+        applyForget()
     }
 
     init {
