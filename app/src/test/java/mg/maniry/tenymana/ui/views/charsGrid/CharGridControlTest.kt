@@ -8,11 +8,13 @@ import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.mock
 import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.gameLogic.models.Grid
-import mg.maniry.tenymana.ui.views.settings.DrawingSettings
+import mg.maniry.tenymana.gameLogic.models.Move
 import mg.maniry.tenymana.ui.views.charsGrid.BaseCharGridControl.Companion.MARGIN
 import mg.maniry.tenymana.ui.views.charsGrid.BaseCharGridControl.Companion.emptyBgPaint
+import mg.maniry.tenymana.ui.views.settings.DrawingSettings
 import mg.maniry.tenymana.utils.TestRect
 import mg.maniry.tenymana.utils.TestTextShape
+import mg.maniry.tenymana.utils.chars
 import org.junit.Test
 
 class CharGridControlTest {
@@ -153,8 +155,7 @@ class CharGridControlTest {
         val drawnEmptyRects = mutableListOf<TestRect>()
         val canvas: Canvas = mock {
             on { drawText(any(), any(), any(), any()) } doAnswer {
-                drawnTexts.add(TestTextShape.fromMock(it.arguments))
-                Unit
+                drawnTexts.add(TestTextShape.fromMock(it.arguments)); Unit
             }
             on { drawRect(any(), any(), any(), any(), any()) } doAnswer {
                 val paint = it.arguments[4] as Paint
@@ -174,9 +175,55 @@ class CharGridControlTest {
         assertThat(drawnTexts).isEqualTo(texts)
     }
 
-    private fun chars(vararg values: Char?): List<Character?> {
-        return values.map {
-            it?.let { Character(it.toUpperCase(), it.toLowerCase()) }
+    @Test
+    fun diffAnimation() {
+        val grid = Grid(
+            listOf(
+                chars('A', 'B', null),
+                chars('C', null, null),
+                chars(null, null, null)
+            )
+        )
+        val width = 60
+        val height = 100
+        val control = CharGridControl().apply {
+            settings = DrawingSettings()
+            onGridChanged(grid)
+            onSizeChanged(width, height)
+            onVisibleHChanged(4)
         }
+        val rects = mutableListOf<TestRect>()
+        val texts = mutableListOf<TestTextShape>()
+        val canvas: Canvas = mock {
+            on { drawText(any(), any(), any(), any()) } doAnswer {
+                texts.add(TestTextShape.fromMock(it.arguments)); Unit
+            }
+            on { drawRect(any(), any(), any(), any(), any()) } doAnswer {
+                if (it.arguments[4] != emptyBgPaint) {
+                    rects.add(TestRect.fromMock(it.arguments))
+                }
+                Unit
+            }
+        }
+        // Diffs & ticks
+        val diffs = listOf(Move.xy(0, 2, 0, 1), Move.xy(2, 2, 1, 0))
+        control.onDiffs(diffs, 1000)
+        val invalidate = control.onTick(1000)
+        assertThat(invalidate).isTrue()
+        control.draw(canvas)
+        assertThat(rects).isEqualTo(
+            listOf(
+                TestRect.xywh(0f, 82f, cellSize - MARGIN, cellSize - MARGIN),
+                TestRect.xywh(40f, 42f, cellSize - MARGIN, cellSize - MARGIN),
+                TestRect.xywh(0f, 42f, cellSize - MARGIN, cellSize - MARGIN)
+            )
+        )
+        assertThat(texts).isEqualTo(
+            listOf(
+                TestTextShape("A", textDX, 82f + textDY),
+                TestTextShape("B", 40f + textDX, 42f + textDY),
+                TestTextShape("C", textDX, 42f + textDY)
+            )
+        )
     }
 }

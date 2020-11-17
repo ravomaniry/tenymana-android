@@ -116,11 +116,11 @@ abstract class BaseCharGridControl {
         char: Char,
         x: Int,
         y: Int,
-        left0: Int = 0,
-        top0: Int = 0
+        xOffset: Float = 0f,
+        yOffset: Float = 0f
     ) {
-        val left = left0 + calcLeft(x) + textDX
-        val top = top0 + calcTop(y) + textDY
+        val left = xOffset + calcLeft(x) + textDX
+        val top = yOffset + calcTop(y) + textDY
         canvas.drawText(char.toString(), left, top, textPaint)
     }
 
