@@ -16,6 +16,7 @@ class CharGrid : BaseCharGridView, AnimatedView {
 
     override val control: CharGridControl = CharGridControl()
     override var animator: Animator? = null
+    var shouldInvalidate = false
 
     fun onDiffs(values: List<Move>?) {
         if (values == null) {
@@ -41,11 +42,12 @@ class CharGrid : BaseCharGridView, AnimatedView {
     }
 
     override fun onTick(t: Long): Boolean {
-        val shouldInvalidate = control.onTick(t)
-        if (!shouldInvalidate) {
+        val result = control.onTick(t)
+        if (shouldInvalidate) {
             invalidate()
         }
-        return shouldInvalidate
+        shouldInvalidate = result
+        return result
     }
 
     override fun onDetachedFromWindow() {
