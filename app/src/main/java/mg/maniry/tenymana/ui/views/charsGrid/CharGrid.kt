@@ -43,9 +43,7 @@ class CharGrid : BaseCharGridView, AnimatedView {
     override fun onTick(t: Long): Boolean {
         val shouldInvalidate = control.onTick(t)
         if (!shouldInvalidate) {
-            onDispose()
             invalidate()
-            return false
         }
         return shouldInvalidate
     }

@@ -50,7 +50,7 @@ class CharGridControl : BaseCharGridControl() {
     }
 
     companion object {
-        const val animDuration = 400L
+        const val animDuration = 300L
     }
 }
 
