@@ -1,7 +1,6 @@
 package mg.maniry.tenymana.ui.views.charsGrid
 
 import android.graphics.Canvas
-import android.util.Log
 import mg.maniry.tenymana.gameLogic.models.Move
 import mg.maniry.tenymana.gameLogic.models.Point
 import mg.maniry.tenymana.ui.views.settings.DrawingSettings
