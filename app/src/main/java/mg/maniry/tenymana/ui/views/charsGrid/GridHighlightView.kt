@@ -59,4 +59,9 @@ class GridHighlightView : BaseCharGridView, AnimatedView {
     override fun update() {
         invalidate()
     }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        super.onDispose()
+    }
 }
