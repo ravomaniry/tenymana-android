@@ -136,7 +136,7 @@ abstract class BaseCharGridControl {
         const val MARGIN = 2
         val emptyBgPaint = Paint().apply {
             style = Paint.Style.FILL
-            color = Color.argb(50, 0, 0, 0)
+            color = Color.argb(128, 255, 255, 255)
         }
     }
 }

@@ -121,22 +121,19 @@
     </style>
 
     <style name="AppTheme.LinkClearPuzzleBody" parent="AppTheme.PuzzleBody">
-        <item name="android:background">@drawable/colored_dots</item>
+        <item name="android:background">@drawable/bg_triangles</item>
     </style>
 
     <style name="AppTheme.BonusBtnCont">
         <item name="android:gravity">center</item>
-        <item name="android:layout_marginTop">5dp</item>
         <item name="android:paddingTop">5dp</item>
-        <item name="android:paddingBottom">5dp</item>
-        <item name="android:background">#88000000</item>
     </style>
 
     <style name="AppTheme.BonusBtn">
         <item name="android:padding">4dp</item>
         <item name="android:layout_marginLeft">5dp</item>
         <item name="android:layout_marginRight">5dp</item>
-        <item name="android:background">@drawable/bg_gray_small_rounded_corner</item>
+        <item name="android:background">@drawable/bg_bonus_btn</item>
     </style>
 
     <!-- Solution screen -->
