@@ -14,7 +14,7 @@ class LinkClearPuzzleMock(
     override var grid: MutableGrid<Character> = MutableGrid(10)
     override var prevGrid: Grid<Character> = MutableGrid(10)
     override var diffs: List<Move>? = null
-    override val cleared = MutableLiveData<List<Point>?>()
+    override val cleared: List<Point>? = null
     override val score = MutableLiveData(0)
     override var completed = false
     override var solution = emptyList<SolutionItem<Character>>()

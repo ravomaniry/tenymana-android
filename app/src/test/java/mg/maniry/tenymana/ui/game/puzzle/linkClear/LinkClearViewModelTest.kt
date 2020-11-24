@@ -43,14 +43,14 @@ class LinkClearViewModelTest {
             SolutionItem(Grid(listOf(chars('A', 'B', 'C', 'D'))), listOf(Point(2, 0), Point(3, 0)))
         )
         var bonusOneResult: List<Point>? = null
-        val cleared = MutableLiveData<List<Point>?>(null)
+        var cleared: List<Point>? = null
         val prevGrid = solution.last().grid.toMutable()
         var diffs: List<Move>? = null
         val puzzle: LinkClearPuzzle = mock {
             on { this.solution } doReturn solution
             on { this.grid } doReturn solution.last().grid
             on { this.prevGrid } doReturn prevGrid
-            on { this.cleared } doReturn cleared
+            on { this.cleared } doAnswer { cleared }
             on { this.diffs } doAnswer { diffs }
             on { this.useBonusOne(PuzzleViewModel.bonusOnePrice) } doAnswer { bonusOneResult }
         }
@@ -73,11 +73,9 @@ class LinkClearViewModelTest {
         assertThat(proposes).isEqualTo(listOf(null, puzzleViewModel::propose))
         assertThat(animDrations).isEqualTo(listOf(300.0, 500.0))
         // Animation is done
-        // - Puzzle grid & grid.cleared are displayed
-        cleared.postValue(listOf(Point(2, 2), Point(2, 3)))
+        // - Puzzle grid displayed
         assertThat(viewModel.grid.value).isEqualTo(puzzle.grid)
         assertThat(viewModel.prevGrid.value).isEqualTo(prevGrid)
-        assertThat(viewModel.highlighted.value).isEqualTo(listOf(Point(2, 2), Point(2, 3)))
         // Bonus one but not available
         viewModel.useBonusOne()
         assertThat(viewModel.highlighted.value).isNull()
@@ -85,9 +83,6 @@ class LinkClearViewModelTest {
         bonusOneResult = listOf(Point(0, 1))
         viewModel.useBonusOne()
         assertThat(viewModel.highlighted.value).isEqualTo(bonusOneResult)
-        // Grid clear should update again the highlights
-        cleared.postValue(listOf(Point(0, 0), Point(1, 0)))
-        assertThat(viewModel.highlighted.value).isEqualTo(listOf(Point(0, 0), Point(1, 0)))
         // Invalidate: update local invalidate + update viewModel's invalidate after onUpdateDone()
         assertThat(viewModel.invalidate.value).isFalse()
         invalidate.postValue(true)
@@ -100,5 +95,21 @@ class LinkClearViewModelTest {
         assertThat(viewModel.diffs.value).isNull()
         invalidate.postValue(true)
         assertThat(viewModel.diffs.value).isEqualTo(emptyList<Move>())
+        // Cleared
+        cleared = listOf(Point(2, 2), Point(2, 3))
+        puzzleViewModel.invalidate.postValue(true)
+        assertThat(viewModel.highlighted.value).isEqualTo(listOf(Point(2, 2), Point(2, 3)))
+        // Ignore highlight & diffs anim on undo
+        diffs = listOf(Move.xy(0, 0, 0, 0))
+        highlights.removeAll { true }
+        viewModel.undo()
+        cleared = listOf(Point(0, 0))
+        invalidate.postValue(true)
+        assertThat(viewModel.diffs.value).isEqualTo(emptyList<Move>())
+        assertThat(highlights).isEmpty()
+        // Regular invalidate is not ignored
+        invalidate.postValue(true)
+        assertThat(viewModel.diffs.value).isNotEmpty()
+        assertThat(highlights).isNotEmpty()
     }
 }

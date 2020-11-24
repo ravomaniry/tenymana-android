@@ -14,6 +14,7 @@ class LinkClearViewModel(
     private val puzzleViewModel: PuzzleViewModel,
     private val kDispatchers: KDispatchers
 ) : ViewModel() {
+    private var ignoreNextAnim = false
     private var prevPuzzle: Puzzle? = null
     private val puzzle: LinkClearPuzzle? get() = puzzleViewModel.puzzle.value as LinkClearPuzzle?
 
@@ -39,10 +40,6 @@ class LinkClearViewModel(
     private val _propose = MutableLiveData<ProposeFn?>()
     val propose: LiveData<ProposeFn?> = _propose
 
-    private val clearedObserver = Observer<List<Point>?> {
-        _highlighted.postValue(it)
-    }
-
     private var removePuzzleObserver = {}
 
     private val puzzleObserver = Observer<Puzzle?> {
@@ -63,10 +60,7 @@ class LinkClearViewModel(
                     _prevGrid.postValue(it.prevGrid)
                     _propose.postValue(puzzleViewModel::propose)
                     _animDuration.postValue(inGameAnimDuration)
-                    it.cleared.observeForever(clearedObserver)
-                    removePuzzleObserver = {
-                        it.cleared.removeObserver(clearedObserver)
-                    }
+                    _highlighted.postValue(null)
                 }
             }
         }
@@ -79,10 +73,13 @@ class LinkClearViewModel(
     private val invalidateObserver = Observer<Boolean> {
         viewModelScope.launch(kDispatchers.default) {
             if (it == true) {
-                _highlighted.postValue(puzzle?.cleared?.value)
-                kDispatchers.delay(inGameAnimDuration.toLong())
-                _diffs.postValue(puzzle?.diffs)
+                if (!ignoreNextAnim) {
+                    _highlighted.postValue(puzzle?.cleared)
+                    kDispatchers.delay(inGameAnimDuration.toLong())
+                    _diffs.postValue(puzzle?.diffs)
+                }
                 _invalidate.postValue(true)
+                ignoreNextAnim = false
             }
         }
     }
@@ -93,6 +90,7 @@ class LinkClearViewModel(
     }
 
     fun undo() {
+        ignoreNextAnim = true
         puzzleViewModel.undo()
     }
 

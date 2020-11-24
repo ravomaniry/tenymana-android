@@ -1,6 +1,5 @@
 package mg.maniry.tenymana.gameLogic.linkClear
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import mg.maniry.tenymana.gameLogic.models.*
 import mg.maniry.tenymana.gameLogic.shared.grid.*
@@ -18,7 +17,7 @@ data class SolutionItem<T>(
 interface LinkClearPuzzle : Puzzle {
     val grid: Grid<Character>
     val diffs: List<Move>?
-    val cleared: LiveData<List<Point>?>
+    val cleared: List<Point>?
     val solution: List<SolutionItem<Character>>
     val prevGrid: Grid<Character>
 
@@ -58,8 +57,7 @@ class LinkClearPuzzleImpl(
     override val verse = initialVerse.copy(words = words)
     private var _diffs: List<Move>? = null
     override val diffs: List<Move>? get() = _diffs
-    private var _cleared: List<Point>? = null
-    override val cleared = MutableLiveData<List<Point>?>()
+    override var cleared: List<Point>? = null
 
     private var usedHelp = false
     override var completed = false
@@ -76,14 +74,12 @@ class LinkClearPuzzleImpl(
             if (indexes.isNotEmpty()) {
                 updateResult(selection.points)
                 incrementScore(indexes)
-                syncLiveData()
                 updatePrevGrid()
                 history.add(historyItem)
                 history.trimLeft(LinkClearPuzzle.historySize)
                 return true
             }
         }
-        syncLiveData()
         return false
     }
 
@@ -119,7 +115,7 @@ class LinkClearPuzzleImpl(
 
     private fun reset() {
         completed = false
-        _cleared = null
+        cleared = null
         _diffs = null
     }
 
@@ -136,11 +132,11 @@ class LinkClearPuzzleImpl(
                 _diffs = match.diff
                 words[match.word] = words[match.word].resolvedVersion
                 completed = words.resolved
-                _cleared = points.toMutableList().apply { addAll(match.cleared) }.toSet().toList()
+                cleared = points.toMutableList().apply { addAll(match.cleared) }.toSet().toList()
             }
         } else {
             _diffs = diff0
-            _cleared = points
+            cleared = points
         }
     }
 
@@ -150,12 +146,6 @@ class LinkClearPuzzleImpl(
         }
         if (completed && !usedHelp) {
             score.postValue(scoreValue * (1.0 + words.bonusRatio).toInt())
-        }
-    }
-
-    private fun syncLiveData() {
-        if (_cleared != cleared.value) {
-            cleared.postValue(_cleared)
         }
     }
 }
