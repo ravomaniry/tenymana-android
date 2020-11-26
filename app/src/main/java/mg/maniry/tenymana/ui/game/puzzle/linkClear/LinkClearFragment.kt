@@ -43,7 +43,8 @@ class LinkClearFragment : Fragment() {
         val kDispatchers: KDispatchers by inject()
         val viewModels: SharedViewModels by inject()
         val factory = LinkClearViewModel.factory(viewModels.puzzle, kDispatchers)
-        viewModel = ViewModelProvider(this, factory).get(LinkClearViewModel::class.java)
+        viewModel =
+            ViewModelProvider(requireActivity(), factory).get(LinkClearViewModel::class.java)
     }
 
     private fun initBinding(inflater: LayoutInflater, container: ViewGroup?) {
