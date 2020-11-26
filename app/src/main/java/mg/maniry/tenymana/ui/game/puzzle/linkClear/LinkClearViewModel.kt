@@ -95,15 +95,15 @@ class LinkClearViewModel(
     }
 
     private fun triggerReRender(animate: Boolean) {
-        if (animate) {
-            viewModelScope.launch(kDispatchers.main) {
+        viewModelScope.launch(kDispatchers.default) {
+            if (animate) {
                 _highlighted.postValue(puzzle?.cleared)
                 kDispatchers.delay(inGameAnimDuration.toLong())
                 _diffs.postValue(puzzle?.diffs)
             }
+            _prevGrid.postValue(puzzle?.prevGrid)
+            _invalidate.postValue(true)
         }
-        _prevGrid.postValue(puzzle?.prevGrid)
-        _invalidate.postValue(true)
     }
 
     fun undo() {
