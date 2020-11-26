@@ -20,6 +20,9 @@ interface LinkClearPuzzle : Puzzle {
     val cleared: List<Point>?
     val solution: List<SolutionItem<Character>>
     val prevGrid: Grid<Character>
+    fun propose(move: Move): Boolean
+    fun undo(): Boolean
+    fun useBonusOne(price: Int): List<Point>?
 
     companion object {
         const val gridSize = 10

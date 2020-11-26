@@ -14,12 +14,14 @@ class LinkClearViewModel(
     private val puzzleViewModel: PuzzleViewModel,
     private val kDispatchers: KDispatchers
 ) : ViewModel() {
-    private var ignoreNextAnim = false
+    private var lockPropose = false
     private var prevPuzzle: Puzzle? = null
     private val puzzle: LinkClearPuzzle? get() = puzzleViewModel.puzzle.value as LinkClearPuzzle?
 
     val colors = puzzleViewModel.colors
-    val words = puzzleViewModel.words
+
+    private val _words = MutableLiveData<List<Word>>()
+    val words: LiveData<List<Word>> = _words
 
     private val _grid = MutableLiveData<Grid<Character>?>()
     val grid: LiveData<Grid<Character>?> = _grid
@@ -40,12 +42,10 @@ class LinkClearViewModel(
     private val _propose = MutableLiveData<ProposeFn?>()
     val propose: LiveData<ProposeFn?> = _propose
 
-    private var removePuzzleObserver = {}
-
     private val puzzleObserver = Observer<Puzzle?> {
-        removePuzzleObserver()
         if (it != null && prevPuzzle == null && it is LinkClearPuzzle) {
             _propose.postValue(null)
+            _words.postValue(it.verse.words)
             _animDuration.postValue(helpAnimDuration.toDouble())
             viewModelScope.launch(kDispatchers.default) {
                 for (i in (it.solution.size - 1).downTo(0)) {
@@ -57,12 +57,13 @@ class LinkClearViewModel(
                 }
                 withContext(kDispatchers.main) {
                     _grid.postValue(it.grid)
+                    _propose.postValue(this@LinkClearViewModel::propose)
                     _prevGrid.postValue(it.prevGrid)
-                    _propose.postValue(puzzleViewModel::propose)
                     _animDuration.postValue(inGameAnimDuration)
                     _highlighted.postValue(null)
                 }
             }
+
         }
         prevPuzzle = it
     }
@@ -70,28 +71,48 @@ class LinkClearViewModel(
     private val _invalidate = MutableLiveData(false)
     val invalidate: LiveData<Boolean> = _invalidate
 
-    private val invalidateObserver = Observer<Boolean> {
-        viewModelScope.launch(kDispatchers.default) {
-            if (it == true) {
-                if (!ignoreNextAnim) {
-                    _highlighted.postValue(puzzle?.cleared)
-                    kDispatchers.delay(inGameAnimDuration.toLong())
-                    _diffs.postValue(puzzle?.diffs)
+    fun onUpdateDone() {
+        _invalidate.postValue(false)
+    }
+
+    fun propose(move: Move) {
+        if (!lockPropose) {
+            lockPropose = true
+            viewModelScope.launch(kDispatchers.main) {
+                val didUpdate = withContext(kDispatchers.default) {
+                    puzzle?.propose(move)
                 }
-                _invalidate.postValue(true)
-                ignoreNextAnim = false
+                if (didUpdate == true) {
+                    if (puzzle?.completed == true) {
+                        puzzleViewModel.onComplete()
+                    } else {
+                        triggerReRender(true)
+                    }
+                }
+                lockPropose = false
             }
         }
     }
 
-    fun onUpdateDone() {
-        puzzleViewModel.invalidate.postValue(false)
-        _invalidate.postValue(false)
+    private fun triggerReRender(animate: Boolean) {
+        if (animate) {
+            viewModelScope.launch(kDispatchers.main) {
+                _highlighted.postValue(puzzle?.cleared)
+                kDispatchers.delay(inGameAnimDuration.toLong())
+                _diffs.postValue(puzzle?.diffs)
+            }
+        }
+        _prevGrid.postValue(puzzle?.prevGrid)
+        _invalidate.postValue(true)
     }
 
     fun undo() {
-        ignoreNextAnim = true
-        puzzleViewModel.undo()
+        val didUpdate = puzzle?.undo()
+        if (didUpdate == true) {
+            triggerReRender(false)
+            _highlighted.postValue(null)
+            _diffs.postValue(null)
+        }
     }
 
     fun useBonusOne() {
@@ -102,14 +123,11 @@ class LinkClearViewModel(
 
     init {
         puzzleViewModel.puzzle.observeForever(puzzleObserver)
-        puzzleViewModel.invalidate.observeForever(invalidateObserver)
     }
 
     override fun onCleared() {
         super.onCleared()
         puzzleViewModel.puzzle.removeObserver(puzzleObserver)
-        puzzleViewModel.invalidate.removeObserver(invalidateObserver)
-        removePuzzleObserver()
     }
 
     companion object {

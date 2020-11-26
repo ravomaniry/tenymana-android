@@ -6,7 +6,4 @@ interface Puzzle {
     val score: LiveData<Int>
     val completed: Boolean
     val verse: BibleVerse
-    fun propose(move: Move): Boolean
-    fun undo(): Boolean
-    fun useBonusOne(price: Int): List<Point>?
 }

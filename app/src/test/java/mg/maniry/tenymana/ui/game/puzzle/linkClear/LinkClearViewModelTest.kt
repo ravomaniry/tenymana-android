@@ -1,23 +1,23 @@
 package mg.maniry.tenymana.ui.game.puzzle.linkClear
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.common.truth.Truth.assertThat
-import com.nhaarman.mockitokotlin2.doAnswer
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.gameLogic.linkClear.SolutionItem
-import mg.maniry.tenymana.gameLogic.models.Grid
-import mg.maniry.tenymana.gameLogic.models.Move
-import mg.maniry.tenymana.gameLogic.models.Point
-import mg.maniry.tenymana.gameLogic.models.Puzzle
+import mg.maniry.tenymana.gameLogic.models.*
+import mg.maniry.tenymana.ui.game.colors.DefaultColors
+import mg.maniry.tenymana.ui.game.colors.GameColors
 import mg.maniry.tenymana.ui.game.puzzle.PuzzleViewModel
 import mg.maniry.tenymana.ui.views.charsGrid.ProposeFn
 import mg.maniry.tenymana.utils.TestDispatchers
 import mg.maniry.tenymana.utils.chars
+import mg.maniry.tenymana.utils.verifyNever
+import mg.maniry.tenymana.utils.verifyOnce
 import org.junit.Rule
 import org.junit.Test
 
@@ -29,11 +29,9 @@ class LinkClearViewModelTest {
     @Test
     fun animationSimulation() {
         val puzzleCont = MutableLiveData<Puzzle>()
-        val invalidate = MutableLiveData(false)
         val puzzleViewModel: PuzzleViewModel = mock {
             on { this.puzzle } doReturn puzzleCont
             on { this.canUseBonusOne() } doReturn true
-            on { this.invalidate } doReturn invalidate
         }
         val viewModel = LinkClearViewModel(puzzleViewModel, TestDispatchers)
         assertThat(viewModel.grid.value).isNull()
@@ -42,74 +40,133 @@ class LinkClearViewModelTest {
             SolutionItem(Grid(listOf(chars('A', 'B'))), listOf(Point(0, 0), Point(1, 0))),
             SolutionItem(Grid(listOf(chars('A', 'B', 'C', 'D'))), listOf(Point(2, 0), Point(3, 0)))
         )
-        var bonusOneResult: List<Point>? = null
-        var cleared: List<Point>? = null
+        val verse = BibleVerse.fromText("", 1, 1, "Abc def")
         val prevGrid = solution.last().grid.toMutable()
-        var diffs: List<Move>? = null
         val puzzle: LinkClearPuzzle = mock {
             on { this.solution } doReturn solution
             on { this.grid } doReturn solution.last().grid
             on { this.prevGrid } doReturn prevGrid
-            on { this.cleared } doAnswer { cleared }
-            on { this.diffs } doAnswer { diffs }
-            on { this.useBonusOne(PuzzleViewModel.bonusOnePrice) } doAnswer { bonusOneResult }
+            on { this.verse } doReturn verse
         }
+        // Values during & after animation
         val grids = mutableListOf<Grid<*>?>()
         val prevGrids = mutableListOf<Grid<*>?>()
         val highlights = mutableListOf<List<Point>?>()
         val proposes = mutableListOf<ProposeFn?>()
         val animDrations = mutableListOf<Double>()
         viewModel.grid.observeForever { grids.add(it) }
-        viewModel.prevGrid.observeForever { prevGrids.add(it) }
         viewModel.highlighted.observeForever { highlights.add(it) }
         viewModel.propose.observeForever { proposes.add(it) }
         viewModel.animDuration.observeForever { animDrations.add(it) }
-        runBlocking { puzzleCont.postValue(puzzle) }
-        assertThat(grids).isEqualTo(listOf(solution[1].grid, solution[0].grid, solution[1].grid))
-        assertThat(prevGrids).isEqualTo(
-            listOf(solution[1].grid, solution[0].grid, solution[1].grid.toMutable())
-        )
-        assertThat(highlights).isEqualTo(listOf(solution[1].points, solution[0].points, null))
-        assertThat(proposes).isEqualTo(listOf(null, puzzleViewModel::propose))
-        assertThat(animDrations).isEqualTo(listOf(300.0, 500.0))
-        // Animation is done
-        // - Puzzle grid displayed
-        assertThat(viewModel.grid.value).isEqualTo(puzzle.grid)
-        assertThat(viewModel.prevGrid.value).isEqualTo(prevGrid)
-        // Bonus one but not available
-        viewModel.useBonusOne()
-        assertThat(viewModel.highlighted.value).isNull()
-        // Bonus one available
-        bonusOneResult = listOf(Point(0, 1))
-        viewModel.useBonusOne()
-        assertThat(viewModel.highlighted.value).isEqualTo(bonusOneResult)
-        // Invalidate: update local invalidate + update viewModel's invalidate after onUpdateDone()
-        assertThat(viewModel.invalidate.value).isFalse()
-        invalidate.postValue(true)
-        assertThat(viewModel.invalidate.value).isTrue()
-        viewModel.onUpdateDone()
-        assertThat(viewModel.invalidate.value).isFalse()
-        assertThat(invalidate.value).isFalse()
-        // Diffs observation
-        diffs = emptyList()
-        assertThat(viewModel.diffs.value).isNull()
-        invalidate.postValue(true)
-        assertThat(viewModel.diffs.value).isEqualTo(emptyList<Move>())
-        // Cleared
-        cleared = listOf(Point(2, 2), Point(2, 3))
-        puzzleViewModel.invalidate.postValue(true)
-        assertThat(viewModel.highlighted.value).isEqualTo(listOf(Point(2, 2), Point(2, 3)))
-        // Ignore highlight & diffs anim on undo
-        diffs = listOf(Move.xy(0, 0, 0, 0))
-        highlights.removeAll { true }
-        viewModel.undo()
-        cleared = listOf(Point(0, 0))
-        invalidate.postValue(true)
-        assertThat(viewModel.diffs.value).isEqualTo(emptyList<Move>())
-        assertThat(highlights).isEmpty()
-        // Regular invalidate is not ignored
-        invalidate.postValue(true)
-        assertThat(viewModel.diffs.value).isNotEmpty()
-        assertThat(highlights).isNotEmpty()
+        viewModel.prevGrid.observeForever { prevGrids.add(it) }
+        runBlocking {
+            puzzleCont.postValue(puzzle)
+            assertThat(grids).isEqualTo(
+                listOf(solution[1].grid, solution[0].grid, solution[1].grid)
+            )
+            assertThat(prevGrids).isEqualTo(
+                listOf(solution[1].grid, solution[0].grid, solution[1].grid.toMutable())
+            )
+            assertThat(highlights).isEqualTo(listOf(solution[1].points, solution[0].points, null))
+            assertThat(animDrations).isEqualTo(listOf(300.0, 500.0))
+            assertThat(proposes.size).isEqualTo(2)
+            assertThat(proposes[0]).isNull()
+            assertThat(proposes[1]).isNotNull()
+            assertThat(viewModel.grid.value).isEqualTo(puzzle.grid)
+        }
+    }
+
+    @Test
+    fun proposeAndComplete() {
+        val verse = BibleVerse.fromText("Maio", 1, 1, "Abc de")
+        val score = MutableLiveData(0)
+        var proposeResult = false
+        var isComplete = false
+        var undoResult = false
+        var cleared: List<Point>? = null
+        var diffs: List<Move>? = null
+        var bonusResult: List<Point>? = null
+        var prevGrid: Grid<Character> = mock()
+        val puzzle: LinkClearPuzzle = mock {
+            on { this.verse } doReturn verse
+            on { this.score } doAnswer { score }
+            on { this.completed } doAnswer { isComplete }
+            on { this.cleared } doAnswer { cleared }
+            on { this.diffs } doAnswer { diffs }
+            on { this.prevGrid } doAnswer { prevGrid }
+            on { undo() } doAnswer { undoResult }
+            on { propose(any()) } doAnswer { proposeResult }
+            on { useBonusOne(any()) } doAnswer { bonusResult }
+        }
+        val puzzleLD: LiveData<Puzzle?> = MutableLiveData(puzzle)
+        val colors: LiveData<GameColors> = MutableLiveData(DefaultColors())
+        var canUseBonusOne = false
+        val puzzleViewModel: PuzzleViewModel = mock {
+            on { this.puzzle } doReturn puzzleLD
+            on { this.colors } doReturn colors
+            on { this.canUseBonusOne() } doAnswer { canUseBonusOne }
+        }
+        val viewModel = LinkClearViewModel(puzzleViewModel, TestDispatchers)
+        runBlocking {
+            val invalidate = viewModel.invalidate as MutableLiveData<Boolean>
+            // Wrong response
+            proposeResult = false
+            viewModel.propose(Move.xy(0, 0, 1, 0))
+            assertThat(viewModel.invalidate.value).isFalse()
+            assertThat(viewModel.highlighted.value).isNull()
+            assertThat(viewModel.diffs.value).isNull()
+            // true
+            prevGrid = mock()
+            proposeResult = true
+            diffs = emptyList()
+            cleared = emptyList()
+            score.postValue(10)
+            viewModel.propose(Move.xy(0, 0, 2, 0))
+            assertThat(viewModel.invalidate.value).isTrue()
+            assertThat(viewModel.highlighted.value).isEqualTo(emptyList<Point>())
+            assertThat(viewModel.diffs.value).isEqualTo(emptyList<Point>())
+            assertThat(viewModel.prevGrid.value).isEqualTo(prevGrid)
+            invalidate.postValue(false)
+            // UNDO
+            val prevHighlighs = viewModel.highlighted.value
+            val prevDiffs = viewModel.diffs.value
+            // -> no change
+            undoResult = false
+            viewModel.undo()
+            assertThat(viewModel.invalidate.value).isFalse()
+            assertThat(viewModel.highlighted.value).isEqualTo(prevHighlighs)
+            assertThat(viewModel.diffs.value).isEqualTo(prevDiffs)
+            assertThat(viewModel.prevGrid.value).isEqualTo(prevGrid)
+            // -> chanced
+            prevGrid = mock()
+            undoResult = true
+            viewModel.undo()
+            assertThat(viewModel.invalidate.value).isTrue()
+            assertThat(viewModel.highlighted.value).isNull()
+            assertThat(viewModel.diffs.value).isNull()
+            assertThat(viewModel.prevGrid.value).isEqualTo(prevGrid)
+            invalidate.postValue(false)
+            // Bonus: can use
+            canUseBonusOne = true
+            bonusResult = listOf(Point(1, 1))
+            viewModel.useBonusOne()
+            verifyOnce(puzzle).useBonusOne(PuzzleViewModel.bonusOnePrice)
+            clearInvocations(puzzle)
+            assertThat(viewModel.highlighted.value).isEqualTo(bonusResult)
+            // can not use bonus
+            bonusResult = null
+            invalidate.postValue(false)
+            canUseBonusOne = false
+            viewModel.useBonusOne()
+            verifyZeroInteractions(puzzle)
+            assertThat(invalidate.value).isFalse()
+            assertThat(viewModel.highlighted.value).isEqualTo(listOf(Point(1, 1)))
+            // Complete
+            verifyNever(puzzleViewModel).onComplete()
+            isComplete = true
+            score.postValue(20)
+            viewModel.propose(Move.xy(0, 0, 1, 0))
+            verifyOnce(puzzleViewModel).onComplete()
+        }
     }
 }
