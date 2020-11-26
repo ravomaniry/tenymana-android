@@ -63,7 +63,6 @@ class LinkClearViewModel(
                     _highlighted.postValue(null)
                 }
             }
-
         }
         prevPuzzle = it
     }
