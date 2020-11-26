@@ -26,8 +26,8 @@ class Animator(
         if (toForget.isNotEmpty() && frameDone) {
             for (v in toForget) {
                 views.remove(v)
-                toForget.remove(v)
             }
+            toForget.removeAll { true }
             if (views.isEmpty()) {
                 animation.stopIfRunning()
             }
