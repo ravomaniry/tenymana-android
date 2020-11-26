@@ -107,15 +107,20 @@ class LinkClearViewModelTest {
             on { this.canUseBonusOne() } doAnswer { canUseBonusOne }
         }
         val viewModel = LinkClearViewModel(puzzleViewModel, TestDispatchers)
+        val highlights = mutableListOf<List<Point>?>()
+        val diffsHistory = mutableListOf<List<Move>?>()
+        viewModel.highlighted.observeForever { highlights.add(it) }
+        viewModel.diffs.observeForever { diffsHistory.add(it) }
         runBlocking {
             val invalidate = viewModel.invalidate as MutableLiveData<Boolean>
             // Wrong response
             proposeResult = false
             viewModel.propose(Move.xy(0, 0, 1, 0))
             assertThat(viewModel.invalidate.value).isFalse()
-            assertThat(viewModel.highlighted.value).isNull()
-            assertThat(viewModel.diffs.value).isNull()
-            // true
+            assertThat(highlights).isEqualTo(listOf(null))
+            assertThat(diffsHistory).isEmpty()
+            // true + set animation values to null after animation
+            highlights.removeAll { true }
             prevGrid = mock()
             proposeResult = true
             diffs = emptyList()
@@ -123,8 +128,8 @@ class LinkClearViewModelTest {
             score.postValue(10)
             viewModel.propose(Move.xy(0, 0, 2, 0))
             assertThat(viewModel.invalidate.value).isTrue()
-            assertThat(viewModel.highlighted.value).isEqualTo(emptyList<Point>())
-            assertThat(viewModel.diffs.value).isEqualTo(emptyList<Point>())
+            assertThat(highlights).isEqualTo(listOf(emptyList<Point>(), null))
+            assertThat(diffsHistory).isEqualTo(listOf(emptyList<Point>(), null))
             assertThat(viewModel.prevGrid.value).isEqualTo(prevGrid)
             invalidate.postValue(false)
             // UNDO
