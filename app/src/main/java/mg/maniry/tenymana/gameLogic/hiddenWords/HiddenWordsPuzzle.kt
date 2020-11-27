@@ -5,7 +5,8 @@ import mg.maniry.tenymana.gameLogic.models.BibleVerse
 import mg.maniry.tenymana.gameLogic.models.Puzzle
 
 interface HiddenWordsPuzzle : Puzzle {
-    fun propose(group: Int, charsIndexes: List<Int>)
+    val groups: List<HiddenWordsGroup>
+    fun propose(group: Int, charsIndexes: List<Int>): Boolean
 }
 
 class HiddenWordsPuzzleImpl(
@@ -14,9 +15,11 @@ class HiddenWordsPuzzleImpl(
 ) : HiddenWordsPuzzle {
     override val score = MutableLiveData(0)
     override val completed = false
-    override val verse: BibleVerse = initialVerse
+    private val words = initialVerse.words.toMutableList()
+    override val verse: BibleVerse = initialVerse.copy(words = words)
+    override val groups = initialGroups.toMutableList()
 
-    override fun propose(group: Int, charsIndexes: List<Int>) {
+    override fun propose(group: Int, charsIndexes: List<Int>): Boolean {
         TODO("Not yet implemented")
     }
 }

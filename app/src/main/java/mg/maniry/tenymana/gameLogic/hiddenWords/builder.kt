@@ -8,7 +8,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 data class HiddenWordsGroup(
-    val chars: List<Character>,
+    val chars: List<Character?>,
     val hidden: Word
 )
 
