@@ -32,12 +32,19 @@ class CharGridControl : BaseCharGridControl() {
 
     override fun draw(canvas: Canvas) {
         if (grid != null) {
-            for (y in 0 until boardHeight) {
-                for (x in 0 until grid!!.w) {
-                    val char = grid!![x, y]
-                    if (char == null) {
+            val ys = 0 until boardHeight
+            val xs = 0 until grid!!.w
+            for (y in ys) {
+                for (x in xs) {
+                    if (grid!![x, y] == null) {
                         drawEmptyBG(canvas, x, y)
-                    } else {
+                    }
+                }
+            }
+            for (y in ys) {
+                for (x in xs) {
+                    val char = grid!![x, y]
+                    if (char != null) {
                         val offset = offsets[Point(x, y)]
                         val xOffset = offset?.x.toOffset(t)
                         val yOffset = offset?.y.toOffset(t)
