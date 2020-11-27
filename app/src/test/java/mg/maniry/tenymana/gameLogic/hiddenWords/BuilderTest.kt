@@ -7,14 +7,16 @@ import com.nhaarman.mockitokotlin2.mock
 import mg.maniry.tenymana.gameLogic.models.BibleVerse
 import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.utils.Random
+import mg.maniry.tenymana.utils.verifyOnce
+import mg.maniry.tenymana.utils.verifyTimes
 import org.junit.Test
 
 class BuilderTest {
     @Test
     fun simpleCase_groupOf4() {
         val verse = BibleVerse.fromText("", 1, 1, "ab bc efg abc d fghi jk")
-        val randomIndexes = listOf(2, 1)
-        val randomInts = listOf(
+        val hiddenIndexes = listOf(2, 1)
+        val charIndexes = listOf(
             6, 5, 4, 3, 2, 1, 0,
             0, 0, 0
         )
@@ -22,20 +24,20 @@ class BuilderTest {
             HiddenWordsGroup(chars('c', 'b', 'a', 'c', 'b', 'b', 'a'), verse.words[4]),
             HiddenWordsGroup(chars('d', 'j', 'k'), verse.words[10])
         )
-        testBuildGroups(verse, randomIndexes, randomInts, groups)
-    }
-
-    private fun testBuildGroups(
-        verse: BibleVerse,
-        randomIndexes: List<Int>,
-        randomInts: List<Int>,
-        groups: List<HiddenWordsGroup>
-    ) {
         val random: Random = mock {
-            on { this.int(any(), any()) } doReturnConsecutively randomInts
-            onGeneric { this.from(any<List<Int>>()) } doReturnConsecutively randomIndexes
+            on { this.int(any(), any()) } doReturnConsecutively charIndexes
+            onGeneric { this.from(any<List<Int>>()) } doReturnConsecutively hiddenIndexes
         }
         assertThat(buildHiddenWordsGroups(verse, 4, random)).isEqualTo(groups)
+        verifyOnce(random).from(listOf(2, 3))
+        verifyOnce(random).from(listOf(1))
+        verifyOnce(random).int(0, 6)
+        verifyOnce(random).int(0, 5)
+        verifyOnce(random).int(0, 4)
+        verifyOnce(random).int(0, 3)
+        verifyTimes(random, 2).int(0, 2)
+        verifyTimes(random, 2).int(0, 1)
+        verifyTimes(random, 2).int(0, 0)
     }
 
     fun chars(vararg values: Char): List<Character> {
