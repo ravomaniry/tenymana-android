@@ -6,7 +6,7 @@ import com.nhaarman.mockitokotlin2.doReturnConsecutively
 import com.nhaarman.mockitokotlin2.mock
 import mg.maniry.tenymana.gameLogic.models.BibleVerse
 import mg.maniry.tenymana.utils.Random
-import mg.maniry.tenymana.utils.charsSheb
+import mg.maniry.tenymana.utils.chars
 import mg.maniry.tenymana.utils.verifyOnce
 import mg.maniry.tenymana.utils.verifyTimes
 import org.junit.Test
@@ -21,8 +21,8 @@ class BuilderTest {
             0, 0, 0
         )
         val groups = listOf(
-            HiddenWordsGroup(charsSheb('c', 'b', 'a', 'c', 'b', 'b', 'a'), verse.words[4]),
-            HiddenWordsGroup(charsSheb('d', 'j', 'k'), verse.words[10])
+            HiddenWordsGroup(chars('c', 'b', 'a', 'c', 'b', 'b', 'a'), verse.words[4]),
+            HiddenWordsGroup(chars('d', 'j', 'k'), verse.words[10])
         )
         val random: Random = mock {
             on { this.int(any(), any()) } doReturnConsecutively charIndexes

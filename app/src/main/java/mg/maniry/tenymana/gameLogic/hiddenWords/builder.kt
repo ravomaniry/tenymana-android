@@ -9,7 +9,8 @@ import kotlin.math.min
 
 data class HiddenWordsGroup(
     val chars: List<Character?>,
-    val hidden: Word
+    val hidden: Word,
+    val resolved: Boolean = false
 )
 
 fun buildHiddenWordsGroups(

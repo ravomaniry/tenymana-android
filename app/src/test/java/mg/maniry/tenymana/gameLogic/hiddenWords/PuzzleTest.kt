@@ -13,7 +13,7 @@ class PuzzleTest {
 
     @Test
     fun untilComplete() {
-        val verse = BibleVerse.fromText("", 1, 1, "ab cd efg hi jklmn o ba")
+        val verse = BibleVerse.fromText("", 1, 1, "ab cd efg hi jklmn o ba ba")
         val groups = listOf(
             HiddenWordsGroup(chars('a', 'b', 'c', 'd'), verse.words[4]),
             HiddenWordsGroup(chars('h', 'i', 'o', 'b', 'a'), verse.words[8])
@@ -33,14 +33,15 @@ class PuzzleTest {
         assertThat(didUpdate0).isTrue()
         assertThat(puzzle.groups).isEqualTo(groups0)
         assertThat(puzzle.score.value).isEqualTo(2)
-        assertThat(puzzle.verse.words).isEqualTo(verse.copy(words = words0))
+        assertThat(puzzle.verse.words).isEqualTo(words0)
         // Propose all shown words + not original chars -> reveal hidden words + increment score
         val words1 = words0.toMutableList()
         words1[4] = words1[4].resolvedVersion
         words1[12] = words0[12].resolvedVersion
+        words1[14] = words0[14].resolvedVersion
         val didUpdate1 = puzzle.propose(0, listOf(1, 0))
         assertThat(didUpdate1).isTrue()
-        assertThat(puzzle.score.value).isEqualTo(2 + 2 + 3)
-        assertThat(puzzle.verse).isEqualTo(verse.copy(words = words1))
+        assertThat(puzzle.verse.words).isEqualTo(words1)
+        assertThat(puzzle.score.value).isEqualTo(2 + 2 + 2 + 3)
     }
 }
