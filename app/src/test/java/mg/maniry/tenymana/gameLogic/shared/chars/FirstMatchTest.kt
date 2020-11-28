@@ -32,6 +32,15 @@ class FirstMatchTest {
         testMatch(chars('a', 'b'), words, -1)
     }
 
+    @Test
+    fun withResolved() {
+        testMatch(
+            chars('c', 'd'),
+            listOf(words[0], words[1].resolvedVersion),
+            -1
+        )
+    }
+
     private fun testMatch(chars: List<Character?>, words: List<Word>, match: Int) {
         assertThat(chars.firstMatch(words)).isEqualTo(match)
     }

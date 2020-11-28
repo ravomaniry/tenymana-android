@@ -15,7 +15,7 @@ fun MutableList<Word>.resolveWith(selection: List<Character>, hidden: Set<Int>):
     return resolved
 }
 
-val List<Word>.resolved: Boolean get() = find { !it.resolved } == null
+val List<Word>.resolved: Boolean get() = all { it.resolved }
 
 private fun MutableList<Word>.resolveHidden(hidden: Set<Int>, resolved: MutableList<Int>) {
     for (i in hidden) {

@@ -4,6 +4,10 @@ import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.gameLogic.models.Word
 import mg.maniry.tenymana.utils.findIndex
 
+fun List<Character?>.hasMatch(words: List<Word>): Boolean {
+    return firstMatch(words) >= 0
+}
+
 fun List<Character?>.firstMatch(words: List<Word>): Int {
     val visited = mutableSetOf<Character>()
     val noNull = toChars()
@@ -12,7 +16,7 @@ fun List<Character?>.firstMatch(words: List<Word>): Int {
             visited.add(c)
             for (i in words.indices) {
                 val w = words[i]
-                if (w.startsWith(c) && noNull.canBuild(w)) {
+                if (!w.resolved && w.startsWith(c) && noNull.canBuild(w)) {
                     return i
                 }
             }
