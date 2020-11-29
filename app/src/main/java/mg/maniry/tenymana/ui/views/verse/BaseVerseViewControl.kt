@@ -11,11 +11,14 @@ abstract class BaseVerseViewControl {
     private var width = 0
     protected var words: List<Word>? = null
     protected var cells: List<List<VerseViewCell>> = listOf()
-    private var primaryColor: Int = 0
     private var height = 0
-    private val placeHolderPaint = Paint().apply {
+    protected val placeHolderPaint = Paint().apply {
         style = Paint.Style.FILL
     }
+
+    abstract fun onColorsChange(primary: Int, accent: Int)
+
+    abstract fun draw(canvas: Canvas)
 
     fun onMeasure(w: Int) {
         width = w - PADDING * 2
@@ -27,11 +30,6 @@ abstract class BaseVerseViewControl {
         this.words = words
         computeCells()
         updateHeight()
-    }
-
-    open fun onColorsChange(primary: Int, accent: Int) {
-        primaryColor = primary
-        updatePaints()
     }
 
     private fun computeCells() {
@@ -73,12 +71,6 @@ abstract class BaseVerseViewControl {
             settings!!.verseViewHeight = height
         }
     }
-
-    protected open fun updatePaints() {
-        placeHolderPaint.color = primaryColor
-    }
-
-    abstract fun draw(canvas: Canvas)
 
     protected fun drawPlaceHolder(canvas: Canvas, cell: VerseViewCell, dx: Float = 0f) {
         canvas.drawRect(cell.x + dx, cell.y, cell.x + W + dx, cell.y + H, placeHolderPaint)

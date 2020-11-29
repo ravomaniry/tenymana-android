@@ -23,6 +23,7 @@ class AnimVerseView : BaseVerseView, AnimatedView {
     }
 
     override fun reRender() {
+        animator?.register(this)
         control.startAnim(Date().time)
         invalidate()
     }
@@ -32,6 +33,9 @@ class AnimVerseView : BaseVerseView, AnimatedView {
             invalidate()
         }
         shouldInvalidate = control.onTick(Date().time)
+        if (!shouldInvalidate) {
+            animator?.forget(this)
+        }
         return shouldInvalidate
     }
 

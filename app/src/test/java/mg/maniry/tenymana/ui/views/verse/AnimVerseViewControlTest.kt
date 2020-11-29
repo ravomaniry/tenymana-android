@@ -66,7 +66,7 @@ class AnimVerseViewControlTest {
             )
         )
         // Move to 10
-        val inv = reRender(1125)
+        val inv = reRender(1050)
         assertThat(inv).isTrue()
         assertThat(rects).isEqualTo(
             listOf(
@@ -76,7 +76,7 @@ class AnimVerseViewControlTest {
             )
         )
         // Move to 20: do not draw cell[0]
-        val inv1 = reRender(1250)
+        val inv1 = reRender(1100)
         assertThat(inv1).isTrue()
         assertThat(rects).isEqualTo(
             listOf(
@@ -85,11 +85,11 @@ class AnimVerseViewControlTest {
             )
         )
         // Move to 30
-        val inv2 = reRender(1375)
+        val inv2 = reRender(1150)
         assertThat(inv2).isTrue()
         assertThat(rects).isEqualTo(listOf(TestRect.xywh(padding + 30, padding, w, h)))
         // Complete
-        val inv3 = reRender(1500)
+        val inv3 = reRender(1200)
         assertThat(inv3).isFalse()
         assertThat(rects).isEmpty()
     }

@@ -14,6 +14,11 @@ class VerseViewControl : BaseVerseViewControl() {
     private val textDx = (W + SPACING_H) / 2
     private val textDy = H - SPACING_V
 
+    override fun onColorsChange(primary: Int, accent: Int) {
+        charPaint.color = accent
+        placeHolderPaint.color = primary
+    }
+
     override fun draw(canvas: Canvas) {
         for (row in cells) {
             for (cell in row) {

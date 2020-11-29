@@ -17,6 +17,10 @@ class AnimVerseViewControl : BaseVerseViewControl() {
         }
     }
 
+    override fun onColorsChange(primary: Int, accent: Int) {
+        placeHolderPaint.color = accent
+    }
+
     fun startAnim(now: Long) {
         this.t0 = now
         updateHighlights()
@@ -61,7 +65,7 @@ class AnimVerseViewControl : BaseVerseViewControl() {
     }
 
     companion object {
-        const val animDuration = 500.0
+        const val animDuration = 200.0
     }
 }
 

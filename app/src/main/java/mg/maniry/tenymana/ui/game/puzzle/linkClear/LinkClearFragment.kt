@@ -22,6 +22,7 @@ class LinkClearFragment : Fragment() {
     private lateinit var binding: PuzzleScreenLinkClearBinding
     private lateinit var viewModel: LinkClearViewModel
     private val drawingSettings = DrawingSettings()
+    private val anim: AnimatorWrapper by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +32,7 @@ class LinkClearFragment : Fragment() {
         initViewModel()
         initBinding(inflater, container)
         initVerseView()
+        initAnimVerseView()
         initCharsGridView()
         initCharsGridInput()
         initGridHighlightVew()
@@ -62,8 +64,16 @@ class LinkClearFragment : Fragment() {
         }
     }
 
+    private fun initAnimVerseView() {
+        binding.animVerseView.apply {
+            animator = anim.value
+            onSettingsChanged(drawingSettings)
+            bindTo(viewModel.colors, this::onColorsChanged)
+            bindTo(viewModel.words, this::onWordsChange)
+        }
+    }
+
     private fun initCharsGridView() {
-        val anim: AnimatorWrapper by inject()
         binding.charsGridBg.apply {
             animator = anim.value
             onSettingsChanged(drawingSettings)
@@ -105,6 +115,7 @@ class LinkClearFragment : Fragment() {
             if (it) {
                 binding.charsGridBg.update()
                 binding.verseView.reRender()
+                binding.animVerseView.reRender()
                 binding.gridHighlightView.update()
                 viewModel.onUpdateDone()
             }

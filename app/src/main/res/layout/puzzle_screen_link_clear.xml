@@ -16,12 +16,24 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <mg.maniry.tenymana.ui.views.verse.VerseView
-            android:id="@+id/verseView"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_verse_view"
-            tools:layout_height="60dp" />
+            android:layout_height="wrap_content">
+
+            <mg.maniry.tenymana.ui.views.verse.VerseView
+                android:id="@+id/verseView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_verse_view"
+                tools:layout_height="100dp" />
+
+            <mg.maniry.tenymana.ui.views.verse.AnimVerseView
+                android:id="@+id/animVerseView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout_height="100dp" />
+
+        </FrameLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
