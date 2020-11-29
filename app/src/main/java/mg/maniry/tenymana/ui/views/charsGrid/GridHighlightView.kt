@@ -52,7 +52,7 @@ class GridHighlightView : BaseCharGridView, AnimatedView {
         return shouldInvalidate
     }
 
-    override fun reRender() {
+    override fun onFrame() {
         invalidate()
     }
 

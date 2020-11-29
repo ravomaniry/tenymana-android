@@ -8,11 +8,11 @@ import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.mock
 import mg.maniry.tenymana.gameLogic.models.Word
 import mg.maniry.tenymana.ui.views.settings.DrawingSettings
-import mg.maniry.tenymana.ui.views.verse.VerseViewControl.Companion.H
-import mg.maniry.tenymana.ui.views.verse.VerseViewControl.Companion.PADDING
-import mg.maniry.tenymana.ui.views.verse.VerseViewControl.Companion.SPACING_H
-import mg.maniry.tenymana.ui.views.verse.VerseViewControl.Companion.SPACING_V
-import mg.maniry.tenymana.ui.views.verse.VerseViewControl.Companion.W
+import mg.maniry.tenymana.ui.views.verse.BaseVerseViewControl.Companion.H
+import mg.maniry.tenymana.ui.views.verse.BaseVerseViewControl.Companion.PADDING
+import mg.maniry.tenymana.ui.views.verse.BaseVerseViewControl.Companion.SPACING_H
+import mg.maniry.tenymana.ui.views.verse.BaseVerseViewControl.Companion.SPACING_V
+import mg.maniry.tenymana.ui.views.verse.BaseVerseViewControl.Companion.W
 import mg.maniry.tenymana.utils.TestRect
 import mg.maniry.tenymana.utils.TestTextShape
 import org.junit.Test

@@ -1,7 +1,7 @@
 package mg.maniry.tenymana.ui.views.settings
 
 import mg.maniry.tenymana.gameLogic.models.Point
-import mg.maniry.tenymana.ui.views.verse.VerseViewControl
+import mg.maniry.tenymana.ui.views.verse.BaseVerseViewControl
 
 class DrawingSettings {
     private val charGridSubs = mutableSetOf<DrawingSettingsObserver>()
@@ -27,7 +27,7 @@ class DrawingSettings {
             }
         }
 
-    private var _verseViewHeight = VerseViewControl.PADDING * 2
+    private var _verseViewHeight = BaseVerseViewControl.PADDING * 2
     var verseViewHeight: Int
         get() = _verseViewHeight
         set(value) {

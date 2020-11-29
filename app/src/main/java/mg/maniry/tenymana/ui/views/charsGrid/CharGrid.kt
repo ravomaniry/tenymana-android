@@ -37,7 +37,7 @@ class CharGrid : BaseCharGridView, AnimatedView {
         invalidate()
     }
 
-    override fun reRender() {
+    override fun onFrame() {
         invalidate()
     }
 

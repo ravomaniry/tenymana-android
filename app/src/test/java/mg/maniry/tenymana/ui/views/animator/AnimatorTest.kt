@@ -36,7 +36,7 @@ class AnimatorTest {
         verifyNever(animation).cancel()
         listener.onAnimationUpdate(animation)
         verifyOnce(view1).onTick(any())
-        verifyNever(view1).reRender()
+        verifyNever(view1).onFrame()
         // Add another: no more start + ticks return true
         onView1Tick = true
         onView2Tick = true
@@ -45,9 +45,9 @@ class AnimatorTest {
         verifyZeroInteractions(animation)
         listener.onAnimationUpdate(animation)
         verifyOnce(view1).onTick(any())
-        verifyOnce(view1).reRender()
+        verifyOnce(view1).onFrame()
         verifyOnce(view2).onTick(any())
-        verifyOnce(view2).reRender()
+        verifyOnce(view2).onFrame()
         // Forget view2
         clearInvocations(animation, view1, view2)
         animator.forget(view2)
@@ -55,7 +55,7 @@ class AnimatorTest {
         listener.onAnimationUpdate(animation)
         verifyZeroInteractions(view2)
         verifyOnce(view1).onTick(any())
-        verifyOnce(view1).reRender()
+        verifyOnce(view1).onFrame()
         // Forget view1 stops animation
         animator.forget(view1)
         verifyOnce(animation).cancel()
