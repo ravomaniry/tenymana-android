@@ -1,43 +1,29 @@
-package mg.maniry.tenymana.ui.views.charsGrid
+package mg.maniry.tenymana.ui.views.verse
 
 import android.content.Context
-import android.graphics.Canvas
 import android.util.AttributeSet
-import mg.maniry.tenymana.gameLogic.models.Move
+import mg.maniry.tenymana.ui.game.colors.GameColors
 import mg.maniry.tenymana.ui.views.animator.AnimatedView
 import mg.maniry.tenymana.ui.views.animator.Animator
 import java.util.*
 
-class CharGrid : BaseCharGridView, AnimatedView {
+class AnimVerseView : BaseVerseView, AnimatedView {
     constructor(context: Context) : super(context)
     constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet)
     constructor(context: Context, attributeSet: AttributeSet, defStyleAttr: Int) :
             super(context, attributeSet, defStyleAttr)
 
-    override val control: CharGridControl = CharGridControl()
+    private var shouldInvalidate = false
     override var animator: Animator? = null
-    var shouldInvalidate = false
+    override val control = AnimVerseViewControl()
 
-    fun onDiffs(values: List<Move>?) {
-        if (values == null) {
-            animator?.forget(this)
-        } else {
-            animator?.register(this)
-        }
-        control.onDiffs(values, Date().time)
-    }
-
-    override fun onDraw(canvas: Canvas?) {
-        if (canvas != null) {
-            control.draw(canvas)
-        }
-    }
-
-    override fun update() {
+    override fun onColorsChanged(colors: GameColors) {
+        super.onColorsChanged(colors)
         invalidate()
     }
 
-    override fun onFrame() {
+    override fun reRender() {
+        control.startAnim(Date().time)
         invalidate()
     }
 
@@ -45,8 +31,12 @@ class CharGrid : BaseCharGridView, AnimatedView {
         if (shouldInvalidate) {
             invalidate()
         }
-        shouldInvalidate = control.onTick(t)
+        shouldInvalidate = control.onTick(Date().time)
         return shouldInvalidate
+    }
+
+    override fun onFrame() {
+        invalidate()
     }
 
     override fun onDetachedFromWindow() {

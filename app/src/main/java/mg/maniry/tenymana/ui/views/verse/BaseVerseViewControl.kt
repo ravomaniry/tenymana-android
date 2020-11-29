@@ -23,7 +23,7 @@ abstract class BaseVerseViewControl {
         updateHeight()
     }
 
-    fun onWordsChange(words: List<Word>?) {
+    open fun onWordsChange(words: List<Word>?) {
         this.words = words
         computeCells()
         updateHeight()
@@ -80,8 +80,8 @@ abstract class BaseVerseViewControl {
 
     abstract fun draw(canvas: Canvas)
 
-    protected fun drawPlaceHolder(canvas: Canvas, cell: VerseViewCell) {
-        canvas.drawRect(cell.x, cell.y, cell.x + W, cell.y + H, placeHolderPaint)
+    protected fun drawPlaceHolder(canvas: Canvas, cell: VerseViewCell, dx: Float = 0f) {
+        canvas.drawRect(cell.x + dx, cell.y, cell.x + W + dx, cell.y + H, placeHolderPaint)
     }
 
     companion object {
