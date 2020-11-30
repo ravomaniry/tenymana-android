@@ -18,7 +18,7 @@ class AnimVerseViewControl : BaseVerseViewControl() {
     }
 
     override fun onColorsChange(primary: Int, accent: Int) {
-        placeHolderPaint.color = accent
+        placeHolderPaint.color = primary
     }
 
     fun startAnim(now: Long) {
