@@ -141,7 +141,8 @@
         <item name="android:layout_margin">5dp</item>
     </style>
 
-    <style name="AppTheme.VerseRowItem" parent="AppTheme.VerseTexView">
-        <item name="android:layout_marginBottom">0dp</item>
+    <style name="AppTheme.VerseRowItem" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
     </style>
 </resources>
