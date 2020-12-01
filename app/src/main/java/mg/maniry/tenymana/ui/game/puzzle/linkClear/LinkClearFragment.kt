@@ -38,6 +38,7 @@ class LinkClearFragment : Fragment() {
         initGridHighlightVew()
         initBonusViews()
         observeReRender()
+        viewModel.onMounted?.invoke()
         return binding.root
     }
 

@@ -44,7 +44,7 @@ class PuzzleFragment : Fragment() {
     private fun initViewModel() {
         val viewModels: SharedViewModels by inject()
         val fct = PuzzleViewModel.factory(viewModels.game)
-        viewModel = ViewModelProvider(this, fct).get(PuzzleViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity(), fct).get(PuzzleViewModel::class.java)
         viewModels.puzzle = viewModel
     }
 

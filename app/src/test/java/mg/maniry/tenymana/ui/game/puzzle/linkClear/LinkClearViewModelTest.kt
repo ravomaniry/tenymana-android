@@ -60,7 +60,14 @@ class LinkClearViewModelTest {
         viewModel.animDuration.observeForever { animDrations.add(it) }
         viewModel.prevGrid.observeForever { prevGrids.add(it) }
         runBlocking {
+            // before puzzle: no animation
+            viewModel.onMounted?.invoke()
+            assertThat(grids).isEmpty()
+            // post puzzle: no mount
             puzzleCont.postValue(puzzle)
+            assertThat(grids).isEmpty()
+            // mount
+            viewModel.onMounted?.invoke()
             assertThat(grids).isEqualTo(
                 listOf(solution[1].grid, solution[0].grid, solution[1].grid)
             )
@@ -73,6 +80,8 @@ class LinkClearViewModelTest {
             assertThat(proposes[0]).isNull()
             assertThat(proposes[1]).isNotNull()
             assertThat(viewModel.grid.value).isEqualTo(puzzle.grid)
+            // onMount does nothing
+            assertThat(viewModel.onMounted).isNull()
         }
     }
 
@@ -112,6 +121,7 @@ class LinkClearViewModelTest {
         viewModel.highlighted.observeForever { highlights.add(it) }
         viewModel.diffs.observeForever { diffsHistory.add(it) }
         runBlocking {
+            viewModel.onMounted!!()
             val invalidate = viewModel.invalidate as MutableLiveData<Boolean>
             // Wrong response
             proposeResult = false
@@ -172,6 +182,51 @@ class LinkClearViewModelTest {
             score.postValue(20)
             viewModel.propose(Move.xy(0, 0, 1, 0))
             verifyOnce(puzzleViewModel).onComplete()
+        }
+    }
+
+    @Test
+    fun replacePuzzle() {
+        val verse = BibleVerse.fromText("", 1, 1, "Abc def")
+        val puzzleCont = MutableLiveData<Puzzle>()
+        val puzzleViewModel: PuzzleViewModel = mock {
+            on { this.puzzle } doReturn puzzleCont
+            on { this.canUseBonusOne() } doReturn true
+        }
+        val viewModel = LinkClearViewModel(puzzleViewModel, TestDispatchers)
+        assertThat(viewModel.grid.value).isNull()
+        val grids = mutableListOf<Grid<*>?>()
+        viewModel.grid.observeForever { grids.add(it) }
+        runBlocking {
+            // first puzzle -> animate
+            val solution0 = SolutionItem(
+                Grid(listOf(chars('A', 'B'))),
+                listOf(Point(0, 0), Point(1, 0))
+            )
+            puzzleCont.postValue(puzzle(listOf(solution0), verse))
+            viewModel.onMounted!!()
+            assertThat(grids).isEqualTo(listOf(solution0.grid, solution0.grid))
+            // animate again when puzzle changes
+            grids.removeAll { true }
+            val solution1 = SolutionItem(
+                Grid(listOf(chars('A', 'B', 'C', 'D'))),
+                listOf(Point(2, 0), Point(3, 0))
+            )
+            puzzleCont.postValue(puzzle(listOf(solution1), verse))
+            viewModel.onMounted!!()
+            assertThat(grids).isEqualTo(listOf(solution1.grid, solution1.grid))
+        }
+    }
+
+    private fun puzzle(
+        solution: List<SolutionItem<Character>>,
+        verse: BibleVerse
+    ): LinkClearPuzzle {
+        return mock {
+            on { this.solution } doReturn solution
+            on { this.grid } doReturn solution.last().grid
+            on { this.prevGrid } doReturn solution.last().grid.toMutable()
+            on { this.verse } doReturn verse
         }
     }
 }

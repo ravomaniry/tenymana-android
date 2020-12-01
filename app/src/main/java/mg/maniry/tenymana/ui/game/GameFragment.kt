@@ -52,7 +52,7 @@ class GameFragment : Fragment() {
             puzzleBuilder,
             dispatchers
         )
-        viewModel = ViewModelProvider(this, fct).get(GameViewModelImpl::class.java)
+        viewModel = ViewModelProvider(requireActivity(), fct).get(GameViewModelImpl::class.java)
         viewModels.game = viewModel
     }
 

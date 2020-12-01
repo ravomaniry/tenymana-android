@@ -42,25 +42,31 @@ class LinkClearViewModel(
     private val _propose = MutableLiveData<ProposeFn?>()
     val propose: LiveData<ProposeFn?> = _propose
 
+    private var _onMounted: (() -> Unit)? = null
+    val onMounted: (() -> Unit)? get() = _onMounted
+
     private val puzzleObserver = Observer<Puzzle?> {
-        if (it != null && prevPuzzle == null && it is LinkClearPuzzle) {
+        if (it != null && it != prevPuzzle && it is LinkClearPuzzle) {
             _propose.postValue(null)
             _words.postValue(it.verse.words)
             _animDuration.postValue(helpAnimDuration.toDouble())
-            viewModelScope.launch(kDispatchers.default) {
-                for (i in (it.solution.size - 1).downTo(0)) {
-                    _grid.postValue(it.solution[i].grid)
-                    _prevGrid.postValue(it.solution[i].grid)
-                    kDispatchers.delay(helpAnimDuration)
-                    _highlighted.postValue(it.solution[i].points)
-                    kDispatchers.delay(helpAnimDuration)
-                }
-                withContext(kDispatchers.main) {
-                    _grid.postValue(it.grid)
-                    _propose.postValue(this@LinkClearViewModel::propose)
-                    _prevGrid.postValue(it.prevGrid)
-                    _animDuration.postValue(inGameAnimDuration)
-                    _highlighted.postValue(null)
+            _onMounted = {
+                viewModelScope.launch(kDispatchers.default) {
+                    for (i in (it.solution.size - 1).downTo(0)) {
+                        _grid.postValue(it.solution[i].grid)
+                        _prevGrid.postValue(it.solution[i].grid)
+                        kDispatchers.delay(helpAnimDuration)
+                        _highlighted.postValue(it.solution[i].points)
+                        kDispatchers.delay(helpAnimDuration)
+                    }
+                    withContext(kDispatchers.main) {
+                        _grid.postValue(it.grid)
+                        _propose.postValue(this@LinkClearViewModel::propose)
+                        _prevGrid.postValue(it.prevGrid)
+                        _animDuration.postValue(inGameAnimDuration)
+                        _highlighted.postValue(null)
+                        _onMounted = null
+                    }
                 }
             }
         }
