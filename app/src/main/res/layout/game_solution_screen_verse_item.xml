@@ -11,7 +11,7 @@
 
     <TextView
         android:id="@+id/solutionScreenVerseItem"
-        style="@style/AppTheme.VerseTexView"
+        style="@style/AppTheme.VerseRowItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@{@string/solution_verse_item(verse.verse, verse.text)}"
