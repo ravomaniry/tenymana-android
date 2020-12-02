@@ -8,6 +8,7 @@ import com.nhaarman.mockitokotlin2.mock
 import mg.maniry.tenymana.gameLogic.models.Word
 import mg.maniry.tenymana.ui.views.settings.DrawingSettings
 import mg.maniry.tenymana.ui.views.verse.BaseVerseViewControl.Companion.H
+import mg.maniry.tenymana.ui.views.verse.BaseVerseViewControl.Companion.LINE_H
 import mg.maniry.tenymana.ui.views.verse.BaseVerseViewControl.Companion.PADDING
 import mg.maniry.tenymana.ui.views.verse.BaseVerseViewControl.Companion.SPACING_H
 import mg.maniry.tenymana.ui.views.verse.BaseVerseViewControl.Companion.SPACING_V
@@ -19,6 +20,7 @@ class AnimVerseViewControlTest {
     private val padding = PADDING.toFloat()
     private val h = H.toFloat()
     private val w = W.toFloat()
+    private val lineH = LINE_H.toFloat()
     private val wPlusSp = w + SPACING_H
 
     @Test
@@ -41,15 +43,17 @@ class AnimVerseViewControlTest {
         }
         control.settings = DrawingSettings()
         val words = mutableListOf(
-            Word.fromValue("Abc", 0), // 12 * 3 + 2 * 2 = 40
-            Word.fromValue(", ", 1, true), // 12 * 2 = 24
-            Word.fromValue("de", 2), // 12 * 2 + 2 = 26
-            Word.fromValue(" ", 3, true), // 12
-            Word.fromValue("fgh", 4) // 12 * 3 + 2 * 2 = 40
+            Word.fromValue("Abc", 0), // 12 * 3 + 2 * 2 = 40 | 0
+            Word.fromValue(", ", 1, true), // 12 * 2 = 24 | 0
+            Word.fromValue("de", 2), // 12 * 2 + 2 = 26 | 0
+            Word.fromValue(" ", 3, true), // 12 | 1
+            Word.fromValue("fgh", 4), // 12 * 3 + 2 * 2 = 40 | 1
+            Word.fromValue(" ", 5, true),
+            Word.fromValue("abcdefghi", 6) // 14*7 + 14*2
         )
         control.onWordsChange(words)
         control.onMeasure(100)
-        assertThat(control.settings?.verseViewHeight).isEqualTo(2 * H + SPACING_V + 2 * PADDING)
+        assertThat(control.settings?.verseViewHeight).isEqualTo(4 * H + SPACING_V * 3 + 2 * PADDING)
         // Nothing to animate
         control.draw(canvas)
         assertThat(rects).isEmpty()
@@ -92,5 +96,37 @@ class AnimVerseViewControlTest {
         val inv3 = reRender(1200)
         assertThat(inv3).isFalse()
         assertThat(rects).isEmpty()
+        // Two words
+        words[2] = words[2].resolvedVersion
+        words[4] = words[4].resolvedVersion
+        control.startAnim(2000)
+        // -> +5 at row 0
+        // -> +10 at row 1
+        reRender(2050)
+        assertThat(rects).isEqualTo(
+            listOf(
+                TestRect.xywh(padding + 64 + 6.5f, padding, w, h),
+                TestRect.xywh(padding + 64 + wPlusSp, padding, w, h),
+                TestRect.xywh(padding + 10, padding + lineH, w, h),
+                TestRect.xywh(padding + wPlusSp, padding + lineH, w, h),
+                TestRect.xywh(padding + 2 * wPlusSp, padding + lineH, w, h)
+            )
+        )
+        // Broken word
+        words[6] = words[6].resolvedVersion
+        control.startAnim(3000)
+        reRender(3050)
+        assertThat(rects).isEqualTo(
+            listOf(
+                TestRect.xywh(padding + 20.5f, padding + 2 * lineH, w, h),
+                TestRect.xywh(padding + 2 * wPlusSp, padding + 2 * lineH, w, h),
+                TestRect.xywh(padding + 3 * wPlusSp, padding + 2 * lineH, w, h),
+                TestRect.xywh(padding + 4 * wPlusSp, padding + 2 * lineH, w, h),
+                TestRect.xywh(padding + 5 * wPlusSp, padding + 2 * lineH, w, h),
+                TestRect.xywh(padding + 10, padding + 3 * lineH, w, h),
+                TestRect.xywh(padding + wPlusSp, padding + 3 * lineH, w, h),
+                TestRect.xywh(padding + 2 * wPlusSp, padding + 3 * lineH, w, h)
+            )
+        )
     }
 }
