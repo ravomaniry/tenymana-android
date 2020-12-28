@@ -111,55 +111,55 @@ class SolutionTest : KoinTest {
         }
         launchFragmentInContainer<SolutionFragment>(null, R.style.AppTheme, factory)
         // 1- Display title + small view with verse inside
-        shouldBeVisible(R.id.solutionScreenSmallView)
-        shouldHaveText(
+        assertShouldBeVisible(R.id.solutionScreenSmallView)
+        assertShouldHaveText(
             R.id.solutionScreenTitle,
             text = "${activeVerse.book} ${activeVerse.chapter}:${activeVerse.verse}"
         )
-        shouldHaveText(R.id.solutionScreenVerse, text = activeVerse.text)
-        shouldBeInvisible(R.id.solutionScreenBigView)
+        assertShouldHaveText(R.id.solutionScreenVerse, text = activeVerse.text)
+        assertShouldBeInvisible(R.id.solutionScreenBigView)
         // 2- click on btn call viewModel's function
         clickView(R.id.solutionSaveAndContinueBtn)
         verifyOnce(gameViewModel).saveAndContinue()
         // Score && stars
-        shouldHaveText(R.id.solutionScreenScore, text = "$score")
-        shouldBeVisible(R.id.solutionScreenStar0)
+        assertShouldHaveText(R.id.solutionScreenScore, text = "$score")
+        assertShouldBeVisible(R.id.solutionScreenStar0)
         if (stars >= 2) {
-            shouldBeVisible(R.id.solutionScreenStar1)
+            assertShouldBeVisible(R.id.solutionScreenStar1)
         } else {
-            shouldBeInvisible(R.id.solutionScreenStar1)
+            assertShouldBeInvisible(R.id.solutionScreenStar1)
         }
         if (stars >= 3) {
-            shouldBeVisible(R.id.solutionScreenStar2)
+            assertShouldBeVisible(R.id.solutionScreenStar2)
         } else {
-            shouldBeInvisible(R.id.solutionScreenStar2)
+            assertShouldBeInvisible(R.id.solutionScreenStar2)
         }
         // Expand
         if (canExpand) {
             // Expand
             clearInvocations(gameViewModel)
-            shouldBeVisible(R.id.solutionScreenExpandBtn)
+            assertShouldBeVisible(R.id.solutionScreenExpandBtn)
             clickView(R.id.solutionScreenExpandBtn)
             // 1- fetch verses from bible repository
             runBlocking {
                 verifyOnce(bibleRepo).get(activeVerse.book, activeVerse.chapter, minV, maxV)
             }
             // 2- update title
-            shouldHaveText(
+            assertShouldHaveText(
                 R.id.solutionScreenTitle,
                 text = "${activeVerse.book} ${activeVerse.chapter}"
             )
             // 3- show big view & items
-            shouldBeInvisible(R.id.solutionScreenSmallView)
-            shouldBeVisible(R.id.solutionScreenBigView)
+            assertShouldBeInvisible(R.id.solutionScreenSmallView)
+            assertShouldBeVisible(R.id.solutionScreenBigView)
             for (v in 2..6) {
-                shouldHaveText(R.id.solutionScreenVerseItem, v - 2, "$v- ${verses[v - 2].text}")
+                assertShouldHaveText(R.id.solutionScreenVerseItem, v - 2, "$v- ${verses[v - 2].text}")
             }
             // 4- click is available
             clickView(R.id.solutionSaveAndContinueBtn)
             verifyOnce(gameViewModel).saveAndContinue()
         } else {
-            shouldBeInvisible(R.id.solutionScreenExpandBtn)
+            assertShouldBeInvisible(R.id.solutionScreenExpandBtn)
         }
     }
 

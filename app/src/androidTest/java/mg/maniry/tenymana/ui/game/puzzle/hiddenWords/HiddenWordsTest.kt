@@ -1,4 +1,4 @@
-package mg.maniry.tenymana.ui.game.puzzle.linkClear
+package mg.maniry.tenymana.ui.game.puzzle.hiddenWords
 
 import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ActivityScenario
@@ -6,7 +6,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.runBlocking
 import mg.maniry.tenymana.MainActivity
 import mg.maniry.tenymana.R
-import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
+import mg.maniry.tenymana.gameLogic.hiddenWords.HiddenWordsPuzzle
 import mg.maniry.tenymana.gameLogic.models.BibleVerse
 import mg.maniry.tenymana.gameLogic.shared.puzzleBuilder.PuzzleBuilder
 import mg.maniry.tenymana.helpers.assertShouldBeVisible
@@ -27,7 +27,7 @@ import org.koin.test.KoinTest
 import org.koin.test.inject
 
 @RunWith(AndroidJUnit4::class)
-class LinkClearPuzzleTest : KoinTest {
+class HiddenWordsTest : KoinTest {
     @Before
     fun iniKoin() {
         setupTestKoin()
@@ -45,14 +45,12 @@ class LinkClearPuzzleTest : KoinTest {
         whenever(userRepo.user).thenReturn(MutableLiveData(User("1", "")))
         // Puzzle builder
         val verse = BibleVerse.fromText("Matio", 1, 10, "Ny filazana ny razan'i Jesosy Kristy")
-        val puzzle = LinkClearPuzzle.build(verse, RandomImpl())
+        val puzzle = HiddenWordsPuzzle.build(verse, 5, RandomImpl())
         val puzzleBuilder: PuzzleBuilder by inject()
         whenever(puzzleBuilder.random(verse)).thenReturn(puzzle)
         // Bible repo
         val bibleRepo: BibleRepo by inject()
-        runBlocking {
-            whenever(bibleRepo.getSingle("Matio", 1, 10)).thenReturn(verse)
-        }
+        runBlocking { whenever(bibleRepo.getSingle("Matio", 1, 10)).thenReturn(verse) }
         // game repo
         val gameRepo: GameRepo by inject()
         val sessions = listOf(
@@ -78,7 +76,7 @@ class LinkClearPuzzleTest : KoinTest {
             clickView(R.id.pathsScreenContinueBtn)
             //  -> Path details screen
             clickView(R.id.pathDetailsNextBtn)
-            assertShouldBeVisible(R.id.linkClearPuzzle)
+            assertShouldBeVisible(R.id.hiddenWordsPuzzleBody)
         }
         Thread.sleep(3000)
     }

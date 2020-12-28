@@ -1,7 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-</LinearLayout>
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:id="@+id/hiddenWordsPuzzleBody"
+        style="@style/AppTheme.HiddenWordsPuzzleBody"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <mg.maniry.tenymana.ui.views.verse.VerseView
+                android:id="@+id/verseView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_verse_view"
+                tools:layout_height="100dp" />
+
+            <mg.maniry.tenymana.ui.views.verse.AnimVerseView
+                android:id="@+id/animVerseView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout_height="100dp" />
+
+        </FrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/groupsList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </LinearLayout>
+</layout>

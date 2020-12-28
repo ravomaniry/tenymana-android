@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <mg.maniry.tenymana.ui.views.containers.FixedWLinearLayout
+        android:id="@+id/itemContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="5dp"
+        android:background="@color/darkGray"
+        android:orientation="vertical">
+
+    </mg.maniry.tenymana.ui.views.containers.FixedWLinearLayout>
+</layout>

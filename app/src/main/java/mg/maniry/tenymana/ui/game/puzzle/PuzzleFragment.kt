@@ -10,9 +10,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.PuzzleScreenBinding
+import mg.maniry.tenymana.gameLogic.hiddenWords.HiddenWordsPuzzle
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.ui.app.SharedViewModels
 import mg.maniry.tenymana.ui.game.puzzle.header.PuzzleHeaderFragment
+import mg.maniry.tenymana.ui.game.puzzle.hiddenWords.HiddenWordsFragment
 import mg.maniry.tenymana.ui.game.puzzle.linkClear.LinkClearFragment
 import mg.maniry.tenymana.ui.game.puzzle.loader.PuzzleLoaderFragment
 import mg.maniry.tenymana.utils.mountChild
@@ -56,6 +58,7 @@ class PuzzleFragment : Fragment() {
         viewModel.puzzle.observe(viewLifecycleOwner, Observer {
             val body = when (it) {
                 is LinkClearPuzzle -> LinkClearFragment()
+                is HiddenWordsPuzzle -> HiddenWordsFragment()
                 else -> PuzzleLoaderFragment()
             }
             mountChild(body, R.id.puzzleBodyPlaceHolder)

@@ -54,9 +54,9 @@ class PathsFragmentTest : KoinTest {
         // Select path 2 and click on continue button and verse item
         clearInvocations(gameVM)
         clickView(R.id.pathsScreenRightBtn)
-        shouldHaveText(R.id.pathsScreenPathTitle, text = session.journey.paths[1].name)
-        shouldBeVisible(R.id.pathsScreenLeftBtn)
-        shouldBeInvisible(R.id.pathsScreenRightBtn)
+        assertShouldHaveText(R.id.pathsScreenPathTitle, text = session.journey.paths[1].name)
+        assertShouldBeVisible(R.id.pathsScreenLeftBtn)
+        assertShouldBeInvisible(R.id.pathsScreenRightBtn)
         clickView(R.id.pathsScreenContinueBtn)
         verifyOnce(gameVM).onPathSelected(1, null)
         clickView(R.id.pathsScreenVerse, 0)
@@ -64,7 +64,7 @@ class PathsFragmentTest : KoinTest {
         // Go back to path 1 && continie && select
         clearInvocations(gameVM)
         clickView(R.id.pathsScreenLeftBtn)
-        shouldHaveText(R.id.pathsScreenPathTitle, text = session.journey.paths[0].name)
+        assertShouldHaveText(R.id.pathsScreenPathTitle, text = session.journey.paths[0].name)
         clickView(R.id.pathsScreenContinueBtn)
         verifyOnce(gameVM).onPathSelected(0, null)
         clickView(R.id.pathsScreenVerse, 2)
@@ -173,23 +173,23 @@ class PathsFragmentTest : KoinTest {
             }
         }
         launchFragmentInContainer<PathsFragment>(null, R.style.AppTheme, factory)
-        shouldHaveText(R.id.pathsScreenJourneyTitle, text = session.journey.title)
-        shouldHaveText(R.id.pathsScreenJourneyDescription, text = session.journey.description)
+        assertShouldHaveText(R.id.pathsScreenJourneyTitle, text = session.journey.title)
+        assertShouldHaveText(R.id.pathsScreenJourneyDescription, text = session.journey.description)
         // buttons
         if (showLeftBtn) {
-            shouldBeVisible(R.id.pathsScreenLeftBtn)
+            assertShouldBeVisible(R.id.pathsScreenLeftBtn)
         } else {
-            shouldBeInvisible(R.id.pathsScreenLeftBtn)
+            assertShouldBeInvisible(R.id.pathsScreenLeftBtn)
         }
         if (showRightBtn) {
-            shouldBeVisible(R.id.pathsScreenRightBtn)
+            assertShouldBeVisible(R.id.pathsScreenRightBtn)
         } else {
-            shouldBeInvisible(R.id.pathsScreenRightBtn)
+            assertShouldBeInvisible(R.id.pathsScreenRightBtn)
         }
         // Active path
         val path = session.journey.paths[pathIndex]
-        shouldHaveText(R.id.pathsScreenPathTitle, text = path.name)
-        shouldHaveText(R.id.pathsScreenPathChapter, text = "${path.book} ${path.chapter}")
+        assertShouldHaveText(R.id.pathsScreenPathTitle, text = path.name)
+        assertShouldHaveText(R.id.pathsScreenPathChapter, text = "${path.book} ${path.chapter}")
         // Click on continue button
         clickView(R.id.pathsScreenContinueBtn)
         verifyOnce(gameViewModel).onPathSelected(pathIndex, null)
@@ -197,7 +197,7 @@ class PathsFragmentTest : KoinTest {
         for (verse in path.start..path.end) {
             val index = verse - path.start
             clickView(R.id.pathsScreenVerse, index)
-            shouldHaveText(R.id.pathsScreenVerseNumber, index, text = verse.toString())
+            assertShouldHaveText(R.id.pathsScreenVerseNumber, index, text = verse.toString())
             verifyOnce(gameViewModel).onPathSelected(pathIndex, index)
         }
         return gameViewModel

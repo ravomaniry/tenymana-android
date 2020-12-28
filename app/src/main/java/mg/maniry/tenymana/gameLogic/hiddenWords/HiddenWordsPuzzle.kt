@@ -8,6 +8,7 @@ import mg.maniry.tenymana.gameLogic.models.Word
 import mg.maniry.tenymana.gameLogic.shared.chars.hasMatch
 import mg.maniry.tenymana.gameLogic.shared.words.resolveWith
 import mg.maniry.tenymana.gameLogic.shared.words.resolved
+import mg.maniry.tenymana.utils.Random
 import mg.maniry.tenymana.utils.findIndex
 import kotlin.math.max
 
@@ -15,6 +16,13 @@ interface HiddenWordsPuzzle : Puzzle {
     val groups: List<HiddenWordsGroup>
     val firstGroup: Int
     fun propose(groupIndex: Int, charsIndexes: List<Int>): Boolean
+
+    companion object {
+        fun build(verse: BibleVerse, groupSize: Int, random: Random): HiddenWordsPuzzle {
+            val groups = buildHiddenWordsGroups(verse, groupSize, random)
+            return HiddenWordsPuzzleImpl(verse, groups)
+        }
+    }
 }
 
 class HiddenWordsPuzzleImpl(

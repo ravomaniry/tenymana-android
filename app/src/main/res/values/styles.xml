@@ -124,6 +124,10 @@
         <item name="android:background">@drawable/bg_triangles</item>
     </style>
 
+    <style name="AppTheme.HiddenWordsPuzzleBody" parent="AppTheme.PuzzleBody">
+        <item name="android:background">@drawable/bg_triangles</item>
+    </style>
+
     <style name="AppTheme.BonusBtnCont">
         <item name="android:gravity">center</item>
         <item name="android:paddingTop">5dp</item>

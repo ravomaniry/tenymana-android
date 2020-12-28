@@ -89,34 +89,34 @@ class GameTest : KoinTest {
             verifyOnce(userRepo).setup()
             // Go to game screen
             clickView(R.id.goToGameBtn)
-            shouldBeVisible(R.id.gamesList)
+            assertShouldBeVisible(R.id.gamesList)
             // go to paths screen
             clickView(R.id.gameListItem, 0)
-            shouldBeVisible(R.id.pathsScreen)
+            assertShouldBeVisible(R.id.pathsScreen)
             // Go to puzzle screen:
             clickView(R.id.pathsScreenContinueBtn)
             //  - load verse and init puzzle
             verifyOnce(bibleRepo).getSingle("Matio", 1, 10)
             //  - go to path details screen
-            shouldBeVisible(R.id.pathDetailsScreen)
-            shouldHaveText(R.id.pathDetailsVerseRef, text = "Matio 1:10-20")
+            assertShouldBeVisible(R.id.pathDetailsScreen)
+            assertShouldHaveText(R.id.pathDetailsVerseRef, text = "Matio 1:10-20")
             clickView(R.id.pathDetailsNextBtn)
             //  - go to puzzle screen
-            shouldBeVisible(R.id.puzzleScreen)
+            assertShouldBeVisible(R.id.puzzleScreen)
             // Display headers
-            shouldHaveText(R.id.puzzleHeaderVerseDisplay, text = "Matio 1:10")
-            shouldHaveText(R.id.puzzleHeaderScore, text = "50")
+            assertShouldHaveText(R.id.puzzleHeaderVerseDisplay, text = "Matio 1:10")
+            assertShouldHaveText(R.id.puzzleHeaderScore, text = "50")
             // Open LinkClear fragment
-            shouldBeVisible(R.id.linkClearPuzzle)
+            assertShouldBeVisible(R.id.linkClearPuzzle)
             // Bonus
             clickView(R.id.puzzleBonusOneBtn)
             assertThat(puzzle.useBonusOneFn.calledWith(PuzzleViewModel.bonusOnePrice)).isTrue()
             // Propose & complete
             swipeRight(R.id.charsGridInput)
             // On solution screen -> tap next -> load next verse + display puzzle screen
-            shouldBeVisible(R.id.solutionScreen)
+            assertShouldBeVisible(R.id.solutionScreen)
             clickView(R.id.solutionSaveAndContinueBtn)
-            shouldBeVisible(R.id.puzzleScreen)
+            assertShouldBeVisible(R.id.puzzleScreen)
             verifyOnce(bibleRepo).getSingle("Matio", 1, 11)
         }
     }
