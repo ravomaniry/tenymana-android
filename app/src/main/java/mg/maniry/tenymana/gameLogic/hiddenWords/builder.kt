@@ -7,12 +7,6 @@ import mg.maniry.tenymana.utils.Random
 import kotlin.math.max
 import kotlin.math.min
 
-data class HiddenWordsGroup(
-    val chars: List<Character?>,
-    val hidden: Word,
-    val resolved: Boolean = false
-)
-
 fun buildHiddenWordsGroups(
     verse: BibleVerse,
     groupSize: Int,

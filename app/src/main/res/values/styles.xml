@@ -140,6 +140,28 @@
         <item name="android:background">@drawable/bg_bonus_btn</item>
     </style>
 
+    <style name="AppTheme.RoundBtn">
+        <item name="android:padding">2dp</item>
+    </style>
+
+    <style name="AppTheme.RoundGreenBtn" parent="AppTheme.RoundBtn">
+        <item name="android:background">@drawable/bg_round_green</item>
+    </style>
+
+    <style name="AppTheme.RoundRedBtn" parent="AppTheme.RoundBtn">
+        <item name="android:background">@drawable/bg_round_red</item>
+    </style>
+
+    <style name="AppTheme.HwProposition" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">24sp</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:paddingStart">24dp</item>
+        <item name="android:paddingEnd">24dp</item>
+        <item name="android:background">@drawable/bg_rounded_white</item>
+        <item name="android:fontFamily">@font/kaushan_script_regular</item>
+    </style>
+
     <!-- Solution screen -->
     <style name="AppTheme.VerseTexView" parent="TextAppearance.AppCompat.Body1">
         <item name="android:layout_margin">5dp</item>

@@ -30,6 +30,14 @@ class HiddenWordsViewModel(
         }
     }
 
+    fun cancel(index: Int) {
+
+    }
+
+    fun propose(index: Int) {
+
+    }
+
     init {
         puzzleViewModel.puzzle.observeForever(puzzleObs)
     }

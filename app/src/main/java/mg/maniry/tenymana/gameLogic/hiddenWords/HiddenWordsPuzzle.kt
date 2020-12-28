@@ -12,6 +12,12 @@ import mg.maniry.tenymana.utils.Random
 import mg.maniry.tenymana.utils.findIndex
 import kotlin.math.max
 
+data class HiddenWordsGroup(
+    val chars: List<Character?>,
+    val hidden: Word,
+    val resolved: Boolean = false
+)
+
 interface HiddenWordsPuzzle : Puzzle {
     val groups: List<HiddenWordsGroup>
     val firstGroup: Int

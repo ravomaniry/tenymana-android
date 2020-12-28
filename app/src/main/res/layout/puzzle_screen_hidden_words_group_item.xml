@@ -1,17 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <variable
+            name="index"
+            type="Integer" />
+
+        <variable
+            name="viewModel"
+            type="mg.maniry.tenymana.ui.game.puzzle.hiddenWords.HiddenWordsViewModel" />
 
     </data>
 
     <mg.maniry.tenymana.ui.views.containers.FixedWLinearLayout
         android:id="@+id/itemContainer"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="5dp"
-        android:background="@color/darkGray"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:background="@drawable/bg_triangles">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                style="@style/AppTheme.RoundRedBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/app_undo_desc"
+                android:onClick="@{() -> viewModel.cancel(index)}"
+                android:src="@drawable/ic_clear" />
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                tools:layout_width="200dp">
+
+                <TextView
+                    style="@style/AppTheme.HwProposition"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    tools:text="Proposition" />
+
+            </FrameLayout>
+
+            <ImageButton
+                style="@style/AppTheme.RoundGreenBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/app_action_done"
+                android:onClick="@{() -> viewModel.propose(index)}"
+                android:src="@drawable/ic_check" />
+
+        </LinearLayout>
 
     </mg.maniry.tenymana.ui.views.containers.FixedWLinearLayout>
+
 </layout>
