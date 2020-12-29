@@ -5,16 +5,18 @@ import android.graphics.Canvas
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.res.ResourcesCompat
+import androidx.databinding.BindingAdapter
+import mg.maniry.tenymana.gameLogic.hiddenWords.HiddenWordsGroup
 import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.ui.game.colors.GameColors
 
-class HiddenWordsView : AppCompatTextView {
+class HiddenWordView : AppCompatTextView {
     constructor(context: Context) : super(context)
     constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet)
     constructor(context: Context, attributeSet: AttributeSet, defStyleAttr: Int) :
             super(context, attributeSet, defStyleAttr)
 
-    private val control = HiddenWordsControl()
+    private val control = HiddenWordViewControl()
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val width = MeasureSpec.getSize(widthMeasureSpec)
@@ -29,7 +31,7 @@ class HiddenWordsView : AppCompatTextView {
         )
     }
 
-    fun onChange(word: List<Character?>, resolved: Boolean) {
+    fun onChange(word: List<Character>, resolved: Boolean) {
         val prevH = control.height
         control.word = word
         control.resolved = resolved
@@ -45,5 +47,19 @@ class HiddenWordsView : AppCompatTextView {
         if (canvas != null) {
             control.draw(canvas)
         }
+    }
+}
+
+@BindingAdapter("hiddenWordsGroup")
+fun HiddenWordView.bindGroup(group: HiddenWordsGroup?) {
+    if (group != null) {
+        onChange(group.hidden.chars, group.resolved)
+    }
+}
+
+@BindingAdapter("gameColors")
+fun HiddenWordView.bindGameColors(colors: GameColors?) {
+    if (colors != null) {
+        onColorsChange(colors)
     }
 }

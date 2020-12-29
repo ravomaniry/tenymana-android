@@ -11,8 +11,8 @@ private data class Cell(
     val value: String?
 )
 
-class HiddenWordsControl {
-    var word: List<Character?> = emptyList()
+class HiddenWordViewControl {
+    var word: List<Character> = emptyList()
         set(value) {
             field = value
             updateHeight()
@@ -66,7 +66,7 @@ class HiddenWordsControl {
                     x = 0f
                     y += HEIGHT + MARGIN_V
                 }
-                val value = if (resolved) char?.value.toString() else null
+                val value = if (resolved) char.value.toString() else null
                 cells.last().add(
                     Cell(
                         x,
@@ -112,7 +112,7 @@ class HiddenWordsControl {
         const val PADDING = 10f
         const val HEIGHT = 48f
         const val WIDTH = 32f
-        const val MARGIN_H = 5f
+        const val MARGIN_H = 8f
         const val MARGIN_V = 10f
     }
 }

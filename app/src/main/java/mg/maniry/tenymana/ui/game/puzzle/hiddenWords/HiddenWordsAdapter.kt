@@ -3,12 +3,16 @@ package mg.maniry.tenymana.ui.game.puzzle.hiddenWords
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.PuzzleScreenHiddenWordsGroupItemBinding
 import mg.maniry.tenymana.gameLogic.hiddenWords.HiddenWordsGroup
 
-class HiddenWordsAdapter : RecyclerView.Adapter<HiddenWordViewHolder>() {
+class HiddenWordsAdapter(
+    private val viewModel: HiddenWordsViewModel
+) : ListAdapter<HiddenWordsGroup, HiddenWordsAdapter.ViewHolder>(DiffUtilCb()) {
     var width: Int = 0
         set(value) {
             field = value
@@ -23,33 +27,48 @@ class HiddenWordsAdapter : RecyclerView.Adapter<HiddenWordViewHolder>() {
 
     override fun getItemCount() = groups?.size ?: 0
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HiddenWordViewHolder {
-        return HiddenWordViewHolder.from(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return ViewHolder.from(parent)
     }
 
-    override fun onBindViewHolder(holder: HiddenWordViewHolder, position: Int) {
-        holder.bind(width)
-    }
-}
-
-class HiddenWordViewHolder private constructor(
-    private val binding: PuzzleScreenHiddenWordsGroupItemBinding
-) : RecyclerView.ViewHolder(binding.root) {
-
-    companion object {
-        fun from(parent: ViewGroup): HiddenWordViewHolder {
-            val inflater = LayoutInflater.from(parent.context)
-            val binding: PuzzleScreenHiddenWordsGroupItemBinding = DataBindingUtil.inflate(
-                inflater,
-                R.layout.puzzle_screen_hidden_words_group_item,
-                parent,
-                false
-            )
-            return HiddenWordViewHolder(binding)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val group = groups?.get(position)
+        if (group != null) {
+            holder.bind(width, position, group, viewModel)
         }
     }
 
-    fun bind(width: Int) {
-        binding.itemContainer.parentW = width
+    class ViewHolder private constructor(
+        private val binding: PuzzleScreenHiddenWordsGroupItemBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+        companion object {
+            fun from(parent: ViewGroup): ViewHolder {
+                val inflater = LayoutInflater.from(parent.context)
+                val binding: PuzzleScreenHiddenWordsGroupItemBinding = DataBindingUtil.inflate(
+                    inflater,
+                    R.layout.puzzle_screen_hidden_words_group_item,
+                    parent,
+                    false
+                )
+                return ViewHolder(binding)
+            }
+        }
+
+        fun bind(width: Int, index: Int, group: HiddenWordsGroup, viewModel: HiddenWordsViewModel) {
+            binding.itemContainer.parentW = width
+            binding.index = index
+            binding.viewModel = viewModel
+            binding.group = group
+        }
+    }
+
+    class DiffUtilCb : DiffUtil.ItemCallback<HiddenWordsGroup>() {
+        override fun areItemsTheSame(old: HiddenWordsGroup, newItem: HiddenWordsGroup): Boolean {
+            return old == newItem
+        }
+
+        override fun areContentsTheSame(old: HiddenWordsGroup, curr: HiddenWordsGroup): Boolean {
+            return old.hidden == curr.hidden
+        }
     }
 }

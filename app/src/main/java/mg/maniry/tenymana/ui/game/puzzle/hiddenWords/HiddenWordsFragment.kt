@@ -64,7 +64,7 @@ class HiddenWordsFragment : Fragment() {
 
     private fun initRecyclerView() {
         val view = binding.groupsList
-        adapter = HiddenWordsAdapter()
+        adapter = HiddenWordsAdapter(viewModel)
         viewModel.puzzle.observe(viewLifecycleOwner, Observer {
             adapter?.groups = it?.groups
         })

@@ -5,12 +5,12 @@ import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.mock
-import mg.maniry.tenymana.ui.views.hiddenWords.HiddenWordsControl.Companion.BG_OFFSET
-import mg.maniry.tenymana.ui.views.hiddenWords.HiddenWordsControl.Companion.HEIGHT
-import mg.maniry.tenymana.ui.views.hiddenWords.HiddenWordsControl.Companion.MARGIN_H
-import mg.maniry.tenymana.ui.views.hiddenWords.HiddenWordsControl.Companion.MARGIN_V
-import mg.maniry.tenymana.ui.views.hiddenWords.HiddenWordsControl.Companion.PADDING
-import mg.maniry.tenymana.ui.views.hiddenWords.HiddenWordsControl.Companion.WIDTH
+import mg.maniry.tenymana.ui.views.hiddenWords.HiddenWordViewControl.Companion.BG_OFFSET
+import mg.maniry.tenymana.ui.views.hiddenWords.HiddenWordViewControl.Companion.HEIGHT
+import mg.maniry.tenymana.ui.views.hiddenWords.HiddenWordViewControl.Companion.MARGIN_H
+import mg.maniry.tenymana.ui.views.hiddenWords.HiddenWordViewControl.Companion.MARGIN_V
+import mg.maniry.tenymana.ui.views.hiddenWords.HiddenWordViewControl.Companion.PADDING
+import mg.maniry.tenymana.ui.views.hiddenWords.HiddenWordViewControl.Companion.WIDTH
 import mg.maniry.tenymana.utils.TestRect
 import mg.maniry.tenymana.utils.TestTextShape
 import mg.maniry.tenymana.utils.chars
@@ -32,7 +32,7 @@ class HiddenWordsControlTest {
                 texts.add(TestTextShape.fromMock(it.arguments)); Unit
             }
         }
-        val control = HiddenWordsControl()
+        val control = HiddenWordViewControl()
         control.onMeasure((WIDTH * 3 + MARGIN_H * 2 + PADDING * 2 + 6).toInt())
         assertThat(control.height).isEqualTo((PADDING * 2).toInt())
         control.draw(canvas)

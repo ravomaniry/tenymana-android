@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -12,6 +13,9 @@
             name="viewModel"
             type="mg.maniry.tenymana.ui.game.puzzle.hiddenWords.HiddenWordsViewModel" />
 
+        <variable
+            name="group"
+            type="mg.maniry.tenymana.gameLogic.hiddenWords.HiddenWordsGroup" />
     </data>
 
     <mg.maniry.tenymana.ui.views.containers.FixedWLinearLayout
@@ -21,6 +25,13 @@
         android:layout_marginEnd="5dp"
         android:orientation="vertical"
         tools:background="@drawable/bg_triangles">
+
+        <mg.maniry.tenymana.ui.views.hiddenWords.HiddenWordView
+            android:id="@+id/hiddenWord"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:gameColors="@{viewModel.colors}"
+            app:hiddenWordsGroup="@{group}" />
 
         <LinearLayout
             android:layout_width="match_parent"

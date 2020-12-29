@@ -10,6 +10,8 @@ class FixedWLinearLayout : LinearLayout {
     constructor(context: Context, attributeSet: AttributeSet, defStyleAttr: Int) :
             super(context, attributeSet, defStyleAttr)
 
+    private val padding = 10
+
     var parentW = 100
         set(value) {
             if (value > 0) {
@@ -19,6 +21,6 @@ class FixedWLinearLayout : LinearLayout {
         }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(parentW, heightMeasureSpec)
+        super.onMeasure(parentW - padding, heightMeasureSpec)
     }
 }
