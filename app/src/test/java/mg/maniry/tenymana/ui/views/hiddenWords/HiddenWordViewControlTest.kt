@@ -18,7 +18,7 @@ import mg.maniry.tenymana.utils.chars
 import org.junit.Test
 
 @Suppress("unchecked_cast")
-class HiddenWordsControlTest {
+class HiddenWordViewControlTest {
     private val wPlusM = WIDTH + MARGIN_H
     private val bgPadding = PADDING + BG_OFFSET
 
