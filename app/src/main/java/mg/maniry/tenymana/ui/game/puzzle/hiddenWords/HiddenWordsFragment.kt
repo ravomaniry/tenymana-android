@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.PuzzleScreenHiddenWordsBinding
@@ -65,9 +64,9 @@ class HiddenWordsFragment : Fragment() {
     private fun initRecyclerView() {
         val view = binding.groupsList
         adapter = HiddenWordsAdapter(viewModel)
-        viewModel.puzzle.observe(viewLifecycleOwner, Observer {
-            adapter?.groups = it?.groups
-        })
+        bindTo(viewModel.groups) {
+            adapter?.groups = it
+        }
         view.adapter = adapter
     }
 

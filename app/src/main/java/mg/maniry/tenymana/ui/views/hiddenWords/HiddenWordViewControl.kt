@@ -5,23 +5,14 @@ import android.graphics.Color
 import android.graphics.Paint
 import mg.maniry.tenymana.gameLogic.models.Character
 
-private data class Cell(
-    val x: Float,
-    val y: Float,
-    val value: String?
-)
-
-class HiddenWordViewControl {
-    var word: List<Character> = emptyList()
-        set(value) {
-            field = value
-            updateHeight()
-        }
+class HiddenWordViewControl : BaseHiddenWordsViewControl() {
     var resolved = false
-    private var viewWidth = 0
-    private var cells = mutableListOf<MutableList<Cell>>()
-    private var _height = PADDING * 2
-    val height: Int get() = _height.toInt()
+    override val padding = PADDING
+    override val cellWidth = WIDTH
+    override val cellHeight = HEIGHT
+    override val marginV = MARGIN_V
+    override val marginH = MARGIN_H
+
     private val bgPaint = Paint()
     private val fgPaint = Paint()
     private val textPaint = Paint().apply {
@@ -29,62 +20,19 @@ class HiddenWordViewControl {
         color = Color.WHITE
     }
 
+    override fun cellValueAccessor(character: Character?): String? {
+        return if (resolved) character?.value?.toString() else null
+    }
+
     fun onColorsChange(fg: Int, bg: Int) {
         fgPaint.color = fg
         bgPaint.color = bg
-    }
-
-    fun onMeasure(width: Int) {
-        viewWidth = width
-        updateHeight()
     }
 
     fun draw(canvas: Canvas) {
         for (row in cells) {
             for (cell in row) {
                 canvas.drawCell(cell)
-            }
-        }
-    }
-
-    private fun updateHeight() {
-        computeCells()
-        centerCells()
-        val margins = if (cells.size == 0) 0f else (cells.size - 1) * MARGIN_V
-        _height = cells.size * HEIGHT + PADDING * 2 + margins
-    }
-
-    private fun computeCells() {
-        cells = mutableListOf()
-        if (word.isNotEmpty()) {
-            val drawingWidth = viewWidth - PADDING * 2
-            var x = drawingWidth + 1
-            var y = 0f
-            for (char in word) {
-                if (x + WIDTH > drawingWidth) {
-                    cells.add(mutableListOf())
-                    x = 0f
-                    y += HEIGHT + MARGIN_V
-                }
-                val value = if (resolved) char.value.toString() else null
-                cells.last().add(
-                    Cell(
-                        x,
-                        y + PADDING - HEIGHT - MARGIN_V,
-                        value
-                    )
-                )
-                x += WIDTH + MARGIN_H
-            }
-        }
-    }
-
-    private fun centerCells() {
-        for (row in cells) {
-            val w = row.size * WIDTH + (row.size - 1) * MARGIN_H
-            val padding = (viewWidth - w) / 2
-            for (i in row.indices) {
-                row[i] = row[i].copy(x = row[i].x + padding)
             }
         }
     }

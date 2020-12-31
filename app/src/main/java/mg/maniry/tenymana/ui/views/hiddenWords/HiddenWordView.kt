@@ -3,26 +3,18 @@ package mg.maniry.tenymana.ui.views.hiddenWords
 import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.BindingAdapter
 import mg.maniry.tenymana.gameLogic.hiddenWords.HiddenWordsGroup
-import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.ui.game.colors.GameColors
 
-class HiddenWordView : AppCompatTextView {
+class HiddenWordView : BaseHiddenWordsView {
     constructor(context: Context) : super(context)
     constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet)
     constructor(context: Context, attributeSet: AttributeSet, defStyleAttr: Int) :
             super(context, attributeSet, defStyleAttr)
 
-    private val control = HiddenWordViewControl()
-
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val width = MeasureSpec.getSize(widthMeasureSpec)
-        control.onMeasure(width)
-        setMeasuredDimension(width, control.height)
-    }
+    override val control = HiddenWordViewControl()
 
     fun onColorsChange(colors: GameColors) {
         control.onColorsChange(
@@ -31,14 +23,10 @@ class HiddenWordView : AppCompatTextView {
         )
     }
 
-    fun onChange(word: List<Character>, resolved: Boolean) {
-        val prevH = control.height
-        control.word = word
-        control.resolved = resolved
-        if (prevH == control.height) {
+    fun onResolved(resolved: Boolean) {
+        if (control.resolved != resolved) {
+            control.resolved = resolved
             invalidate()
-        } else {
-            requestLayout()
         }
     }
 
@@ -53,7 +41,8 @@ class HiddenWordView : AppCompatTextView {
 @BindingAdapter("hiddenWordsGroup")
 fun HiddenWordView.bindGroup(group: HiddenWordsGroup?) {
     if (group != null) {
-        onChange(group.hidden.chars, group.resolved)
+        onWordChange(group.hidden.chars)
+        onResolved(group.resolved)
     }
 }
 
