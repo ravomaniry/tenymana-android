@@ -38,7 +38,7 @@ class HiddenWordsFragment : Fragment() {
     private fun initViewModel() {
         val sharedVM: SharedViewModels by inject()
         val kDispatchers: KDispatchers by inject()
-        val factory = HiddenWordsViewModel.factory(sharedVM.puzzle, kDispatchers)
+        val factory = HiddenWordsViewModel.factory(sharedVM.puzzle)
         viewModel = ViewModelProvider(requireActivity(), factory)
             .get(HiddenWordsViewModel::class.java)
     }

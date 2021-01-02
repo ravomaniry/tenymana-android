@@ -13,9 +13,6 @@
             name="viewModel"
             type="mg.maniry.tenymana.ui.game.puzzle.hiddenWords.HiddenWordsViewModel" />
 
-        <variable
-            name="group"
-            type="mg.maniry.tenymana.gameLogic.hiddenWords.HiddenWordsGroup" />
     </data>
 
     <mg.maniry.tenymana.ui.views.containers.FixedWLinearLayout
@@ -31,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:gameColors="@{viewModel.colors}"
-            app:hiddenWordsGroup="@{group}" />
+            app:hiddenWordsGroup="@{viewModel.groups[index]}" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -72,6 +69,13 @@
                 android:src="@drawable/ic_check" />
 
         </LinearLayout>
+
+        <mg.maniry.tenymana.ui.views.hiddenWords.HiddenWordsInputView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chars="@{viewModel.characters[index]}"
+            app:groupIndex="@{index}"
+            app:onSelect="@{viewModel.onSelect}" />
 
     </mg.maniry.tenymana.ui.views.containers.FixedWLinearLayout>
 

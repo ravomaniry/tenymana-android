@@ -32,10 +32,7 @@ class HiddenWordsAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val group = groups?.get(position)
-        if (group != null) {
-            holder.bind(width, position, group, viewModel)
-        }
+        holder.bind(width, position, viewModel)
     }
 
     class ViewHolder private constructor(
@@ -54,11 +51,10 @@ class HiddenWordsAdapter(
             }
         }
 
-        fun bind(width: Int, index: Int, group: HiddenWordsGroup, viewModel: HiddenWordsViewModel) {
+        fun bind(width: Int, index: Int, viewModel: HiddenWordsViewModel) {
             binding.itemContainer.parentW = width
             binding.index = index
             binding.viewModel = viewModel
-            binding.group = group
         }
     }
 

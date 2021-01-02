@@ -6,15 +6,15 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import mg.maniry.tenymana.gameLogic.hiddenWords.HiddenWordsGroup
 import mg.maniry.tenymana.gameLogic.hiddenWords.HiddenWordsPuzzle
+import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.gameLogic.models.Puzzle
 import mg.maniry.tenymana.gameLogic.models.Word
 import mg.maniry.tenymana.ui.game.puzzle.PuzzleViewModel
-import mg.maniry.tenymana.utils.KDispatchers
+import mg.maniry.tenymana.ui.views.hiddenWords.SelectHandler
 import mg.maniry.tenymana.utils.newViewModelFactory
 
 class HiddenWordsViewModel(
-    private val puzzleViewModel: PuzzleViewModel,
-    private val kDispatchers: KDispatchers
+    private val puzzleViewModel: PuzzleViewModel
 ) : ViewModel() {
     private val _puzzle = MutableLiveData<HiddenWordsPuzzle?>()
     private val _groups = MutableLiveData<List<HiddenWordsGroup>?>()
@@ -24,6 +24,10 @@ class HiddenWordsViewModel(
 
     private val _words = MutableLiveData<List<Word>?>()
     val words: LiveData<List<Word>?> = _words
+
+    private val _characters: MutableList<MutableList<Character?>> = mutableListOf()
+    private val _charactersMLD = MutableLiveData<List<List<Character?>>>()
+    val characters: LiveData<List<List<Character?>>> = _charactersMLD
 
     private val puzzleObs = Observer<Puzzle?> {
         if (it is HiddenWordsPuzzle) {
@@ -41,6 +45,14 @@ class HiddenWordsViewModel(
 
     }
 
+    val onSelect: SelectHandler = { gIndex, cIndex ->
+
+    }
+
+    private fun syncLiveData() {
+        _charactersMLD.postValue(_characters.toList())
+    }
+
     init {
         puzzleViewModel.puzzle.observeForever(puzzleObs)
     }
@@ -51,7 +63,8 @@ class HiddenWordsViewModel(
     }
 
     companion object {
-        fun factory(puzzleViewModel: PuzzleViewModel, kDispatchers: KDispatchers) =
-            newViewModelFactory { HiddenWordsViewModel(puzzleViewModel, kDispatchers) }
+        fun factory(puzzleViewModel: PuzzleViewModel) = newViewModelFactory {
+            HiddenWordsViewModel(puzzleViewModel)
+        }
     }
 }
