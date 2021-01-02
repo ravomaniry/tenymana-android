@@ -16,7 +16,7 @@ val appModules = module {
     single<UserRepo> { UserRepoImpl(fs(androidContext()), RandomImpl(), DateTimeUtilImpl()) }
     single<GameRepo> { GameRepoImpl(fs(androidContext())) }
     single { SharedViewModels() }
-    single<PuzzleBuilder> { PuzzleBuilderImpl() }
+    single<PuzzleBuilder> { PuzzleBuilderImpl(RandomImpl()) }
     single<BibleRepo> { BibleRepoImpl(fs(androidContext())) }
     single<KDispatchers> { RealDispatchers }
     single { AnimatorWrapper() }

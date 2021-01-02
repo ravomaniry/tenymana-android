@@ -4,14 +4,16 @@ import mg.maniry.tenymana.gameLogic.hiddenWords.HiddenWordsPuzzle
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.gameLogic.models.BibleVerse
 import mg.maniry.tenymana.gameLogic.models.Puzzle
+import mg.maniry.tenymana.utils.Random
 import mg.maniry.tenymana.utils.RandomImpl
-import kotlin.math.floor
 
 interface PuzzleBuilder {
     fun random(verse: BibleVerse): Puzzle
 }
 
-class PuzzleBuilderImpl : PuzzleBuilder {
+class PuzzleBuilderImpl(
+    private val random: Random
+) : PuzzleBuilder {
     enum class GameTypes {
         LinkClear,
         HiddenWords
@@ -29,10 +31,11 @@ class PuzzleBuilderImpl : PuzzleBuilder {
     }
 
     private fun randomType(): GameTypes {
-        val types = listOf(
-            GameTypes.LinkClear,
-            GameTypes.HiddenWords
+        return random.from(
+            listOf(
+                GameTypes.LinkClear,
+                GameTypes.HiddenWords
+            )
         )
-        return types[floor(Math.random() * (types.size - 1)).toInt()]
     }
 }
