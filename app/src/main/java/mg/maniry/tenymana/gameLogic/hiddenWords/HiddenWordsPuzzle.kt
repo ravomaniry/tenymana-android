@@ -24,6 +24,8 @@ interface HiddenWordsPuzzle : Puzzle {
     fun propose(groupIndex: Int, charsIndexes: List<Int>): Boolean
 
     companion object {
+        const val IN_GAME_GROUP_SIZE = 5
+
         fun build(verse: BibleVerse, groupSize: Int, random: Random): HiddenWordsPuzzle {
             val groups = buildHiddenWordsGroups(verse, groupSize, random)
             return HiddenWordsPuzzleImpl(verse, groups)
