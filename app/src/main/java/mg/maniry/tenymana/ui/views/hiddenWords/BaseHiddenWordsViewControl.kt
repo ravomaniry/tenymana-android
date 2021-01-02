@@ -1,5 +1,6 @@
 package mg.maniry.tenymana.ui.views.hiddenWords
 
+import android.graphics.Canvas
 import mg.maniry.tenymana.gameLogic.models.Character
 
 abstract class BaseHiddenWordsViewControl {
@@ -15,6 +16,10 @@ abstract class BaseHiddenWordsViewControl {
     protected abstract val marginV: Float
     protected abstract val marginH: Float
 
+    protected abstract fun cellValueAccessor(character: Character?): String?
+
+    abstract fun draw(canvas: Canvas)
+
     var word: List<Character?> = emptyList()
         set(value) {
             val shouldUpdate = field.size != value.size
@@ -23,8 +28,6 @@ abstract class BaseHiddenWordsViewControl {
                 updateHeight()
             }
         }
-
-    protected abstract fun cellValueAccessor(character: Character?): String?
 
     private var viewWidth = 0
     protected var cells = listOf<List<Cell>>()

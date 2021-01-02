@@ -20,6 +20,7 @@ class HiddenWordsInputViewControl : BaseHiddenWordsViewControl() {
         isAntiAlias = true
         textAlign = Paint.Align.CENTER
         textSize = CELL_SIZE - 2
+        textSize = CELL_SIZE - TEXT_PADDING * 2
     }
     private val availablePaint = Paint().apply {
         style = Paint.Style.FILL
@@ -46,7 +47,7 @@ class HiddenWordsInputViewControl : BaseHiddenWordsViewControl() {
         }
     }
 
-    fun draw(canvas: Canvas) {
+    override fun draw(canvas: Canvas) {
         for (row in cells) {
             for (cell in row) {
                 canvas.drawCell(cell)
@@ -58,7 +59,9 @@ class HiddenWordsInputViewControl : BaseHiddenWordsViewControl() {
         val bgPaint = if (cell.value == null) usedPaint else availablePaint
         drawRect(cell.x, cell.y, cell.x + CELL_SIZE, cell.y + CELL_SIZE, bgPaint)
         if (cell.value != null) {
-            drawText(cell.value, cell.x + CELL_SIZE / 2, cell.y + CELL_SIZE / 2, textPaint)
+            val x = cell.x + CELL_SIZE / 2
+            val y = cell.y + CELL_SIZE - TEXT_PADDING - 6
+            drawText(cell.value, x, y, textPaint)
         }
     }
 
@@ -80,7 +83,8 @@ class HiddenWordsInputViewControl : BaseHiddenWordsViewControl() {
 
     companion object {
         const val PADDING = 10F
-        const val CELL_SIZE = 24F
-        const val CELL_MARGIN = 4F
+        const val CELL_SIZE = 48F
+        const val CELL_MARGIN = 10F
+        const val TEXT_PADDING = 2f
     }
 }

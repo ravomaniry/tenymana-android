@@ -1,7 +1,6 @@
 package mg.maniry.tenymana.ui.views.hiddenWords
 
 import android.content.Context
-import android.graphics.Canvas
 import android.util.AttributeSet
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.BindingAdapter
@@ -16,7 +15,7 @@ class HiddenWordView : BaseHiddenWordsView {
 
     override val control = HiddenWordViewControl()
 
-    fun onColorsChange(colors: GameColors) {
+    override fun onColorsChange(colors: GameColors) {
         control.onColorsChange(
             ResourcesCompat.getColor(resources, colors.accent, null),
             ResourcesCompat.getColor(resources, colors.primary, null)
@@ -29,13 +28,6 @@ class HiddenWordView : BaseHiddenWordsView {
             invalidate()
         }
     }
-
-    override fun onDraw(canvas: Canvas?) {
-        super.onDraw(canvas)
-        if (canvas != null) {
-            control.draw(canvas)
-        }
-    }
 }
 
 @BindingAdapter("hiddenWordsGroup")
@@ -43,12 +35,5 @@ fun HiddenWordView.bindGroup(group: HiddenWordsGroup?) {
     if (group != null) {
         onWordChange(group.hidden.chars)
         onResolved(group.resolved)
-    }
-}
-
-@BindingAdapter("gameColors")
-fun HiddenWordView.bindGameColors(colors: GameColors?) {
-    if (colors != null) {
-        onColorsChange(colors)
     }
 }

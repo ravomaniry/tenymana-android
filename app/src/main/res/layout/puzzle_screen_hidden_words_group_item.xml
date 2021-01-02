@@ -42,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/app_undo_desc"
-                android:onClick="@{() -> viewModel.cancel(index)}"
+                android:onClick="@{() -> viewModel.cancel()}"
                 android:src="@drawable/ic_clear" />
 
             <FrameLayout
@@ -74,6 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:chars="@{viewModel.characters[index]}"
+            app:gameColors="@{viewModel.colors}"
             app:groupIndex="@{index}"
             app:onSelect="@{viewModel.onSelect}" />
 

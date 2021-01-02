@@ -39,7 +39,7 @@ class HiddenWordsPuzzleImpl(
     override val score = MutableLiveData(0)
     override var completed = false
     override var firstGroup: Int = 0
-    override val groups = initialGroups.toMutableList()
+    override var groups = initialGroups
     private val words = initialVerse.words.toMutableList()
     override val verse: BibleVerse = initialVerse.copy(words = words)
     private val matches = MutableList(groups.size) { true }
@@ -49,8 +49,9 @@ class HiddenWordsPuzzleImpl(
         if (chars.isNotEmpty()) {
             val wIndexes = words.resolveWith(chars, emptySet())
             if (wIndexes.isNotEmpty()) {
-                val shown = groups.resolve(groupIndex, charsIndexes)
-                resolveHiddenW(shown)
+                val result = groups.resolve(groupIndex, charsIndexes)
+                groups = result.first
+                resolveHiddenW(result.second)
                 matches.updateWith(words, groups)
                 completed = matches.allFalse
                 firstGroup = matches.firstTrue
@@ -99,18 +100,20 @@ private fun HiddenWordsGroup.toChars(indexes: List<Int>): List<Character> {
     return result
 }
 
-private fun MutableList<HiddenWordsGroup>.resolve(
+private fun List<HiddenWordsGroup>.resolve(
     groupIndex: Int,
     charsIndexes: List<Int>
-): Word? {
+): Pair<List<HiddenWordsGroup>, Word?> {
+    val next = toMutableList()
     val group = get(groupIndex)
     val nextChars = group.chars.toMutableList()
     for (i in charsIndexes) {
         nextChars[i] = null
     }
     val resolved = nextChars.find { it != null } == null
-    set(groupIndex, group.copy(chars = nextChars, resolved = resolved))
-    return if (resolved) group.hidden else null
+    next[groupIndex] = group.copy(chars = nextChars, resolved = resolved)
+    val shown = if (resolved) group.hidden else null
+    return Pair(next, shown)
 }
 
 private val List<Boolean>.allFalse: Boolean get() = all { !it }

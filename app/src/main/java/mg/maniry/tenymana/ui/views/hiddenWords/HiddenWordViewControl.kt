@@ -29,7 +29,7 @@ class HiddenWordViewControl : BaseHiddenWordsViewControl() {
         bgPaint.color = bg
     }
 
-    fun draw(canvas: Canvas) {
+    override  fun draw(canvas: Canvas) {
         for (row in cells) {
             for (cell in row) {
                 canvas.drawCell(cell)
