@@ -17,6 +17,8 @@ class HiddenWordViewControl : BaseHiddenWordsViewControl() {
     private val textPaint = Paint().apply {
         isAntiAlias = true
         color = Color.WHITE
+        textSize = HEIGHT
+        textAlign = Paint.Align.CENTER
     }
 
     var resolved = false
@@ -56,7 +58,9 @@ class HiddenWordViewControl : BaseHiddenWordsViewControl() {
     ) {
         drawRect(x, y, x + WIDTH, y + HEIGHT, bgPaint)
         if (value != null && txtPaint != null) {
-            drawText(value, x + WIDTH / 2, y, txtPaint)
+            val textX = x + WIDTH / 2
+            val textY = y + HEIGHT - 2
+            drawText(value, textX, textY, txtPaint)
         }
     }
 

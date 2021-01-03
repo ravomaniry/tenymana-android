@@ -65,7 +65,7 @@ class HiddenWordsFragment : Fragment() {
         binding.hiddenWord.apply {
             bindTo(viewModel.colors, this::onColorsChange)
             bindTo(viewModel.activeGroup) {
-                onWordChange(it.chars)
+                onWordChange(it.hidden.chars)
                 onResolved(it.resolved)
             }
         }
