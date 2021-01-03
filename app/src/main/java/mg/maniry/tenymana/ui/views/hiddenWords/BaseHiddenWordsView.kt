@@ -24,13 +24,15 @@ abstract class BaseHiddenWordsView : AppCompatTextView {
     }
 
     fun onWordChange(word: List<Character?>) {
-        val prevH = control.height
-        control.word = word
-        if (prevH == control.height) {
-            invalidate()
-        } else {
-            invalidate()
-            requestLayout()
+        if (control.word != word) {
+            val prevH = control.height
+            control.word = word
+            if (prevH == control.height) {
+                invalidate()
+            } else {
+                invalidate()
+                requestLayout()
+            }
         }
     }
 

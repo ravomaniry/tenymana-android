@@ -5,11 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import mg.maniry.tenymana.gameLogic.hiddenWords.HiddenWordsGroup
 import mg.maniry.tenymana.gameLogic.hiddenWords.HiddenWordsPuzzle
 import mg.maniry.tenymana.gameLogic.models.BibleVerse
 import mg.maniry.tenymana.gameLogic.models.Puzzle
 import mg.maniry.tenymana.ui.game.puzzle.PuzzleViewModel
+import mg.maniry.tenymana.utils.TestDispatchers
 import mg.maniry.tenymana.utils.chars
 import mg.maniry.tenymana.utils.verifyNever
 import mg.maniry.tenymana.utils.verifyOnce
@@ -20,6 +22,7 @@ class HiddenWordsViewModelTest {
     @get:Rule
     val liveDataRule = InstantTaskExecutorRule()
 
+    @ExperimentalCoroutinesApi
     @Test
     fun test() {
         var verse = BibleVerse.fromText("", 1, 1, "Abc ddef gh jkl mn")
@@ -39,7 +42,7 @@ class HiddenWordsViewModelTest {
         val puzzleVM: PuzzleViewModel = mock {
             on { this.puzzle } doReturn puzzleLD
         }
-        val viewModel = HiddenWordsViewModel(puzzleVM)
+        val viewModel = HiddenWordsViewModel(puzzleVM, TestDispatchers)
         // Initial values
         assertThat(viewModel.proposition.value).isEqualTo("")
         assertThat(viewModel.words.value).isEqualTo(verse.words)

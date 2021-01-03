@@ -6,7 +6,6 @@ import android.graphics.Paint
 import mg.maniry.tenymana.gameLogic.models.Character
 
 class HiddenWordViewControl : BaseHiddenWordsViewControl() {
-    var resolved = false
     override val padding = PADDING
     override val cellWidth = WIDTH
     override val cellHeight = HEIGHT
@@ -20,6 +19,12 @@ class HiddenWordViewControl : BaseHiddenWordsViewControl() {
         color = Color.WHITE
     }
 
+    var resolved = false
+        set(value) {
+            field = value
+            updateCells()
+        }
+
     override fun cellValueAccessor(character: Character?): String? {
         return if (resolved) character?.value?.toString() else null
     }
@@ -29,7 +34,7 @@ class HiddenWordViewControl : BaseHiddenWordsViewControl() {
         bgPaint.color = bg
     }
 
-    override  fun draw(canvas: Canvas) {
+    override fun draw(canvas: Canvas) {
         for (row in cells) {
             for (cell in row) {
                 canvas.drawCell(cell)

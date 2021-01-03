@@ -11,6 +11,7 @@ import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.PuzzleScreenHiddenWordsBinding
 import mg.maniry.tenymana.ui.app.SharedViewModels
 import mg.maniry.tenymana.ui.views.settings.DrawingSettings
+import mg.maniry.tenymana.utils.KDispatchers
 import mg.maniry.tenymana.utils.bindTo
 import org.koin.android.ext.android.inject
 
@@ -35,7 +36,8 @@ class HiddenWordsFragment : Fragment() {
 
     private fun initViewModel() {
         val sharedVM: SharedViewModels by inject()
-        val factory = HiddenWordsViewModel.factory(sharedVM.puzzle)
+        val kDispatchers: KDispatchers by inject()
+        val factory = HiddenWordsViewModel.factory(sharedVM.puzzle, kDispatchers)
         viewModel = ViewModelProvider(requireActivity(), factory)
             .get(HiddenWordsViewModel::class.java)
     }

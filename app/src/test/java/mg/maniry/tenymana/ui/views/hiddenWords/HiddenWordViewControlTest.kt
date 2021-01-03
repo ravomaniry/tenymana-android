@@ -5,7 +5,6 @@ import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.mock
-import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.ui.views.hiddenWords.HiddenWordViewControl.Companion.BG_OFFSET
 import mg.maniry.tenymana.ui.views.hiddenWords.HiddenWordViewControl.Companion.HEIGHT
 import mg.maniry.tenymana.ui.views.hiddenWords.HiddenWordViewControl.Companion.MARGIN_H
@@ -17,7 +16,6 @@ import mg.maniry.tenymana.utils.TestTextShape
 import mg.maniry.tenymana.utils.chars
 import org.junit.Test
 
-@Suppress("unchecked_cast")
 class HiddenWordViewControlTest {
     private val wPlusM = WIDTH + MARGIN_H
     private val bgPadding = PADDING + BG_OFFSET
@@ -41,7 +39,7 @@ class HiddenWordViewControlTest {
         assertThat(rects).isEmpty()
         assertThat(texts).isEmpty()
         // one row
-        control.word = chars('a', 'b', 'c') as List<Character>
+        control.word = chars('a', 'b', 'c')
         assertThat(control.height).isEqualTo((PADDING * 2 + HEIGHT).toInt())
         control.draw(canvas)
         assertThat(texts).isEmpty()
@@ -56,14 +54,17 @@ class HiddenWordViewControlTest {
             )
         )
         // two rows
-        control.word = chars('a', 'b', 'c', 'd') as List<Character>
+        control.word = chars('a', 'b', 'c', 'd')
         assertThat(control.height).isEqualTo((PADDING * 2 + HEIGHT * 2 + MARGIN_V).toInt())
         // one row
         rects.removeAll { true }
-        control.resolved = true
         control.onMeasure((WIDTH * 100).toInt())
         assertThat(control.height).isEqualTo((PADDING * 2 + HEIGHT).toInt())
         control.draw(canvas)
-        assertThat(texts).isNotEmpty()
+        assertThat(texts).isEmpty()
+        // resolve
+        control.resolved = true
+        control.draw(canvas)
+        assertThat(texts.size).isEqualTo(4)
     }
 }

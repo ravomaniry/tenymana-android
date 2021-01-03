@@ -44,7 +44,7 @@ abstract class BaseHiddenWordsViewControl {
         _height = cells.size * cellHeight + padding * 2 + margins
     }
 
-    private fun updateCells() {
+    protected fun updateCells() {
         val next = calcLayout()
         next.center(viewWidth, cellWidth, marginH)
         cells = next

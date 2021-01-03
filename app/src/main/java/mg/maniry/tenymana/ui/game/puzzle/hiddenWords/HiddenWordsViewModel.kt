@@ -1,19 +1,19 @@
 package mg.maniry.tenymana.ui.game.puzzle.hiddenWords
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import kotlinx.coroutines.launch
 import mg.maniry.tenymana.gameLogic.hiddenWords.HiddenWordsGroup
 import mg.maniry.tenymana.gameLogic.hiddenWords.HiddenWordsPuzzle
 import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.gameLogic.models.Puzzle
 import mg.maniry.tenymana.gameLogic.models.Word
 import mg.maniry.tenymana.ui.game.puzzle.PuzzleViewModel
+import mg.maniry.tenymana.utils.KDispatchers
 import mg.maniry.tenymana.utils.newViewModelFactory
 
 class HiddenWordsViewModel(
-    private val puzzleViewModel: PuzzleViewModel
+    private val puzzleViewModel: PuzzleViewModel,
+    private val kDispatchers: KDispatchers
 ) : ViewModel() {
     private val puzzle = MutableLiveData<HiddenWordsPuzzle?>()
     private var groups: List<HiddenWordsGroup> = emptyList()
@@ -124,7 +124,14 @@ class HiddenWordsViewModel(
     }
 
     private fun activateUncompletedGroup() {
-        onActiveGroupChange(puzzle.value?.firstGroup ?: 0)
+        syncActiveGroup()
+        val prevIndex = _activeGroupIndex
+        viewModelScope.launch(kDispatchers.main) {
+            kDispatchers.delay(600)
+            if (prevIndex == _activeGroupIndex) {
+                onActiveGroupChange(puzzle.value?.firstGroup ?: 0)
+            }
+        }
     }
 
     init {
@@ -137,8 +144,7 @@ class HiddenWordsViewModel(
     }
 
     companion object {
-        fun factory(puzzleViewModel: PuzzleViewModel) = newViewModelFactory {
-            HiddenWordsViewModel(puzzleViewModel)
-        }
+        fun factory(puzzleViewModel: PuzzleViewModel, kDispatchers: KDispatchers) =
+            newViewModelFactory { HiddenWordsViewModel(puzzleViewModel, kDispatchers) }
     }
 }
