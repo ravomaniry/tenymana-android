@@ -67,5 +67,10 @@ class HiddenWordsInputViewControlTest {
         clearInvocations(selectHandler)
         control.onClick((width / 2), (PADDING + sizePlusM + 1).toInt())
         verifyOnce(selectHandler)(3)
+        // Update word
+        control.word = chars('a', null, null, null)
+        texts.removeAll { true }
+        control.draw(canvas)
+        assertThat(texts.size).isEqualTo(1)
     }
 }

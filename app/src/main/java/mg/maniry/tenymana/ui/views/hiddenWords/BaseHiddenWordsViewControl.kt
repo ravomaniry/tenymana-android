@@ -22,9 +22,8 @@ abstract class BaseHiddenWordsViewControl {
 
     var word: List<Character?> = emptyList()
         set(value) {
-            val shouldUpdate = field.size != value.size
-            field = value
-            if (shouldUpdate) {
+            if (field != value) {
+                field = value
                 updateHeight()
             }
         }
