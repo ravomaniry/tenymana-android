@@ -29,6 +29,7 @@ class HiddenWordsFragment : Fragment() {
         initBinding(inflater, container)
         initVerseView()
         initHiddenWordView()
+        initInputView()
         return binding.root
     }
 
@@ -63,6 +64,14 @@ class HiddenWordsFragment : Fragment() {
                 onWordChange(it.chars)
                 onResolved(it.resolved)
             }
+        }
+    }
+
+    private fun initInputView() {
+        binding.input.apply {
+            bindTo(viewModel.colors, this::onColorsChange)
+            bindTo(viewModel.characters, this::onWordChange)
+            onSelect(viewModel::onCharSelect)
         }
     }
 }

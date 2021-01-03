@@ -31,22 +31,17 @@ class HiddenWordsViewModel(
     private var _characters = MutableLiveData<List<Character?>>()
     val characters: LiveData<List<Character?>> = _characters
 
-    private val _activeGroupIndex = MutableLiveData<Int>()
-    private val activeGroupIndex: LiveData<Int> = _activeGroupIndex
+    private var _activeGroupIndex = 0
+    private val activeGroupIndexLD = MutableLiveData<Int>()
+    private val activeGroupIndex: LiveData<Int> = activeGroupIndexLD
     private val _activeGroup = MutableLiveData<HiddenWordsGroup>()
     val activeGroup: LiveData<HiddenWordsGroup> = _activeGroup
-
-    private var groupIndexObs = Observer<Any?> {
-        syncActiveGroup()
-    }
 
     private val puzzleObs = Observer<Puzzle?> {
         if (it is HiddenWordsPuzzle) {
             puzzle.postValue(it)
             _words.postValue(it.verse.words)
             groups = it.groups
-            resetSelections()
-            syncCharacters()
             onActiveGroupChange(0)
         }
     }
@@ -59,19 +54,19 @@ class HiddenWordsViewModel(
     }
 
     fun onActiveGroupChange(index: Int) {
-        selected.removeAll { true }
-        _activeGroupIndex.postValue(index)
+        _activeGroupIndex = index
+        syncActiveGroup()
+        resetSelections()
         syncCharacters()
     }
 
     fun propose() {
-        val index = _activeGroupIndex.value
         val puzzleValue = puzzle.value
-        if (selected.isNotEmpty() && index != null && puzzleValue != null) {
-            val success = puzzleValue.propose(index, selected.toList())
+        if (selected.isNotEmpty() && puzzleValue != null) {
+            val success = puzzleValue.propose(_activeGroupIndex, selected.toList())
             if (success) {
                 groups = puzzleValue.groups
-                if (groups[index].resolved) {
+                if (groups[_activeGroupIndex].resolved) {
                     activateUncompletedGroup()
                 }
                 checkAndComplete()
@@ -114,13 +109,12 @@ class HiddenWordsViewModel(
     }
 
     private fun syncActiveGroup() {
-        val group = groups[_activeGroupIndex.value ?: 0]
-        _activeGroup.postValue(group)
+        activeGroupIndexLD.postValue(_activeGroupIndex)
+        _activeGroup.postValue(groups[_activeGroupIndex])
     }
 
     private fun getActiveChars(): List<Character?>? {
-        val gIndex = activeGroupIndex.value ?: return null
-        return groups[gIndex].chars
+        return groups[_activeGroupIndex].chars
     }
 
     private fun checkAndComplete() {
@@ -130,18 +124,16 @@ class HiddenWordsViewModel(
     }
 
     private fun activateUncompletedGroup() {
-        _activeGroupIndex.postValue(puzzle.value?.firstGroup)
+        onActiveGroupChange(puzzle.value?.firstGroup ?: 0)
     }
 
     init {
         puzzleViewModel.puzzle.observeForever(puzzleObs)
-        _activeGroupIndex.observeForever(groupIndexObs)
     }
 
     override fun onCleared() {
         super.onCleared()
         puzzleViewModel.puzzle.removeObserver(puzzleObs)
-        _activeGroupIndex.removeObserver(groupIndexObs)
     }
 
     companion object {
