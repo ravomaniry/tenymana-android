@@ -4,8 +4,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import androidx.core.content.res.ResourcesCompat
-import androidx.databinding.BindingAdapter
-import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.ui.game.colors.GameColors
 
 class HiddenWordsInputView : BaseHiddenWordsView {
@@ -22,10 +20,6 @@ class HiddenWordsInputView : BaseHiddenWordsView {
         control.onSelect(handler)
     }
 
-    fun onGroupIndex(index: Int) {
-        control.groupIndex = index
-    }
-
     override fun onColorsChange(colors: GameColors) {
         val color = ResourcesCompat.getColor(resources, colors.primary, null)
         control.onColorChange(color)
@@ -35,7 +29,8 @@ class HiddenWordsInputView : BaseHiddenWordsView {
         if (event != null) {
             clickX = event.x
             clickY = event.y
-            if (event.action == MotionEvent.ACTION_UP) {
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                control.onClick(clickX.toInt(), clickY.toInt())
                 performClick()
             }
         }
@@ -44,28 +39,6 @@ class HiddenWordsInputView : BaseHiddenWordsView {
 
     override fun performClick(): Boolean {
         super.performClick()
-        control.onClick(clickX.toInt(), clickY.toInt())
         return true
-    }
-}
-
-@BindingAdapter("chars")
-fun HiddenWordsInputView.bindChars(chars: List<Character?>?) {
-    if (chars != null) {
-        onWordChange(chars)
-    }
-}
-
-@BindingAdapter("groupIndex")
-fun HiddenWordsInputView.bindGroupIndex(index: Int?) {
-    if (index != null) {
-        onGroupIndex(index)
-    }
-}
-
-@BindingAdapter("onSelect")
-fun HiddenWordsInputView.bindOnSelect(handler: SelectHandler?) {
-    if (handler != null) {
-        onSelect(handler)
     }
 }

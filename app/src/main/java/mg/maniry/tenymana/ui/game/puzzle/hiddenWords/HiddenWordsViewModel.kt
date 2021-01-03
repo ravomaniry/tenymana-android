@@ -10,101 +10,138 @@ import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.gameLogic.models.Puzzle
 import mg.maniry.tenymana.gameLogic.models.Word
 import mg.maniry.tenymana.ui.game.puzzle.PuzzleViewModel
-import mg.maniry.tenymana.ui.views.hiddenWords.SelectHandler
 import mg.maniry.tenymana.utils.newViewModelFactory
 
 class HiddenWordsViewModel(
     private val puzzleViewModel: PuzzleViewModel
 ) : ViewModel() {
     private val puzzle = MutableLiveData<HiddenWordsPuzzle?>()
-    private val _groups = MutableLiveData<List<HiddenWordsGroup>?>()
-    val groups: LiveData<List<HiddenWordsGroup>?> = _groups
+    private var groups: List<HiddenWordsGroup> = emptyList()
 
     val colors = puzzleViewModel.colors
 
     private val _words = MutableLiveData<List<Word>?>()
     val words: LiveData<List<Word>?> = _words
 
-    private var selections = listOf<MutableSet<Int>>()
+    private var selected = mutableListOf<Int>()
 
-    private var _characters = listOf<MutableList<Character?>>()
-    private val _charactersMLD = MutableLiveData<List<List<Character?>>>()
-    val characters: LiveData<List<List<Character?>>> = _charactersMLD
+    private val _proposition = MutableLiveData("")
+    val proposition: LiveData<String> = _proposition
+
+    private var _characters = MutableLiveData<List<Character?>>()
+    val characters: LiveData<List<Character?>> = _characters
+
+    private val _activeGroupIndex = MutableLiveData<Int>()
+    private val activeGroupIndex: LiveData<Int> = _activeGroupIndex
+    private val _activeGroup = MutableLiveData<HiddenWordsGroup>()
+    val activeGroup: LiveData<HiddenWordsGroup> = _activeGroup
+
+    private var groupIndexObs = Observer<Any?> {
+        syncActiveGroup()
+    }
 
     private val puzzleObs = Observer<Puzzle?> {
         if (it is HiddenWordsPuzzle) {
-            puzzle.value = it
+            puzzle.postValue(it)
             _words.postValue(it.verse.words)
-            _groups.postValue(it.groups.toList())
-            initChars(it.groups)
+            groups = it.groups
+            resetSelections()
+            syncCharacters()
+            onActiveGroupChange(0)
         }
     }
 
     fun cancel() {
-        selections.forEachIndexed { gI, indexes ->
-            if (indexes.isNotEmpty()) {
-                indexes.forEach { cI ->
-                    _characters[gI][cI] = groups.value?.getOrNull(gI)?.chars?.getOrNull(cI)
-                }
-                indexes.removeAll { true }
-            }
+        if (selected.isNotEmpty()) {
+            selected.removeAll { true }
+            syncCharacters()
         }
-        syncLiveData()
     }
 
-    fun propose(index: Int) {
+    fun onActiveGroupChange(index: Int) {
+        selected.removeAll { true }
+        _activeGroupIndex.postValue(index)
+        syncCharacters()
+    }
+
+    fun propose() {
+        val index = _activeGroupIndex.value
         val puzzleValue = puzzle.value
-        if (puzzleValue != null && selections[index].isNotEmpty()) {
-            val success = puzzleValue.propose(index, selections[index].toList())
+        if (selected.isNotEmpty() && index != null && puzzleValue != null) {
+            val success = puzzleValue.propose(index, selected.toList())
             if (success) {
-                _groups.postValue(puzzleValue.groups)
-                checkAndComplete(puzzleValue.groups)
+                groups = puzzleValue.groups
+                if (groups[index].resolved) {
+                    activateUncompletedGroup()
+                }
+                checkAndComplete()
+                syncActiveGroup()
                 resetSelections()
+                syncCharacters()
             } else {
                 cancel()
             }
         }
     }
 
-    val onSelect: SelectHandler = { gIndex, cIndex ->
-        val selected = selections[gIndex]
-        val chars = _characters[gIndex]
-        if (chars.size > cIndex && chars[cIndex] != null && !selected.contains(cIndex)) {
-            selected.add(cIndex)
-            _characters[gIndex][cIndex] = null
+    fun onCharSelect(index: Int) {
+        val chars = _characters.value
+        if (chars != null) {
+            if (chars.size > index && chars[index] != null && !selected.contains(index)) {
+                selected.add(index)
+                syncCharacters()
+            }
         }
     }
 
     private fun resetSelections() {
-        selections.forEach { it.removeAll { true } }
+        selected.removeAll { true }
     }
 
-    private fun initChars(groups: List<HiddenWordsGroup>) {
-        selections = groups.map { mutableSetOf<Int>() }
-        _characters = groups.map { it.chars.toMutableList() }
-        syncLiveData()
-    }
-
-    private fun syncLiveData() {
-        _charactersMLD.postValue(_characters.toList())
-    }
-
-    private fun checkAndComplete(groups: List<HiddenWordsGroup>) {
-        for (g in groups) {
-            if (!g.resolved) {
-                return
+    private fun syncCharacters() {
+        val allChars = getActiveChars() ?: return
+        val next = allChars.toMutableList()
+        var nextProp = ""
+        for (i in selected) {
+            val char = allChars[i]
+            if (char != null) {
+                nextProp += char.value
             }
+            next[i] = null
         }
-        puzzleViewModel.onComplete()
+        _characters.postValue(next)
+        _proposition.postValue(nextProp)
+    }
+
+    private fun syncActiveGroup() {
+        val group = groups[_activeGroupIndex.value ?: 0]
+        _activeGroup.postValue(group)
+    }
+
+    private fun getActiveChars(): List<Character?>? {
+        val gIndex = activeGroupIndex.value ?: return null
+        return groups[gIndex].chars
+    }
+
+    private fun checkAndComplete() {
+        if (puzzle.value?.completed == true) {
+            puzzleViewModel.onComplete()
+        }
+    }
+
+    private fun activateUncompletedGroup() {
+        _activeGroupIndex.postValue(puzzle.value?.firstGroup)
     }
 
     init {
         puzzleViewModel.puzzle.observeForever(puzzleObs)
+        _activeGroupIndex.observeForever(groupIndexObs)
     }
 
     override fun onCleared() {
         super.onCleared()
         puzzleViewModel.puzzle.removeObserver(puzzleObs)
+        _activeGroupIndex.removeObserver(groupIndexObs)
     }
 
     companion object {

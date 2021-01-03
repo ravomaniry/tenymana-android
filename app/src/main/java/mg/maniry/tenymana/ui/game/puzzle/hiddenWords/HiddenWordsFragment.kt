@@ -11,14 +11,12 @@ import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.PuzzleScreenHiddenWordsBinding
 import mg.maniry.tenymana.ui.app.SharedViewModels
 import mg.maniry.tenymana.ui.views.settings.DrawingSettings
-import mg.maniry.tenymana.utils.KDispatchers
 import mg.maniry.tenymana.utils.bindTo
 import org.koin.android.ext.android.inject
 
 class HiddenWordsFragment : Fragment() {
     private lateinit var binding: PuzzleScreenHiddenWordsBinding
     private lateinit var viewModel: HiddenWordsViewModel
-    private var adapter: HiddenWordsAdapter? = null
     private val drawingSettings = DrawingSettings()
 
     override fun onCreateView(
@@ -29,15 +27,13 @@ class HiddenWordsFragment : Fragment() {
         super.onCreateView(inflater, container, savedInstanceState)
         initViewModel()
         initBinding(inflater, container)
-        observeScreenSize()
-        initRecyclerView()
         initVerseView()
+        initHiddenWordView()
         return binding.root
     }
 
     private fun initViewModel() {
         val sharedVM: SharedViewModels by inject()
-        val kDispatchers: KDispatchers by inject()
         val factory = HiddenWordsViewModel.factory(sharedVM.puzzle)
         viewModel = ViewModelProvider(requireActivity(), factory)
             .get(HiddenWordsViewModel::class.java)
@@ -52,29 +48,21 @@ class HiddenWordsFragment : Fragment() {
         )
     }
 
-    private fun observeScreenSize() {
-        binding.hiddenWordsPuzzleBody.addOnLayoutChangeListener { v, _, _, _, _, _, _, _, _ ->
-            val w = v.width
-            if (adapter?.width != w) {
-                adapter?.width = w
-            }
-        }
-    }
-
-    private fun initRecyclerView() {
-        val view = binding.groupsList
-        adapter = HiddenWordsAdapter(viewModel)
-        bindTo(viewModel.groups) {
-            adapter?.groups = it
-        }
-        view.adapter = adapter
-    }
-
     private fun initVerseView() {
         binding.verseView.apply {
             onSettingsChanged(drawingSettings)
             bindTo(viewModel.colors, this::onColorsChanged)
             bindTo(viewModel.words, this::onWordsChange)
+        }
+    }
+
+    private fun initHiddenWordView() {
+        binding.hiddenWord.apply {
+            bindTo(viewModel.colors, this::onColorsChange)
+            bindTo(viewModel.activeGroup) {
+                onWordChange(it.chars)
+                onResolved(it.resolved)
+            }
         }
     }
 }

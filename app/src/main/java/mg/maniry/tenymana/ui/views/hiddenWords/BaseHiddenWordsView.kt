@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.databinding.BindingAdapter
 import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.ui.game.colors.GameColors
 
@@ -39,12 +38,5 @@ abstract class BaseHiddenWordsView : AppCompatTextView {
         if (canvas != null) {
             control.draw(canvas)
         }
-    }
-}
-
-@BindingAdapter("gameColors")
-fun BaseHiddenWordsView.bindGameColors(colors: GameColors?) {
-    if (colors != null) {
-        onColorsChange(colors)
     }
 }

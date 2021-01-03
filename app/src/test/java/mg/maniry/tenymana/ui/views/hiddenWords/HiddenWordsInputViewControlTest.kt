@@ -45,29 +45,27 @@ class HiddenWordsInputViewControlTest {
         control.word = chars('a', 'b', 'c', 'd')
         assertThat(control.height).isEqualTo((PADDING * 2 + CELL_SIZE * 2 + CELL_MARGIN).toInt())
         // click
-        val groupIndex = 1
-        val selectHandler: (Int, Int) -> Unit = mock()
-        control.groupIndex = groupIndex
+        val selectHandler: (Int) -> Unit = mock()
         control.onSelect(selectHandler)
         // outside drawing area
         control.onClick(0, 0)
-        verifyNever(selectHandler)(any(), any())
+        verifyNever(selectHandler)(any())
         control.onClick(width - 1, control.height - 1)
-        verifyNever(selectHandler)(any(), any())
+        verifyNever(selectHandler)(any())
         control.onClick(width - 1, PADDING.toInt() + 1)
-        verifyNever(selectHandler)(any(), any())
+        verifyNever(selectHandler)(any())
         control.onClick((PADDING + CELL_SIZE + 1).toInt(), PADDING.toInt() + 1)
-        verifyNever(selectHandler)(any(), any())
+        verifyNever(selectHandler)(any())
         // cell 0
         control.onClick(PADDING.toInt() + 1, PADDING.toInt() + 1)
-        verifyOnce(selectHandler)(groupIndex, 0)
+        verifyOnce(selectHandler)(0)
         // cell 1
         clearInvocations(selectHandler)
         control.onClick((PADDING + sizePlusM + 1).toInt(), PADDING.toInt() + 1)
-        verifyOnce(selectHandler)(groupIndex, 1)
+        verifyOnce(selectHandler)(1)
         // cell 3
         clearInvocations(selectHandler)
         control.onClick((width / 2), (PADDING + sizePlusM + 1).toInt())
-        verifyOnce(selectHandler)(groupIndex, 3)
+        verifyOnce(selectHandler)(3)
     }
 }

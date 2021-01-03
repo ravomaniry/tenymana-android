@@ -5,10 +5,9 @@ import android.graphics.Color
 import android.graphics.Paint
 import mg.maniry.tenymana.gameLogic.models.Character
 
-typealias SelectHandler = (Int, Int) -> Unit
+typealias SelectHandler = (Int) -> Unit
 
 class HiddenWordsInputViewControl : BaseHiddenWordsViewControl() {
-    var groupIndex: Int? = null
     override val padding = PADDING
     override val cellWidth = CELL_SIZE
     override val cellHeight = CELL_SIZE
@@ -41,9 +40,9 @@ class HiddenWordsInputViewControl : BaseHiddenWordsViewControl() {
     }
 
     fun onClick(x: Int, y: Int) {
-        val cIndex = calcSelection(x, y)
-        if (groupIndex != null && cIndex != null && selectHandler != null) {
-            selectHandler!!(groupIndex!!, cIndex)
+        val index = calcSelection(x, y)
+        if (index != null && selectHandler != null) {
+            selectHandler!!(index)
         }
     }
 

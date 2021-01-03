@@ -11,6 +11,7 @@ import mg.maniry.tenymana.gameLogic.models.BibleVerse
 import mg.maniry.tenymana.gameLogic.models.Puzzle
 import mg.maniry.tenymana.ui.game.puzzle.PuzzleViewModel
 import mg.maniry.tenymana.utils.chars
+import mg.maniry.tenymana.utils.verifyNever
 import mg.maniry.tenymana.utils.verifyOnce
 import org.junit.Rule
 import org.junit.Test
@@ -27,9 +28,11 @@ class HiddenWordsViewModelTest {
             HiddenWordsGroup(chars('g', 'h', 'm', 'n'), verse.words[6], false)
         )
         var proposeResult = false
+        var completed = false
         val puzzle: HiddenWordsPuzzle = mock {
             on { this.verse } doReturn verse
-            on { this.groups } doAnswer { groups }
+            on { this.groups } doAnswer { groups.toList() }
+            on { this.completed } doAnswer { completed }
             on { this.propose(any(), any()) } doAnswer { proposeResult }
         }
         val puzzleLD: LiveData<Puzzle?> = MutableLiveData(puzzle)
@@ -38,41 +41,40 @@ class HiddenWordsViewModelTest {
         }
         val viewModel = HiddenWordsViewModel(puzzleVM)
         // Initial values
+        assertThat(viewModel.proposition.value).isEqualTo("")
         assertThat(viewModel.words.value).isEqualTo(verse.words)
-        assertThat(viewModel.groups.value).isEqualTo(groups)
-        assertThat(viewModel.characters.value).isEqualTo(
-            listOf(
-                chars('a', 'b', 'c'),
-                chars('g', 'h', 'm', 'n')
-            )
-        )
+        assertThat(viewModel.activeGroup.value).isEqualTo(groups[0])
+        assertThat(viewModel.characters.value).isEqualTo(chars('a', 'b', 'c'))
         // select
-        viewModel.onSelect(0, 1)
-        assertThat(viewModel.characters.value).isEqualTo(
-            listOf(
-                chars('a', null, 'c'),
-                chars('g', 'h', 'm', 'n')
-            )
-        )
-        // cancel
+        viewModel.onCharSelect(1)
+        assertThat(viewModel.proposition.value).isEqualTo("B")
+        assertThat(viewModel.characters.value).isEqualTo(chars('a', null, 'c'))
+        // change active group
+        viewModel.onActiveGroupChange(1)
+        assertThat(viewModel.proposition.value).isEqualTo("")
+        assertThat(viewModel.characters.value).isEqualTo(groups[1].chars)
+        // no submit
+        viewModel.propose()
+        verifyNever(puzzle).propose(any(), any())
+        // select & cancel
+        viewModel.onCharSelect(0)
+        assertThat(viewModel.proposition.value).isEqualTo("G")
+        assertThat(viewModel.characters.value).isEqualTo(chars(null, 'h', 'm', 'n'))
         viewModel.cancel()
-        assertThat(viewModel.characters.value).isEqualTo(
-            listOf(chars('a', 'b', 'c'), chars('g', 'h', 'm', 'n'))
-        )
+        assertThat(viewModel.proposition.value).isEqualTo("")
+        assertThat(viewModel.characters.value).isEqualTo(groups[1].chars)
         // select
-        viewModel.onSelect(1, 2)
-        viewModel.onSelect(1, 3)
-        viewModel.onSelect(1, 8)
-        assertThat(viewModel.characters.value).isEqualTo(
-            listOf(chars('a', 'b', 'c'), chars('g', 'h', null, null))
-        )
+        viewModel.onCharSelect(2)
+        viewModel.onCharSelect(3)
+        viewModel.onCharSelect(8)
+        assertThat(viewModel.characters.value).isEqualTo(chars('g', 'h', null, null))
+        assertThat(viewModel.proposition.value).isEqualTo("MN")
         // Propose -> false
-        viewModel.propose(1)
+        viewModel.propose()
         verifyOnce(puzzle).propose(1, listOf(2, 3))
-        assertThat(viewModel.groups.value).isEqualTo(groups)
-        assertThat(viewModel.characters.value).isEqualTo(
-            listOf(chars('a', 'b', 'c'), chars('g', 'h', 'm', 'n'))
-        )
+        assertThat(viewModel.activeGroup.value).isEqualTo(groups[1])
+        assertThat(viewModel.proposition.value).isEqualTo("")
+        assertThat(viewModel.characters.value).isEqualTo(chars('g', 'h', 'm', 'n'))
         // Propose -> true
         groups = listOf(
             groups[0],
@@ -80,44 +82,41 @@ class HiddenWordsViewModelTest {
         )
         proposeResult = true
         clearInvocations(puzzle)
-        viewModel.onSelect(1, 0)
-        viewModel.onSelect(1, 1)
-        assertThat(viewModel.characters.value).isEqualTo(
-            listOf(chars('a', 'b', 'c'), chars(null, null, 'm', 'n'))
-        )
-        viewModel.propose(1)
+        viewModel.onCharSelect(0)
+        viewModel.onCharSelect(1)
+        assertThat(viewModel.characters.value).isEqualTo(chars(null, null, 'm', 'n'))
+        viewModel.propose()
         verifyOnce(puzzle).propose(1, listOf(0, 1))
-        assertThat(viewModel.groups.value).isEqualTo(groups)
+        assertThat(viewModel.activeGroup.value).isEqualTo(groups[1])
         // Select & cancel
-        viewModel.onSelect(1, 2)
+        viewModel.onCharSelect(2)
+        assertThat(viewModel.characters.value).isEqualTo(chars(null, null, null, 'n'))
         viewModel.cancel()
-        assertThat(viewModel.characters.value).isEqualTo(
-            listOf(chars('a', 'b', 'c'), chars(null, null, 'm', 'n'))
-        )
+        assertThat(viewModel.characters.value).isEqualTo(chars(null, null, 'm', 'n'))
         // Resolve group
         clearInvocations(puzzle)
         groups = listOf(
             groups[0],
             groups[1].copy(resolved = true, chars = chars(null, null, null, null))
         )
-        viewModel.onSelect(1, 2)
-        viewModel.onSelect(1, 3)
-        viewModel.propose(1)
+        viewModel.onCharSelect(2)
+        viewModel.onCharSelect(3)
+        viewModel.propose()
         verifyOnce(puzzle).propose(1, listOf(2, 3))
-        assertThat(viewModel.groups.value).isEqualTo(groups)
-        assertThat(viewModel.characters.value).isEqualTo(
-            listOf(chars('a', 'b', 'c'), chars(null, null, null, null))
-        )
+        // Automatically goes to groups[0] as groups[1] is resolved
+        assertThat(viewModel.activeGroup.value).isEqualTo(groups[0])
+        assertThat(viewModel.proposition.value).isEqualTo("")
+        assertThat(viewModel.characters.value).isEqualTo(chars('a', 'b', 'c'))
         // Complete game
+        completed = true
         groups = listOf(
-            groups[0].copy(resolved = true, chars = chars(null, null, null)),
+            groups[0].copy(chars = chars(null, null, 'c')),
             groups[1]
         )
-        viewModel.onSelect(0, 0)
-        viewModel.onSelect(0, 1)
-        viewModel.onSelect(0, 2)
-        viewModel.propose(0)
-        verifyOnce(puzzle).propose(0, listOf(0, 1, 2))
+        viewModel.onCharSelect(0)
+        viewModel.onCharSelect(1)
+        viewModel.propose()
+        verifyOnce(puzzle).propose(0, listOf(0, 1))
         verifyOnce(puzzleVM).onComplete()
     }
 }

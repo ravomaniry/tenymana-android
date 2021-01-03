@@ -3,8 +3,6 @@ package mg.maniry.tenymana.ui.views.hiddenWords
 import android.content.Context
 import android.util.AttributeSet
 import androidx.core.content.res.ResourcesCompat
-import androidx.databinding.BindingAdapter
-import mg.maniry.tenymana.gameLogic.hiddenWords.HiddenWordsGroup
 import mg.maniry.tenymana.ui.game.colors.GameColors
 
 class HiddenWordView : BaseHiddenWordsView {
@@ -27,13 +25,5 @@ class HiddenWordView : BaseHiddenWordsView {
             control.resolved = resolved
             invalidate()
         }
-    }
-}
-
-@BindingAdapter("hiddenWordsGroup")
-fun HiddenWordView.bindGroup(group: HiddenWordsGroup?) {
-    if (group != null) {
-        onWordChange(group.hidden.chars)
-        onResolved(group.resolved)
     }
 }
