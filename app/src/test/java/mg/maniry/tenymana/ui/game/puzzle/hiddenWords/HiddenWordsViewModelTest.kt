@@ -22,7 +22,7 @@ class HiddenWordsViewModelTest {
 
     @Test
     fun test() {
-        val verse = BibleVerse.fromText("", 1, 1, "Abc ddef gh jkl mn")
+        var verse = BibleVerse.fromText("", 1, 1, "Abc ddef gh jkl mn")
         var groups = listOf(
             HiddenWordsGroup(chars('a', 'b', 'c'), verse.words[2], false),
             HiddenWordsGroup(chars('g', 'h', 'm', 'n'), verse.words[6], false)
@@ -30,7 +30,7 @@ class HiddenWordsViewModelTest {
         var proposeResult = false
         var completed = false
         val puzzle: HiddenWordsPuzzle = mock {
-            on { this.verse } doReturn verse
+            on { this.verse } doAnswer { verse }
             on { this.groups } doAnswer { groups.toList() }
             on { this.completed } doAnswer { completed }
             on { this.propose(any(), any()) } doAnswer { proposeResult }
@@ -76,6 +76,9 @@ class HiddenWordsViewModelTest {
         assertThat(viewModel.proposition.value).isEqualTo("")
         assertThat(viewModel.characters.value).isEqualTo(chars('g', 'h', 'm', 'n'))
         // Propose -> true
+        val words0 = verse.words.toMutableList()
+        words0[4] = words0[4].resolvedVersion
+        verse = verse.copy(words = words0)
         groups = listOf(
             groups[0],
             groups[1].copy(chars = chars(null, null, 'm', 'n'))
@@ -88,6 +91,7 @@ class HiddenWordsViewModelTest {
         viewModel.propose()
         verifyOnce(puzzle).propose(1, listOf(0, 1))
         assertThat(viewModel.activeGroup.value).isEqualTo(groups[1])
+        assertThat(viewModel.words.value).isEqualTo(words0)
         // Select & cancel
         viewModel.onCharSelect(2)
         assertThat(viewModel.characters.value).isEqualTo(chars(null, null, null, 'n'))

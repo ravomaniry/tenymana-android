@@ -29,6 +29,7 @@ abstract class BaseHiddenWordsView : AppCompatTextView {
         if (prevH == control.height) {
             invalidate()
         } else {
+            invalidate()
             requestLayout()
         }
     }

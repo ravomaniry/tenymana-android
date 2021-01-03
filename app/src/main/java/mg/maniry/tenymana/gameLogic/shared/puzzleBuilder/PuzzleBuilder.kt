@@ -33,7 +33,7 @@ class PuzzleBuilderImpl(
     private fun randomType(): GameTypes {
         return random.from(
             listOf(
-                GameTypes.LinkClear,
+                GameTypes.HiddenWords,
                 GameTypes.HiddenWords
             )
         )

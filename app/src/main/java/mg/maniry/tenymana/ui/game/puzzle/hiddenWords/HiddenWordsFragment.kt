@@ -47,6 +47,8 @@ class HiddenWordsFragment : Fragment() {
             container,
             false
         )
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
     }
 
     private fun initVerseView() {

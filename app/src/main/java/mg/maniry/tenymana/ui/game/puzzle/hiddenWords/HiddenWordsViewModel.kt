@@ -33,7 +33,6 @@ class HiddenWordsViewModel(
 
     private var _activeGroupIndex = 0
     private val activeGroupIndexLD = MutableLiveData<Int>()
-    private val activeGroupIndex: LiveData<Int> = activeGroupIndexLD
     private val _activeGroup = MutableLiveData<HiddenWordsGroup>()
     val activeGroup: LiveData<HiddenWordsGroup> = _activeGroup
 
@@ -66,6 +65,7 @@ class HiddenWordsViewModel(
             val success = puzzleValue.propose(_activeGroupIndex, selected.toList())
             if (success) {
                 groups = puzzleValue.groups
+                _words.postValue(puzzleValue.verse.words)
                 if (groups[_activeGroupIndex].resolved) {
                     activateUncompletedGroup()
                 }
