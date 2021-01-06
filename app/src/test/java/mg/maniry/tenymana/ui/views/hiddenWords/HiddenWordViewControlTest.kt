@@ -15,6 +15,7 @@ import mg.maniry.tenymana.utils.TestRect
 import mg.maniry.tenymana.utils.TestTextShape
 import mg.maniry.tenymana.utils.chars
 import org.junit.Test
+import java.util.*
 
 class HiddenWordViewControlTest {
     private val wPlusM = WIDTH + MARGIN_H
@@ -56,26 +57,27 @@ class HiddenWordViewControlTest {
             TestRect.xywh(bgPadding + 3 + 2 * wPlusM, bgPadding, WIDTH, HEIGHT),
             TestRect.xywh(PADDING + 3 + 2 * wPlusM, PADDING, WIDTH, HEIGHT)
         )
-        control.startAnim(100L)
+        val t0 = Date().time
+        control.startAnim(t0)
         reDraw()
         assertThat(rects).isEqualTo(finalRects.map { TestRect.xywh(0f, 0f, WIDTH, HEIGHT) })
         assertThat(texts).isEmpty()
         // 0.1
-        var invalidate = control.onTick(100L + BaseHiddenWordsViewControl.ANIM_DURATION / 10)
+        var invalidate = control.onTick(t0 + BaseHiddenWordsViewControl.ANIM_DURATION / 10)
         reDraw()
         assertThat(invalidate).isTrue()
         assertThat(rects).isEqualTo(
             finalRects.map { TestRect.xywh(it.left / 10, it.top / 10, WIDTH, HEIGHT) }
         )
         // 0.5
-        invalidate = control.onTick(100L + BaseHiddenWordsViewControl.ANIM_DURATION / 2)
+        invalidate = control.onTick(t0 + BaseHiddenWordsViewControl.ANIM_DURATION / 2)
         reDraw()
         assertThat(invalidate).isTrue()
         assertThat(rects).isEqualTo(
             finalRects.map { TestRect.xywh(it.left / 2, it.top / 2, WIDTH, HEIGHT) }
         )
         // after animation
-        invalidate = control.onTick(100L + BaseHiddenWordsViewControl.ANIM_DURATION * 2)
+        invalidate = control.onTick(t0 + BaseHiddenWordsViewControl.ANIM_DURATION * 2)
         reDraw()
         assertThat(invalidate).isFalse()
         assertThat(rects).isEqualTo(finalRects)

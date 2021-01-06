@@ -35,7 +35,7 @@ abstract class BaseHiddenWordsViewControl {
     val height: Int get() = _height.toInt()
 
     private var t0 = 0L
-    protected var animValue = 0.0
+    private var animValue = 0.0
 
     fun onMeasure(width: Int) {
         viewWidth = width
@@ -48,8 +48,9 @@ abstract class BaseHiddenWordsViewControl {
     }
 
     fun onTick(t: Long): Boolean {
-        return if (t < ANIM_DURATION) {
-            animValue = (t - t0) / ANIM_DURATION.toDouble()
+        val dt = (t - t0)
+        return if (dt < ANIM_DURATION) {
+            animValue = dt / ANIM_DURATION.toDouble()
             true
         } else {
             animValue = 1.0

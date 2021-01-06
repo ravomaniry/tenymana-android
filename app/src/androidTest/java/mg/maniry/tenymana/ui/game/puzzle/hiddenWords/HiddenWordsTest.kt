@@ -78,5 +78,6 @@ class HiddenWordsTest : KoinTest {
             clickView(R.id.pathDetailsNextBtn)
             assertShouldBeVisible(R.id.hiddenWordsPuzzleBody)
         }
+        Thread.sleep(1000)
     }
 }
