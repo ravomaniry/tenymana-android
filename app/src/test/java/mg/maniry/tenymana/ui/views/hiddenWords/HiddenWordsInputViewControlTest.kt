@@ -28,18 +28,38 @@ class HiddenWordsInputViewControlTest {
             }
         }
         val control = HiddenWordsInputViewControl()
+        fun HiddenWordsInputViewControl.reDraw() {
+            rects.removeAll { true }
+            texts.removeAll { true }
+            draw(canvas)
+        }
+
         val width = (PADDING * 2 + CELL_SIZE * 3 + CELL_MARGIN * 2).toInt()
         control.word = chars('a', 'b', 'c')
         control.onMeasure(width)
         assertThat(control.height).isEqualTo((PADDING * 2 + CELL_SIZE).toInt())
-        control.draw(canvas)
-        assertThat(rects).isEqualTo(
-            listOf(
-                TestRect.xywh(PADDING, PADDING, CELL_SIZE, CELL_SIZE),
-                TestRect.xywh(PADDING + sizePlusM, PADDING, CELL_SIZE, CELL_SIZE),
-                TestRect.xywh(PADDING + 2 * sizePlusM, PADDING, CELL_SIZE, CELL_SIZE)
-            )
+        // Anim & draw
+        val finalRects = listOf(
+            TestRect.xywh(PADDING, PADDING, CELL_SIZE, CELL_SIZE),
+            TestRect.xywh(PADDING + sizePlusM, PADDING, CELL_SIZE, CELL_SIZE),
+            TestRect.xywh(PADDING + 2 * sizePlusM, PADDING, CELL_SIZE, CELL_SIZE)
         )
+        control.startAnim(100L)
+        control.reDraw()
+        assertThat(rects).isEqualTo(finalRects.map { TestRect.xywh(0f, 0f, CELL_SIZE, CELL_SIZE) })
+        assertThat(texts.size).isEqualTo(3)
+        // 1.0
+        var invalidate = control.onTick(100L + BaseHiddenWordsViewControl.ANIM_DURATION / 10)
+        assertThat(invalidate).isTrue()
+        control.reDraw()
+        assertThat(rects).isEqualTo(
+            finalRects.map { TestRect.xywh(it.left / 10, it.top / 10, CELL_SIZE, CELL_SIZE) }
+        )
+        // After anim
+        invalidate = control.onTick(100L + BaseHiddenWordsViewControl.ANIM_DURATION)
+        assertThat(invalidate).isFalse()
+        control.reDraw()
+        assertThat(rects).isEqualTo(finalRects)
         assertThat(texts.size).isEqualTo(3)
         // two rows
         control.word = chars('a', 'b', 'c', 'd')

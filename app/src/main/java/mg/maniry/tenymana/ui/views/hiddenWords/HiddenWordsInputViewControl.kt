@@ -56,11 +56,11 @@ class HiddenWordsInputViewControl : BaseHiddenWordsViewControl() {
 
     private fun Canvas.drawCell(cell: Cell) {
         val bgPaint = if (cell.value == null) usedPaint else availablePaint
-        drawRect(cell.x, cell.y, cell.x + CELL_SIZE, cell.y + CELL_SIZE, bgPaint)
+        drawCellBg(cell.x, cell.y, CELL_SIZE, CELL_SIZE, bgPaint)
         if (cell.value != null) {
             val x = cell.x + CELL_SIZE / 2
             val y = cell.y + CELL_SIZE - TEXT_PADDING - 6
-            drawText(cell.value, x, y, textPaint)
+            drawCellText(x, y, cell.value, textPaint)
         }
     }
 
