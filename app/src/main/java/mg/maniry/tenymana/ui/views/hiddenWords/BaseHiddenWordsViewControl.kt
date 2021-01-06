@@ -59,15 +59,17 @@ abstract class BaseHiddenWordsViewControl {
     }
 
     protected fun Canvas.drawCellBg(x: Float, y: Float, width: Float, height: Float, paint: Paint) {
-        val xToUse = (x * animValue).toFloat()
-        val yToUse = (y * animValue).toFloat()
-        drawRect(xToUse, yToUse, xToUse + width, yToUse + height, paint)
+        val xToUse = applyAnimOffset(x)
+        drawRect(xToUse, y, xToUse + width, y + height, paint)
     }
 
     protected fun Canvas.drawCellText(x: Float, y: Float, value: String, paint: Paint) {
-        val xToUse = (x * animValue).toFloat()
-        val yToUse = (y * animValue).toFloat()
-        drawText(value, xToUse, yToUse, paint)
+        val xToUse = applyAnimOffset(x)
+        drawText(value, xToUse, y, paint)
+    }
+
+    private fun applyAnimOffset(value: Float): Float {
+        return (value * animValue).toFloat()
     }
 
     private fun updateHeight() {
@@ -122,6 +124,6 @@ abstract class BaseHiddenWordsViewControl {
     }
 
     companion object {
-        const val ANIM_DURATION = 500L
+        const val ANIM_DURATION = 250L
     }
 }

@@ -60,21 +60,21 @@ class HiddenWordViewControlTest {
         val t0 = Date().time
         control.startAnim(t0)
         reDraw()
-        assertThat(rects).isEqualTo(finalRects.map { TestRect.xywh(0f, 0f, WIDTH, HEIGHT) })
+        assertThat(rects).isEqualTo(finalRects.map { TestRect.xywh(0f, it.top, WIDTH, HEIGHT) })
         assertThat(texts).isEmpty()
         // 0.1
         var invalidate = control.onTick(t0 + BaseHiddenWordsViewControl.ANIM_DURATION / 10)
         reDraw()
         assertThat(invalidate).isTrue()
         assertThat(rects).isEqualTo(
-            finalRects.map { TestRect.xywh(it.left / 10, it.top / 10, WIDTH, HEIGHT) }
+            finalRects.map { TestRect.xywh(it.left / 10, it.top, WIDTH, HEIGHT) }
         )
         // 0.5
         invalidate = control.onTick(t0 + BaseHiddenWordsViewControl.ANIM_DURATION / 2)
         reDraw()
         assertThat(invalidate).isTrue()
         assertThat(rects).isEqualTo(
-            finalRects.map { TestRect.xywh(it.left / 2, it.top / 2, WIDTH, HEIGHT) }
+            finalRects.map { TestRect.xywh(it.left / 2, it.top, WIDTH, HEIGHT) }
         )
         // after animation
         invalidate = control.onTick(t0 + BaseHiddenWordsViewControl.ANIM_DURATION * 2)

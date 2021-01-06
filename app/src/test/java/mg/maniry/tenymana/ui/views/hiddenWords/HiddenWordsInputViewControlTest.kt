@@ -46,14 +46,21 @@ class HiddenWordsInputViewControlTest {
         )
         control.startAnim(100L)
         control.reDraw()
-        assertThat(rects).isEqualTo(finalRects.map { TestRect.xywh(0f, 0f, CELL_SIZE, CELL_SIZE) })
+        assertThat(rects).isEqualTo(finalRects.map {
+            TestRect.xywh(
+                0f,
+                it.top,
+                CELL_SIZE,
+                CELL_SIZE
+            )
+        })
         assertThat(texts.size).isEqualTo(3)
         // 1.0
         var invalidate = control.onTick(100L + BaseHiddenWordsViewControl.ANIM_DURATION / 10)
         assertThat(invalidate).isTrue()
         control.reDraw()
         assertThat(rects).isEqualTo(
-            finalRects.map { TestRect.xywh(it.left / 10, it.top / 10, CELL_SIZE, CELL_SIZE) }
+            finalRects.map { TestRect.xywh(it.left / 10, it.top, CELL_SIZE, CELL_SIZE) }
         )
         // After anim
         invalidate = control.onTick(100L + BaseHiddenWordsViewControl.ANIM_DURATION)
