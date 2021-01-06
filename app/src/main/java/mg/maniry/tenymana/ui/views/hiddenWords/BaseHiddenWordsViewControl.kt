@@ -1,6 +1,7 @@
 package mg.maniry.tenymana.ui.views.hiddenWords
 
 import android.graphics.Canvas
+import android.graphics.Paint
 import mg.maniry.tenymana.gameLogic.models.Character
 
 abstract class BaseHiddenWordsViewControl {
@@ -33,9 +34,39 @@ abstract class BaseHiddenWordsViewControl {
     private var _height = 10f
     val height: Int get() = _height.toInt()
 
+    private var t0 = 0L
+    protected var animValue = 0.0
+
     fun onMeasure(width: Int) {
         viewWidth = width
         updateHeight()
+    }
+
+    fun startAnim(t: Long) {
+        t0 = t
+        animValue = 0.0
+    }
+
+    fun onTick(t: Long): Boolean {
+        return if (t < ANIM_DURATION) {
+            animValue = (t - t0) / ANIM_DURATION.toDouble()
+            true
+        } else {
+            animValue = 1.0
+            false
+        }
+    }
+
+    protected fun Canvas.drawCellBg(x: Float, y: Float, width: Float, height: Float, paint: Paint) {
+        val xToUse = (x * animValue).toFloat()
+        val yToUse = (y * animValue).toFloat()
+        drawRect(xToUse, yToUse, xToUse + width, yToUse + height, paint)
+    }
+
+    protected fun Canvas.drawCellText(x: Float, y: Float, value: String, paint: Paint) {
+        val xToUse = (x * animValue).toFloat()
+        val yToUse = (y * animValue).toFloat()
+        drawText(value, xToUse, yToUse, paint)
     }
 
     private fun updateHeight() {
@@ -87,5 +118,9 @@ abstract class BaseHiddenWordsViewControl {
                 row[i] = row[i].copy(x = row[i].x + padding)
             }
         }
+    }
+
+    companion object {
+        const val ANIM_DURATION = 500L
     }
 }

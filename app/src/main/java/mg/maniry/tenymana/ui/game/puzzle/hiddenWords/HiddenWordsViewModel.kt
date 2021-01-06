@@ -36,6 +36,9 @@ class HiddenWordsViewModel(
     private val _activeGroup = MutableLiveData<HiddenWordsGroup>()
     val activeGroup: LiveData<HiddenWordsGroup> = _activeGroup
 
+    private val _animate = MutableLiveData(false)
+    val animate: LiveData<Boolean> = _animate
+
     private val puzzleObs = Observer<Puzzle?> {
         if (it is HiddenWordsPuzzle) {
             puzzle.postValue(it)
@@ -57,6 +60,7 @@ class HiddenWordsViewModel(
         syncActiveGroup()
         resetSelections()
         syncCharacters()
+        _animate.postValue(true)
     }
 
     fun propose() {
@@ -87,6 +91,10 @@ class HiddenWordsViewModel(
                 syncCharacters()
             }
         }
+    }
+
+    fun onAnimationDone() {
+        _animate.postValue(false)
     }
 
     private fun resetSelections() {

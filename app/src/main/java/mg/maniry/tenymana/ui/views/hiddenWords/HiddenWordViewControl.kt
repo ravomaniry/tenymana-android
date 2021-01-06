@@ -53,14 +53,14 @@ class HiddenWordViewControl : BaseHiddenWordsViewControl() {
         x: Float,
         y: Float,
         value: String?,
-        bgPaint: Paint,
+        rectPaint: Paint,
         txtPaint: Paint? = null
     ) {
-        drawRect(x, y, x + WIDTH, y + HEIGHT, bgPaint)
+        drawCellBg(x, y, WIDTH, HEIGHT, rectPaint)
         if (value != null && txtPaint != null) {
             val textX = x + WIDTH / 2
             val textY = y + HEIGHT - 2
-            drawText(value, textX, textY, txtPaint)
+            drawCellText(textX, textY, value, txtPaint)
         }
     }
 

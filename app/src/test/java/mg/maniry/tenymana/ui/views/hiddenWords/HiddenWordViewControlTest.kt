@@ -33,6 +33,12 @@ class HiddenWordViewControlTest {
             }
         }
         val control = HiddenWordViewControl()
+        fun reDraw() {
+            rects.removeAll { true }
+            texts.removeAll { true }
+            control.draw(canvas)
+        }
+
         control.onMeasure((WIDTH * 3 + MARGIN_H * 2 + PADDING * 2 + 6).toInt())
         assertThat(control.height).isEqualTo((PADDING * 2).toInt())
         control.draw(canvas)
@@ -41,18 +47,38 @@ class HiddenWordViewControlTest {
         // one row
         control.word = chars('a', 'b', 'c')
         assertThat(control.height).isEqualTo((PADDING * 2 + HEIGHT).toInt())
-        control.draw(canvas)
-        assertThat(texts).isEmpty()
-        assertThat(rects).isEqualTo(
-            listOf(
-                TestRect.xywh(bgPadding + 3, bgPadding, WIDTH, HEIGHT),
-                TestRect.xywh(PADDING + 3, PADDING, WIDTH, HEIGHT),
-                TestRect.xywh(bgPadding + 3 + wPlusM, bgPadding, WIDTH, HEIGHT),
-                TestRect.xywh(PADDING + 3 + wPlusM, PADDING, WIDTH, HEIGHT),
-                TestRect.xywh(bgPadding + 3 + 2 * wPlusM, bgPadding, WIDTH, HEIGHT),
-                TestRect.xywh(PADDING + 3 + 2 * wPlusM, PADDING, WIDTH, HEIGHT)
-            )
+        // Animate & draw
+        val finalRects = listOf(
+            TestRect.xywh(bgPadding + 3, bgPadding, WIDTH, HEIGHT),
+            TestRect.xywh(PADDING + 3, PADDING, WIDTH, HEIGHT),
+            TestRect.xywh(bgPadding + 3 + wPlusM, bgPadding, WIDTH, HEIGHT),
+            TestRect.xywh(PADDING + 3 + wPlusM, PADDING, WIDTH, HEIGHT),
+            TestRect.xywh(bgPadding + 3 + 2 * wPlusM, bgPadding, WIDTH, HEIGHT),
+            TestRect.xywh(PADDING + 3 + 2 * wPlusM, PADDING, WIDTH, HEIGHT)
         )
+        control.startAnim(100L)
+        reDraw()
+        assertThat(rects).isEqualTo(finalRects.map { TestRect.xywh(0f, 0f, WIDTH, HEIGHT) })
+        assertThat(texts).isEmpty()
+        // 0.1
+        var invalidate = control.onTick(100L + BaseHiddenWordsViewControl.ANIM_DURATION / 10)
+        reDraw()
+        assertThat(invalidate).isTrue()
+        assertThat(rects).isEqualTo(
+            finalRects.map { TestRect.xywh(it.left / 10, it.top / 10, WIDTH, HEIGHT) }
+        )
+        // 0.5
+        invalidate = control.onTick(100L + BaseHiddenWordsViewControl.ANIM_DURATION / 2)
+        reDraw()
+        assertThat(invalidate).isTrue()
+        assertThat(rects).isEqualTo(
+            finalRects.map { TestRect.xywh(it.left / 2, it.top / 2, WIDTH, HEIGHT) }
+        )
+        // after animation
+        invalidate = control.onTick(100L + BaseHiddenWordsViewControl.ANIM_DURATION * 2)
+        reDraw()
+        assertThat(invalidate).isFalse()
+        assertThat(rects).isEqualTo(finalRects)
         // two rows
         control.word = chars('a', 'b', 'c', 'd')
         assertThat(control.height).isEqualTo((PADDING * 2 + HEIGHT * 2 + MARGIN_V).toInt())

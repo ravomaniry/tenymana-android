@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.PuzzleScreenHiddenWordsBinding
+import mg.maniry.tenymana.ui.app.AnimatorWrapper
 import mg.maniry.tenymana.ui.app.SharedViewModels
 import mg.maniry.tenymana.ui.views.settings.DrawingSettings
 import mg.maniry.tenymana.utils.KDispatchers
@@ -19,6 +20,7 @@ class HiddenWordsFragment : Fragment() {
     private lateinit var binding: PuzzleScreenHiddenWordsBinding
     private lateinit var viewModel: HiddenWordsViewModel
     private val drawingSettings = DrawingSettings()
+    private val anim: AnimatorWrapper by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +33,7 @@ class HiddenWordsFragment : Fragment() {
         initVerseView()
         initHiddenWordView()
         initInputView()
+        initAnim()
         return binding.root
     }
 
@@ -54,6 +57,7 @@ class HiddenWordsFragment : Fragment() {
     }
 
     private fun initVerseView() {
+        binding.animVerseView.animator = anim.value
         binding.verseView.apply {
             onSettingsChanged(drawingSettings)
             bindTo(viewModel.colors, this::onColorsChanged)
@@ -63,6 +67,7 @@ class HiddenWordsFragment : Fragment() {
 
     private fun initHiddenWordView() {
         binding.hiddenWord.apply {
+            animator = anim.value
             bindTo(viewModel.colors, this::onColorsChange)
             bindTo(viewModel.activeGroup) {
                 onWordChange(it.hidden.chars)
@@ -73,9 +78,20 @@ class HiddenWordsFragment : Fragment() {
 
     private fun initInputView() {
         binding.input.apply {
+            animator = anim.value
             bindTo(viewModel.colors, this::onColorsChange)
             bindTo(viewModel.characters, this::onWordChange)
             onSelect(viewModel::onCharSelect)
+        }
+    }
+
+    private fun initAnim() {
+        bindTo(viewModel.animate) {
+            if (it) {
+                binding.hiddenWord.startAnim()
+                binding.input.startAnim()
+                viewModel.onAnimationDone()
+            }
         }
     }
 }

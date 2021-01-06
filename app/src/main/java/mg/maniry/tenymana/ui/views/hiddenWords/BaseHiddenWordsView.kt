@@ -6,14 +6,19 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.ui.game.colors.GameColors
+import mg.maniry.tenymana.ui.views.animator.AnimatedView
+import mg.maniry.tenymana.ui.views.animator.Animator
+import java.util.*
 
-abstract class BaseHiddenWordsView : AppCompatTextView {
+abstract class BaseHiddenWordsView : AppCompatTextView, AnimatedView {
     constructor(context: Context) : super(context)
     constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet)
     constructor(context: Context, attributeSet: AttributeSet, defStyleAttr: Int) :
             super(context, attributeSet, defStyleAttr)
 
     protected abstract val control: BaseHiddenWordsViewControl
+
+    override var animator: Animator? = null
 
     abstract fun onColorsChange(colors: GameColors)
 
@@ -34,6 +39,19 @@ abstract class BaseHiddenWordsView : AppCompatTextView {
                 requestLayout()
             }
         }
+    }
+
+    fun startAnim() {
+        control.startAnim(Date().time)
+        animator?.register(this)
+    }
+
+    override fun onTick(t: Long): Boolean {
+        return control.onTick(t)
+    }
+
+    override fun onFrame() {
+        invalidate()
     }
 
     override fun onDraw(canvas: Canvas?) {
