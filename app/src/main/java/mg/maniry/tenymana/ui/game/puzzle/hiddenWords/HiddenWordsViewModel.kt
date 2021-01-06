@@ -55,12 +55,24 @@ class HiddenWordsViewModel(
         }
     }
 
-    fun onActiveGroupChange(index: Int) {
+    private fun onActiveGroupChange(index: Int) {
         _activeGroupIndex = index
         syncActiveGroup()
         resetSelections()
         syncCharacters()
         _animate.postValue(true)
+    }
+
+    fun activateNexGroup() {
+        if (groups.size > _activeGroupIndex + 1) {
+            onActiveGroupChange(_activeGroupIndex + 1)
+        }
+    }
+
+    fun activatePrevGroup() {
+        if (_activeGroupIndex > 0) {
+            onActiveGroupChange(_activeGroupIndex - 1)
+        }
     }
 
     fun propose() {

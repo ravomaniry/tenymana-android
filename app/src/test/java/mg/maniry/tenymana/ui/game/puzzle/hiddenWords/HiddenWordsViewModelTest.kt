@@ -53,7 +53,7 @@ class HiddenWordsViewModelTest {
         assertThat(viewModel.proposition.value).isEqualTo("B")
         assertThat(viewModel.characters.value).isEqualTo(chars('a', null, 'c'))
         // change active group
-        viewModel.onActiveGroupChange(1)
+        viewModel.activateNexGroup()
         assertThat(viewModel.proposition.value).isEqualTo("")
         assertThat(viewModel.characters.value).isEqualTo(groups[1].chars)
         // no submit
