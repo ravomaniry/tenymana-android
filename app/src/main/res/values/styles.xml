@@ -163,6 +163,13 @@
         <item name="android:fontFamily">@font/kaushan_script_regular</item>
     </style>
 
+    <style name="AppTheme.HwArrowBtn" parent="AppTheme.ImageBtnPrimary">
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+    </style>
+
     <!-- Solution screen -->
     <style name="AppTheme.VerseTexView" parent="TextAppearance.AppCompat.Body1">
         <item name="android:layout_margin">5dp</item>
