@@ -5,10 +5,7 @@ import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturnConsecutively
 import com.nhaarman.mockitokotlin2.mock
 import mg.maniry.tenymana.gameLogic.models.BibleVerse
-import mg.maniry.tenymana.utils.Random
-import mg.maniry.tenymana.utils.chars
-import mg.maniry.tenymana.utils.verifyOnce
-import mg.maniry.tenymana.utils.verifyTimes
+import mg.maniry.tenymana.utils.*
 import org.junit.Test
 
 class BuilderTest {
@@ -38,5 +35,12 @@ class BuilderTest {
         verifyTimes(random, 2).int(0, 2)
         verifyTimes(random, 2).int(0, 1)
         verifyTimes(random, 2).int(0, 0)
+    }
+
+    @Test
+    fun sizePlusOne() {
+        val verse = BibleVerse.fromText("", 1, 1, "aaa bbb ccc ddd eee")
+        val groups = buildHiddenWordsGroups(verse, 2, RandomImpl())
+        assertThat(groups.size).isEqualTo(2)
     }
 }

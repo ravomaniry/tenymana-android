@@ -5,7 +5,6 @@ import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.gameLogic.models.Word
 import mg.maniry.tenymana.utils.Random
 import kotlin.math.max
-import kotlin.math.min
 
 fun buildHiddenWordsGroups(
     verse: BibleVerse,
@@ -15,11 +14,15 @@ fun buildHiddenWordsGroups(
     val groups = mutableListOf<HiddenWordsGroup>()
     var words = verse.uniqueWords
     while (words.isNotEmpty()) {
-        val activeWords = words.subList(0, min(groupSize, words.size)).toList()
+        val activeWords = words.activeWords(groupSize)
         words = words.subList(activeWords.size, words.size).toList()
         groups.append(activeWords, random)
     }
     return groups
+}
+
+private fun List<Word>.activeWords(groupSize: Int): List<Word> {
+    return if (size <= groupSize + 1) this else subList(0, groupSize).toList()
 }
 
 private fun MutableList<HiddenWordsGroup>.append(words: List<Word>, random: Random) {
