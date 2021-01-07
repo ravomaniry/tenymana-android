@@ -79,16 +79,16 @@ class GameViewModelTest {
                 on { this.random(any()) } doReturn puzzle
             }
             // test
-            val viewModel =
-                GameViewModelImpl(
-                    appViewModel,
-                    userRepo,
-                    gameRepo,
-                    bibleRepo,
-                    puzzleBuilder,
-                    TestDispatchers
-                )
+            val viewModel = GameViewModelImpl(
+                appViewModel,
+                userRepo,
+                gameRepo,
+                bibleRepo,
+                puzzleBuilder,
+                TestDispatchers
+            )
             // 1- Init sessions list
+            viewModel.refreshData()
             assertThat(viewModel.sessions.value).isEqualTo(listOf(session))
             // 2- Select session and resume
             viewModel.onSessionClick(session)

@@ -35,6 +35,7 @@ class GameFragment : Fragment() {
         super.onCreateView(inflater, container, savedInstanceState)
         initViewModel()
         observeRoute()
+        viewModel.refreshData()
         return inflater.inflate(R.layout.game_screen, container, false)
     }
 

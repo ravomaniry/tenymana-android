@@ -27,6 +27,7 @@ interface GameViewModel {
     fun saveAndContinue()
     fun onPathSelected(pathIndex: Int, verseIndex: Int?)
     fun closePathDetails()
+    fun refreshData()
 }
 
 class GameViewModelImpl(
@@ -45,10 +46,13 @@ class GameViewModelImpl(
     override val puzzle = MutableLiveData<Puzzle?>(null)
     override var position: SessionPosition? = null
 
+    private var shouldRefreshData = false
+
     private val userObserver = Observer<User?> {
-        if (it != null) {
+        if (it != null && shouldRefreshData) {
             viewModelScope.launch(dispatchers.main) {
                 gameRepo.initialize(it.id)
+                shouldRefreshData = false
             }
         }
     }
@@ -57,6 +61,18 @@ class GameViewModelImpl(
         session.postValue(item)
         position = item.resume()
         navigateTo(Screen.PATHS_LIST)
+    }
+
+    override fun refreshData() {
+        val user = userRepo.user.value
+        if (user == null) {
+            shouldRefreshData = true
+        } else {
+            viewModelScope.launch(dispatchers.main) {
+                gameRepo.initialize(user.id)
+                shouldRefreshData = false
+            }
+        }
     }
 
     override fun onPathSelected(pathIndex: Int, verseIndex: Int?) {
