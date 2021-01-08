@@ -117,6 +117,7 @@
 
     <style name="AppTheme.Card" parent="Widget.MaterialComponents.CardView">
         <item name="android:background">@drawable/bg_card</item>
+        <item name="android:padding">6dp</item>
     </style>
 
     <!-- Puzzle screen -->
