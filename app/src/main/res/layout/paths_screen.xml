@@ -90,21 +90,23 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/pathsScreenLeftBtn"
-                style="@style/AppTheme.LeftRightBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:contentDescription="@string/paths_screen_prev_description"
-                android:onClick="@{() -> viewModel.showPrevPath()}"
-                android:src="@drawable/ic_arrow_left"
-                app:isVisible="@{viewModel.showLeftBtn}" />
-
-            <View
+            <FrameLayout
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:id="@+id/pathsScreenLeftBtn"
+                    style="@style/AppTheme.LeftRightBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:contentDescription="@string/paths_screen_prev_description"
+                    android:onClick="@{() -> viewModel.showPrevPath()}"
+                    android:src="@drawable/ic_arrow_left"
+                    app:isVisible="@{viewModel.showLeftBtn}" />
+
+            </FrameLayout>
 
             <Button
                 android:id="@+id/pathsScreenContinueBtn"
@@ -114,21 +116,23 @@
                 android:onClick="@{() -> viewModel.continueSession()}"
                 android:text="@string/app_action_next" />
 
-            <View
+            <FrameLayout
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <ImageButton
-                android:id="@+id/pathsScreenRightBtn"
-                style="@style/AppTheme.LeftRightBtn"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end|center_vertical"
-                android:contentDescription="@string/paths_screen_next_description"
-                android:onClick="@{() -> viewModel.showNextPath()}"
-                android:src="@drawable/ic_arrow_right"
-                app:isVisible="@{viewModel.showRightBtn}" />
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:id="@+id/pathsScreenRightBtn"
+                    style="@style/AppTheme.LeftRightBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:contentDescription="@string/paths_screen_next_description"
+                    android:onClick="@{() -> viewModel.showNextPath()}"
+                    android:src="@drawable/ic_arrow_right"
+                    app:isVisible="@{viewModel.showRightBtn}" />
+
+            </FrameLayout>
 
         </LinearLayout>
 
