@@ -11,6 +11,10 @@ interface Random {
     fun <T> from(list: List<T>): T {
         return if (list.size == 1) list[0] else list[this.int(0, list.size - 1)]
     }
+
+    companion object {
+        fun impl() = RandomImpl()
+    }
 }
 
 class RandomImpl : Random {
