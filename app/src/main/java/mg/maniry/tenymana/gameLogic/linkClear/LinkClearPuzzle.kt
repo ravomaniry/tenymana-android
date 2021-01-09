@@ -30,8 +30,8 @@ interface LinkClearPuzzle : Puzzle {
         val gravity = listOf(Point.DOWN, Point.LEFT)
         val directions = listOf(Point.UP, Point.RIGHT, Point.DOWN, Point.LEFT)
 
-        fun build(verse: BibleVerse, random: Random): LinkClearPuzzle {
-            val result = buildLinkGrid(verse, random, gridSize, gridSize)
+        fun build(verse: BibleVerse): LinkClearPuzzle {
+            val result = buildLinkGrid(verse, Random.impl(), gridSize, gridSize)
             val solution = result.second.map { it.toCharSolution(verse) }
             return LinkClearPuzzleImpl(result.first, verse, solution)
         }

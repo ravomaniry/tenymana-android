@@ -17,7 +17,6 @@ import mg.maniry.tenymana.repositories.BibleRepo
 import mg.maniry.tenymana.repositories.GameRepo
 import mg.maniry.tenymana.repositories.UserRepo
 import mg.maniry.tenymana.repositories.models.*
-import mg.maniry.tenymana.utils.RandomImpl
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -45,7 +44,7 @@ class HiddenWordsTest : KoinTest {
         whenever(userRepo.user).thenReturn(MutableLiveData(User("1", "")))
         // Puzzle builder
         val verse = BibleVerse.fromText("Matio", 1, 10, "Ny filazana ny razan'i Jesosy Kristy")
-        val puzzle = HiddenWordsPuzzle.build(verse, 5, RandomImpl())
+        val puzzle = HiddenWordsPuzzle.build(verse)
         val puzzleBuilder: PuzzleBuilder by inject()
         whenever(puzzleBuilder.random(verse)).thenReturn(puzzle)
         // Bible repo

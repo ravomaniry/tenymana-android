@@ -4,6 +4,7 @@ import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.mock
+import mg.maniry.tenymana.gameLogic.anagram.AnagramPuzzle
 import mg.maniry.tenymana.gameLogic.hiddenWords.HiddenWordsPuzzle
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.gameLogic.models.BibleVerse
@@ -28,5 +29,8 @@ class PuzzleBuilderTest {
         // Hidden words
         randIndex = 1
         assertThat(builder.random(verse) is HiddenWordsPuzzle).isTrue()
+        // Anagram
+        randIndex = 2
+        assertThat(builder.random(verse) is AnagramPuzzle).isTrue()
     }
 }
