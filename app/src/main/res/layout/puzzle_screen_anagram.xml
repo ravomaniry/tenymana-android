@@ -63,6 +63,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@{viewModel.proposition}"
+                    android:textColor="@color/red"
                     tools:text="Proposition" />
 
             </FrameLayout>
@@ -83,4 +84,5 @@
             android:layout_height="wrap_content" />
 
     </LinearLayout>
+
 </layout>
