@@ -3,11 +3,11 @@ package mg.maniry.tenymana.ui.game.puzzle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import mg.maniry.tenymana.gameLogic.anagram.AnagramPuzzle
+import mg.maniry.tenymana.gameLogic.hiddenWords.HiddenWordsPuzzle
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
 import mg.maniry.tenymana.ui.game.GameViewModel
-import mg.maniry.tenymana.ui.game.colors.DefaultColors
-import mg.maniry.tenymana.ui.game.colors.GameColors
-import mg.maniry.tenymana.ui.game.colors.LinkClearColors
+import mg.maniry.tenymana.ui.game.colors.*
 import mg.maniry.tenymana.utils.newViewModelFactory
 
 class PuzzleViewModel(
@@ -18,6 +18,8 @@ class PuzzleViewModel(
     val colors: LiveData<GameColors> = Transformations.map(gameViewModel.puzzle) {
         when (it) {
             is LinkClearPuzzle -> LinkClearColors()
+            is HiddenWordsPuzzle -> HiddenWordsColors()
+            is AnagramPuzzle -> AnagramColors()
             else -> DefaultColors()
         }
     }

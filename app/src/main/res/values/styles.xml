@@ -130,7 +130,7 @@
     </style>
 
     <style name="AppTheme.HiddenWordsPuzzleBody" parent="AppTheme.PuzzleBody">
-        <item name="android:background">@drawable/bg_triangles</item>
+        <item name="android:background">@drawable/bg_red</item>
     </style>
 
     <style name="AppTheme.BonusBtnCont">
@@ -165,7 +165,6 @@
         <item name="android:paddingStart">24dp</item>
         <item name="android:paddingEnd">24dp</item>
         <item name="android:background">@drawable/bg_rounded_white</item>
-        <item name="android:fontFamily">@font/kaushan_script_regular</item>
     </style>
 
     <style name="AppTheme.HwArrowBtn" parent="AppTheme.ImageBtnPrimary">
@@ -173,6 +172,10 @@
         <item name="android:paddingBottom">4dp</item>
         <item name="android:paddingStart">8dp</item>
         <item name="android:paddingEnd">8dp</item>
+    </style>
+
+    <style name="AppTheme.AnagramBody">
+        <item name="android:background">@drawable/bg_green</item>
     </style>
 
     <!-- Solution screen -->

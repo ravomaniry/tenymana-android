@@ -16,3 +16,13 @@ class LinkClearColors : GameColors {
     override val primary = R.color.red
     override val accent = R.color.blue
 }
+
+class HiddenWordsColors : GameColors {
+    override val primary = R.color.blue
+    override val accent = R.color.red
+}
+
+class AnagramColors : GameColors {
+    override val primary = R.color.green
+    override val accent = R.color.red
+}
