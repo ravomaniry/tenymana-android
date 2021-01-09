@@ -6,6 +6,8 @@ import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.gameLogic.models.Puzzle
 import mg.maniry.tenymana.gameLogic.models.Word
 import mg.maniry.tenymana.gameLogic.shared.chars.hasMatch
+import mg.maniry.tenymana.gameLogic.shared.words.bonusRatio
+import mg.maniry.tenymana.gameLogic.shared.words.deltaScore
 import mg.maniry.tenymana.gameLogic.shared.words.resolveWith
 import mg.maniry.tenymana.gameLogic.shared.words.resolved
 import mg.maniry.tenymana.utils.Random
@@ -42,6 +44,7 @@ class HiddenWordsPuzzleImpl(
     override var completed = false
     override var firstGroup: Int = 0
     override var groups = initialGroups
+    private var prevWords = initialVerse.words.toList()
     private val words = initialVerse.words.toMutableList()
     override val verse: BibleVerse = initialVerse.copy(words = words)
     private val matches = MutableList(groups.size) { true }
@@ -49,6 +52,7 @@ class HiddenWordsPuzzleImpl(
     override fun propose(groupIndex: Int, charsIndexes: List<Int>): Boolean {
         val chars = groups[groupIndex].toChars(charsIndexes)
         if (chars.isNotEmpty()) {
+            prevWords = words.toList()
             val wIndexes = words.resolveWith(chars, emptySet())
             if (wIndexes.isNotEmpty()) {
                 val result = groups.resolve(groupIndex, charsIndexes)
@@ -76,14 +80,9 @@ class HiddenWordsPuzzleImpl(
     }
 
     private fun updateScore() {
-        _score = 0
-        for (w in words) {
-            if (!w.isSeparator && w.resolved) {
-                _score += w.size
-            }
-        }
+        _score += words.deltaScore(prevWords)
         if (completed && words.resolved) {
-            _score *= 2
+            _score += (_score * words.bonusRatio).toInt()
         }
         if (_score != score.value) {
             score.postValue(_score)

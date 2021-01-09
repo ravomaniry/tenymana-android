@@ -16,3 +16,13 @@ val List<Word>.bonusRatio: Double
         }
         return if (count > 0) resolvedCount / count else 0.0
     }
+
+fun List<Word>.deltaScore(prev: List<Word>): Int {
+    var ds = 0
+    forEachIndexed { i, word ->
+        if (!word.isSeparator && word.resolved && !prev[i].resolved) {
+            ds += word.size
+        }
+    }
+    return ds
+}
