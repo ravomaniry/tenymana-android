@@ -13,7 +13,7 @@ import org.junit.Test
 class BuilderTest {
     @Test
     fun builderTest() {
-        val verse = BibleVerse.fromText("", 1, 1, "Abc de abc")
+        val verse = BibleVerse.fromText("", 1, 1, "Abc de abc i")
         val random: Random = mock {
             on { int(any(), any()) } doAnswer { it.arguments.last() as Int }
         }
