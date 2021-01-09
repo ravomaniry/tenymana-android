@@ -56,6 +56,7 @@ class LinkClearPuzzleImpl(
     override val prevGrid: Grid<Character> get() = _prevGrid
     private var prevCells: List<List<Character?>> = grid.cells
 
+    private var prevWords = initialVerse.words.toList()
     private val words = initialVerse.words.toMutableList()
     override val verse = initialVerse.copy(words = words)
     private var _diffs: List<Move>? = null
@@ -64,12 +65,13 @@ class LinkClearPuzzleImpl(
 
     private var usedHelp = false
     override var completed = false
+    private var _score = 0
     override var score = MutableLiveData(0)
-    private val scoreValue: Int get() = score.value ?: 0
 
     override fun propose(move: Move): Boolean {
         reset()
         takeGridSnapshot()
+        prevWords = words.toList()
         val selection = grid.calcSelection(move, directions)
         if (selection.isNotEmpty) {
             val historyItem = HistoryItem(words.toList(), score.value!!, grid.copyCells())
@@ -103,7 +105,8 @@ class LinkClearPuzzleImpl(
     override fun useBonusOne(price: Int): List<Point>? {
         val points = grid.randomMatch(words, visibleH, directions, random)
         return points?.let {
-            score.postValue(scoreValue - price)
+            _score -= price
+            syncScore()
             listOf(points[0])
         }
     }
@@ -127,8 +130,7 @@ class LinkClearPuzzleImpl(
         completed = words.resolved
         if (!completed && grid.firstVisibleMatch(words, visibleH, directions) == null) {
             usedHelp = true
-            val match =
-                grid.createMatch(words, diff0, visibleH, directions, gravity, random)
+            val match = grid.createMatch(words, diff0, visibleH, directions, gravity, random)
             if (match == null) {
                 completed = true
             } else {
@@ -145,11 +147,16 @@ class LinkClearPuzzleImpl(
 
     private fun incrementScore(resolved: List<Int>) {
         resolved.forEach {
-            score.postValue(scoreValue + words[it].size)
+            _score += words[it].size
         }
         if (completed && !usedHelp) {
-            score.postValue(scoreValue * (1.0 + words.bonusRatio).toInt())
+            _score += (_score * words.bonusRatio).toInt()
         }
+        syncScore()
+    }
+
+    private fun syncScore() {
+        score.postValue(_score)
     }
 }
 
