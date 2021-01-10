@@ -24,5 +24,5 @@ class HiddenWordsColors : GameColors {
 
 class AnagramColors : GameColors {
     override val primary = R.color.green
-    override val accent = R.color.red
+    override val accent = R.color.blue
 }

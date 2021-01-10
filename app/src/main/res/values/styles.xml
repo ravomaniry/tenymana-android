@@ -175,7 +175,7 @@
     </style>
 
     <style name="AppTheme.AnagramBody">
-        <item name="android:background">@drawable/bg_green</item>
+        <item name="android:background">@drawable/bg_blue</item>
     </style>
 
     <!-- Solution screen -->
