@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.PuzzleScreenHeaderBinding
@@ -29,8 +30,11 @@ class PuzzleHeaderFragment : Fragment() {
 
     private fun initViewModel() {
         val sharedVMs: SharedViewModels by inject()
-        val factory = PuzzleHeaderViewModel.factory(sharedVMs.game)
+        val factory = PuzzleHeaderViewModel.factory(sharedVMs.game, sharedVMs.puzzle)
         viewModel = ViewModelProvider(this, factory).get(PuzzleHeaderViewModel::class.java)
+        viewModel.colors.observe(viewLifecycleOwner, Observer {
+            println(it)
+        })
     }
 
     private fun initBinding(inflater: LayoutInflater, container: ViewGroup?) {

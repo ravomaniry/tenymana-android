@@ -8,6 +8,7 @@
         <variable
             name="viewModel"
             type="mg.maniry.tenymana.ui.game.puzzle.header.PuzzleHeaderViewModel" />
+
     </data>
 
     <LinearLayout
@@ -16,8 +17,8 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="5dp"
-        tools:background="@color/blue"
-        tools:backgroundColorID="@{viewModel.colors.primary}">
+        app:backgroundColorID="@{viewModel.colors.primary}"
+        tools:background="@color/blue">
 
         <ImageView
             android:id="@+id/puzzleHeaderMenuBtn"

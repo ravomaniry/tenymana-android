@@ -126,7 +126,7 @@
     </style>
 
     <style name="AppTheme.LinkClearPuzzleBody" parent="AppTheme.PuzzleBody">
-        <item name="android:background">@drawable/bg_triangles</item>
+        <item name="android:background">@drawable/bg_green</item>
     </style>
 
     <style name="AppTheme.HiddenWordsPuzzleBody" parent="AppTheme.PuzzleBody">
