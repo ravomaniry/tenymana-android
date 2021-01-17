@@ -33,9 +33,9 @@ abstract class BaseHiddenWordsViewControl {
     protected var cells = listOf<List<Cell>>()
     private var _height = 10f
     val height: Int get() = _height.toInt()
-
     private var t0 = 0L
     private var animValue = 0.0
+    private var prevAnimValue = 1.0
 
     fun onMeasure(width: Int) {
         viewWidth = width
@@ -49,13 +49,10 @@ abstract class BaseHiddenWordsViewControl {
 
     fun onTick(t: Long): Boolean {
         val dt = (t - t0)
-        return if (dt < ANIM_DURATION) {
-            animValue = dt / ANIM_DURATION.toDouble()
-            true
-        } else {
-            animValue = 1.0
-            false
-        }
+        animValue = if (dt < ANIM_DURATION) dt / ANIM_DURATION.toDouble() else 1.0
+        val shouldUpdate = animValue != prevAnimValue
+        prevAnimValue = animValue
+        return shouldUpdate
     }
 
     protected fun Canvas.drawCellBg(x: Float, y: Float, width: Float, height: Float, paint: Paint) {

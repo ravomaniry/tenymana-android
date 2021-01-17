@@ -64,10 +64,11 @@ class HiddenWordsInputViewControlTest {
         )
         // After anim
         invalidate = control.onTick(100L + BaseHiddenWordsViewControl.ANIM_DURATION)
-        assertThat(invalidate).isFalse()
+        assertThat(invalidate).isTrue()
         control.reDraw()
         assertThat(rects).isEqualTo(finalRects)
         assertThat(texts.size).isEqualTo(3)
+        assertThat(control.onTick(100L + BaseHiddenWordsViewControl.ANIM_DURATION)).isFalse()
         // two rows
         control.word = chars('a', 'b', 'c', 'd')
         assertThat(control.height).isEqualTo((PADDING * 2 + CELL_SIZE * 2 + CELL_MARGIN).toInt())
