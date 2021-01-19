@@ -56,10 +56,10 @@
 
         <Button
             android:id="@+id/pathDetailsNextBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/AppTheme.RedBtn"
+            android:layout_width="120dp"
+            android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
-            android:drawableStart="@drawable/ic_play"
             android:onClick="@{() -> gameViewModel.closePathDetails()}"
             android:text="@string/app_action_play" />
     </LinearLayout>
