@@ -101,16 +101,41 @@
 
     <style name="AppTheme.GamesList">
         <item name="android:background">@drawable/bg_list_inner</item>
-        <item name="android:padding">16dp</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
+    <style name="AppTheme.GameListItemCont">
+        <item name="android:background">@drawable/bg_game_list_item_outer</item>
+        <item name="android:padding">4dp</item>
+    </style>
+
+    <style name="AppTheme.GameListItemInnerCont">
+        <item name="android:padding">4dp</item>
+        <item name="android:background">@drawable/bg_game_list_item_inner</item>
     </style>
 
     <style name="AppTheme.GamesListScore" parent="TextAppearance.AppCompat.Body1">
-        <item name="android:textColor">@color/light</item>
-        <item name="android:gravity">center</item>
-        <item name="drawableTint">@color/light</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:layout_gravity">bottom</item>
-        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:background">@drawable/bg_game_list_item_score</item>
+        <item name="android:gravity">bottom|center_horizontal</item>
+        <item name="android:fontFamily">@font/kaushan_script_regular</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+    </style>
+
+    <style name="AppTheme.GameListJourneyName">
+        <item name="android:background">@drawable/bg_game_list_item_journey_name</item>
+        <item name="android:fontFamily">@font/kaushan_script_regular</item>
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:padding">2dp</item>
+    </style>
+
+    <style name="AppTheme.GamesListItemDetails">
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:background">@drawable/bg_game_list_item_journey_name</item>
+        <item name="android:padding">2dp</item>
     </style>
 
     <!-- Paths list -->
