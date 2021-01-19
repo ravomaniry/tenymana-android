@@ -83,10 +83,17 @@
         <item name="android:layout_margin">4dp</item>
     </style>
 
+    <style name="AppTheme.RedBtn" parent="AppTheme.Button">
+        <item name="android:background">@drawable/btn_red</item>
+        <item name="android:textColor">@color/light</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <!-- Journeys list -->
     <style name="AppTheme.AppTitle">
         <item name="android:textColor">@color/light</item>
         <item name="android:textAlignment">center</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:background">@drawable/bg_app_title</item>
         <item name="android:textSize">32sp</item>
         <item name="android:fontFamily">@font/kaushan_script_regular</item>
@@ -144,6 +151,18 @@
         <item name="android:paddingRight">2dp</item>
         <item name="android:paddingBottom">12dp</item>
         <item name="android:paddingTop">6dp</item>
+        <item name="android:background">@drawable/bg_list_out</item>
+    </style>
+
+    <style name="AppTheme.PathsTitle">
+        <item name="android:fontFamily">@font/kaushan_script_regular</item>
+        <item name="android:background">@drawable/bg_subtutitle</item>
+        <item name="android:layout_marginStart">48dp</item>
+        <item name="android:layout_marginEnd">48dp</item>
+        <item name="android:textColor">@color/light</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAlignment">center</item>
     </style>
 
     <style name="AppTheme.PathsListVerse" parent="TextAppearance.MaterialComponents.Body1">
@@ -160,9 +179,13 @@
         <item name="android:layout_margin">5dp</item>
     </style>
 
-    <style name="AppTheme.Card" parent="Widget.MaterialComponents.CardView">
-        <item name="android:background">@drawable/bg_card</item>
+    <style name="AppTheme.PathsListBody">
         <item name="android:padding">6dp</item>
+        <item name="android:background">@drawable/bg_list_inner</item>
+    </style>
+
+    <style name="AppTheme.PathsScreenDescription" parent="AppTheme.DescriptionTextView">
+        <item name="android:layout_margin">4dp</item>
     </style>
 
     <!-- Puzzle screen -->
