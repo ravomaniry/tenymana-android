@@ -84,6 +84,26 @@
     </style>
 
     <!-- Journeys list -->
+    <style name="AppTheme.AppTitle">
+        <item name="android:textColor">@color/light</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:background">@drawable/bg_app_title</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:fontFamily">@font/kaushan_script_regular</item>
+        <item name="android:layout_marginLeft">24dp</item>
+        <item name="android:layout_marginRight">24dp</item>
+    </style>
+
+    <style name="AppTheme.GamesListCont">
+        <item name="android:padding">16dp</item>
+        <item name="android:background">@drawable/bg_list_out</item>
+    </style>
+
+    <style name="AppTheme.GamesList">
+        <item name="android:background">@drawable/bg_list_inner</item>
+        <item name="android:padding">16dp</item>
+    </style>
+
     <style name="AppTheme.GamesListScore" parent="TextAppearance.AppCompat.Body1">
         <item name="android:textColor">@color/light</item>
         <item name="android:gravity">center</item>
