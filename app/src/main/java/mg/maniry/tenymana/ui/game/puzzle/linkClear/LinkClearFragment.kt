@@ -36,7 +36,6 @@ class LinkClearFragment : Fragment() {
         initCharsGridView()
         initCharsGridInput()
         initGridHighlightVew()
-        initBonusViews()
         observeReRender()
         viewModel.onMounted?.invoke()
         return binding.root
@@ -105,10 +104,6 @@ class LinkClearFragment : Fragment() {
             bindTo(viewModel.colors, this::onColorsChanged)
             bindTo(viewModel.highlighted, this::onValue)
         }
-    }
-
-    private fun initBonusViews() {
-        bindTo(viewModel.colors, binding.puzzleBonusOneBtn::onColorsChanged)
     }
 
     private fun observeReRender() {

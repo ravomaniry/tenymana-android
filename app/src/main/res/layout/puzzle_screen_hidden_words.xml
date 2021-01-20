@@ -106,8 +106,8 @@
             android:orientation="horizontal">
 
             <Button
-                android:layout_width="64dp"
-                android:layout_height="64dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:background="@drawable/btn_left"
                 android:contentDescription="@string/paths_screen_prev_description"
                 android:onClick="@{()->viewModel.activatePrevGroup()}" />
@@ -118,8 +118,8 @@
                 android:layout_weight="1" />
 
             <Button
-                android:layout_width="64dp"
-                android:layout_height="64dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:background="@drawable/btn_right"
                 android:contentDescription="@string/paths_screen_prev_description"
                 android:onClick="@{()->viewModel.activateNexGroup()}" />
