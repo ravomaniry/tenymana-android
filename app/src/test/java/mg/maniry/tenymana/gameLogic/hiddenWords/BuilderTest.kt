@@ -38,9 +38,9 @@ class BuilderTest {
     }
 
     @Test
-    fun sizePlusOne() {
-        val verse = BibleVerse.fromText("", 1, 1, "aaa bbb ccc ddd eee")
-        val groups = buildHiddenWordsGroups(verse, 2, RandomImpl())
+    fun sizePlusTwo() {
+        val verse = BibleVerse.fromText("", 1, 1, "aaa bbb ccc ddd eee fff gg hh")
+        val groups = buildHiddenWordsGroups(verse, 3, RandomImpl())
         assertThat(groups.size).isEqualTo(2)
     }
 

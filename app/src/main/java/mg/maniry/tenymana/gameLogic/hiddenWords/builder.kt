@@ -23,7 +23,7 @@ fun buildHiddenWordsGroups(
 }
 
 private fun List<Word>.activeWords(groupSize: Int): List<Word> {
-    return if (size <= groupSize + 1) this else subList(0, groupSize).toList()
+    return if (size <= groupSize + 2) this else subList(0, groupSize).toList()
 }
 
 private fun MutableList<HiddenWordsGroup>.append(
