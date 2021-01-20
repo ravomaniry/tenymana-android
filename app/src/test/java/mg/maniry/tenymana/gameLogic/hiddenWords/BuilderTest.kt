@@ -43,4 +43,11 @@ class BuilderTest {
         val groups = buildHiddenWordsGroups(verse, 2, RandomImpl())
         assertThat(groups.size).isEqualTo(2)
     }
+
+    @Test
+    fun uniqueWordsOnly() {
+        val verse = BibleVerse.fromText("", 1, 1, "aaa aaa bb")
+        val grous = buildHiddenWordsGroups(verse, 4, RandomImpl())
+        assertThat(grous[0].hidden).isEqualTo(verse.words[4])
+    }
 }

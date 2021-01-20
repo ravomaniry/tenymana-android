@@ -13,10 +13,11 @@ fun buildHiddenWordsGroups(
 ): List<HiddenWordsGroup> {
     val groups = mutableListOf<HiddenWordsGroup>()
     var words = verse.uniqueWords
+    val unique = verse.words.uniqueByChars()
     while (words.isNotEmpty()) {
         val activeWords = words.activeWords(groupSize)
         words = words.subList(activeWords.size, words.size).toList()
-        groups.append(activeWords, random)
+        groups.append(activeWords, unique, random)
     }
     return groups
 }
@@ -25,29 +26,64 @@ private fun List<Word>.activeWords(groupSize: Int): List<Word> {
     return if (size <= groupSize + 1) this else subList(0, groupSize).toList()
 }
 
-private fun MutableList<HiddenWordsGroup>.append(words: List<Word>, random: Random) {
+private fun MutableList<HiddenWordsGroup>.append(
+    words: List<Word>,
+    unique: Set<Word>,
+    random: Random
+) {
     if (words.isNotEmpty()) {
-        val hiddenIndex = words.calcHiddenIndex(random)
+        val hiddenIndex = words.calcHiddenIndex(unique, random)
         val chars = words.buildCharsList(hiddenIndex, random)
         add(HiddenWordsGroup(chars, words[hiddenIndex]))
     }
 }
 
-private fun List<Word>.calcHiddenIndex(random: Random): Int {
-    val len = longestLen()
+private fun List<Word>.calcHiddenIndex(unique: Set<Word>, random: Random): Int {
+    val len = longestUniqueLen(unique)
     val indexes = mutableListOf<Int>()
     forEachIndexed { index, word ->
-        if (word.size == len) {
+        if (unique.contains(word) && word.size >= len) {
             indexes.add(index)
         }
+    }
+    if (indexes.isEmpty()) {
+        indexes.addAll(indices)
     }
     return random.from(indexes)
 }
 
-private fun List<Word>.longestLen(): Int {
+private fun List<Word>.uniqueByChars(): Set<Word> {
+    val result = mutableSetOf<Word>()
+    val visited = mutableListOf<Word>()
+    forEach {
+        if (!it.isSeparator) {
+            val dup = visited.sameCharAs(it)
+            if (dup == null) {
+                result.add(it)
+            } else {
+                result.remove(dup)
+            }
+            visited.add(it)
+        }
+    }
+    return result
+}
+
+private fun List<Word>.sameCharAs(other: Word): Word? {
+    for (w in this) {
+        if (w.sameChars(other.chars)) {
+            return w
+        }
+    }
+    return null
+}
+
+private fun List<Word>.longestUniqueLen(unique: Set<Word>): Int {
     var l = 0
     forEach {
-        l = max(l, it.size)
+        if (unique.contains(it)) {
+            l = max(l, it.size)
+        }
     }
     return l
 }
