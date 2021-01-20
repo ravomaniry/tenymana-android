@@ -184,8 +184,14 @@
         <item name="android:background">@drawable/bg_list_inner</item>
     </style>
 
-    <style name="AppTheme.PathsScreenDescription" parent="AppTheme.DescriptionTextView">
-        <item name="android:layout_margin">4dp</item>
+    <style name="AppTheme.PathsScreenDescriptionCont" parent="Widget.MaterialComponents.CardView">
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginStart">5dp</item>
+        <item name="android:layout_marginEnd">5dp</item>
+    </style>
+
+    <style name="AppTheme.PathDetailsBody" parent="AppTheme.PathsListBody">
+        <item name="android:layout_marginTop">10dp</item>
     </style>
 
     <!-- Puzzle screen -->
