@@ -26,7 +26,7 @@ class HiddenWordsInputViewControl : BaseHiddenWordsViewControl() {
     }
     private val usedPaint = Paint().apply {
         style = Paint.Style.FILL
-        color = Color.argb(40, 255, 255, 255)
+        color = Color.argb(40, 200, 200, 200)
     }
 
     override fun cellValueAccessor(character: Character?) = character?.value?.toString()

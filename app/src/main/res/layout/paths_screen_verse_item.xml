@@ -21,13 +21,13 @@
 
     <LinearLayout
         android:id="@+id/pathsScreenVerse"
-        style="@style/AppTheme.PathsListCont"
+        style="@style/AppTheme.PathsVerseItemCont"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="64dp"
         android:onClick="@{() -> onClick.onClick(item.index)}"
         android:orientation="vertical"
         app:backgroundDrawableID="@{background}"
-        tools:background="@drawable/bg_paths_screen_item_done">
+        tools:background="@drawable/bg_success_box">
 
         <TextView
             android:id="@+id/pathsScreenVerseNumber"
@@ -39,8 +39,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal|bottom"
             android:orientation="horizontal">
 
             <ImageView

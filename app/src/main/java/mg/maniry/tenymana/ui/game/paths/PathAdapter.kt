@@ -52,8 +52,8 @@ class PathAdapter(
             binding.item = item
             binding.onClick = onClick
             binding.background = when (item.score) {
-                0 -> R.drawable.bg_paths_screen_item_new
-                else -> R.drawable.bg_paths_screen_item_done
+                0 -> R.drawable.bg_invalid_box
+                else -> R.drawable.bg_success_box
             }
             binding.executePendingBindings()
         }

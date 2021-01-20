@@ -13,36 +13,25 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="64dp"
+        android:background="@drawable/bg_header"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="5dp"
-        app:backgroundColorID="@{viewModel.colors.primary}"
-        tools:background="@color/blue">
+        android:padding="10dp">
 
-        <ImageView
-            android:id="@+id/puzzleHeaderMenuBtn"
-            android:layout_width="36sp"
-            android:layout_height="36sp"
-            android:contentDescription="@string/app_menu_desc"
-            android:src="@drawable/ic_light_menu" />
+        <TextView
+            android:id="@+id/puzzleHeaderVerseDisplay"
+            style="@style/AppTheme.ScoreTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.displayVerse}"
+            app:drawableLeftCompat="@drawable/ic_book"
+            tools:text="Matthiew 1:1" />
 
-        <FrameLayout
+        <View
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/puzzleHeaderVerseDisplay"
-                style="@style/AppTheme.ScoreTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@{viewModel.displayVerse}"
-                app:drawableLeftCompat="@drawable/ic_book"
-                tools:text="Matthiew 1:1" />
-
-        </FrameLayout>
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/puzzleHeaderScore"

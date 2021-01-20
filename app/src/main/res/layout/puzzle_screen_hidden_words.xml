@@ -19,7 +19,8 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            tools:layout_height="80dp">
 
             <mg.maniry.tenymana.ui.views.verse.VerseView
                 android:id="@+id/verseView"
@@ -74,7 +75,7 @@
                         <TextView
                             style="@style/AppTheme.HwProposition"
                             android:layout_width="wrap_content"
-                            android:layout_height="48dp"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:text="@{viewModel.proposition}"
                             android:textColor="@color/blue"
