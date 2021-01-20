@@ -253,6 +253,10 @@
     </style>
 
     <!-- Solution screen -->
+    <style name="AppTheme.SolutionTitle" parent="AppTheme.AppTitle">
+        <item name="android:textSize">20sp</item>
+    </style>
+
     <style name="AppTheme.VerseTexView" parent="TextAppearance.AppCompat.Body1">
         <item name="android:layout_margin">5dp</item>
     </style>

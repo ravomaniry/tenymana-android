@@ -33,7 +33,7 @@
                 style="@style/AppTheme.GamesListScore"
                 android:layout_width="64dp"
                 android:layout_height="match_parent"
-                app:drawableTopCompat="@drawable/ic_star_rate"
+                app:drawableTopCompat="@drawable/ic_star"
                 app:intValue="@{session.progress.totalScore}"
                 tools:text="1500" />
 
