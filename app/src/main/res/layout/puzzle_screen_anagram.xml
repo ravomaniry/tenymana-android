@@ -43,13 +43,12 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <ImageButton
-                style="@style/AppTheme.RoundRedBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Button
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/btn_cancel"
                 android:contentDescription="@string/app_undo_desc"
-                android:onClick="@{() -> viewModel.cancel()}"
-                android:src="@drawable/ic_clear" />
+                android:onClick="@{() -> viewModel.cancel()}" />
 
             <FrameLayout
                 android:layout_width="0dp"
@@ -60,7 +59,7 @@
                 <TextView
                     style="@style/AppTheme.HwProposition"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_gravity="center"
                     android:text="@{viewModel.proposition}"
                     android:textColor="@color/red"
@@ -68,13 +67,12 @@
 
             </FrameLayout>
 
-            <ImageButton
-                style="@style/AppTheme.RoundGreenBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Button
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/btn_confirm"
                 android:contentDescription="@string/app_action_done"
-                android:onClick="@{() -> viewModel.propose()}"
-                android:src="@drawable/ic_check" />
+                android:onClick="@{() -> viewModel.propose()}" />
 
         </LinearLayout>
 
