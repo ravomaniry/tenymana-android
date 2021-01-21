@@ -37,10 +37,9 @@
         </FrameLayout>
 
         <LinearLayout
+            style="@style/AppTheme.AnagramPropositionCont"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <Button
