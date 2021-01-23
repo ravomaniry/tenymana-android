@@ -26,7 +26,8 @@ class VerseViewControl : BaseVerseViewControl() {
                 val char = w[cell.char.cIndex]
                 if (w.resolved || char.resolved) {
                     drawChar(canvas, cell, char)
-                } else {
+                }
+                if (!w.resolved) {
                     drawPlaceHolder(canvas, cell)
                 }
             }

@@ -6,6 +6,7 @@ import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.mock
+import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.gameLogic.models.Word
 import mg.maniry.tenymana.ui.views.settings.DrawingSettings
 import mg.maniry.tenymana.ui.views.verse.BaseVerseViewControl.Companion.H
@@ -50,10 +51,21 @@ class VerseViewControlTest {
 
     @Test
     fun drawSingleRow_initialState() {
+        val word = Word(
+            0,
+            "Abc",
+            listOf(
+                Character('A', 'a', true),
+                Character('B', 'b'),
+                Character('C', 'c')
+            )
+        )
         testDraw(
             width = 110,
-            words = listOf(Word.fromValue("Abc", 0)),
-            texts = listOf(),
+            words = listOf(word),
+            texts = listOf(
+                TestTextShape("A", x0 + 0f + textDx, y0 + textDy)
+            ),
             rects = listOf(
                 TestRect.xywh(x0 + 0f, y0, w, h),
                 TestRect.xywh(x0 + wPlusMrg, y0, w, h),
