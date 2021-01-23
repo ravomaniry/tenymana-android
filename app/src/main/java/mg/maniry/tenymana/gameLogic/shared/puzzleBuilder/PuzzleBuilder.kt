@@ -29,11 +29,7 @@ class PuzzleBuilderImpl(
     }
 
     private fun randomType(): GameTypes {
-        val types = listOf(
-            GameTypes.LinkClear,
-            GameTypes.HiddenWords,
-            GameTypes.Anagram
-        )
+        val types = listOf(GameTypes.LinkClear, GameTypes.HiddenWords, GameTypes.Anagram)
         var minP = 0.0
         var type = GameTypes.LinkClear
         for (t in types) {
