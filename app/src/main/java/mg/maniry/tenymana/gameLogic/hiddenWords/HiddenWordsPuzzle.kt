@@ -21,7 +21,7 @@ interface HiddenWordsPuzzle : Puzzle {
     val groups: List<HiddenWordsGroup>
     val firstGroup: Int
     fun propose(groupIndex: Int, charsIndexes: List<Int>): Boolean
-    fun useBonus(n: Int): Boolean
+    fun useBonus(n: Int, price: Int): Boolean
 
     companion object {
         private const val IN_GAME_GROUP_SIZE = 5
@@ -68,12 +68,15 @@ class HiddenWordsPuzzleImpl(
         return false
     }
 
-    override fun useBonus(n: Int): Boolean {
-        val avail = words.maxUsableBonus()
+    override fun useBonus(n: Int, price: Int): Boolean {
+        val forbidden = groups.map { it.hidden }.toSet()
+        val avail = words.maxUsableBonus(forbidden)
         if (avail < n) {
             return false
         }
-        words.resolveRandom(n, random)
+        _score -= price
+        updateScore()
+        words.resolveRandom(n, forbidden, random)
         return true
     }
 
@@ -136,10 +139,10 @@ private fun MutableList<Boolean>.updateWith(words: List<Word>, groups: List<Hidd
     }
 }
 
-private fun List<Word>.maxUsableBonus(): Int {
+private fun List<Word>.maxUsableBonus(hidden: Set<Word>): Int {
     var n = 0
     for (w in this) {
-        if (!w.isSeparator) {
+        if (!w.isSeparator && !hidden.contains(w)) {
             val avail = w.unresolvedChar()
             if (avail.size > 1) {
                 n += avail.size - 1
@@ -149,13 +152,13 @@ private fun List<Word>.maxUsableBonus(): Int {
     return n
 }
 
-private fun MutableList<Word>.resolveRandom(n: Int, random: Random) {
+private fun MutableList<Word>.resolveRandom(n: Int, hidden: Set<Word>, random: Random) {
     var remaining = n
     while (remaining > 0) {
         val wIndexes = mutableListOf<Int>()
         val cIndexes = hashMapOf<Int, List<Int>>()
         for (w in this) {
-            if (!w.isSeparator) {
+            if (!w.isSeparator && !hidden.contains(w)) {
                 val cI = w.unresolvedChar()
                 if (cI.size > 1) {
                     wIndexes.add(w.index)

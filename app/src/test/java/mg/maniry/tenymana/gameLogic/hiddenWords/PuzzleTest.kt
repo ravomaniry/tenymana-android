@@ -140,28 +140,32 @@ class PuzzleTest {
                 (it.arguments[0] as List<Int>).last()
             }
         }
-        val verse = BibleVerse.fromText("", 1, 1, "Abc, de gh")
-        val groups = listOf(HiddenWordsGroup(chars('d', 'e', 'g', 'h'), verse.words[0]))
+        val verse = BibleVerse.fromText("", 1, 1, "Abc, de gh ijkl")
+        val groups = listOf(HiddenWordsGroup(chars('d', 'e', 'g', 'h'), verse.words[6]))
         val puzzle = HiddenWordsPuzzleImpl(verse, groups, random)
         // use bonus 1
-        var result = puzzle.useBonus(1)
+        var result = puzzle.useBonus(1, 5)
         assertThat(result).isTrue()
+        assertThat(puzzle.score.value).isEqualTo(-5)
         assertThat(puzzle.verse.words[0].unresolvedChar()).isEqualTo(listOf(0, 1, 2))
         assertThat(puzzle.verse.words[2].unresolvedChar()).isEqualTo(listOf(0, 1))
         assertThat(puzzle.verse.words[4].unresolvedChar()).isEqualTo(listOf(0))
         // use bonus 2
-        result = puzzle.useBonus(2)
+        result = puzzle.useBonus(2, 10)
         assertThat(result).isTrue()
+        assertThat(puzzle.score.value).isEqualTo(-15)
         assertThat(puzzle.verse.words[0].unresolvedChar()).isEqualTo(listOf(0, 1))
         assertThat(puzzle.verse.words[2].unresolvedChar()).isEqualTo(listOf(0))
         assertThat(puzzle.verse.words[4].unresolvedChar()).isEqualTo(listOf(0))
         // use bonus 2 not allowed
-        assertThat(puzzle.useBonus(2)).isFalse()
+        assertThat(puzzle.useBonus(2, 10)).isFalse()
+        assertThat(puzzle.score.value).isEqualTo(-15)
         // use bonus 1
-        result = puzzle.useBonus(1)
+        result = puzzle.useBonus(1, 5)
         assertThat(result).isTrue()
+        assertThat(puzzle.score.value).isEqualTo(-20)
         assertThat(puzzle.verse.words[0].unresolvedChar()).isEqualTo(listOf(0))
         // use bonus 1 not allowed
-        assertThat(puzzle.useBonus(1)).isFalse()
+        assertThat(puzzle.useBonus(1, 5)).isFalse()
     }
 }

@@ -122,11 +122,22 @@
                 android:layout_weight="1" />
 
             <Button
+                android:id="@+id/hwHelpBtn"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/btn_info"
+                android:onClick="@{() -> viewModel.useBonusOne()}" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <Button
                 android:id="@+id/hwRightBtn"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@drawable/btn_right"
-                android:contentDescription="@string/paths_screen_prev_description"
                 android:onClick="@{()->viewModel.activateNexGroup()}"
                 app:isVisible="@{viewModel.showRightBtn}" />
 

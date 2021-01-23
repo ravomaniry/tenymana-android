@@ -8,21 +8,21 @@ import com.nhaarman.mockitokotlin2.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import mg.maniry.tenymana.gameLogic.hiddenWords.HiddenWordsGroup
 import mg.maniry.tenymana.gameLogic.hiddenWords.HiddenWordsPuzzle
+import mg.maniry.tenymana.gameLogic.hiddenWords.HiddenWordsPuzzleImpl
 import mg.maniry.tenymana.gameLogic.models.BibleVerse
 import mg.maniry.tenymana.gameLogic.models.Puzzle
+import mg.maniry.tenymana.gameLogic.shared.words.unresolvedChar
 import mg.maniry.tenymana.ui.game.puzzle.PuzzleViewModel
-import mg.maniry.tenymana.utils.TestDispatchers
-import mg.maniry.tenymana.utils.chars
-import mg.maniry.tenymana.utils.verifyNever
-import mg.maniry.tenymana.utils.verifyOnce
+import mg.maniry.tenymana.utils.*
 import org.junit.Rule
 import org.junit.Test
 
+@Suppress("unchecked_cast")
+@ExperimentalCoroutinesApi
 class HiddenWordsViewModelTest {
     @get:Rule
     val liveDataRule = InstantTaskExecutorRule()
 
-    @ExperimentalCoroutinesApi
     @Test
     fun test() {
         var verse = BibleVerse.fromText("", 1, 1, "Abc ddef gh jkl mn")
@@ -125,5 +125,34 @@ class HiddenWordsViewModelTest {
         viewModel.propose()
         verifyOnce(puzzle).propose(0, listOf(0, 1))
         verifyOnce(puzzleVM).onComplete()
+    }
+
+    @Test
+    fun bonus() {
+        val verse = BibleVerse.fromText("", 1, 1, "Abc de")
+        val random: Random = mock {
+            onGeneric { from(any<List<Int>>()) } doAnswer {
+                (it.arguments[0] as List<Int>)[0]
+            }
+        }
+        val groups = listOf(
+            HiddenWordsGroup(chars('d', 'e'), verse.words[0])
+        )
+        val puzzle = HiddenWordsPuzzleImpl(verse, groups, random)
+        val puzzleLD: LiveData<Puzzle?> = MutableLiveData(puzzle)
+        var canUseBonus = false
+        val puzzleVM: PuzzleViewModel = mock {
+            on { this.puzzle } doReturn puzzleLD
+            on { canUseBonusOne() } doAnswer { canUseBonus }
+        }
+        val vm = HiddenWordsViewModel(puzzleVM, TestDispatchers)
+        // not avail
+        val words = verse.words.toList()
+        vm.useBonusOne()
+        assertThat(vm.words.value).isEqualTo(words)
+        // Avail
+        canUseBonus = true
+        vm.useBonusOne()
+        assertThat(vm.words.value!![2].unresolvedChar()).isEqualTo(listOf(1))
     }
 }

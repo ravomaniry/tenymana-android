@@ -60,14 +60,6 @@ class HiddenWordsViewModel(
         }
     }
 
-    private fun onActiveGroupChange(index: Int) {
-        _activeGroupIndex = index
-        syncActiveGroup()
-        resetSelections()
-        syncCharacters()
-        _animate.postValue(true)
-    }
-
     fun activateNexGroup() {
         if (groups.size > _activeGroupIndex + 1) {
             onActiveGroupChange(_activeGroupIndex + 1)
@@ -110,12 +102,32 @@ class HiddenWordsViewModel(
         }
     }
 
+    fun useBonusOne() {
+        if (puzzleViewModel.canUseBonusOne()) {
+            val puzzleValue = puzzle.value
+            if (puzzleValue != null) {
+                val didUpdate = puzzleValue.useBonus(1, PuzzleViewModel.bonusOnePrice)
+                if (didUpdate) {
+                    _words.postValue(puzzleValue.verse.words)
+                }
+            }
+        }
+    }
+
     fun onAnimationDone() {
         _animate.postValue(false)
     }
 
     private fun resetSelections() {
         selected.removeAll { true }
+    }
+
+    private fun onActiveGroupChange(index: Int) {
+        _activeGroupIndex = index
+        syncActiveGroup()
+        resetSelections()
+        syncCharacters()
+        _animate.postValue(true)
     }
 
     private fun syncCharacters() {
