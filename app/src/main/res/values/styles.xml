@@ -218,7 +218,6 @@
     </style>
 
     <style name="AppTheme.BonusBtnCont">
-        <item name="android:gravity">center</item>
         <item name="android:paddingTop">5dp</item>
     </style>
 

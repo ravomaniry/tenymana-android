@@ -21,5 +21,5 @@ class LinkClearPuzzleMock(
 
     override fun propose(move: Move) = proposeFn(move)
     override fun undo() = undoFn()
-    override fun useBonusOne(price: Int) = useBonusOneFn(price)
+    override fun useBonusHintOne(price: Int) = useBonusOneFn(price)
 }

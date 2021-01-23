@@ -106,6 +106,28 @@ class LinkClearViewModel(
         }
     }
 
+    fun undo() {
+        val didUpdate = puzzle?.undo()
+        if (didUpdate == true) {
+            triggerReRender(false)
+            _highlighted.postValue(null)
+            _diffs.postValue(null)
+        }
+    }
+
+    fun useHintBonusOne() {
+        if (puzzleViewModel.canUseBonusOne()) {
+            _highlighted.postValue(puzzle?.useBonusHintOne(PuzzleViewModel.bonusOnePrice))
+        }
+    }
+
+    fun useRevealOneBonus() {
+        val didUpdate = puzzle?.useBonusRevealChars(1, PuzzleViewModel.bonusOnePrice)
+        if (didUpdate == true) {
+            triggerReRender(false)
+        }
+    }
+
     private fun triggerReRender(animate: Boolean) {
         viewModelScope.launch(kDispatchers.default) {
             if (animate) {
@@ -118,21 +140,6 @@ class LinkClearViewModel(
             _invalidate.postValue(true)
             kDispatchers.delay(inGameAnimDuration.toLong())
             _diffs.postValue(null)
-        }
-    }
-
-    fun undo() {
-        val didUpdate = puzzle?.undo()
-        if (didUpdate == true) {
-            triggerReRender(false)
-            _highlighted.postValue(null)
-            _diffs.postValue(null)
-        }
-    }
-
-    fun useBonusOne() {
-        if (puzzleViewModel.canUseBonusOne()) {
-            _highlighted.postValue(puzzle?.useBonusOne(PuzzleViewModel.bonusOnePrice))
         }
     }
 

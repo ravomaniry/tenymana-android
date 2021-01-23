@@ -63,22 +63,52 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/linkClearUndoBtn"
-                style="?attr/buttonBarStyle"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/btn_undo"
-                android:onClick="@{() -> viewModel.undo()}" />
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
 
-            <Button
-                android:id="@+id/puzzleBonusOneBtn"
-                style="?attr/buttonBarStyle"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="@drawable/btn_info"
-                android:onClick="@{() -> viewModel.useBonusOne()}" />
+                <Button
+                    android:id="@+id/linkClearUndoBtn"
+                    style="?attr/buttonBarStyle"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/btn_undo"
+                    android:onClick="@{() -> viewModel.undo()}" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/puzzleBonusOneBtn"
+                    style="?attr/buttonBarStyle"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/btn_info"
+                    android:onClick="@{() -> viewModel.useRevealOneBonus()}" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <Button
+                    style="?attr/buttonBarStyle"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="end"
+                    android:background="@drawable/btn_info_green"
+                    android:onClick="@{() -> viewModel.useHintBonusOne()}" />
+
+            </FrameLayout>
 
         </LinearLayout>
 

@@ -87,17 +87,18 @@ class LinkClearViewModelTest {
 
     @Test
     fun proposeAndComplete() {
-        val verse = BibleVerse.fromText("Maio", 1, 1, "Abc de")
+        val words = BibleVerse.fromText("Maio", 1, 1, "Abc de").words.toMutableList()
+        val verse = BibleVerse("Maio", 1, 1, "Abc de", words)
         val score = MutableLiveData(0)
         var proposeResult = false
         var isComplete = false
         var undoResult = false
         var cleared: List<Point>? = null
         var diffs: List<Move>? = null
-        var bonusResult: List<Point>? = null
+        var hintBonusResult: List<Point>? = null
         var prevGrid: Grid<Character> = mock()
         val puzzle: LinkClearPuzzle = mock {
-            on { this.verse } doReturn verse
+            on { this.verse } doAnswer { verse }
             on { this.score } doAnswer { score }
             on { this.completed } doAnswer { isComplete }
             on { this.cleared } doAnswer { cleared }
@@ -105,7 +106,8 @@ class LinkClearViewModelTest {
             on { this.prevGrid } doAnswer { prevGrid }
             on { undo() } doAnswer { undoResult }
             on { propose(any()) } doAnswer { proposeResult }
-            on { useBonusOne(any()) } doAnswer { bonusResult }
+            on { useBonusHintOne(any()) } doAnswer { hintBonusResult }
+            on { useBonusRevealChars(1, PuzzleViewModel.bonusOnePrice) } doReturn true
         }
         val puzzleLD: LiveData<Puzzle?> = MutableLiveData(puzzle)
         val colors: LiveData<GameColors> = MutableLiveData(DefaultColors())
@@ -163,19 +165,24 @@ class LinkClearViewModelTest {
             invalidate.postValue(false)
             // Bonus: can use
             canUseBonusOne = true
-            bonusResult = listOf(Point(1, 1))
-            viewModel.useBonusOne()
-            verifyOnce(puzzle).useBonusOne(PuzzleViewModel.bonusOnePrice)
+            hintBonusResult = listOf(Point(1, 1))
+            viewModel.useHintBonusOne()
+            verifyOnce(puzzle).useBonusHintOne(PuzzleViewModel.bonusOnePrice)
             clearInvocations(puzzle)
-            assertThat(viewModel.highlighted.value).isEqualTo(bonusResult)
+            assertThat(viewModel.highlighted.value).isEqualTo(hintBonusResult)
             // can not use bonus
-            bonusResult = null
+            hintBonusResult = null
             invalidate.postValue(false)
             canUseBonusOne = false
-            viewModel.useBonusOne()
+            viewModel.useHintBonusOne()
             verifyZeroInteractions(puzzle)
             assertThat(invalidate.value).isFalse()
             assertThat(viewModel.highlighted.value).isEqualTo(listOf(Point(1, 1)))
+            // Bonus reveal
+            canUseBonusOne = true
+            invalidate.postValue(false)
+            viewModel.useRevealOneBonus()
+            assertThat(viewModel.invalidate.value).isTrue()
             // Complete
             verifyNever(puzzleViewModel).onComplete()
             isComplete = true

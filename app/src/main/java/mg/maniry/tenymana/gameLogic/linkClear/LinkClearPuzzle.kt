@@ -6,6 +6,7 @@ import mg.maniry.tenymana.gameLogic.shared.grid.*
 import mg.maniry.tenymana.gameLogic.shared.words.bonusRatio
 import mg.maniry.tenymana.gameLogic.shared.words.resolveWith
 import mg.maniry.tenymana.gameLogic.shared.words.resolved
+import mg.maniry.tenymana.gameLogic.shared.words.revealChars
 import mg.maniry.tenymana.utils.Random
 import mg.maniry.tenymana.utils.RandomImpl
 
@@ -22,7 +23,8 @@ interface LinkClearPuzzle : Puzzle {
     val prevGrid: Grid<Character>
     fun propose(move: Move): Boolean
     fun undo(): Boolean
-    fun useBonusOne(price: Int): List<Point>?
+    fun useBonusHintOne(price: Int): List<Point>?
+    fun useBonusRevealChars(n: Int, price: Int): Boolean
 
     companion object {
         const val gridSize = 10
@@ -102,13 +104,22 @@ class LinkClearPuzzleImpl(
         return true
     }
 
-    override fun useBonusOne(price: Int): List<Point>? {
+    override fun useBonusHintOne(price: Int): List<Point>? {
         val points = grid.randomMatch(words, visibleH, directions, random)
         return points?.let {
             _score -= price
             syncScore()
             listOf(points[0])
         }
+    }
+
+    override fun useBonusRevealChars(n: Int, price: Int): Boolean {
+        val didUpdate = words.revealChars(n, emptySet(), Random.impl())
+        if (didUpdate) {
+            _score -= price
+            syncScore()
+        }
+        return didUpdate
     }
 
     private fun takeGridSnapshot() {

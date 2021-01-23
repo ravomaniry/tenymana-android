@@ -3,6 +3,7 @@ package mg.maniry.tenymana.gameLogic.linkClear
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import mg.maniry.tenymana.gameLogic.models.*
+import mg.maniry.tenymana.gameLogic.shared.words.unresolvedChar
 import org.junit.Rule
 import org.junit.Test
 
@@ -274,7 +275,7 @@ class PuzzleTest {
     }
 
     @Test
-    fun useBonusOne() {
+    fun bonuHint() {
         val words = BibleVerse.fromText("", 1, 1, "Ab").words.toMutableList()
         val cells = listOf(
             listOf(ca(0, 0), ca(0, 1))
@@ -283,12 +284,24 @@ class PuzzleTest {
         val verse = BibleVerse("", 1, 1, words.joinToString { "${it.value} " }, words)
         val puzzle = LinkClearPuzzleImpl(grid, verse, emptyList())
         // use bonus once
-        assertThat(puzzle.useBonusOne(10)).isEqualTo(listOf(Point(0, 0)))
+        assertThat(puzzle.useBonusHintOne(10)).isEqualTo(listOf(Point(0, 0)))
         assertThat(puzzle.score.value).isEqualTo(-10)
         // use bonus but not avail (not real case)
         (puzzle.verse.words as MutableList).apply { this[0] = this[0].resolvedVersion }
-        assertThat(puzzle.useBonusOne(10)).isNull()
+        assertThat(puzzle.useBonusHintOne(10)).isNull()
         assertThat(puzzle.score.value).isEqualTo(-10)
+    }
+
+    @Test
+    fun bonusReveal() {
+        val verse = BibleVerse.fromText("", 1, 1, "Abc")
+        val grid = Grid(listOf(listOf(ca(0, 0), ca(0, 1))))
+        val puzzle = LinkClearPuzzleImpl(grid, verse, emptyList())
+        val didUpdate = puzzle.useBonusRevealChars(1, 5)
+        assertThat(didUpdate).isTrue()
+        assertThat(puzzle.verse.words[0].unresolvedChar().size).isEqualTo(2)
+        assertThat(puzzle.score.value).isEqualTo(-5)
+        assertThat(puzzle.useBonusRevealChars(2, 5)).isFalse()
     }
 
     private val Grid<*>.snapshot: String get() = toString().trimNulls()
