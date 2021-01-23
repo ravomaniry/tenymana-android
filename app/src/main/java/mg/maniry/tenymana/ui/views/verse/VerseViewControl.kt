@@ -35,10 +35,10 @@ class VerseViewControl : BaseVerseViewControl() {
                 if (w.resolved) {
                     canvas.drawChar(cell, char, resolvedCharPaint)
                 } else {
+                    canvas.drawPlaceHolder(cell)
                     if (char.resolved) {
                         canvas.drawChar(cell, char, bonusCharPaint)
                     }
-                    canvas.drawPlaceHolder(cell)
                 }
             }
         }
