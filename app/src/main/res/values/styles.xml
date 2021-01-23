@@ -214,6 +214,7 @@
 
     <style name="AppTheme.HiddenWordsPuzzleBody" parent="AppTheme.PuzzleBody">
         <item name="android:background">@drawable/bg_red</item>
+        <item name="android:padding">5dp</item>
     </style>
 
     <style name="AppTheme.BonusBtnCont">
@@ -256,12 +257,14 @@
 
     <style name="AppTheme.AnagramBody">
         <item name="android:background">@drawable/bg_blue</item>
+        <item name="android:padding">5dp</item>
     </style>
 
     <style name="AppTheme.AnagramPropositionCont">
         <item name="android:layout_marginStart">5dp</item>
         <item name="android:layout_marginEnd">5dp</item>
         <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
         <item name="android:gravity">center_vertical</item>
     </style>
 
