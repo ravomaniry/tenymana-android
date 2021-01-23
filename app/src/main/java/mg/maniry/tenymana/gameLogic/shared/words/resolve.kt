@@ -36,3 +36,13 @@ private fun MutableList<Word>.resolveHidden(hidden: Set<Int>, resolved: MutableL
         }
     }
 }
+
+fun Word.unresolvedChar(): List<Int> {
+    val indexes = mutableListOf<Int>()
+    chars.forEachIndexed { i, c ->
+        if (!c.resolved) {
+            indexes.add(i)
+        }
+    }
+    return indexes
+}

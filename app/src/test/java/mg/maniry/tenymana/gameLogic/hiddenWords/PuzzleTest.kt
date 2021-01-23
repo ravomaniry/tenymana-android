@@ -2,7 +2,12 @@ package mg.maniry.tenymana.gameLogic.hiddenWords
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.doAnswer
+import com.nhaarman.mockitokotlin2.mock
 import mg.maniry.tenymana.gameLogic.models.BibleVerse
+import mg.maniry.tenymana.gameLogic.shared.words.unresolvedChar
+import mg.maniry.tenymana.utils.Random
 import mg.maniry.tenymana.utils.chars
 import org.junit.Rule
 import org.junit.Test
@@ -18,7 +23,7 @@ class PuzzleTest {
             HiddenWordsGroup(chars('a', 'b', 'c', 'd'), verse.words[4]),
             HiddenWordsGroup(chars('h', 'i', 'o', 'b', 'a'), verse.words[8])
         )
-        val puzzle = HiddenWordsPuzzleImpl(verse, groups)
+        val puzzle = HiddenWordsPuzzleImpl(verse, groups, Random.impl())
         var score = 0
         // firstGroup default to 0
         assertThat(puzzle.firstGroup).isEqualTo(0)
@@ -105,7 +110,7 @@ class PuzzleTest {
             HiddenWordsGroup(chars('a', 'b', 'c'), verse.words[2]),
             HiddenWordsGroup(chars('a', 'b'), verse.words[6])
         )
-        val puzzle = HiddenWordsPuzzleImpl(verse, groups)
+        val puzzle = HiddenWordsPuzzleImpl(verse, groups, Random.impl())
         assertThat(puzzle.firstGroup).isEqualTo(0)
         // Propose abc of groups[0] -> reveal and complete
         val didUpdate = puzzle.propose(0, listOf(0, 1))
@@ -121,9 +126,42 @@ class PuzzleTest {
             HiddenWordsGroup(chars('d', 'e'), verse.words[0]),
             HiddenWordsGroup(chars('a', 'b', 'c'), verse.words[6])
         )
-        val puzzle = HiddenWordsPuzzleImpl(verse, groups)
+        val puzzle = HiddenWordsPuzzleImpl(verse, groups, Random.impl())
         // propose de: resolve [1].abc -> resolve [1] -> complete
         puzzle.propose(0, listOf(0, 1))
         assertThat(puzzle.completed).isTrue()
+    }
+
+    @Test
+    @Suppress("unchecked_cast")
+    fun bonus() {
+        val random: Random = mock {
+            onGeneric { this.from(any<List<Int>>()) } doAnswer {
+                (it.arguments[0] as List<Int>).last()
+            }
+        }
+        val verse = BibleVerse.fromText("", 1, 1, "Abc, de gh")
+        val groups = listOf(HiddenWordsGroup(chars('d', 'e', 'g', 'h'), verse.words[0]))
+        val puzzle = HiddenWordsPuzzleImpl(verse, groups, random)
+        // use bonus 1
+        var result = puzzle.useBonus(1)
+        assertThat(result).isTrue()
+        assertThat(puzzle.verse.words[0].unresolvedChar()).isEqualTo(listOf(0, 1, 2))
+        assertThat(puzzle.verse.words[2].unresolvedChar()).isEqualTo(listOf(0, 1))
+        assertThat(puzzle.verse.words[4].unresolvedChar()).isEqualTo(listOf(0))
+        // use bonus 2
+        result = puzzle.useBonus(2)
+        assertThat(result).isTrue()
+        assertThat(puzzle.verse.words[0].unresolvedChar()).isEqualTo(listOf(0, 1))
+        assertThat(puzzle.verse.words[2].unresolvedChar()).isEqualTo(listOf(0))
+        assertThat(puzzle.verse.words[4].unresolvedChar()).isEqualTo(listOf(0))
+        // use bonus 2 not allowed
+        assertThat(puzzle.useBonus(2)).isFalse()
+        // use bonus 1
+        result = puzzle.useBonus(1)
+        assertThat(result).isTrue()
+        assertThat(puzzle.verse.words[0].unresolvedChar()).isEqualTo(listOf(0))
+        // use bonus 1 not allowed
+        assertThat(puzzle.useBonus(1)).isFalse()
     }
 }

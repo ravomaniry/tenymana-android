@@ -6,10 +6,7 @@ import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.gameLogic.models.Puzzle
 import mg.maniry.tenymana.gameLogic.models.Word
 import mg.maniry.tenymana.gameLogic.shared.chars.hasMatch
-import mg.maniry.tenymana.gameLogic.shared.words.bonusRatio
-import mg.maniry.tenymana.gameLogic.shared.words.deltaScore
-import mg.maniry.tenymana.gameLogic.shared.words.resolveWith
-import mg.maniry.tenymana.gameLogic.shared.words.resolved
+import mg.maniry.tenymana.gameLogic.shared.words.*
 import mg.maniry.tenymana.utils.Random
 import mg.maniry.tenymana.utils.findIndex
 import kotlin.math.max
@@ -24,20 +21,23 @@ interface HiddenWordsPuzzle : Puzzle {
     val groups: List<HiddenWordsGroup>
     val firstGroup: Int
     fun propose(groupIndex: Int, charsIndexes: List<Int>): Boolean
+    fun useBonus(n: Int): Boolean
 
     companion object {
         private const val IN_GAME_GROUP_SIZE = 5
 
         fun build(verse: BibleVerse): HiddenWordsPuzzle {
-            val groups = buildHiddenWordsGroups(verse, IN_GAME_GROUP_SIZE, Random.impl())
-            return HiddenWordsPuzzleImpl(verse, groups)
+            val random = Random.impl()
+            val groups = buildHiddenWordsGroups(verse, IN_GAME_GROUP_SIZE, random)
+            return HiddenWordsPuzzleImpl(verse, groups, random)
         }
     }
 }
 
 class HiddenWordsPuzzleImpl(
     initialVerse: BibleVerse,
-    initialGroups: List<HiddenWordsGroup>
+    initialGroups: List<HiddenWordsGroup>,
+    private val random: Random
 ) : HiddenWordsPuzzle {
     private var _score = 0
     override val score = MutableLiveData(0)
@@ -66,6 +66,15 @@ class HiddenWordsPuzzleImpl(
             }
         }
         return false
+    }
+
+    override fun useBonus(n: Int): Boolean {
+        val avail = words.maxUsableBonus()
+        if (avail < n) {
+            return false
+        }
+        words.resolveRandom(n, random)
+        return true
     }
 
     private fun resolveHiddenW(shown: Word?) {
@@ -124,5 +133,41 @@ private val List<Boolean>.firstTrue: Int get() = max(0, findIndex { it })
 private fun MutableList<Boolean>.updateWith(words: List<Word>, groups: List<HiddenWordsGroup>) {
     for (i in indices) {
         set(i, groups[i].chars.hasMatch(words))
+    }
+}
+
+private fun List<Word>.maxUsableBonus(): Int {
+    var n = 0
+    for (w in this) {
+        if (!w.isSeparator) {
+            val avail = w.unresolvedChar()
+            if (avail.size > 1) {
+                n += avail.size - 1
+            }
+        }
+    }
+    return n
+}
+
+private fun MutableList<Word>.resolveRandom(n: Int, random: Random) {
+    var remaining = n
+    while (remaining > 0) {
+        val wIndexes = mutableListOf<Int>()
+        val cIndexes = hashMapOf<Int, List<Int>>()
+        for (w in this) {
+            if (!w.isSeparator) {
+                val cI = w.unresolvedChar()
+                if (cI.size > 1) {
+                    wIndexes.add(w.index)
+                    cIndexes[w.index] = cI
+                }
+            }
+        }
+        val wI = random.from(wIndexes)
+        val cI = random.from(cIndexes[wI]!!)
+        val nextChars = get(wI).chars.toMutableList()
+        nextChars[cI] = nextChars[cI].copy(resolved = true)
+        set(wI, get(wI).copy(chars = nextChars))
+        remaining--
     }
 }
