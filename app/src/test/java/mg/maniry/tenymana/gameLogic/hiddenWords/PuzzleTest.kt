@@ -154,6 +154,7 @@ class PuzzleTest {
         assertThat(puzzle.verse.words[0].unresolvedChar()).isEqualTo(listOf(0, 1, 2))
         assertThat(puzzle.verse.words[2].unresolvedChar()).isEqualTo(listOf(0, 1))
         assertThat(puzzle.verse.words[4].unresolvedChar()).isEqualTo(listOf(0))
+        assertThat(puzzle.verse.words[8].unresolvedChar()).isEqualTo(listOf(0, 1))
         // use bonus 2
         result = puzzle.useBonus(2, 10)
         assertThat(result).isTrue()

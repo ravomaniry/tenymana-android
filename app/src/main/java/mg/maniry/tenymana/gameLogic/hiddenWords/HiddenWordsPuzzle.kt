@@ -69,15 +69,13 @@ class HiddenWordsPuzzleImpl(
     }
 
     override fun useBonus(n: Int, price: Int): Boolean {
-        val forbidden = groups.map { it.hidden }.toSet()
-        val avail = words.maxUsableBonus(forbidden)
-        if (avail < n) {
-            return false
+        val hidden = groups.map { it.hidden }.toSet()
+        val didUpdate = words.revealChars(n, hidden, random)
+        if (didUpdate) {
+            _score -= price
+            updateScore()
         }
-        _score -= price
-        updateScore()
-        words.resolveRandom(n, forbidden, random)
-        return true
+        return didUpdate
     }
 
     private fun resolveHiddenW(shown: Word?) {
@@ -136,41 +134,5 @@ private val List<Boolean>.firstTrue: Int get() = max(0, findIndex { it })
 private fun MutableList<Boolean>.updateWith(words: List<Word>, groups: List<HiddenWordsGroup>) {
     for (i in indices) {
         set(i, groups[i].chars.hasMatch(words))
-    }
-}
-
-private fun List<Word>.maxUsableBonus(hidden: Set<Word>): Int {
-    var n = 0
-    for (w in this) {
-        if (!w.isSeparator && !w.resolved && !hidden.contains(w)) {
-            val avail = w.unresolvedChar()
-            if (avail.size > 1) {
-                n += avail.size - 1
-            }
-        }
-    }
-    return n
-}
-
-private fun MutableList<Word>.resolveRandom(n: Int, hidden: Set<Word>, random: Random) {
-    var remaining = n
-    while (remaining > 0) {
-        val wIndexes = mutableListOf<Int>()
-        val cIndexes = hashMapOf<Int, List<Int>>()
-        for (w in this) {
-            if (!w.isSeparator && !w.resolved && !hidden.contains(w)) {
-                val cI = w.unresolvedChar()
-                if (cI.size > 1) {
-                    wIndexes.add(w.index)
-                    cIndexes[w.index] = cI
-                }
-            }
-        }
-        val wI = random.from(wIndexes)
-        val cI = random.from(cIndexes[wI]!!)
-        val nextChars = get(wI).chars.toMutableList()
-        nextChars[cI] = nextChars[cI].copy(resolved = true)
-        set(wI, get(wI).copy(chars = nextChars))
-        remaining--
     }
 }
