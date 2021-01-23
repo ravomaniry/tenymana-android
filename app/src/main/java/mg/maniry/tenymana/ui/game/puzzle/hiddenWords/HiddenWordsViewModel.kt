@@ -36,6 +36,11 @@ class HiddenWordsViewModel(
     private val _activeGroup = MutableLiveData<HiddenWordsGroup>()
     val activeGroup: LiveData<HiddenWordsGroup> = _activeGroup
 
+    val showLeftBtn = Transformations.map(activeGroupIndexLD) { it > 0 }
+    val showRightBtn = Transformations.map(activeGroupIndexLD) {
+        it < (puzzle.value?.groups?.size ?: 0) - 1
+    }
+
     private val _animate = MutableLiveData(false)
     val animate: LiveData<Boolean> = _animate
 

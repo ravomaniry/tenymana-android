@@ -3,16 +3,14 @@ package mg.maniry.tenymana.ui.game.puzzle.hiddenWords
 import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
 import mg.maniry.tenymana.MainActivity
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.gameLogic.hiddenWords.HiddenWordsPuzzle
 import mg.maniry.tenymana.gameLogic.models.BibleVerse
 import mg.maniry.tenymana.gameLogic.shared.puzzleBuilder.PuzzleBuilder
-import mg.maniry.tenymana.helpers.assertShouldBeVisible
-import mg.maniry.tenymana.helpers.clickView
-import mg.maniry.tenymana.helpers.setupTestKoin
-import mg.maniry.tenymana.helpers.whenever
+import mg.maniry.tenymana.helpers.*
 import mg.maniry.tenymana.repositories.BibleRepo
 import mg.maniry.tenymana.repositories.GameRepo
 import mg.maniry.tenymana.repositories.UserRepo
@@ -43,10 +41,14 @@ class HiddenWordsTest : KoinTest {
         val userRepo: UserRepo by inject()
         whenever(userRepo.user).thenReturn(MutableLiveData(User("1", "")))
         // Puzzle builder
-        val verse = BibleVerse.fromText("Matio", 1, 10, "Ny filazana ny razan'i Jesosy Kristy")
+        val verse = BibleVerse.fromText(
+            "Matio", 1, 10, "Ny filazana ny razan'i Jesosy Kristy " +
+                    "zanak'i Davida"
+        )
         val puzzle = HiddenWordsPuzzle.build(verse)
         val puzzleBuilder: PuzzleBuilder by inject()
         whenever(puzzleBuilder.random(verse)).thenReturn(puzzle)
+        assertThat(puzzle.groups.size).isEqualTo(2)
         // Bible repo
         val bibleRepo: BibleRepo by inject()
         runBlocking { whenever(bibleRepo.getSingle("Matio", 1, 10)).thenReturn(verse) }
@@ -76,6 +78,13 @@ class HiddenWordsTest : KoinTest {
             //  -> Path details screen
             clickView(R.id.pathDetailsNextBtn)
             assertShouldBeVisible(R.id.hiddenWordsPuzzleBody)
+            // No left btn on groups[0]
+            assertShouldBeInvisible(R.id.hwLeftBtn)
+            assertShouldBeVisible(R.id.hwRightBtn)
+            // Go to group 1 and no right btn
+            clickView(R.id.hwRightBtn)
+            assertShouldBeVisible(R.id.hwLeftBtn)
+            assertShouldBeInvisible(R.id.hwRightBtn)
         }
         Thread.sleep(1000)
     }
