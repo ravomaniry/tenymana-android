@@ -140,7 +140,11 @@ class PuzzleTest {
                 (it.arguments[0] as List<Int>).last()
             }
         }
-        val verse = BibleVerse.fromText("", 1, 1, "Abc, de gh ijkl")
+        val words = BibleVerse.fromText("", 1, 1, "Abc, de gh ijkl mn").words
+            .toMutableList().apply {
+                set(8, get(8).resolvedVersion)
+            }
+        val verse = BibleVerse("", 1, 1, "Abc, de gh ijkl mn", words)
         val groups = listOf(HiddenWordsGroup(chars('d', 'e', 'g', 'h'), verse.words[6]))
         val puzzle = HiddenWordsPuzzleImpl(verse, groups, random)
         // use bonus 1

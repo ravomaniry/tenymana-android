@@ -142,7 +142,7 @@ private fun MutableList<Boolean>.updateWith(words: List<Word>, groups: List<Hidd
 private fun List<Word>.maxUsableBonus(hidden: Set<Word>): Int {
     var n = 0
     for (w in this) {
-        if (!w.isSeparator && !hidden.contains(w)) {
+        if (!w.isSeparator && !w.resolved && !hidden.contains(w)) {
             val avail = w.unresolvedChar()
             if (avail.size > 1) {
                 n += avail.size - 1
@@ -158,7 +158,7 @@ private fun MutableList<Word>.resolveRandom(n: Int, hidden: Set<Word>, random: R
         val wIndexes = mutableListOf<Int>()
         val cIndexes = hashMapOf<Int, List<Int>>()
         for (w in this) {
-            if (!w.isSeparator && !hidden.contains(w)) {
+            if (!w.isSeparator && !w.resolved && !hidden.contains(w)) {
                 val cI = w.unresolvedChar()
                 if (cI.size > 1) {
                     wIndexes.add(w.index)
