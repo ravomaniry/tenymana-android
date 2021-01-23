@@ -72,8 +72,8 @@ abstract class BaseVerseViewControl {
         }
     }
 
-    protected fun drawPlaceHolder(canvas: Canvas, cell: VerseViewCell, dx: Float = 0f) {
-        canvas.drawRect(cell.x + dx, cell.y, cell.x + W + dx, cell.y + H, placeHolderPaint)
+    protected fun Canvas.drawPlaceHolder(cell: VerseViewCell, dx: Float = 0f) {
+        drawRect(cell.x + dx, cell.y, cell.x + W + dx, cell.y + H, placeHolderPaint)
     }
 
     companion object {

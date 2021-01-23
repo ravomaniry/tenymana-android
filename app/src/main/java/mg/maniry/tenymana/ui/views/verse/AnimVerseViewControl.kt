@@ -56,10 +56,10 @@ class AnimVerseViewControl : BaseVerseViewControl() {
 
     private fun Canvas.drawHighlight(highlight: Highlight) {
         val x = (highlight.x0 + t * (highlight.x1 - highlight.x0)).toFloat()
-        drawPlaceHolder(this, highlight.cells[0], x - highlight.cells[0].x)
+        drawPlaceHolder(highlight.cells[0], x - highlight.cells[0].x)
         for (cell in highlight.cells) {
             if (cell.x > x) {
-                drawPlaceHolder(this, cell)
+                drawPlaceHolder(cell)
             }
         }
     }

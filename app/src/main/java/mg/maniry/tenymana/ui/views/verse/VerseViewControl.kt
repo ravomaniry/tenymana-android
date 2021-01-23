@@ -1,21 +1,29 @@
 package mg.maniry.tenymana.ui.views.verse
 
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import mg.maniry.tenymana.gameLogic.models.Character
 
 class VerseViewControl : BaseVerseViewControl() {
-    private val charPaint = Paint().apply {
+    private val resolvedCharPaint = Paint().apply {
         isAntiAlias = true
         style = Paint.Style.FILL
         textAlign = Paint.Align.CENTER
         textSize = H.toFloat()
     }
+    private val bonusCharPaint = Paint().apply {
+        isAntiAlias = true
+        style = Paint.Style.FILL
+        textAlign = Paint.Align.CENTER
+        textSize = H.toFloat()
+        color = Color.WHITE
+    }
     private val textDx = (W + SPACING_H) / 2
     private val textDy = H - SPACING_V
 
     override fun onColorsChange(primary: Int, accent: Int) {
-        charPaint.color = accent
+        resolvedCharPaint.color = accent
         placeHolderPaint.color = primary
     }
 
@@ -24,17 +32,23 @@ class VerseViewControl : BaseVerseViewControl() {
             for (cell in row) {
                 val w = words!![cell.char.wIndex]
                 val char = w[cell.char.cIndex]
-                if (w.resolved || char.resolved) {
-                    drawChar(canvas, cell, char)
-                }
-                if (!w.resolved) {
-                    drawPlaceHolder(canvas, cell)
+                if (w.resolved) {
+                    canvas.drawChar(cell, char, resolvedCharPaint)
+                } else {
+                    if (char.resolved) {
+                        canvas.drawChar(cell, char, bonusCharPaint)
+                    }
+                    canvas.drawPlaceHolder(cell)
                 }
             }
         }
     }
 
-    private fun drawChar(canvas: Canvas, cell: VerseViewCell, char: Character) {
-        canvas.drawText(char.value.toString(), cell.x + textDx, cell.y + textDy, charPaint)
+    private fun Canvas.drawChar(
+        cell: VerseViewCell,
+        char: Character,
+        paint: Paint
+    ) {
+        drawText(char.value.toString(), cell.x + textDx, cell.y + textDy, paint)
     }
 }

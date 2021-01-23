@@ -1,6 +1,7 @@
 package mg.maniry.tenymana.ui.game.puzzle.linkClear
 
 import androidx.lifecycle.*
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mg.maniry.tenymana.gameLogic.linkClear.LinkClearPuzzle
@@ -38,6 +39,7 @@ class LinkClearViewModel(
     private val helpAnimDuration = 300L
     private val _animDuration = MutableLiveData<Double>()
     val animDuration: LiveData<Double> = _animDuration
+    var prevAnimJob: Job? = null
 
     private val _propose = MutableLiveData<ProposeFn?>()
     val propose: LiveData<ProposeFn?> = _propose
@@ -51,7 +53,12 @@ class LinkClearViewModel(
             _words.postValue(it.verse.words)
             _animDuration.postValue(helpAnimDuration.toDouble())
             _onMounted = {
-                viewModelScope.launch(kDispatchers.default) {
+                try {
+                    prevAnimJob?.cancel()
+                } catch (e: Exception) {
+                    println("Failed to stop job $e")
+                }
+                prevAnimJob = viewModelScope.launch(kDispatchers.default) {
                     for (i in (it.solution.size - 1).downTo(0)) {
                         _grid.postValue(it.solution[i].grid)
                         _prevGrid.postValue(it.solution[i].grid)
