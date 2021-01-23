@@ -26,37 +26,37 @@
             android:text="@{viewModel.journeyTitle}"
             tools:text="Journey 1" />
 
-        <androidx.cardview.widget.CardView
-            style="@style/AppTheme.PathsScreenDescriptionCont"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/pathsScreenJourneyDescription"
-                style="@style/AppTheme.DescriptionTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{viewModel.journeyDescription}"
-                tools:text="Description ...\nDescription ..." />
-
-            <ImageButton
-                style="@style/AppTheme.ImageBtnPrimary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:contentDescription="@string/app_expand_collapse_img_description"
-                android:onClick="@{() -> viewModel.onToggleDescription()}"
-                android:src="@drawable/ic_more_horizontal"
-                app:isVisible="@{viewModel.descriptionExpanded}" />
-
-        </androidx.cardview.widget.CardView>
-
         <LinearLayout
             style="@style/AppTheme.PathsListCont"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
             android:orientation="vertical">
+
+            <FrameLayout
+                style="@style/AppTheme.PathsScreenDescriptionCont"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/pathsScreenJourneyDescription"
+                    style="@style/AppTheme.DescriptionTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.journeyDescription}"
+                    tools:text="Description ...\nDescription ..." />
+
+                <ImageButton
+                    style="@style/AppTheme.ImageBtnPrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:contentDescription="@string/app_expand_collapse_img_description"
+                    android:onClick="@{() -> viewModel.onToggleDescription()}"
+                    android:src="@drawable/ic_more_horizontal"
+                    app:isVisible="@{viewModel.descriptionExpanded}" />
+
+            </FrameLayout>
 
             <TextView
                 android:id="@+id/pathsScreenPathTitle"

@@ -45,8 +45,12 @@ class HiddenWordViewControl : BaseHiddenWordsViewControl() {
     }
 
     private fun Canvas.drawCell(cell: Cell) {
-        drawCellRect(cell.x + BG_OFFSET, cell.y + BG_OFFSET, null, bgPaint)
-        drawCellRect(cell.x, cell.y, cell.value, fgPaint, textPaint)
+        if (resolved) {
+            drawCellRect(cell.x + BG_OFFSET, cell.y + BG_OFFSET, cell.value, bgPaint, textPaint)
+        } else {
+            drawCellRect(cell.x + BG_OFFSET, cell.y + BG_OFFSET, null, bgPaint)
+            drawCellRect(cell.x, cell.y, cell.value, fgPaint, textPaint)
+        }
     }
 
     private fun Canvas.drawCellRect(

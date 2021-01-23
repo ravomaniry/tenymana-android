@@ -43,8 +43,8 @@
             android:orientation="horizontal">
 
             <Button
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:background="@drawable/btn_cancel"
                 android:contentDescription="@string/app_undo_desc"
                 android:onClick="@{() -> viewModel.cancel()}" />
@@ -67,8 +67,8 @@
             </FrameLayout>
 
             <Button
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:background="@drawable/btn_confirm"
                 android:contentDescription="@string/app_action_done"
                 android:onClick="@{() -> viewModel.propose()}" />

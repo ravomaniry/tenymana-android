@@ -92,8 +92,10 @@ class HiddenWordViewControlTest {
         control.draw(canvas)
         assertThat(texts).isEmpty()
         // resolve
+        rects.removeAll { true }
         control.resolved = true
         control.draw(canvas)
         assertThat(texts.size).isEqualTo(4)
+        assertThat(rects.size).isEqualTo(4)
     }
 }
