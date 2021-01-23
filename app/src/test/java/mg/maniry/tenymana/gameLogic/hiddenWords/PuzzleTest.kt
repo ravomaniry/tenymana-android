@@ -113,4 +113,17 @@ class PuzzleTest {
         assertThat(puzzle.score.value).isEqualTo(2)
         assertThat(puzzle.completed).isTrue()
     }
+
+    @Test
+    fun propose_nonUniqueHW() {
+        val verse = BibleVerse.fromText("", 1, 1, "Abc de Abc def")
+        val groups = listOf(
+            HiddenWordsGroup(chars('d', 'e'), verse.words[0]),
+            HiddenWordsGroup(chars('a', 'b', 'c'), verse.words[6])
+        )
+        val puzzle = HiddenWordsPuzzleImpl(verse, groups)
+        // propose de: resolve [1].abc -> resolve [1] -> complete
+        puzzle.propose(0, listOf(0, 1))
+        assertThat(puzzle.completed).isTrue()
+    }
 }

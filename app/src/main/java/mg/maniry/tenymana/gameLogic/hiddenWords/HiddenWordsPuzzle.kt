@@ -72,7 +72,7 @@ class HiddenWordsPuzzleImpl(
         if (shown != null) {
             for (i in 0 until words.size) {
                 val w = words[i]
-                if (!w.resolved && w == shown) {
+                if (!w.resolved && w.sameChars(shown.chars)) {
                     words[i] = w.resolvedVersion
                 }
             }
