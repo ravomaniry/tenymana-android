@@ -29,12 +29,20 @@ class PuzzleBuilderImpl(
     }
 
     private fun randomType(): GameTypes {
-        return random.from(
-            listOf(
-                GameTypes.LinkClear,
-                GameTypes.HiddenWords,
-                GameTypes.Anagram
-            )
+        val types = listOf(
+            GameTypes.LinkClear,
+            GameTypes.HiddenWords,
+            GameTypes.Anagram
         )
+        var minP = 0.0
+        var type = GameTypes.LinkClear
+        for (t in types) {
+            val p = random.double()
+            if (p > minP) {
+                minP = p
+                type = t
+            }
+        }
+        return type
     }
 }

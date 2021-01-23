@@ -1,8 +1,7 @@
 package mg.maniry.tenymana.gameLogic.shared.puzzleBuilder
 
 import com.google.common.truth.Truth.assertThat
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.doAnswer
+import com.nhaarman.mockitokotlin2.doReturnConsecutively
 import com.nhaarman.mockitokotlin2.mock
 import mg.maniry.tenymana.gameLogic.anagram.AnagramPuzzle
 import mg.maniry.tenymana.gameLogic.hiddenWords.HiddenWordsPuzzle
@@ -15,22 +14,19 @@ import org.junit.Test
 class PuzzleBuilderTest {
     @Test
     fun test() {
-        var randIndex = 0
+        val randoms = listOf(
+            0.8, 0.5, 0.5, // link clear
+            0.5, 0.8, 0.7, // hidden words
+            0.8, 0.9, 0.99 // anagram
+        )
         val random: Random = mock {
-            on { this.from(any<List<PuzzleBuilderImpl.GameTypes>>()) } doAnswer {
-                (it.arguments[0] as List<PuzzleBuilderImpl.GameTypes>)[randIndex]
-            }
+            on { this.double() } doReturnConsecutively randoms
         }
         val verse = BibleVerse.fromText("", 1, 1, "abc")
         val builder = PuzzleBuilderImpl(random)
-        // Link clear
-        randIndex = 0
+        // Puzzles
         assertThat(builder.random(verse) is LinkClearPuzzle).isTrue()
-        // Hidden words
-        randIndex = 1
         assertThat(builder.random(verse) is HiddenWordsPuzzle).isTrue()
-        // Anagram
-        randIndex = 2
         assertThat(builder.random(verse) is AnagramPuzzle).isTrue()
     }
 }
