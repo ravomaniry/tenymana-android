@@ -29,6 +29,11 @@ class SolutionFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.autoExpand()
+    }
+
     private fun initViewModel() {
         val viewModels: SharedViewModels by inject()
         val bibleRepo: BibleRepo by inject()

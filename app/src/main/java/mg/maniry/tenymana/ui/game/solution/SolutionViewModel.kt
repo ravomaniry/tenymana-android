@@ -60,7 +60,11 @@ class SolutionViewModel(
     }
 
     fun saveAndContinue() {
-        gameViewModel.saveAndContinue()
+        if (gameViewModel.activePathIsCompleted()) {
+            gameViewModel.openCompletedPathDetails()
+        } else {
+            gameViewModel.saveAndContinue()
+        }
     }
 
     fun showPreviousVerses() {
@@ -72,6 +76,12 @@ class SolutionViewModel(
         viewModelScope.launch {
             val values = bibleRepo.get(path.book, path.chapter, minV, maxV)
             _verses.postValue(values)
+        }
+    }
+
+    fun autoExpand() {
+        if (gameViewModel.activePathIsCompleted()) {
+            showPreviousVerses()
         }
     }
 
@@ -103,4 +113,11 @@ class SolutionViewModel(
             SolutionViewModel(gameViewModel, bibleRepo)
         }
     }
+}
+
+private fun GameViewModel.activePathIsCompleted(): Boolean {
+    val pathI = position?.pathIndex ?: return false
+    val verseI = position?.verseIndex ?: return false
+    val path = session.value?.journey?.paths?.get(pathI) ?: return false
+    return verseI == path.size - 1
 }

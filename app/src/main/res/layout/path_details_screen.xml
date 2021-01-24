@@ -57,7 +57,7 @@
             android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
             android:onClick="@{() -> gameViewModel.closePathDetails()}"
-            android:text="@string/app_action_play" />
+            android:text="@string/app_action_next" />
 
     </LinearLayout>
 

@@ -153,7 +153,11 @@ class SolutionTest : KoinTest {
             assertShouldBeInvisible(R.id.solutionScreenSmallView)
             assertShouldBeVisible(R.id.solutionScreenBigView)
             for (v in 2..6) {
-                assertShouldHaveText(R.id.solutionScreenVerseItem, v - 2, "$v- ${verses[v - 2].text}")
+                assertShouldHaveText(
+                    R.id.solutionScreenVerseItem,
+                    v - 2,
+                    "$v- ${verses[v - 2].text}"
+                )
             }
             // 4- click is available
             clickView(R.id.solutionSaveAndContinueBtn)

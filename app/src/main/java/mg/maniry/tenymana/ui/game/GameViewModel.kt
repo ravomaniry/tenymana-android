@@ -27,6 +27,7 @@ interface GameViewModel {
     fun saveAndContinue()
     fun onPathSelected(pathIndex: Int, verseIndex: Int?)
     fun closePathDetails()
+    fun openCompletedPathDetails()
     fun refreshData()
 }
 
@@ -38,6 +39,7 @@ class GameViewModelImpl(
     private val puzzleBuilder: PuzzleBuilder,
     private val dispatchers: KDispatchers
 ) : ViewModel(), GameViewModel {
+    private var afterPathDetails = Screen.PUZZLE
     override val sessions = gameRepo.sessions
     var shouldNavigate = false
     override val screen = appViewModel.screen
@@ -89,6 +91,7 @@ class GameViewModelImpl(
             navigateTo(Screen.PATH_DETAILS)
             initPuzzle()
         }
+        afterPathDetails = Screen.PUZZLE
     }
 
     override fun onPuzzleCompleted() {
@@ -96,20 +99,20 @@ class GameViewModelImpl(
     }
 
     override fun closePathDetails() {
-        navigateTo(Screen.PUZZLE)
+        navigateTo(afterPathDetails)
+    }
+
+    override fun openCompletedPathDetails() {
+        saveProgress()
+        navigateTo(Screen.PATH_DETAILS)
+        afterPathDetails = Screen.PATHS_LIST
     }
 
     override fun saveAndContinue() {
         if (session.value != null && position != null && puzzle.value != null) {
             val prevPathI = position?.pathIndex
-            position = session.value!!.next(position!!, puzzle.value!!)
-            gameRepo.saveProgress(position!!.value.progress)
-            session.postValue(position!!.value)
+            saveProgress()
             when {
-                position?.isCompleted!! -> {
-                    puzzle.postValue(null)
-                    navigateTo(Screen.JOURNEY_COMPLETE)
-                }
                 position?.pathIndex != prevPathI -> {
                     navigateTo(Screen.PATHS_LIST)
                 }
@@ -119,6 +122,12 @@ class GameViewModelImpl(
                 }
             }
         }
+    }
+
+    private fun saveProgress() {
+        position = session.value!!.next(position!!, puzzle.value!!)
+        gameRepo.saveProgress(position!!.value.progress)
+        session.postValue(position!!.value)
     }
 
     private fun initPuzzle() {

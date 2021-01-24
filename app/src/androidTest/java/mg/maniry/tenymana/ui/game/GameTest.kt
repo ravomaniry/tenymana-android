@@ -42,20 +42,34 @@ class GameTest : KoinTest {
         val userRepo: UserRepo by inject()
         whenever(userRepo.user).thenReturn(MutableLiveData(User("1", "")))
         // Puzzle builder
+        val puzzleBuilder: PuzzleBuilder by inject()
         val math110 = BibleVerse.fromText("Matio", 1, 10, "Ny")
-        val math111 = BibleVerse.fromText("Matio", 1, 11, "Ny")
-        val puzzle = LinkClearPuzzleMock(math110).apply {
+        val puzzle0 = LinkClearPuzzleMock(math110).apply {
             proposeFn.mockReturnValue(true)
             completed = true
         }
-        val puzzleBuilder: PuzzleBuilder by inject()
-        whenever(puzzleBuilder.random(math110)).thenReturn(puzzle)
-        whenever(puzzleBuilder.random(math111)).thenReturn(puzzle)
+        whenever(puzzleBuilder.random(math110)).thenReturn(puzzle0)
+        val math111 = BibleVerse.fromText("Matio", 1, 11, "Ny")
+        val puzzle1 = LinkClearPuzzleMock(math111).apply {
+            proposeFn.mockReturnValue(true)
+            completed = true
+        }
+        whenever(puzzleBuilder.random(math111)).thenReturn(puzzle1)
+        val math112 = BibleVerse.fromText("Matio", 1, 12, "Ny")
+        val puzzle2 = LinkClearPuzzleMock(math112).apply {
+            proposeFn.mockReturnValue(true)
+            completed = true
+        }
+        whenever(puzzleBuilder.random(math112)).thenReturn(puzzle2)
         // Bible repo
         val bibleRepo: BibleRepo by inject()
         runBlocking {
             whenever(bibleRepo.getSingle("Matio", 1, 10)).thenReturn(math110)
             whenever(bibleRepo.getSingle("Matio", 1, 11)).thenReturn(math111)
+            whenever(bibleRepo.getSingle("Matio", 1, 12)).thenReturn(math112)
+            whenever(bibleRepo.get("Matio", 1, 10, 12)).thenReturn(
+                listOf(math110, math111, math112)
+            )
         }
         // game repo
         val gameRepo: GameRepo by inject()
@@ -66,7 +80,7 @@ class GameTest : KoinTest {
                     title = "Journey 1",
                     description = "Long text ..",
                     paths = listOf(
-                        Path("Path 0", "...", "Matio", 1, 10, 20),
+                        Path("Path 0", "...", "Matio", 1, 10, 12),
                         Path("Path 1", "...", "Jaona", 1, 1, 10)
                     )
                 ),
@@ -99,7 +113,7 @@ class GameTest : KoinTest {
             verifyOnce(bibleRepo).getSingle("Matio", 1, 10)
             //  - go to path details screen
             assertShouldBeVisible(R.id.pathDetailsScreen)
-            assertShouldHaveText(R.id.pathDetailsVerseRef, text = "Matio 1:10-20")
+            assertShouldHaveText(R.id.pathDetailsVerseRef, text = "Matio 1:10-12")
             clickView(R.id.pathDetailsNextBtn)
             //  - go to puzzle screen
             assertShouldBeVisible(R.id.puzzleScreen)
@@ -110,7 +124,7 @@ class GameTest : KoinTest {
             assertShouldBeVisible(R.id.linkClearPuzzle)
             // Bonus
             clickView(R.id.puzzleBonusOneBtn)
-            assertThat(puzzle.useBonusOneFn.calledWith(PuzzleViewModel.bonusOnePrice)).isTrue()
+            assertThat(puzzle0.useBonusOneFn.calledWith(PuzzleViewModel.bonusOnePrice)).isTrue()
             // Propose & complete
             swipeRight(R.id.charsGridInput)
             // On solution screen -> tap next -> load next verse + display puzzle screen
@@ -118,6 +132,17 @@ class GameTest : KoinTest {
             clickView(R.id.solutionSaveAndContinueBtn)
             assertShouldBeVisible(R.id.puzzleScreen)
             verifyOnce(bibleRepo).getSingle("Matio", 1, 11)
+            // Complete -> solution screen -> next: puzzle (1:12)
+            swipeRight(R.id.charsGridInput)
+            clickView(R.id.solutionSaveAndContinueBtn)
+            assertShouldBeVisible(R.id.puzzleScreen)
+            verifyOnce(bibleRepo).getSingle("Matio", 1, 12)
+            // Complete path: Solution screen expanded -> next: path details -> next: paths list
+            swipeRight(R.id.charsGridInput)
+            assertShouldBeVisible(R.id.solutionScreenBigView)
+            clickView(R.id.solutionSaveAndContinueBtn)
+            clickView(R.id.pathDetailsNextBtn)
+            assertShouldBeVisible(R.id.pathsScreen)
         }
     }
 }
