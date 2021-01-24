@@ -80,7 +80,7 @@ class SolutionViewModel(
     }
 
     fun autoExpand() {
-        if (gameViewModel.activePathIsCompleted()) {
+        if (gameViewModel.activePathIsCompleted() && gameViewModel.position?.verseIndex != 0) {
             showPreviousVerses()
         }
     }
