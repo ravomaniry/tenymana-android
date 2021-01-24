@@ -64,7 +64,7 @@ class GameFragment : Fragment() {
                 Screen.PATHS_LIST -> PathsFragment()
                 Screen.PATH_DETAILS -> PathDetailsFragment()
                 Screen.PUZZLE -> PuzzleFragment()
-                Screen.PUZZLE_SOLUTION -> SolutionFragment()
+                Screen.SOLUTION -> SolutionFragment()
                 else -> null
             }
             if (child != null) {

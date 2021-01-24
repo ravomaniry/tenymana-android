@@ -95,7 +95,7 @@ class GameViewModelImpl(
     }
 
     override fun onPuzzleCompleted() {
-        navigateTo(Screen.PUZZLE_SOLUTION)
+        navigateTo(Screen.SOLUTION)
     }
 
     override fun closePathDetails() {

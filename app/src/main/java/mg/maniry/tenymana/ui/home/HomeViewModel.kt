@@ -10,6 +10,7 @@ class HomeViewModel(
 ) : ViewModel() {
     val screen: LiveData<Screen> = appViewModel.screen
     var shouldNavigate = false
+    val isReady = appViewModel.isReady
 
     fun goToGameScreen() {
         shouldNavigate = true

@@ -49,7 +49,7 @@ class HomeFragment : Fragment() {
                 Screen.GAMES_LIST,
                 Screen.PATHS_LIST,
                 Screen.PUZZLE,
-                Screen.PUZZLE_SOLUTION -> HomeFragmentDirections.homeToGames()
+                Screen.SOLUTION -> HomeFragmentDirections.homeToGames()
                 else -> null
             }
             navigate(d)
