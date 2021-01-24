@@ -100,7 +100,7 @@ class GameViewModelTest {
             // 4- Increment score (3 stars) & complete: go to SOLUTION screen
             score.postValue(20)
             viewModel.onPuzzleCompleted()
-            assertThat(viewModel.screen.value).isEqualTo(Screen.PUZZLE_SOLUTION)
+            assertThat(viewModel.screen.value).isEqualTo(Screen.SOLUTION)
             assertThat(viewModel.shouldNavigate).isTrue()
             // 5- SaveAndContinue: update progress, save, load nextverse, go to puzzle screen
             viewModel.saveAndContinue()
@@ -149,22 +149,6 @@ class GameViewModelTest {
             assertThat(viewModel.screen.value).isEqualTo(Screen.PUZZLE)
             verifyOnce(puzzleBuilder).random(verses["Marka/1/1"] ?: error("1"))
             assertThat(viewModel.session.value!!.progress).isEqualTo(progress)
-            assertThat(viewModel.shouldNavigate).isTrue()
-            // Complete the journey
-            score.postValue(30)
-            viewModel.onPuzzleCompleted()
-            viewModel.saveAndContinue()
-            progress = Progress(
-                "ab",
-                totalScore = 20 + 2 + 3 + 30,
-                scores = listOf(
-                    listOf(Score(20, 3), Score(2, 1), Score(3, 2)),
-                    listOf(Score(30, 3))
-                )
-            )
-            verifyOnce(gameRepo).saveProgress(progress)
-            assertThat(viewModel.puzzle.value).isNull()
-            assertThat(viewModel.screen.value).isEqualTo(Screen.JOURNEY_COMPLETE)
             assertThat(viewModel.shouldNavigate).isTrue()
         }
     }
