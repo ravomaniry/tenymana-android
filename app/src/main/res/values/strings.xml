@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Teny Mana</string>
+    <string name="app_footer_text">Zaraina maimaim-poana 💚</string>
+    <string name="app_slogan">"Fa toy izao no nitiavan' Andriamanitra izao tontolo izao: nomeny ny Zanani-lahy Tokana, mba tsy ho very izay rehetra mino Azy, fa hanana fiainana mandrakizay. Jaona 3:16"</string>
     <string name="app_menu_desc">Menu</string>
     <string name="app_start_desc">Kintana</string>
     <string name="app_score_desc">Isa</string>

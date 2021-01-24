@@ -12,16 +12,49 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/goToGameBtn"
-            android:layout_width="wrap_content"
+        <TextView
+            style="@style/AppTheme.HomeAppTitle"
+            android:layout_width="match_parent"
+            android:layout_height="100sp"
+            android:text="@string/app_name" />
+
+        <TextView
+            style="@style/AppTheme.DescriptionText"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_games"
-            android:drawableLeft="@drawable/ic_games"
-            android:onClick="@{() -> viewModel.goToGameScreen()}"
-            android:text="@string/app_action_games" />
+            android:gravity="center"
+            android:text="@string/app_slogan" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/goToGameBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_games"
+                    android:onClick="@{() -> viewModel.goToGameScreen()}"
+                    android:text="@string/app_action_games" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <TextView
+            style="@style/AppTheme.DescriptionText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/app_footer_text" />
+
     </LinearLayout>
+
 </layout>
