@@ -11,6 +11,7 @@
     </data>
 
     <LinearLayout
+        style="@style/AppTheme.DarkMainCont"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -18,11 +19,11 @@
         <TextView
             style="@style/AppTheme.HomeAppTitle"
             android:layout_width="match_parent"
-            android:layout_height="100sp"
+            android:layout_height="wrap_content"
             android:text="@string/app_name" />
 
         <TextView
-            style="@style/AppTheme.DescriptionText"
+            style="@style/AppTheme.HomeSlogan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -30,36 +31,69 @@
 
         <ProgressBar
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_gravity="center"
+            android:layout_weight="1"
             app:isVisible="@{!viewModel.isReady}" />
 
         <ScrollView
+            style="@style/AppTheme.PageBodyLight"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             app:isVisible="@{viewModel.isReady}">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TableLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:layout_gravity="center">
 
-                <Button
-                    android:id="@+id/goToGameBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_games"
-                    android:onClick="@{() -> viewModel.goToGameScreen()}"
-                    android:text="@string/app_action_games" />
+                <TableRow>
 
-            </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/goToGameBtn"
+                        style="@style/AppTheme.HomeItemCont"
+                        android:onClick="@{() -> viewModel.goToGameScreen()}"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:contentDescription="@string/app_action_games"
+                            android:src="@drawable/ic_games" />
+
+                        <TextView
+                            style="@style/AppTheme.HomeItem"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/app_action_games" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/AppTheme.HomeItemCont"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:contentDescription="@string/app_action_games"
+                            android:src="@drawable/ic_book_green" />
+
+                        <TextView
+                            style="@style/AppTheme.HomeItem"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/bible_title" />
+                    </LinearLayout>
+
+                </TableRow>
+
+            </TableLayout>
 
         </ScrollView>
 
         <TextView
-            style="@style/AppTheme.DescriptionText"
+            style="@style/AppTheme.DescriptionTextLight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"

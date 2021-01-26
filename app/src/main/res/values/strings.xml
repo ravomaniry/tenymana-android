@@ -22,6 +22,9 @@
 
     <string name="puzzle_bonus_desc">Mila fanampiana</string>
 
+    <!-- Bible screen -->
+    <string name="bible_title">Baiboly</string>
+
     <!-- Loader-->
     <string name="loader_text">Jesosy Kristy no lalana sy fahamarinana ary fiainana.</string>
 </resources>
