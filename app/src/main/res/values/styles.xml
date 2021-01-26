@@ -46,6 +46,7 @@
 
     <style name="AppTheme.DarkMainCont">
         <item name="android:background">@drawable/bg_gradient_blue</item>
+        <item name="android:padding">4dp</item>
     </style>
 
     <style name="AppTheme.DescriptionTextView" parent="TextAppearance.AppCompat.Body1">
@@ -224,8 +225,8 @@
 
     <style name="AppTheme.PageBodyLight">
         <item name="android:background">@drawable/bg_light_body</item>
-        <item name="android:paddingTop">30dp</item>
-        <item name="android:paddingBottom">20dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
     </style>
 
     <style name="AppTheme.PathsScreenDescriptionCont" parent="Widget.MaterialComponents.CardView">
