@@ -122,8 +122,10 @@
     </style>
 
     <style name="AppTheme.HomeItem">
+        <item name="android:gravity">center</item>
         <item name="android:textColor">@color/blue</item>
         <item name="android:textSize">20sp</item>
+        <item name="android:minWidth">100dp</item>
         <item name="android:fontFamily">@font/kaushan_script_regular</item>
     </style>
     <!-- Journeys list -->
