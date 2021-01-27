@@ -23,7 +23,7 @@ class BibleDao(
         return res
     }
 
-    private suspend fun readChapter(book: String, chapter: Int): BibleChapter? {
+    suspend fun readChapter(book: String, chapter: Int): BibleChapter? {
         val path = buildPath(book, chapter)
         if (path == cache?.first) {
             return cache!!.second

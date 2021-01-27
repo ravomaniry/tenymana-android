@@ -51,6 +51,7 @@
                 <TableRow>
 
                     <TextView
+                        android:id="@+id/goToGameBtn"
                         style="@style/AppTheme.HomeItem"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -59,9 +60,11 @@
                         app:drawableTopCompat="@drawable/ic_games" />
 
                     <TextView
+                        android:id="@+id/goToBibleBtn"
                         style="@style/AppTheme.HomeItem"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:onClick="@{() -> viewModel.goToBibleScreen()}"
                         android:text="@string/bible_title"
                         app:drawableTopCompat="@drawable/ic_book_green" />
 

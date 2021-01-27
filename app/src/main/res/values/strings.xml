@@ -24,6 +24,7 @@
 
     <!-- Bible screen -->
     <string name="bible_title">Baiboly</string>
+    <string name="bible_close">Akatona</string>
 
     <!-- Loader-->
     <string name="loader_text">Jesosy Kristy no lalana sy fahamarinana ary fiainana.</string>

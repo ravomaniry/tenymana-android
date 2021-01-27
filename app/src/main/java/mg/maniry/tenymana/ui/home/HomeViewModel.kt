@@ -16,4 +16,9 @@ class HomeViewModel(
         shouldNavigate = true
         appViewModel.screen.postValue(Screen.GAMES_LIST)
     }
+
+    fun goToBibleScreen() {
+        shouldNavigate = true
+        appViewModel.screen.postValue(Screen.BIBLE)
+    }
 }
