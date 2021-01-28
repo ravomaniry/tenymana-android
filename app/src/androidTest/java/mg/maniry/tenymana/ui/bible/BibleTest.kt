@@ -60,6 +60,7 @@ class BibleTest : KoinTest {
             assertShouldHaveText(R.id.bibleVerseRef, 0, "Matio: ")
             assertShouldBeInvisible(R.id.bibleVerses)
             clickViewWithText("1")
+            assertShouldHaveText(R.id.bibleVerseRef, 0, "Matio: 1")
             assertShouldBeInvisible(R.id.bibleBooksList)
             assertShouldBeInvisible(R.id.bibleChaptersList)
             assertShouldBeVisible(R.id.bibleVerses)

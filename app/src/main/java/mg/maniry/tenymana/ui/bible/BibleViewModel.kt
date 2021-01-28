@@ -39,6 +39,7 @@ class BibleViewModel(
     }
 
     fun onChapterSelect(value: Int) {
+        _chapter.postValue(value)
         viewModelScope.launch(kDispatchers.main) {
             val book = _book.value
             if (book != null) {
