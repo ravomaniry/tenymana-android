@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="book"
+            type="mg.maniry.tenymana.ui.bible.DisplayBook" />
+
+        <variable
+            name="onClick"
+            type="mg.maniry.tenymana.ui.bible.OnBookClick" />
+
+    </data>
+
+    <TextView
+        android:id="@+id/bibleBookNameItem"
+        style="@style/AppTheme.DescriptionText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> onClick.onClick(book.index)}"
+        android:text="@{book.name}"
+        app:bibleBookActive="@{book.active}"
+        tools:text="Matthiew" />
+</layout>

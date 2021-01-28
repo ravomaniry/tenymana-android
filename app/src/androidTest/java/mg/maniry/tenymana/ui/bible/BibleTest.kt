@@ -47,9 +47,27 @@ class BibleTest : KoinTest {
             // Go to bible scren
             clickView(R.id.goToBibleBtn)
             assertShouldBeVisible(R.id.bibleScreen)
-            // Show form but no chapter select
+            // Show form but no chapter select - no chapter display
             assertShouldBeVisible(R.id.bibleBooksList)
             assertShouldBeInvisible(R.id.bibleChaptersList)
+            assertShouldBeInvisible(R.id.bibleVerseRef)
+            assertShouldBeInvisible(R.id.bibleVerses)
+            assertShouldHaveText(R.id.bibleBookNameItem, 0, "Matio")
+            assertShouldHaveText(R.id.bibleBookNameItem, 1, "Marka")
+            // Select book : show chapters
+            clickViewWithText("Matio")
+            assertShouldBeVisible(R.id.bibleChaptersList)
+            assertShouldHaveText(R.id.bibleVerseRef, 0, "Matio: ")
+            assertShouldBeInvisible(R.id.bibleVerses)
+            clickViewWithText("1")
+            assertShouldBeInvisible(R.id.bibleBooksList)
+            assertShouldBeInvisible(R.id.bibleChaptersList)
+            assertShouldBeVisible(R.id.bibleVerses)
+            assertShouldHaveText(R.id.solutionScreenVerseItem, 0, "1- Matio 1.1")
+            assertShouldHaveText(R.id.solutionScreenVerseItem, 1, "2- Matio 1.2")
+            // Close: go to home
+            clickView(R.id.bibleCloseBtn)
+            assertShouldBeVisible(R.id.goToBibleBtn)
         }
     }
 }

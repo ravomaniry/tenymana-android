@@ -41,6 +41,13 @@ fun clickView(id: Int, index: Int? = null) {
     }
 }
 
+fun clickViewWithText(text: String) {
+    onView(withText(text)).apply {
+        scrollIfNeeded(this)
+        perform(click())
+    }
+}
+
 fun swipeRight(id: Int, index: Int? = null) {
     findView(id, index).perform(swipeRight())
 }

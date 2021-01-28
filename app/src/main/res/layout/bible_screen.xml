@@ -29,7 +29,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{viewModel.displayChapter}"
-            tools:text="Matio: 1" />
+            app:isVisible="@{viewModel.book != null}"
+            tools:text="Matthiew: 1" />
 
         <LinearLayout
             style="@style/AppTheme.PageBodyLight"
@@ -57,6 +58,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    app:isVisible="@{viewModel.book != null}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             </LinearLayout>
@@ -65,7 +67,8 @@
                 android:id="@+id/bibleVerses"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:isVisible="@{viewModel.verses != null}" />
+                app:isVisible="@{viewModel.verses != null}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </LinearLayout>
 

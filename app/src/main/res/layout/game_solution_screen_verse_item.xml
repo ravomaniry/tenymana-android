@@ -7,6 +7,7 @@
         <variable
             name="verse"
             type="mg.maniry.tenymana.gameLogic.models.BibleVerse" />
+
     </data>
 
     <TextView

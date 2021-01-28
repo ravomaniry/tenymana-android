@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.PathsScreenBinding
 import mg.maniry.tenymana.ui.app.SharedViewModels
-import mg.maniry.tenymana.utils.bindTo
 import org.koin.android.ext.android.inject
 
 class PathsFragment : Fragment() {
@@ -46,10 +45,6 @@ class PathsFragment : Fragment() {
         binding.pathsGrid.apply {
             adapter = pathsAdapter
             (layoutManager as GridLayoutManager).spanCount = 8
-        }
-        bindTo(viewModel.activePath) {
-            pathsAdapter.scores = viewModel.activeScores
-            pathsAdapter.path = it
         }
     }
 }

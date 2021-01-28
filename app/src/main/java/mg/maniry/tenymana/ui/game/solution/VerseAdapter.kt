@@ -15,7 +15,9 @@ class VerseAdapter : RecyclerView.Adapter<VerseViewHolder>() {
             notifyDataSetChanged()
         }
 
-    override fun getItemCount() = verses?.size ?: 0
+    override fun getItemCount(): Int {
+        return verses?.size ?: 0
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VerseViewHolder {
         return VerseViewHolder.from(parent)
