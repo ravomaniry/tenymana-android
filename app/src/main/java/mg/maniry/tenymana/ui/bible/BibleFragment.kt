@@ -78,7 +78,7 @@ class BibleFragment : Fragment() {
         bindTo(viewModel.verses) { adapter.verses = it }
     }
 
-    fun observeNav() {
+    private fun observeNav() {
         viewModel.shouldClose.observe(viewLifecycleOwner, Observer {
             if (it) {
                 viewModel.shouldClose.postValue(false)
