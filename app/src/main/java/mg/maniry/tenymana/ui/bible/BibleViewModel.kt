@@ -26,9 +26,14 @@ class BibleViewModel(
     private val _displayChapter = MutableLiveData<String>("")
     val displayChapter: LiveData<String> = _displayChapter
     val shouldClose = MutableLiveData(false)
+    var bibleTitle = MutableLiveData("")
 
     private val chapterObs = Observer<Any?> {
-        _displayChapter.postValue("${book.value ?: ""}: ${chapter.value ?: ""}")
+        if (book.value == null) {
+            _displayChapter.postValue(bibleTitle.value)
+        } else {
+            _displayChapter.postValue("${book.value ?: ""}: ${chapter.value ?: ""}")
+        }
     }
 
     fun onBookSelect(index: Int) {
@@ -65,6 +70,7 @@ class BibleViewModel(
     init {
         _book.observeForever(chapterObs)
         _chapter.observeForever(chapterObs)
+        bibleTitle.observeForever(chapterObs)
         initBooks()
     }
 
@@ -72,6 +78,7 @@ class BibleViewModel(
         super.onCleared()
         _book.removeObserver(chapterObs)
         _chapter.removeObserver(chapterObs)
+        bibleTitle.removeObserver(chapterObs)
     }
 
     companion object {

@@ -41,6 +41,7 @@ class BibleFragment : Fragment() {
         val kDispatchers: KDispatchers by inject()
         val factory = BibleViewModel.factory(bibleRepo, kDispatchers)
         viewModel = ViewModelProvider(this, factory).get(BibleViewModel::class.java)
+        viewModel.bibleTitle.postValue(resources.getString(R.string.bible_title))
     }
 
     private fun initBinding(inflater: LayoutInflater, container: ViewGroup?) {

@@ -18,19 +18,12 @@
         android:orientation="vertical">
 
         <TextView
-            style="@style/AppTheme.HomeAppTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/bible_title" />
-
-        <TextView
             android:id="@+id/bibleVerseRef"
-            style="@style/AppTheme.HomeSlogan"
+            style="@style/AppTheme.BibleTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{viewModel.displayChapter}"
-            app:isVisible="@{viewModel.book != null}"
-            tools:text="Matthiew: 1" />
+            tools:text="Bible" />
 
         <LinearLayout
             style="@style/AppTheme.PageBodyLight"

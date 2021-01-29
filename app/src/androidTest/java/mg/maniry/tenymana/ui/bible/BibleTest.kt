@@ -1,5 +1,6 @@
 package mg.maniry.tenymana.ui.bible
 
+import android.content.res.Resources
 import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ActivityScenario
 import kotlinx.coroutines.runBlocking
@@ -43,14 +44,16 @@ class BibleTest : KoinTest {
             whenever(bibleRepo.getChapter("Matio", 1)).thenReturn(matio1)
             whenever(bibleRepo.getChapter("Marka", 2)).thenReturn(marka2)
             // Render
-            ActivityScenario.launch(MainActivity::class.java)
+            lateinit var resource: Resources
+            val sc = ActivityScenario.launch(MainActivity::class.java)
+            sc.onActivity { resource = it.resources }
             // Go to bible scren
             clickView(R.id.goToBibleBtn)
             assertShouldBeVisible(R.id.bibleScreen)
             // Show form but no chapter select - no chapter display
             assertShouldBeVisible(R.id.bibleBooksList)
             assertShouldBeInvisible(R.id.bibleChaptersList)
-            assertShouldBeInvisible(R.id.bibleVerseRef)
+            assertShouldHaveText(R.id.bibleVerseRef, 0, resource.getString(R.string.bible_title))
             assertShouldBeInvisible(R.id.bibleVerses)
             assertShouldHaveText(R.id.bibleBookNameItem, 0, "Matio")
             assertShouldHaveText(R.id.bibleBookNameItem, 1, "Marka")
