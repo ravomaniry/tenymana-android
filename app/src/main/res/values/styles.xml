@@ -75,11 +75,9 @@
         <item name="android:layout_gravity">end</item>
     </style>
 
-    <style name="AppTheme.ImageBtnPrimary">
-        <item name="android:background">@drawable/bg_primary_rounded_corner</item>
-        <item name="android:paddingLeft">6dp</item>
-        <item name="android:paddingRight">6dp</item>
-        <item name="android:layout_margin">4dp</item>
+    <style name="AppTheme.TransparentImgBtn" parent="Widget.AppCompat.ImageButton">
+        <item name="android:background">@color/light</item>
+        <item name="android:padding">4dp</item>
     </style>
 
     <style name="AppTheme.RedBtn" parent="AppTheme.Button">
@@ -326,4 +324,15 @@
     <style name="AppTheme.BibleTitle" parent="AppTheme.HomeAppTitle">
         <item name="android:textSize">20sp</item>
     </style>
+
+    <!-- Journey editor screen -->
+    <style name="AppTheme.FormFieldLabel" parent="AppTheme.DescriptionText">
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="AppTheme.TextInput" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_marginBottom">6dp</item>
+    </style>
+
 </resources>
