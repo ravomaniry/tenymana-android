@@ -36,25 +36,23 @@
             android:layout_weight="1"
             app:isVisible="@{!viewModel.isReady}" />
 
-        <ScrollView
+        <LinearLayout
             style="@style/AppTheme.PageBodyLight"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:gravity="center"
             app:isVisible="@{viewModel.isReady}">
 
             <TableLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal">
+                android:layout_height="wrap_content">
 
                 <TableRow>
 
                     <TextView
                         android:id="@+id/goToGameBtn"
                         style="@style/AppTheme.HomeItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:onClick="@{() -> viewModel.goToGameScreen()}"
                         android:text="@string/app_action_games"
                         app:drawableTopCompat="@drawable/ic_games" />
@@ -62,17 +60,26 @@
                     <TextView
                         android:id="@+id/goToBibleBtn"
                         style="@style/AppTheme.HomeItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:onClick="@{() -> viewModel.goToBibleScreen()}"
                         android:text="@string/bible_title"
                         app:drawableTopCompat="@drawable/ic_book_green" />
 
                 </TableRow>
 
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/goToNewGameBtn"
+                        style="@style/AppTheme.HomeItem"
+                        android:onClick="@{() -> viewModel.goToJourneyEditorScreen()}"
+                        android:text="@string/journeyEd_title"
+                        app:drawableTopCompat="@drawable/ic_videogame" />
+
+                </TableRow>
+
             </TableLayout>
 
-        </ScrollView>
+        </LinearLayout>
 
         <TextView
             style="@style/AppTheme.DescriptionTextLight"

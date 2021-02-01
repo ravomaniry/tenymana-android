@@ -21,4 +21,9 @@ class HomeViewModel(
         shouldNavigate = true
         appViewModel.screen.postValue(Screen.BIBLE)
     }
+
+    fun goToJourneyEditorScreen() {
+        shouldNavigate = true
+        appViewModel.screen.postValue(Screen.JOURNEY_EDITOR)
+    }
 }

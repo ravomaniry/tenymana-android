@@ -12,6 +12,7 @@ import mg.maniry.tenymana.utils.newViewModelFactory
 enum class Screen {
     HOME,
     BIBLE,
+    JOURNEY_EDITOR,
     GAMES_LIST,
     PATHS_LIST,
     PATH_DETAILS,

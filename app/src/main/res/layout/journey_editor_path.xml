@@ -13,7 +13,6 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-
         <TextView
             style="@style/AppTheme.BibleTitle"
             android:layout_width="wrap_content"
