@@ -69,7 +69,7 @@
                 <TableRow>
 
                     <TextView
-                        android:id="@+id/goToNewGameBtn"
+                        android:id="@+id/goToJourneyEditorBtn"
                         style="@style/AppTheme.HomeItem"
                         android:onClick="@{() -> viewModel.goToJourneyEditorScreen()}"
                         android:text="@string/journeyEd_title"

@@ -51,6 +51,7 @@ class HomeFragment : Fragment() {
                 Screen.PUZZLE,
                 Screen.SOLUTION -> HomeFragmentDirections.homeToGames()
                 Screen.BIBLE -> HomeFragmentDirections.homeToBible()
+                Screen.JOURNEY_EDITOR -> HomeFragmentDirections.homeToJourneyEditor()
                 else -> null
             }
             navigate(d)

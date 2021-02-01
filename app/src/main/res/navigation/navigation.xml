@@ -24,6 +24,13 @@
             app:exitAnim="@anim/fragment_close_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
+        <action
+            android:id="@+id/homeToJourneyEditor"
+            app:destination="@id/journeyEditorFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
     </fragment>
 
     <fragment
@@ -36,5 +43,9 @@
         android:name="mg.maniry.tenymana.ui.bible.BibleFragment"
         android:label="BibleFragment"
         tools:layout="@layout/bible_screen" />
-
+    <fragment
+        android:id="@+id/journeyEditorFragment"
+        android:name="mg.maniry.tenymana.ui.journeyEditor.JourneyEditorFragment"
+        android:label="JourneyEditorFragment"
+        tools:layout="@layout/journey_editor_summary" />
 </navigation>

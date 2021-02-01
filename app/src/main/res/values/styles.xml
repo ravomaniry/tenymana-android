@@ -286,7 +286,7 @@
         <item name="android:background">@drawable/bg_list_inner</item>
     </style>
 
-    <style name="AppTheme.HwArrowBtn" parent="AppTheme.ImageBtnPrimary">
+    <style name="AppTheme.HwArrowBtn">
         <item name="android:paddingTop">4dp</item>
         <item name="android:paddingBottom">4dp</item>
         <item name="android:paddingStart">8dp</item>
@@ -318,6 +318,12 @@
     <style name="AppTheme.VerseRowItem" parent="TextAppearance.AppCompat.Body1">
         <item name="android:layout_marginLeft">5dp</item>
         <item name="android:layout_marginRight">5dp</item>
+    </style>
+
+    <style name="AppTheme.RoundImageBtn">
+        <item name="android:background">@drawable/bg_primary_rounded_corner</item>
+        <item name="android:paddingStart">4dp</item>
+        <item name="android:paddingEnd">4dp</item>
     </style>
 
     <!-- Bible screen -->

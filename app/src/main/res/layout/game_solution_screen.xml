@@ -89,7 +89,7 @@
 
                 <ImageButton
                     android:id="@+id/solutionScreenExpandBtn"
-                    style="@style/AppTheme.ImageBtnPrimary"
+                    style="@style/AppTheme.RoundImageBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/solution_expand_description"
