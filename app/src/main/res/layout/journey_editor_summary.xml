@@ -14,7 +14,7 @@
         android:orientation="vertical">
 
         <TextView
-            style="@style/AppTheme.HomeAppTitle"
+            style="@style/AppTheme.BibleTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/journeyEd_title" />
@@ -56,7 +56,7 @@
                 android:gravity="top"
                 android:hint="@string/journey_description_hint"
                 android:inputType="textMultiLine"
-                android:lines="3" />
+                android:lines="2" />
 
             <TextView
                 style="@style/AppTheme.FormFieldLabel"
