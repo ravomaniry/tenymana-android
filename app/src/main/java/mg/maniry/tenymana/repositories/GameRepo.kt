@@ -7,6 +7,7 @@ import kotlinx.coroutines.launch
 import mg.maniry.tenymana.api.FsHelper
 import mg.maniry.tenymana.repositories.dao.Directories
 import mg.maniry.tenymana.repositories.dao.SessionDao
+import mg.maniry.tenymana.repositories.models.Journey
 import mg.maniry.tenymana.repositories.models.Progress
 import mg.maniry.tenymana.repositories.models.Session
 import mg.maniry.tenymana.repositories.setupUtils.copyAssets
@@ -15,6 +16,7 @@ interface GameRepo {
     val sessions: LiveData<List<Session>>
     suspend fun initialize(userID: String)
     fun saveProgress(progress: Progress)
+    fun saveJourney(journey: Journey)
 }
 
 class GameRepoImpl(
@@ -37,6 +39,12 @@ class GameRepoImpl(
     override fun saveProgress(progress: Progress) {
         GlobalScope.launch {
             dao.saveProgress(progress)
+        }
+    }
+
+    override fun saveJourney(journey: Journey) {
+        GlobalScope.launch {
+            dao.saveJourney(journey)
         }
     }
 }

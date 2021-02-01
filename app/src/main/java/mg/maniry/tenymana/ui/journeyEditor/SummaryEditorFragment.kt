@@ -30,5 +30,6 @@ class SummaryEditorFragment : BaseJourneyEditorFragment() {
             false
         )
         binding.lifecycleOwner = this
+        binding.viewModel = viewModel
     }
 }

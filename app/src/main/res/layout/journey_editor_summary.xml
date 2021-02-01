@@ -4,6 +4,9 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="mg.maniry.tenymana.ui.journeyEditor.JourneyEditorVM" />
     </data>
 
     <LinearLayout
@@ -39,7 +42,8 @@
                 android:layout_height="wrap_content"
                 android:autofillHints=""
                 android:hint="@string/journey_title_hint"
-                android:inputType="text" />
+                android:inputType="text"
+                android:text="@={viewModel.title}" />
 
             <TextView
                 style="@style/AppTheme.FormFieldLabel"
@@ -56,15 +60,20 @@
                 android:gravity="top"
                 android:hint="@string/journey_description_hint"
                 android:inputType="textMultiLine"
-                android:lines="2" />
+                android:lines="2"
+                android:text="@={viewModel.description}" />
 
             <TextView
                 style="@style/AppTheme.FormFieldLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/journey_path_title" />
+                android:drawablePadding="10dp"
+                android:onClick="@{() -> viewModel.onAddPath()}"
+                android:text="@string/journey_path_title"
+                app:drawableEndCompat="@drawable/ic_add" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/pathsPreview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
@@ -77,10 +86,11 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/jEditor_Cancel"
+                android:id="@+id/jEditor_cancel_summary"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{() -> viewModel.cancelSummary()}"
                 android:text="@string/bible_close" />
 
             <View
@@ -89,9 +99,11 @@
                 android:layout_weight="1" />
 
             <Button
-                android:id="@+id/jEditor_next"
+                android:id="@+id/jEditor_submit_summary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:enabled="@{viewModel.enableCompleteBtn}"
+                android:onClick="@{() -> viewModel.submitSummary()}"
                 android:text="@string/app_action_done" />
 
         </LinearLayout>

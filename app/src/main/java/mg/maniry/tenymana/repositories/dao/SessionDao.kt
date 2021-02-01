@@ -38,4 +38,8 @@ class SessionDao(
     suspend fun saveProgress(progress: Progress) {
         fs.writeJson("${dirs.progress}/${progress.journeyID}.json", progress, Progress::class.java)
     }
+
+    suspend fun saveJourney(journey: Journey) {
+        fs.writeJson("${dirs.journey}/${journey.id}.json", journey, Journey::class.java)
+    }
 }

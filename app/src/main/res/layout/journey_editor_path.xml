@@ -4,6 +4,9 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="mg.maniry.tenymana.ui.journeyEditor.JourneyEditorVM" />
     </data>
 
     <LinearLayout
@@ -17,7 +20,7 @@
             style="@style/AppTheme.BibleTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Dingana 1" />
+            tools:text="Path 1" />
 
         <LinearLayout
             style="@style/AppTheme.PageBodyLight"
@@ -39,7 +42,8 @@
                 android:layout_height="wrap_content"
                 android:autofillHints=""
                 android:hint="@string/journey_path_title_hint"
-                android:inputType="text" />
+                android:inputType="text"
+                android:text="@={viewModel.pathTitle}" />
 
             <TextView
                 style="@style/AppTheme.FormFieldLabel"
@@ -120,7 +124,8 @@
                 android:autofillHints=""
                 android:gravity="start"
                 android:hint="@string/journey_path_description_title"
-                android:inputType="textMultiLine" />
+                android:inputType="textMultiLine"
+                android:text="@={viewModel.pathDescription}" />
 
         </LinearLayout>
 
@@ -130,10 +135,11 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/jEditor_Cancel"
+                android:id="@+id/jEditor_cancel_path"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{() -> viewModel.cancelPath()}"
                 android:text="@string/bible_close" />
 
             <View
@@ -142,9 +148,11 @@
                 android:layout_weight="1" />
 
             <Button
-                android:id="@+id/jEditor_next"
+                android:id="@+id/jEditor_submit_path"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:enabled="@{viewModel.enableSubmitPathBtn}"
+                android:onClick="@{() -> viewModel.submitPath()}"
                 android:text="@string/app_action_done" />
 
         </LinearLayout>

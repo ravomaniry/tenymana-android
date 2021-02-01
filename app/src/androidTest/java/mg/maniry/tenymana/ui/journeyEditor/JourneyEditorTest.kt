@@ -46,6 +46,9 @@ class JourneyEditorTest : KoinTest {
             // -> go to editor screen
             clickView(R.id.goToJourneyEditorBtn)
             assertShouldBeVisible(R.id.journeyEditorScreen)
+            // cancel
+            clickView(R.id.jEditor_cancel_summary)
+            assertShouldBeVisible(R.id.goToJourneyEditorBtn)
         }
     }
 }
