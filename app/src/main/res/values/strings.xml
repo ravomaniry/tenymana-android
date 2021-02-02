@@ -41,6 +41,7 @@
     <string name="journey_path_endVerse">ka hatramin\'ny</string>
     <string name="journey_path_description_title">Fampianarana na lesona na toriteny:</string>
     <string name="journey_path_title_hint">Oh: "Ny asan'ny Fanahy Masina"</string>
+    <string name="journey_no_path_hint">Mila manampy dingana iray na maromaro ianao. Tsindrio eto.</string>
 
     <!-- Loader-->
     <string name="loader_text">Jesosy Kristy no lalana sy fahamarinana ary fiainana.</string>

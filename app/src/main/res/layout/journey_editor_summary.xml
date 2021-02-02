@@ -22,63 +22,78 @@
             android:layout_height="wrap_content"
             android:text="@string/journeyEd_title" />
 
-        <LinearLayout
-            style="@style/AppTheme.PageBodyLight"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_weight="1">
 
-            <TextView
-                style="@style/AppTheme.FormFieldLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/journey_title" />
-
-            <EditText
-                android:id="@+id/journeyNameValue"
-                style="@style/AppTheme.TextInput"
+            <LinearLayout
+                style="@style/AppTheme.PageBodyLight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autofillHints=""
-                android:hint="@string/journey_title_hint"
-                android:inputType="text"
-                android:text="@={viewModel.title}" />
+                android:orientation="vertical">
 
-            <TextView
-                style="@style/AppTheme.FormFieldLabel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/journey_description" />
+                <TextView
+                    style="@style/AppTheme.FormFieldLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/journey_title" />
 
-            <EditText
-                android:id="@+id/journeyDescriptionValue"
-                style="@style/AppTheme.TextInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints=""
-                android:gravity="top"
-                android:hint="@string/journey_description_hint"
-                android:inputType="textMultiLine"
-                android:lines="2"
-                android:text="@={viewModel.description}" />
+                <EditText
+                    android:id="@+id/journeyNameValue"
+                    style="@style/AppTheme.TextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints=""
+                    android:hint="@string/journey_title_hint"
+                    android:inputType="text"
+                    android:text="@={viewModel.title}" />
 
-            <TextView
-                style="@style/AppTheme.FormFieldLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawablePadding="10dp"
-                android:onClick="@{() -> viewModel.onAddPath()}"
-                android:text="@string/journey_path_title"
-                app:drawableEndCompat="@drawable/ic_add" />
+                <TextView
+                    style="@style/AppTheme.FormFieldLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/journey_description" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/pathsPreview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                <EditText
+                    android:id="@+id/journeyDescriptionValue"
+                    style="@style/AppTheme.TextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints=""
+                    android:gravity="top"
+                    android:hint="@string/journey_description_hint"
+                    android:inputType="textMultiLine"
+                    android:lines="3"
+                    android:text="@={viewModel.description}" />
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/journeyNoPathHint"
+                    style="@style/AppTheme.DescriptionText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{() -> viewModel.onAddPath()}"
+                    android:text="@string/journey_no_path_hint"
+                    app:isVisible="@{viewModel.paths.size() == 0}" />
+
+                <TextView
+                    style="@style/AppTheme.FormFieldLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="10dp"
+                    android:onClick="@{() -> viewModel.onAddPath()}"
+                    android:text="@string/journey_path_title"
+                    app:drawableEndCompat="@drawable/ic_add" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/pathsPreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            </LinearLayout>
+
+        </ScrollView>
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -51,3 +51,13 @@ fun clickViewWithText(text: String) {
 fun swipeRight(id: Int, index: Int? = null) {
     findView(id, index).perform(swipeRight())
 }
+
+fun typeInTextView(id: Int, index: Int? = null, text: String, closeKB: Boolean = false) {
+    findView(id, index).apply {
+        scrollIfNeeded(this)
+        perform(clearText(), typeText(text))
+        if (closeKB) {
+            perform(closeSoftKeyboard())
+        }
+    }
+}

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import mg.maniry.tenymana.repositories.BibleRepo
 import mg.maniry.tenymana.repositories.GameRepo
+import mg.maniry.tenymana.repositories.models.Path
 import mg.maniry.tenymana.utils.KDispatchers
 import mg.maniry.tenymana.utils.newViewModelFactory
 
@@ -24,6 +25,8 @@ class JourneyEditorVM(
 
     val title = MutableLiveData("")
     val description = MutableLiveData("")
+    private val _paths = MutableLiveData<List<Path>>(emptyList())
+    val paths: LiveData<List<Path>> = _paths
     val pathTitle = MutableLiveData("")
     val pathDescription = MutableLiveData("")
     val pathBook = MutableLiveData("")
