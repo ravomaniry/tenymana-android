@@ -38,11 +38,16 @@ class JourneyEditorTest : KoinTest {
             val books = listOf(Book("Matio", 10), Book("Marka", 5))
             val bibleRepo: BibleRepo by inject()
             whenever(bibleRepo.getBooks()).thenReturn(books)
+            whenever(bibleRepo.getChapter("Matio", 1)).thenReturn(listOf("1", "2"))
+            whenever(bibleRepo.getChapter("Marka", 1)).thenReturn(listOf("1"))
+            whenever(bibleRepo.getChapter("Marka", 5)).thenReturn(listOf("1", "2", "3", "4", "5"))
             // Render
             ActivityScenario.launch(MainActivity::class.java)
             // -> go to editor screen
             clickView(R.id.goToJourneyEditorBtn)
             assertShouldBeVisible(R.id.journeyEditorScreen)
+            // can not submit
+            assertShouldBeInvisible(R.id.jEditor_submit_summary)
             // cancel
             clickView(R.id.jEditor_cancel_summary)
             assertShouldBeVisible(R.id.goToJourneyEditorBtn)
@@ -54,6 +59,24 @@ class JourneyEditorTest : KoinTest {
             typeInTextView(R.id.journeyDescriptionValue, text = "Joureney desc", closeKB = true)
             clickView(R.id.journeyNoPathHint)
             assertShouldBeVisible(R.id.pathTitleValue)
+            // Select book
+            clickView(R.id.pathBookValue)
+            clickViewWithText("Marka")
+            // Select chapter
+            clickView(R.id.pathChapterValue)
+            clickViewWithText("5")
+            // Auto-select start & end verse
+            assertShouldHaveText(R.id.pathStartVerseValue, text = "1")
+            assertShouldHaveText(R.id.pathEndVerseValue, text = "1")
+            // Start verse
+            clickView(R.id.pathStartVerseValue)
+            clickViewWithText("2")
+            clickView(R.id.pathEndVerseValue)
+            clickViewWithText("4")
+            assertShouldBeInvisible(R.id.jEditor_submit_path)
+            typeInTextView(R.id.pathTitleValue, text = "Path 1")
+            assertShouldBeVisible(R.id.jEditor_submit_path)
+            clickView(R.id.jEditor_submit_path)
         }
     }
 }

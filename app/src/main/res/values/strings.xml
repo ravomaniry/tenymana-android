@@ -36,9 +36,9 @@
     <string name="journey_path_title">Dingana:</string>
     <string name="journey_verses_title">Andinin-tSoratra Masina:</string>
     <string name="journey_path_book">Boky</string>
-    <string name="journey_path_chapter">toko faha</string>
+    <string name="journey_path_chapter">Toko</string>
     <string name="journey_path_verse">Andininy</string>
-    <string name="journey_path_endVerse">ka hatramin\'ny</string>
+    <string name="journey_path_endVerse">Hatramin\'ny</string>
     <string name="journey_path_description_title">Fampianarana na lesona na toriteny:</string>
     <string name="journey_path_title_hint">Oh: "Ny asan'ny Fanahy Masina"</string>
     <string name="journey_no_path_hint">Mila manampy dingana iray na maromaro ianao. Tsindrio eto.</string>

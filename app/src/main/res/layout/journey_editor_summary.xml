@@ -119,7 +119,8 @@
                 android:layout_height="wrap_content"
                 android:enabled="@{viewModel.enableCompleteBtn}"
                 android:onClick="@{() -> viewModel.submitSummary()}"
-                android:text="@string/app_action_done" />
+                android:text="@string/app_action_done"
+                app:isVisible="@{viewModel.enableCompleteBtn}" />
 
         </LinearLayout>
 

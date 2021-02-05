@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -56,7 +57,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <TextView
                         style="@style/AppTheme.DescriptionText"
@@ -68,7 +71,14 @@
                         android:id="@+id/pathBookValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minWidth="75dp" />
+                        android:minWidth="75dp"
+                        app:onChange="@{viewModel.onBookSelect}"
+                        app:stringsList="@{viewModel.bookNames}" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <TextView
                         style="@style/AppTheme.DescriptionText"
@@ -79,11 +89,15 @@
                     <Spinner
                         android:id="@+id/pathChapterValue"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        app:onChange="@{viewModel.onChapterSelect}"
+                        app:stringsList="@{viewModel.chapters}" />
 
                 </TableRow>
 
-                <TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <TextView
                         style="@style/AppTheme.DescriptionText"
@@ -92,9 +106,16 @@
                         android:text="@string/journey_path_verse" />
 
                     <Spinner
-                        android:id="@+id/pathStartVerse"
+                        android:id="@+id/pathStartVerseValue"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        app:onChange="@{viewModel.onStartVerseSelect}"
+                        app:stringsList="@{viewModel.startVerses}" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <TextView
                         style="@style/AppTheme.DescriptionText"
@@ -103,9 +124,11 @@
                         android:text="@string/journey_path_endVerse" />
 
                     <Spinner
-                        android:id="@+id/pathEndVerse"
+                        android:id="@+id/pathEndVerseValue"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        app:onChange="@{viewModel.onEndVerseSelect}"
+                        app:stringsList="@{viewModel.endVerses}" />
 
                 </TableRow>
 
@@ -153,7 +176,8 @@
                 android:layout_height="wrap_content"
                 android:enabled="@{viewModel.enableSubmitPathBtn}"
                 android:onClick="@{() -> viewModel.submitPath()}"
-                android:text="@string/app_action_done" />
+                android:text="@string/app_action_done"
+                app:isVisible="@{viewModel.enableSubmitPathBtn}" />
 
         </LinearLayout>
 
