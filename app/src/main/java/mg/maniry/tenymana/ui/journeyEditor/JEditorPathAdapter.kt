@@ -18,6 +18,7 @@ class JEditorPathAdapter(
         list = paths.mapIndexed { index, path ->
             JEditorPathWrapper(path, index, onSelect, onDelete)
         }
+        notifyDataSetChanged()
     }
 
     override fun getItemCount() = list.size

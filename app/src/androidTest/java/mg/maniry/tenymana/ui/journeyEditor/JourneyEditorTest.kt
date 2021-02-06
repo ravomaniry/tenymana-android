@@ -75,8 +75,18 @@ class JourneyEditorTest : KoinTest {
             // Display summary: enable submit btn + display path item
             clickView(R.id.jEditor_submit_path)
             assertShouldBeVisible(R.id.jEditor_path_preview)
-            assertShouldBeVisible(R.id.jEditor_submit_summary)
-            // Delete path
+            assertShouldHaveText(R.id.jEditor_path_previw_title, text = "Path 1")
+            // create on more
+            clickView(R.id.jEditor_addPathBtn)
+            assertShouldHaveText(R.id.pathTitleValue, text = "")
+            typeInTextView(R.id.pathTitleValue, text = "Path 2")
+            clickView(R.id.jEditor_submit_path)
+            // displays
+            assertShouldHaveText(R.id.jEditor_path_previw_title, 0, text = "Path 1")
+            assertShouldHaveText(R.id.jEditor_path_previw_title, 1, text = "Path 2")
+            // Delete paths
+            clickView(R.id.deletePathBtn, 1)
+            assertShouldHaveText(R.id.jEditor_path_previw_title, text = "Path 1")
             clickView(R.id.deletePathBtn)
             assertShouldBeInvisible(R.id.jEditor_submit_summary)
             // Add + interract with form

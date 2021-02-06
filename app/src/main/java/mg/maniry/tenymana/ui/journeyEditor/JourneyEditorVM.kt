@@ -132,10 +132,8 @@ class JourneyEditorVM(
     }
 
     fun onDeletePath(index: Int) {
-        val next = paths.value?.toMutableList()
-        if (next != null) {
-            next.removeAt(index)
-            _paths.value = next
+        _paths.value = paths.value?.toMutableList()?.apply {
+            removeAt(index)
         }
     }
 

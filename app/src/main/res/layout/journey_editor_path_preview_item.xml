@@ -29,6 +29,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/jEditor_path_previw_title"
                     style="@style/AppTheme.EM"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
