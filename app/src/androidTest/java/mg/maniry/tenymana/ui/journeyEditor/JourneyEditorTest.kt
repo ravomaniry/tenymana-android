@@ -36,7 +36,7 @@ class JourneyEditorTest : KoinTest {
         runBlocking {
             // user mock
             val userRepo: UserRepo by inject()
-            whenever(userRepo.user).thenReturn(MutableLiveData(User("1", "")))
+            whenever(userRepo.user).thenReturn(MutableLiveData(User("1000", "")))
             // Bible repo
             val books = listOf(Book("Matio", 10), Book("Marka", 5))
             val bibleRepo: BibleRepo by inject()
@@ -50,6 +50,9 @@ class JourneyEditorTest : KoinTest {
             // -> go to editor screen
             clickView(R.id.goToJourneyEditorBtn)
             assertShouldBeVisible(R.id.journeyEditorScreen)
+            // Init repos
+            verifyOnce(userRepo).setup()
+            verifyOnce(gameRepo).initialize("1000")
             // can not submit
             assertShouldBeInvisible(R.id.jEditor_submit_summary)
             // cancel

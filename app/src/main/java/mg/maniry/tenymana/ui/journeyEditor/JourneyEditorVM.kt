@@ -5,12 +5,15 @@ import kotlinx.coroutines.launch
 import mg.maniry.tenymana.repositories.BibleRepo
 import mg.maniry.tenymana.repositories.Book
 import mg.maniry.tenymana.repositories.GameRepo
+import mg.maniry.tenymana.repositories.UserRepo
 import mg.maniry.tenymana.repositories.models.Journey
 import mg.maniry.tenymana.repositories.models.Path
+import mg.maniry.tenymana.repositories.models.User
 import mg.maniry.tenymana.utils.KDispatchers
 import mg.maniry.tenymana.utils.newViewModelFactory
 
 class JourneyEditorVM(
+    private val userRepo: UserRepo,
     private val gameRepo: GameRepo,
     private val bibleRepo: BibleRepo,
     private val kDispatchers: KDispatchers
@@ -42,6 +45,14 @@ class JourneyEditorVM(
     private var versesNum = 0
     private val _bookNames = MutableLiveData<List<String>>()
     val bookNames: LiveData<List<String>> = _bookNames
+
+    private val userObs = Observer<User?> {
+        if (it != null) {
+            viewModelScope.launch(kDispatchers.main) {
+                gameRepo.initialize(it.id)
+            }
+        }
+    }
 
     private val _enableSubmitJourneyBtn = MutableLiveData(false)
     val enableCompleteBtn: LiveData<Boolean> = _enableSubmitJourneyBtn
@@ -188,6 +199,7 @@ class JourneyEditorVM(
     }
 
     init {
+        userRepo.user.observeForever(userObs)
         title.observeForever(completeBtnObserver)
         _paths.observeForever(completeBtnObserver)
         pathTitle.observeForever(submitPathBtnObs)
@@ -203,6 +215,7 @@ class JourneyEditorVM(
 
     override fun onCleared() {
         super.onCleared()
+        userRepo.user.removeObserver(userObs)
         title.removeObserver(completeBtnObserver)
         _paths.removeObserver(completeBtnObserver)
         pathTitle.removeObserver(submitPathBtnObs)
@@ -213,15 +226,17 @@ class JourneyEditorVM(
         pathBook.removeObserver(bookObs)
         pathChapter.removeObserver(chapterObs)
         pathStartVerse.removeObserver(startVerseObs)
+        userRepo.user.removeObserver(userObs)
     }
 
     companion object {
         fun factory(
+            userRepo: UserRepo,
             gameRepo: GameRepo,
             bibleRepo: BibleRepo,
             kDispatchers: KDispatchers
         ) = newViewModelFactory {
-            JourneyEditorVM(gameRepo, bibleRepo, kDispatchers)
+            JourneyEditorVM(userRepo, gameRepo, bibleRepo, kDispatchers)
         }
     }
 }
