@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -21,7 +20,7 @@
             style="@style/AppTheme.BibleTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Path 1" />
+            android:text="@string/journey_path_title" />
 
         <ScrollView
             style="@style/AppTheme.PageBodyLight"
