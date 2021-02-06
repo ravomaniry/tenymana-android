@@ -70,14 +70,14 @@
                             android:layout_height="wrap_content"
                             android:text="@string/journey_path_book" />
 
-                        <Spinner
+                        <mg.maniry.tenymana.ui.views.spinner.SpinnerStringArray
                             android:id="@+id/pathBookValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minWidth="75dp"
+                            app:list="@{viewModel.bookNames}"
                             app:onChange="@{viewModel.onBookSelect}"
-                            app:selectedString="@{viewModel.pathBookName}"
-                            app:stringsList="@{viewModel.bookNames}" />
+                            app:value="@{viewModel.pathBookName}" />
                     </TableRow>
 
                     <TableRow
@@ -90,13 +90,13 @@
                             android:layout_height="wrap_content"
                             android:text="@string/journey_path_chapter" />
 
-                        <Spinner
+                        <mg.maniry.tenymana.ui.views.spinner.SpinnerStringArray
                             android:id="@+id/pathChapterValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            app:list="@{viewModel.chapters}"
                             app:onChange="@{viewModel.onChapterSelect}"
-                            app:selectedString="@{viewModel.pathChapter.toString()}"
-                            app:stringsList="@{viewModel.chapters}" />
+                            app:value="@{viewModel.pathChapter.toString()}" />
 
                     </TableRow>
 
@@ -110,13 +110,14 @@
                             android:layout_height="wrap_content"
                             android:text="@string/journey_path_verse" />
 
-                        <Spinner
+                        <mg.maniry.tenymana.ui.views.spinner.SpinnerStringArray
                             android:id="@+id/pathStartVerseValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            app:list="@{viewModel.startVerses}"
                             app:onChange="@{viewModel.onStartVerseSelect}"
-                            app:selectedString="@{viewModel.pathStartVerse.toString()}"
-                            app:stringsList="@{viewModel.startVerses}" />
+                            app:value="@{viewModel.pathStartVerse.toString()}" />
+
                     </TableRow>
 
                     <TableRow
@@ -129,13 +130,13 @@
                             android:layout_height="wrap_content"
                             android:text="@string/journey_path_endVerse" />
 
-                        <Spinner
+                        <mg.maniry.tenymana.ui.views.spinner.SpinnerStringArray
                             android:id="@+id/pathEndVerseValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            app:list="@{viewModel.endVerses}"
                             app:onChange="@{viewModel.onEndVerseSelect}"
-                            app:selectedString="@{viewModel.pathEndVerse.toString()}"
-                            app:stringsList="@{viewModel.endVerses}" />
+                            app:value="@{viewModel.pathEndVerse.toString()}" />
 
                     </TableRow>
 

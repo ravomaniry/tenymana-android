@@ -42,7 +42,7 @@ class JourneyEditorVM(
     val pathStartVerse = MutableLiveData(1)
     val pathEndVerse = MutableLiveData(2)
     private var books: List<Book> = emptyList()
-    private var versesNum = 0
+    private val versesNum = MutableLiveData(0)
     private val _bookNames = MutableLiveData<List<String>>()
     val bookNames: LiveData<List<String>> = _bookNames
 
@@ -56,14 +56,14 @@ class JourneyEditorVM(
 
     private val _enableSubmitJourneyBtn = MutableLiveData(false)
     val enableCompleteBtn: LiveData<Boolean> = _enableSubmitJourneyBtn
-    private val completeBtnObserver = Observer<Any?> {
+    private val completeBtnUpdater = Observer<Any?> {
         _enableSubmitJourneyBtn.value = !title.value.isNullOrEmpty() &&
                 !_paths.value.isNullOrEmpty()
     }
 
     private val _enableSubmitPathBtn = MutableLiveData(false)
     val enableSubmitPathBtn: LiveData<Boolean> = _enableSubmitPathBtn
-    private val submitPathBtnObs = Observer<Any?> {
+    private val submitPathBtnUpdater = Observer<Any?> {
         _enableSubmitPathBtn.value = !pathTitle.value.isNullOrEmpty() &&
                 pathBook.value != null &&
                 pathChapter.value != null &&
@@ -84,27 +84,29 @@ class JourneyEditorVM(
         }
     }
 
-    private val _startVerses = MutableLiveData<List<String>>()
-    val startVerses: LiveData<List<String>> = _startVerses
+    val startVerses = Transformations.map(versesNum) { n ->
+        List(n) { (it + 1).toString() }
+    }
+
     private val _endVerses = MutableLiveData<List<String>>()
     val endVerses: LiveData<List<String>> = _endVerses
+    private val endVersesUpdater = Observer<Any?> {
+        val num = versesNum.value
+        val start = pathStartVerse.value
+        if (num != null && start != null) {
+            _endVerses.value = List(num - start + 1) { (it + start).toString() }
+        }
+    }
+
     private val chapterObs = Observer<Int> {
         val bookI = pathBook.value
         if (books.isNotEmpty() && bookI != null) {
             viewModelScope.launch(kDispatchers.main) {
-                versesNum = bibleRepo.getChapter(books[bookI].name, it).size
+                versesNum.value = bibleRepo.getChapter(books[bookI].name, it).size
                 if (autoUpdateValues) {
                     pathStartVerse.value = 1
-                    _startVerses.value = List(versesNum) { (it + 1).toString() }
                 }
             }
-        }
-    }
-    private val startVerseObs = Observer<Int> { n ->
-        _endVerses.value = List(versesNum - n + 1) { (it + n).toString() }
-        val endV = pathEndVerse.value
-        if (autoUpdateValues && endV != null && endV < n) {
-            pathEndVerse.value = n
         }
     }
 
@@ -122,12 +124,13 @@ class JourneyEditorVM(
         val path = paths.value?.get(index)
         if (path != null) {
             pathIndex = index
+            _route.value = Route.Path
             pathTitle.value = path.name
             pathDescription.value = path.description
             pathBook.value = bookNames.value?.indexOf(path.book)
+            pathChapter.value = path.chapter
             pathStartVerse.value = path.start
             pathEndVerse.value = path.end
-            _route.value = Route.Path
         }
     }
 
@@ -180,6 +183,10 @@ class JourneyEditorVM(
     val onStartVerseSelect: (Int) -> Unit = {
         autoUpdateValues = true
         pathStartVerse.value = it + 1
+        val end = pathEndVerse.value
+        if (end != null && end <= it) {
+            pathEndVerse.value = it + 1
+        }
     }
 
     val onEndVerseSelect: (Int) -> Unit = {
@@ -198,33 +205,34 @@ class JourneyEditorVM(
 
     init {
         userRepo.user.observeForever(userObs)
-        title.observeForever(completeBtnObserver)
-        _paths.observeForever(completeBtnObserver)
-        pathTitle.observeForever(submitPathBtnObs)
-        pathBook.observeForever(submitPathBtnObs)
-        pathChapter.observeForever(submitPathBtnObs)
-        pathStartVerse.observeForever(submitPathBtnObs)
-        pathEndVerse.observeForever(submitPathBtnObs)
+        title.observeForever(completeBtnUpdater)
+        _paths.observeForever(completeBtnUpdater)
+        pathTitle.observeForever(submitPathBtnUpdater)
+        pathBook.observeForever(submitPathBtnUpdater)
+        pathChapter.observeForever(submitPathBtnUpdater)
+        pathStartVerse.observeForever(submitPathBtnUpdater)
+        pathEndVerse.observeForever(submitPathBtnUpdater)
         pathBook.observeForever(bookObs)
         pathChapter.observeForever(chapterObs)
-        pathStartVerse.observeForever(startVerseObs)
+        versesNum.observeForever(endVersesUpdater)
+        pathStartVerse.observeForever(endVersesUpdater)
         initBooks()
     }
 
     override fun onCleared() {
         super.onCleared()
         userRepo.user.removeObserver(userObs)
-        title.removeObserver(completeBtnObserver)
-        _paths.removeObserver(completeBtnObserver)
-        pathTitle.removeObserver(submitPathBtnObs)
-        pathBook.removeObserver(submitPathBtnObs)
-        pathChapter.removeObserver(submitPathBtnObs)
-        pathStartVerse.removeObserver(submitPathBtnObs)
-        pathEndVerse.removeObserver(submitPathBtnObs)
+        title.removeObserver(completeBtnUpdater)
+        _paths.removeObserver(completeBtnUpdater)
+        pathTitle.removeObserver(submitPathBtnUpdater)
+        pathBook.removeObserver(submitPathBtnUpdater)
+        pathChapter.removeObserver(submitPathBtnUpdater)
+        pathStartVerse.removeObserver(submitPathBtnUpdater)
+        pathEndVerse.removeObserver(submitPathBtnUpdater)
         pathBook.removeObserver(bookObs)
         pathChapter.removeObserver(chapterObs)
-        pathStartVerse.removeObserver(startVerseObs)
-        userRepo.user.removeObserver(userObs)
+        versesNum.removeObserver(endVersesUpdater)
+        pathStartVerse.removeObserver(endVersesUpdater)
     }
 
     companion object {
