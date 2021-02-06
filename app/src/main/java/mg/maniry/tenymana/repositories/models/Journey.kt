@@ -12,6 +12,11 @@ data class Journey(
             paths.forEach { s += 1 + it.end - it.start }
             return s
         }
+
+    override fun toString(): String {
+        return "id=$id|title=$title|description=$description|" +
+                "paths=${paths.joinToString { "$it\n" }}"
+    }
 }
 
 data class Path(
@@ -23,4 +28,7 @@ data class Path(
     val end: Int
 ) {
     val size: Int get() = end - start + 1
+    override fun toString(): String {
+        return "name=$name|description=$description|($book $chapter:$start-$end)"
+    }
 }

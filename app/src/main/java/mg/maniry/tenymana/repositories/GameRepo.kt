@@ -11,12 +11,14 @@ import mg.maniry.tenymana.repositories.models.Journey
 import mg.maniry.tenymana.repositories.models.Progress
 import mg.maniry.tenymana.repositories.models.Session
 import mg.maniry.tenymana.repositories.setupUtils.copyAssets
+import java.util.*
 
 interface GameRepo {
     val sessions: LiveData<List<Session>>
     suspend fun initialize(userID: String)
     fun saveProgress(progress: Progress)
     fun saveJourney(journey: Journey)
+    fun saveNewJourney(journey: Journey)
 }
 
 class GameRepoImpl(
@@ -24,8 +26,10 @@ class GameRepoImpl(
 ) : GameRepo {
     override val sessions = MutableLiveData<List<Session>>()
     private lateinit var dao: SessionDao
+    private var activeUserID = ""
 
     override suspend fun initialize(userID: String) {
+        activeUserID = userID
         dao = SessionDao(userID, fs)
         val savedSessions = dao.getSessions()
         if (savedSessions.isEmpty()) {
@@ -46,5 +50,10 @@ class GameRepoImpl(
         GlobalScope.launch {
             dao.saveJourney(journey)
         }
+    }
+
+    override fun saveNewJourney(journey: Journey) {
+        val toSave = journey.copy(id = "${activeUserID}_${Date().time}")
+        saveJourney(toSave)
     }
 }

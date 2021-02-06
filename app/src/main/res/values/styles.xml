@@ -159,10 +159,14 @@
         <item name="android:layout_marginEnd">4dp</item>
     </style>
 
-    <style name="AppTheme.GameListJourneyName">
-        <item name="android:background">@drawable/bg_game_list_item_journey_name</item>
+    <style name="AppTheme.EM" parent="TextAppearance.AppCompat.Body1">
         <item name="android:fontFamily">@font/kaushan_script_regular</item>
         <item name="android:textColor">@color/blue</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="AppTheme.GameListJourneyName" parent="AppTheme.EM">
+        <item name="android:background">@drawable/bg_game_list_item_journey_name</item>
         <item name="android:textSize">18sp</item>
         <item name="android:padding">4dp</item>
     </style>

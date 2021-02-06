@@ -23,134 +23,145 @@
             android:layout_height="wrap_content"
             tools:text="Path 1" />
 
-        <LinearLayout
+        <ScrollView
             style="@style/AppTheme.PageBodyLight"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_weight="1">
 
-            <TextView
-                style="@style/AppTheme.FormFieldLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/journey_title" />
-
-            <EditText
-                android:id="@+id/pathTitleValue"
-                style="@style/AppTheme.TextInput"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autofillHints=""
-                android:hint="@string/journey_path_title_hint"
-                android:inputType="text"
-                android:text="@={viewModel.pathTitle}" />
+                android:orientation="vertical">
 
-            <TextView
-                style="@style/AppTheme.FormFieldLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/journey_verses_title" />
+                <TextView
+                    style="@style/AppTheme.FormFieldLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/journey_title" />
 
-            <TableLayout
-                style="@style/AppTheme.TextInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/pathTitleValue"
+                    style="@style/AppTheme.TextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints=""
+                    android:hint="@string/journey_path_title_hint"
+                    android:inputType="text"
+                    android:text="@={viewModel.pathTitle}" />
 
-                <TableRow
+                <TextView
+                    style="@style/AppTheme.FormFieldLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/journey_verses_title" />
+
+                <TableLayout
+                    style="@style/AppTheme.TextInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <TextView
-                        style="@style/AppTheme.DescriptionText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/journey_path_book" />
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                    <Spinner
-                        android:id="@+id/pathBookValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minWidth="75dp"
-                        app:onChange="@{viewModel.onBookSelect}"
-                        app:stringsList="@{viewModel.bookNames}" />
-                </TableRow>
+                        <TextView
+                            style="@style/AppTheme.DescriptionText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/journey_path_book" />
 
-                <TableRow
+                        <Spinner
+                            android:id="@+id/pathBookValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="75dp"
+                            app:onChange="@{viewModel.onBookSelect}"
+                            app:selectedString="@{viewModel.pathBookName}"
+                            app:stringsList="@{viewModel.bookNames}" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/AppTheme.DescriptionText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/journey_path_chapter" />
+
+                        <Spinner
+                            android:id="@+id/pathChapterValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:onChange="@{viewModel.onChapterSelect}"
+                            app:selectedString="@{viewModel.pathChapter.toString()}"
+                            app:stringsList="@{viewModel.chapters}" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/AppTheme.DescriptionText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/journey_path_verse" />
+
+                        <Spinner
+                            android:id="@+id/pathStartVerseValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:onChange="@{viewModel.onStartVerseSelect}"
+                            app:selectedString="@{viewModel.pathStartVerse.toString()}"
+                            app:stringsList="@{viewModel.startVerses}" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            style="@style/AppTheme.DescriptionText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/journey_path_endVerse" />
+
+                        <Spinner
+                            android:id="@+id/pathEndVerseValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:onChange="@{viewModel.onEndVerseSelect}"
+                            app:selectedString="@{viewModel.pathEndVerse.toString()}"
+                            app:stringsList="@{viewModel.endVerses}" />
+
+                    </TableRow>
+
+                </TableLayout>
+
+                <TextView
+                    style="@style/AppTheme.FormFieldLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/journey_path_description_title" />
+
+                <EditText
+                    android:id="@+id/pathDescriptionValue"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:autofillHints=""
+                    android:gravity="start"
+                    android:hint="@string/journey_path_description_title"
+                    android:inputType="textMultiLine"
+                    android:lines="12"
+                    android:text="@={viewModel.pathDescription}" />
 
-                    <TextView
-                        style="@style/AppTheme.DescriptionText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/journey_path_chapter" />
+            </LinearLayout>
 
-                    <Spinner
-                        android:id="@+id/pathChapterValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:onChange="@{viewModel.onChapterSelect}"
-                        app:stringsList="@{viewModel.chapters}" />
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        style="@style/AppTheme.DescriptionText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/journey_path_verse" />
-
-                    <Spinner
-                        android:id="@+id/pathStartVerseValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:onChange="@{viewModel.onStartVerseSelect}"
-                        app:stringsList="@{viewModel.startVerses}" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        style="@style/AppTheme.DescriptionText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/journey_path_endVerse" />
-
-                    <Spinner
-                        android:id="@+id/pathEndVerseValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:onChange="@{viewModel.onEndVerseSelect}"
-                        app:stringsList="@{viewModel.endVerses}" />
-
-                </TableRow>
-
-            </TableLayout>
-
-            <TextView
-                style="@style/AppTheme.FormFieldLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/journey_path_description_title" />
-
-            <EditText
-                android:id="@+id/pathDescriptionValue"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:autofillHints=""
-                android:gravity="start"
-                android:hint="@string/journey_path_description_title"
-                android:inputType="textMultiLine"
-                android:text="@={viewModel.pathDescription}" />
-
-        </LinearLayout>
+        </ScrollView>
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -26,3 +26,21 @@ fun Spinner.bindList(value: List<String>?) {
         }
     }
 }
+
+@BindingAdapter("selectedString")
+fun Spinner.bindSelected(value: String?) {
+    val selected = selectedItem
+    if (value != null && value != selected) {
+        try {
+            for (i in 0 until adapter.count) {
+                val item = adapter.getItem(i)
+                if (item == value) {
+                    setSelection(i)
+                    return
+                }
+            }
+        } catch (e: Exception) {
+            println("Failed to select: ${e.message}")
+        }
+    }
+}

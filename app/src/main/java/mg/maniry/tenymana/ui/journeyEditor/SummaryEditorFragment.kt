@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.databinding.JourneyEditorSummaryBinding
+import mg.maniry.tenymana.utils.bindTo
 
 class SummaryEditorFragment : BaseJourneyEditorFragment() {
     private lateinit var binding: JourneyEditorSummaryBinding
@@ -19,6 +20,7 @@ class SummaryEditorFragment : BaseJourneyEditorFragment() {
         super.onCreateView(inflater, container, savedInstanceState)
         initViewModel()
         initBinding(inflater, container)
+        initPathsListView()
         return binding.root
     }
 
@@ -31,5 +33,11 @@ class SummaryEditorFragment : BaseJourneyEditorFragment() {
         )
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+    }
+
+    private fun initPathsListView() {
+        val adapter = JEditorPathAdapter(viewModel::onSelectPath, viewModel::onDeletePath)
+        bindTo(viewModel.paths, adapter::submitList)
+        binding.pathsPreview.adapter = adapter
     }
 }

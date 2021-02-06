@@ -4,9 +4,13 @@
 
     <data>
 
+        <variable
+            name="path"
+            type="mg.maniry.tenymana.ui.journeyEditor.JEditorPathWrapper" />
     </data>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/jEditor_path_preview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp">
@@ -16,19 +20,38 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
-                style="@style/AppTheme.DescriptionText"
+            <LinearLayout
+                android:id="@+id/jEditor_editPathBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_weight="1"
-                tools:text="Jan 1st\nMatthiew 1: 1 - 10" />
+                android:onClick="@{() -> path.onSelect()}"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/AppTheme.EM"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@{path.path.name}"
+                    tools:text="Jan 1st" />
+
+                <TextView
+                    style="@style/AppTheme.DescriptionText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{path.verseRef}"
+                    tools:text="Matthiew 1: 1 -20" />
+
+            </LinearLayout>
 
             <ImageButton
+                android:id="@+id/deletePathBtn"
                 style="@style/AppTheme.TransparentImgBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/app_action_delete"
+                android:onClick="@{() -> path.onDelete()}"
                 android:src="@drawable/ic_delete" />
         </LinearLayout>
 
