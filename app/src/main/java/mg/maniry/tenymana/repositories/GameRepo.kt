@@ -41,8 +41,9 @@ class GameRepoImpl(
     }
 
     override fun saveProgress(progress: Progress) {
+        val toSave = progress.copy(lastUpdate = Date().time)
         GlobalScope.launch {
-            dao.saveProgress(progress)
+            dao.saveProgress(toSave)
         }
     }
 

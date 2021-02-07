@@ -32,6 +32,7 @@ class SessionDao(
                 sessions.add(Session(journey, progress ?: Progress(id)))
             }
         }
+        sessions.sortBy { -it.progress.lastUpdate }
         return sessions
     }
 

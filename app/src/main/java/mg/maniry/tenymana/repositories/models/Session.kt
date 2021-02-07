@@ -13,7 +13,8 @@ data class Progress(
     val journeyID: String,
     val totalScore: Int = 0,
     val scores: List<List<Score>> = emptyList(),
-    val bonuses: List<Bonus> = emptyList()
+    val bonuses: List<Bonus> = emptyList(),
+    val lastUpdate: Long = 0
 ) {
     val size: Int = scores.countSubItems()
 }
