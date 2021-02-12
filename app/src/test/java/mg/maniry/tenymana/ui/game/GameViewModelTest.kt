@@ -44,8 +44,8 @@ class GameViewModelTest {
                 Journey(
                     id = "ab",
                     paths = listOf(
-                        Path("Path 1", "", "Matio", 1, 1, 3),
-                        Path("Path 2", "", "Marka", 1, 1, 1)
+                        Path("Path 1", "..", "Matio", 1, 1, 3),
+                        Path("Path 2", "..", "Marka", 1, 1, 1)
                     )
                 ),
                 Progress("ab")

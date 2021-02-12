@@ -116,8 +116,7 @@ class SolutionViewModel(
 }
 
 private fun GameViewModel.activePathIsCompleted(): Boolean {
-    val pathI = position?.pathIndex ?: return false
     val verseI = position?.verseIndex ?: return false
-    val path = session.value?.journey?.paths?.get(pathI) ?: return false
+    val path = activePath() ?: return false
     return verseI == path.size - 1
 }

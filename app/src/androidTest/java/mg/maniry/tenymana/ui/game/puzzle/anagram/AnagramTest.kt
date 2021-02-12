@@ -56,7 +56,7 @@ class AnagramTest : KoinTest {
             Session(
                 Journey(
                     "11",
-                    paths = listOf(Path("Path 0", "...", "Matio", 1, 10, 20))
+                    paths = listOf(Path("Path 0", "", "Matio", 1, 10, 20))
                 ),
                 Progress("11")
             )
@@ -73,8 +73,7 @@ class AnagramTest : KoinTest {
             assertShouldBeVisible(R.id.pathsScreen)
             // -> Journey screen:
             clickView(R.id.pathsScreenContinueBtn)
-            //  -> Path details screen
-            clickView(R.id.pathDetailsNextBtn)
+            //  -> Path details screen -> auto click button
             assertShouldBeVisible(R.id.anagramBody)
         }
         Thread.sleep(1000)

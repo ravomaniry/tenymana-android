@@ -8,6 +8,7 @@ import mg.maniry.tenymana.gameLogic.shared.session.*
 import mg.maniry.tenymana.repositories.BibleRepo
 import mg.maniry.tenymana.repositories.GameRepo
 import mg.maniry.tenymana.repositories.UserRepo
+import mg.maniry.tenymana.repositories.models.Path
 import mg.maniry.tenymana.repositories.models.Session
 import mg.maniry.tenymana.repositories.models.User
 import mg.maniry.tenymana.ui.app.AppViewModel
@@ -29,6 +30,7 @@ interface GameViewModel {
     fun closePathDetails()
     fun openCompletedPathDetails()
     fun refreshData()
+    fun activePath(): Path?
 }
 
 class GameViewModelImpl(
@@ -87,8 +89,9 @@ class GameViewModelImpl(
                 position = position!!.copy(pathIndex = pathIndex, verseIndex = verseIndex)
             }
         }
+        val dest = if (activePath()?.description == "") Screen.PUZZLE else Screen.PATH_DETAILS
         if (canOpenVerse) {
-            navigateTo(Screen.PATH_DETAILS)
+            navigateTo(dest)
             initPuzzle()
         }
         afterPathDetails = Screen.PUZZLE
@@ -122,6 +125,11 @@ class GameViewModelImpl(
                 }
             }
         }
+    }
+
+    override fun activePath(): Path? {
+        val pathI = position?.pathIndex ?: return null
+        return session.value?.journey?.paths?.get(pathI)
     }
 
     private fun saveProgress() {

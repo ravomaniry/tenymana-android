@@ -13,10 +13,6 @@ import org.koin.android.ext.android.inject
 
 class PathDetailsFragment : Fragment() {
     private lateinit var binding: PathDetailsScreenBinding
-    private val viewModels: SharedViewModels by inject()
-    private val gameViewModel = viewModels.game
-    private val position = gameViewModel.position
-    private val path = gameViewModel.session.value?.journey?.paths?.get(position?.pathIndex ?: 0)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,6 +25,10 @@ class PathDetailsFragment : Fragment() {
     }
 
     private fun initBinding(inflater: LayoutInflater, container: ViewGroup?) {
+        val viewModels: SharedViewModels by inject()
+        val gameViewModel = viewModels.game
+        val position = gameViewModel.position
+        val path = gameViewModel.session.value?.journey?.paths?.get(position?.pathIndex ?: 0)
         binding = DataBindingUtil.inflate(inflater, R.layout.path_details_screen, container, false)
         binding.lifecycleOwner = this
         binding.path = path
