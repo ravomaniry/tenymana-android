@@ -20,6 +20,8 @@ class PuzzleBuilderImpl(
         Anagram
     }
 
+    private var prevType: GameTypes? = null
+
     override fun random(verse: BibleVerse): Puzzle {
         return when (randomType()) {
             GameTypes.LinkClear -> LinkClearPuzzle.build(verse)
@@ -29,7 +31,11 @@ class PuzzleBuilderImpl(
     }
 
     private fun randomType(): GameTypes {
+        if (prevType != null && random.double() > 0.85) {
+            return prevType!!
+        }
         val types = listOf(GameTypes.LinkClear, GameTypes.HiddenWords, GameTypes.Anagram)
+            .filter { it != prevType }
         var minP = 0.0
         var type = GameTypes.LinkClear
         for (t in types) {
@@ -39,6 +45,7 @@ class PuzzleBuilderImpl(
                 type = t
             }
         }
+        prevType = type
         return type
     }
 }

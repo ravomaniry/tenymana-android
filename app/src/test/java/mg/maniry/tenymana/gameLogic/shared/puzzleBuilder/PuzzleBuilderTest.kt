@@ -16,8 +16,9 @@ class PuzzleBuilderTest {
     fun test() {
         val randoms = listOf(
             0.8, 0.5, 0.5, // link clear
-            0.5, 0.8, 0.7, // hidden words
-            0.8, 0.9, 0.99 // anagram
+            0.851, // Link clear same puzzle
+            0.5, 0.8, 0.7, // different puzzle + firt (hidden workds)
+            0.8, 0.5, 0.51 // different + second
         )
         val random: Random = mock {
             on { this.double() } doReturnConsecutively randoms
@@ -25,6 +26,7 @@ class PuzzleBuilderTest {
         val verse = BibleVerse.fromText("", 1, 1, "abc")
         val builder = PuzzleBuilderImpl(random)
         // Puzzles
+        assertThat(builder.random(verse) is LinkClearPuzzle).isTrue()
         assertThat(builder.random(verse) is LinkClearPuzzle).isTrue()
         assertThat(builder.random(verse) is HiddenWordsPuzzle).isTrue()
         assertThat(builder.random(verse) is AnagramPuzzle).isTrue()
