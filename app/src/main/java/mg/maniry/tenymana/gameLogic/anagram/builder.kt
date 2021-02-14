@@ -6,11 +6,10 @@ import mg.maniry.tenymana.utils.Random
 
 fun buildAnagram(verse: BibleVerse, random: Random): List<List<Character>> {
     val result = mutableListOf<List<Character>>()
-    val words = verse.uniqueWords
-        .filter { it.size > 1 }
-        .shuffle(random)
+    val words = verse.uniqueWords.filter { it.size > 1 }
     for (word in words) {
-        val chars = word.chars.shuffle(random)
+        val chars = word.chars
+            .shuffle(random)
             .map { it.toGridChar() }
         result.add(chars)
     }

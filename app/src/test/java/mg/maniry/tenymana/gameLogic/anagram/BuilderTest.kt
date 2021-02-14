@@ -20,8 +20,8 @@ class BuilderTest {
         val resule = buildAnagram(verse, random)
         assertThat(resule).isEqualTo(
             listOf(
-                chars('e', 'd'),
-                chars('c', 'b', 'a')
+                chars('c', 'b', 'a'),
+                chars('e', 'd')
             )
         )
     }
