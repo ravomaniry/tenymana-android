@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="mg.maniry.tenymana.ui.game.GameViewModel" />
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,7 +33,57 @@
                 style="@style/AppTheme.GamesList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:layout_height="400dp" />
+
+            <FrameLayout
+                android:id="@+id/deleteJourneyDialog"
+                style="@style/AppTheme.Dialog"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:isVisible="@{viewModel.showDeleteDialog}"
+                tools:layout_marginTop="400dp">
+
+                <LinearLayout
+                    style="@style/AppTheme.DialogInnerCont"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/AppTheme.FormFieldLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/app_confirm_delete" />
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <Button
+                            android:id="@+id/cancelDeleteJourneyBtn"
+                            style="?android:attr/buttonBarButtonStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{() -> viewModel.cancelDeleteJourney()}"
+                            android:text="@string/app_no" />
+
+                        <Button
+                            android:id="@+id/confirmDeleteJourneyBtn"
+                            style="?android:attr/buttonBarButtonStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:onClick="@{() -> viewModel.confirmDeleteJourney()}"
+                            android:text="@string/app_yes" />
+
+                    </FrameLayout>
+
+                </LinearLayout>
+
+            </FrameLayout>
 
         </FrameLayout>
 

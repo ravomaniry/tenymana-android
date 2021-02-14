@@ -23,6 +23,7 @@ import org.junit.runner.RunWith
 import org.koin.core.context.stopKoin
 import org.koin.test.KoinTest
 import org.koin.test.inject
+import org.mockito.Mockito.clearInvocations
 
 @RunWith(AndroidJUnit4::class)
 class GameTest : KoinTest {
@@ -143,6 +144,47 @@ class GameTest : KoinTest {
             clickView(R.id.solutionSaveAndContinueBtn)
             clickView(R.id.pathDetailsNextBtn)
             assertShouldBeVisible(R.id.pathsScreen)
+        }
+    }
+
+    @Test
+    fun deleteJourney() {
+        // user mock
+        val userRepo: UserRepo by inject()
+        whenever(userRepo.user).thenReturn(MutableLiveData(User("1", "")))
+        // game repo
+        val gameRepo: GameRepo by inject()
+        val sessions = listOf(
+            Session(
+                Journey("j0"),
+                Progress("11", totalScore = 50)
+            ),
+            Session(
+                Journey("j1"),
+                Progress("22", totalScore = 10, scores = listOf(listOf(Score(10, 3))))
+            )
+        )
+        whenever(gameRepo.sessions).thenReturn(MutableLiveData(sessions))
+        runBlocking {
+            ActivityScenario.launch(MainActivity::class.java)
+            // Go to game screen
+            clickView(R.id.goToGameBtn)
+            assertShouldBeVisible(R.id.gamesList)
+            // No delete dialog
+            assertShouldBeInvisible(R.id.deleteJourneyDialog)
+            // delete -> cancel
+            clickView(R.id.deleteJourneyBtn, 0)
+            assertShouldBeVisible(R.id.deleteJourneyDialog)
+            clickView(R.id.cancelDeleteJourneyBtn)
+            assertShouldBeInvisible(R.id.deleteJourneyDialog)
+            verifyNever(gameRepo).deleteJourney("j0")
+            // delete -> confirm
+            clearInvocations(gameRepo)
+            clickView(R.id.deleteJourneyBtn, 1)
+            clickView(R.id.confirmDeleteJourneyBtn)
+            verifyOnce(gameRepo).deleteJourney("j1")
+            verifyOnce(gameRepo).initialize("1")
+            assertShouldBeInvisible(R.id.deleteJourneyDialog)
         }
     }
 }

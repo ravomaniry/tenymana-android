@@ -43,14 +43,31 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/journeyName"
-                    style="@style/AppTheme.GameListJourneyName"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="0dp"
-                    android:text="@{session.journey.title}"
-                    tools:text="Journey 1" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/journeyName"
+                        style="@style/AppTheme.GameListJourneyName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="0dp"
+                        android:layout_weight="1"
+                        android:text="@{session.journey.title}"
+                        tools:text="Journey 1" />
+
+                    <ImageButton
+                        android:id="@+id/deleteJourneyBtn"
+                        style="@style/AppTheme.TransparentImgBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/app_action_delete"
+                        android:onClick="@{() -> onClick.onDelete(session)}"
+                        android:src="@drawable/ic_delete" />
+
+                </LinearLayout>
 
                 <LinearLayout
                     style="@style/AppTheme.GamesListItemDetails"

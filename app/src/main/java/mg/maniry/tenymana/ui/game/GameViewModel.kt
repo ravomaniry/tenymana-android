@@ -23,6 +23,7 @@ interface GameViewModel {
     val puzzle: LiveData<Puzzle?>
     val onSessionClick: (Session) -> Unit
     val position: SessionPosition?
+    val showDeleteDialog: LiveData<Boolean>
 
     fun onPuzzleCompleted()
     fun saveAndContinue()
@@ -31,6 +32,9 @@ interface GameViewModel {
     fun openCompletedPathDetails()
     fun refreshData()
     fun activePath(): Path?
+    fun onDeleteJourney(id: String)
+    fun confirmDeleteJourney()
+    fun cancelDeleteJourney()
 }
 
 class GameViewModelImpl(
@@ -49,6 +53,9 @@ class GameViewModelImpl(
 
     override val puzzle = MutableLiveData<Puzzle?>(null)
     override var position: SessionPosition? = null
+
+    private var journeyToDelete: String? = null
+    override val showDeleteDialog = MutableLiveData(false)
 
     private var shouldRefreshData = false
 
@@ -130,6 +137,25 @@ class GameViewModelImpl(
     override fun activePath(): Path? {
         val pathI = position?.pathIndex ?: return null
         return session.value?.journey?.paths?.get(pathI)
+    }
+
+    override fun onDeleteJourney(id: String) {
+        journeyToDelete = id
+        showDeleteDialog.value = true
+    }
+
+    override fun confirmDeleteJourney() {
+        showDeleteDialog.value = false
+        if (journeyToDelete != null) {
+            viewModelScope.launch(dispatchers.main) {
+                gameRepo.deleteJourney(journeyToDelete!!)
+                refreshData()
+            }
+        }
+    }
+
+    override fun cancelDeleteJourney() {
+        showDeleteDialog.value = false
     }
 
     private fun saveProgress() {

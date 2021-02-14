@@ -76,7 +76,7 @@
     </style>
 
     <style name="AppTheme.TransparentImgBtn" parent="Widget.AppCompat.ImageButton">
-        <item name="android:background">@color/light</item>
+        <item name="android:background">@color/transparent</item>
         <item name="android:padding">4dp</item>
     </style>
 
@@ -98,6 +98,17 @@
 
     <style name="AppTheme.AppTitle" parent="AppTheme.BaseAppTitle">
         <item name="android:background">@drawable/bg_app_title</item>
+    </style>
+
+    <!-- Dialog -->
+    <style name="AppTheme.Dialog">
+        <item name="android:background">#AA000000</item>
+    </style>
+
+    <style name="AppTheme.DialogInnerCont">
+        <item name="android:padding">10dp</item>
+        <item name="android:layout_margin">20dp</item>
+        <item name="android:background">@drawable/bg_rounded_white</item>
     </style>
 
     <!-- Home -->
@@ -142,6 +153,7 @@
     <style name="AppTheme.GameListItemCont">
         <item name="android:background">@drawable/bg_game_list_item_outer</item>
         <item name="android:padding">4dp</item>
+        <item name="android:layout_marginBottom">2dp</item>
     </style>
 
     <style name="AppTheme.GameListItemInnerCont">

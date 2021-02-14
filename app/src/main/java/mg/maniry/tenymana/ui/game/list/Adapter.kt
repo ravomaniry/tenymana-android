@@ -9,9 +9,10 @@ import mg.maniry.tenymana.databinding.GamesListScreenItemBinding
 import mg.maniry.tenymana.repositories.models.Session
 
 class SessionAdapter(
-    clickHandler: (Session) -> Unit
+    selectHandler: (Session) -> Unit,
+    deleteHandler: (id: String) -> Unit
 ) : RecyclerView.Adapter<SessionViewHolder>() {
-    private val onClick = OnSessionClick(clickHandler)
+    private val onClick = OnSessionClick(selectHandler, deleteHandler)
     var data: List<Session> = emptyList()
         set(value) {
             field = value
@@ -52,9 +53,12 @@ class SessionViewHolder private constructor(
 }
 
 class OnSessionClick(
-    val handler: (session: Session) -> Unit
+    val selectHandler: (session: Session) -> Unit,
+    val deleteHandler: (id: String) -> Unit
 ) {
-    fun onClick(session: Session) = handler(session)
+    fun onClick(session: Session) = selectHandler(session)
+
+    fun onDelete(session: Session) = deleteHandler(session.journey.id)
 }
 
 private val Session.percentage: Int

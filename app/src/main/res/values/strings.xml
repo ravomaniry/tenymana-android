@@ -12,6 +12,9 @@
     <string name="app_action_delete">Fafana</string>
     <string name="app_expand_collapse_img_description">Angezana na akelezina</string>
     <string name="app_undo_desc">Averina</string>
+    <string name="app_confirm_delete">Fafana ve?</string>
+    <string name="app_yes">Eny</string>
+    <string name="app_no">Tsia</string>
 
     <string name="paths_screen_prev_description">Aseho ny teo aloha</string>
     <string name="paths_screen_next_description">Aseho ny manaraka</string>
