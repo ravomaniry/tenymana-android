@@ -43,4 +43,8 @@ class SessionDao(
     suspend fun saveJourney(journey: Journey) {
         fs.writeJson("${dirs.journey}/${journey.id}.json", journey, Journey::class.java)
     }
+
+    suspend fun deleteJourney(id: String): Boolean {
+        return fs.delete("${dirs.journey}/${id}.json")
+    }
 }

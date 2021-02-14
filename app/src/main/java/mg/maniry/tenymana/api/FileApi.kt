@@ -8,6 +8,7 @@ interface FileApi {
     fun readText(path: String): String?
     fun writeText(path: String, content: String)
     fun readDir(path: String): List<String>
+    fun delete(path: String): Boolean
 }
 
 class FileApiImpl(context: Context) : FileApi {
@@ -35,6 +36,11 @@ class FileApiImpl(context: Context) : FileApi {
     override fun readDir(path: String): List<String> {
         val dir = File(rootDir, path)
         return dir.list()?.toList() ?: emptyList()
+    }
+
+    override fun delete(path: String): Boolean {
+        val file = File(rootDir, path)
+        return if (file.exists()) file.delete() else false
     }
 }
 

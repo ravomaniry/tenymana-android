@@ -19,6 +19,7 @@ interface GameRepo {
     fun saveProgress(progress: Progress)
     fun saveJourney(journey: Journey)
     fun saveNewJourney(journey: Journey)
+    suspend fun deleteJourney(id: String)
 }
 
 class GameRepoImpl(
@@ -56,5 +57,9 @@ class GameRepoImpl(
     override fun saveNewJourney(journey: Journey) {
         val toSave = journey.copy(id = "${activeUserID}_${Date().time}")
         saveJourney(toSave)
+    }
+
+    override suspend fun deleteJourney(id: String) {
+        dao.deleteJourney(id)
     }
 }

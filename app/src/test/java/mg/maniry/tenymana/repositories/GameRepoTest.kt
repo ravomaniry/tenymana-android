@@ -65,6 +65,24 @@ class GameRepoTest {
         }
     }
 
+    @Test
+    fun deleteJourney() {
+        val assets: AssetsWrapper = mock {
+            on { list(any()) } doReturn emptyArray()
+        }
+        val fs: FsHelper = mock {
+            on { this.assets } doReturn assets
+            onBlocking { list(any()) } doReturn emptyList()
+            onBlocking { delete("123/journey/1.json") } doReturn true
+        }
+        runBlocking {
+            val repo = GameRepoImpl(fs)
+            repo.initialize("123")
+            repo.deleteJourney("1")
+            verifyOnce(fs).delete("123/journey/1.json")
+        }
+    }
+
     private fun j(id: String) = Journey(id, "", "", emptyList())
 
     private fun p() = Progress("1", 10, listOf(listOf(Score(20, 3))), emptyList())

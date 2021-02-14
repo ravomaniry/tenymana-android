@@ -14,6 +14,7 @@ interface FsHelper {
     suspend fun writeText(path: String, content: String)
     suspend fun readText(path: String): String?
     suspend fun list(path: String): List<String>
+    suspend fun delete(path: String): Boolean
 }
 
 class FsHelperImpl(
@@ -60,6 +61,12 @@ class FsHelperImpl(
     override suspend fun list(path: String): List<String> {
         return withContext(Dispatchers.IO) {
             fileApi.readDir(path)
+        }
+    }
+
+    override suspend fun delete(path: String): Boolean {
+        return withContext(Dispatchers.IO) {
+            fileApi.delete(path)
         }
     }
 }
