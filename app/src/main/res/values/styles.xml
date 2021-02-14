@@ -177,10 +177,13 @@
         <item name="android:textSize">18sp</item>
     </style>
 
-    <style name="AppTheme.GameListJourneyName" parent="AppTheme.EM">
+    <style name="AppTheme.GameListJourneyNameCont">
         <item name="android:background">@drawable/bg_game_list_item_journey_name</item>
-        <item name="android:textSize">18sp</item>
         <item name="android:padding">4dp</item>
+    </style>
+
+    <style name="AppTheme.GameListJourneyName" parent="AppTheme.EM">
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="AppTheme.GamesListItemDetails">
