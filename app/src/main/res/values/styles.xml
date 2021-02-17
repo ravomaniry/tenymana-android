@@ -51,7 +51,6 @@
 
     <style name="AppTheme.DescriptionTextView" parent="TextAppearance.AppCompat.Body1">
         <item name="android:textColor">@color/gray</item>
-        <item name="android:textStyle">italic</item>
         <item name="android:padding">6dp</item>
     </style>
 

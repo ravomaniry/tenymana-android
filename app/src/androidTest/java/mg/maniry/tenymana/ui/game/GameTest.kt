@@ -81,8 +81,8 @@ class GameTest : KoinTest {
                     title = "Journey 1",
                     description = "Long text ..",
                     paths = listOf(
-                        Path("Path 0", "...", "Matio", 1, 10, 12),
-                        Path("Path 1", "...", "Jaona", 1, 1, 10)
+                        Path("Path 0", "##Path1\n**title** __italic__ plain", "Matio", 1, 10, 12),
+                        Path("Path 1", "##Path1\n**title** __italic__", "Jaona", 1, 1, 10)
                     )
                 ),
                 Progress("11", totalScore = 50)

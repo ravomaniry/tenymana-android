@@ -5,6 +5,7 @@ import android.graphics.Typeface.ITALIC
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
@@ -39,7 +40,11 @@ fun TextView.bindMarkdown(value: String?) {
         val headlineColor = ResourcesCompat.getColor(resources, R.color.blue, null)
         for (style in md.styles) {
             val spansTypes = when (style.type) {
-                MdSpans.Type.Headline -> listOf(ForegroundColorSpan(headlineColor), StyleSpan(BOLD))
+                MdSpans.Type.Headline -> listOf(
+                    ForegroundColorSpan(headlineColor),
+                    StyleSpan(BOLD),
+                    RelativeSizeSpan(1.5f)
+                )
                 MdSpans.Type.Bold -> listOf(StyleSpan(BOLD))
                 MdSpans.Type.Italic -> listOf(StyleSpan(ITALIC))
                 MdSpans.Type.Plain -> emptyList()
