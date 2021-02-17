@@ -11,12 +11,12 @@ class MarkDownTest {
             MdSpans(
                 text = "headline\nraw txt. bold italic bold\n*pla_i",
                 styles = listOf(
-                    MdSpans.SpanStyle(MdSpans.Type.Headline, 0, 8),
-                    MdSpans.SpanStyle(MdSpans.Type.Plain, 9, 17),
-                    MdSpans.SpanStyle(MdSpans.Type.Bold, 18, 22),
-                    MdSpans.SpanStyle(MdSpans.Type.Italic, 23, 29),
-                    MdSpans.SpanStyle(MdSpans.Type.Bold, 30, 34),
-                    MdSpans.SpanStyle(MdSpans.Type.Plain, 35, 40)
+                    MdSpans.SpanStyle(MdSpans.Type.Headline, 0, 9),
+                    MdSpans.SpanStyle(MdSpans.Type.Plain, 9, 18),
+                    MdSpans.SpanStyle(MdSpans.Type.Bold, 18, 23),
+                    MdSpans.SpanStyle(MdSpans.Type.Italic, 23, 30),
+                    MdSpans.SpanStyle(MdSpans.Type.Bold, 30, 35),
+                    MdSpans.SpanStyle(MdSpans.Type.Plain, 35, 41)
                 )
             )
         )

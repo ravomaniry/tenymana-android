@@ -43,7 +43,7 @@ class PathsFragmentTest : KoinTest {
                 "Title",
                 "Description ...",
                 listOf(
-                    Path("Path 0", "...0", "Matio", 1, 1, 15),
+                    Path("Path 0", "##Headline\ncontent", "Matio", 1, 1, 15),
                     Path("Path 1", "...0", "Marka", 1, 10, 20)
                 )
             ),
