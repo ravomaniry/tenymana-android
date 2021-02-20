@@ -13,6 +13,7 @@ enum class Screen {
     HOME,
     BIBLE,
     JOURNEY_EDITOR,
+    JOURNEY_DOWNLOAD,
     GAMES_LIST,
     PATHS_LIST,
     PATH_DETAILS,

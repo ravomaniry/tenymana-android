@@ -19,3 +19,8 @@ fun TextView.bindTruncatedText(value: String?) {
 fun TextView.setTextColorResID(id: Int) {
     setTextColor(ResourcesCompat.getColor(resources, id, null))
 }
+
+@BindingAdapter("textResID")
+fun TextView.bindTextResID(value: Int?) {
+    text = if (value == null) "" else resources.getString(value)
+}

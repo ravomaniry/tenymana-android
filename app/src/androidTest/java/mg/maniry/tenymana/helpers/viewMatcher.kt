@@ -18,6 +18,14 @@ private fun scrollIfNeeded(v: ViewInteraction) {
     }
 }
 
+fun assertShouldBeVisibleNth(id: Int, n: Int) {
+    findView(id, n).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+}
+
+fun assertShouldBeInvisibleNth(id: Int, n: Int) {
+    findView(id, n).check(matches(withEffectiveVisibility(Visibility.GONE)))
+}
+
 fun assertShouldBeVisible(vararg ids: Int) {
     for (id in ids) {
         findView(id, null).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))

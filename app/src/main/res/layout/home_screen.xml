@@ -89,7 +89,17 @@
                         android:layout_weight=".5"
                         android:onClick="@{() -> viewModel.goToJourneyEditorScreen()}"
                         android:text="@string/journeyEd_title"
-                        app:drawableTopCompat="@drawable/ic_videogame" />
+                        app:drawableTopCompat="@drawable/ic_video_game" />
+
+                    <TextView
+                        android:id="@+id/goToJourneyDownload"
+                        style="@style/AppTheme.HomeItem"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".5"
+                        android:onClick="@{() -> viewModel.goToJourneyDownloadScreen()}"
+                        android:text="@string/journey_dld_title"
+                        app:drawableTopCompat="@drawable/ic_cloud_download" />
 
                 </LinearLayout>
 

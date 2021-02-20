@@ -26,4 +26,9 @@ class HomeViewModel(
         shouldNavigate = true
         appViewModel.screen.postValue(Screen.JOURNEY_EDITOR)
     }
+
+    fun goToJourneyDownloadScreen() {
+        shouldNavigate = true
+        appViewModel.screen.postValue(Screen.JOURNEY_DOWNLOAD)
+    }
 }

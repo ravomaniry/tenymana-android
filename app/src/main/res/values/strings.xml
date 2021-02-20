@@ -31,7 +31,7 @@
     <string name="bible_close">Akatona</string>
 
     <!-- Journey editor -->
-    <string name="journeyEd_title">Kilalao vaovao</string>
+    <string name="journeyEd_title">Hamorona fandaharana</string>
     <string name="journey_title">Lohateny:</string>
     <string name="journey_title_hint">Oh: "Mofon'aina Janoary 2021"</string>
     <string name="journey_description">Mombamomba azy:</string>
@@ -45,6 +45,14 @@
     <string name="journey_path_description_title">Fampianarana na lesona na toriteny:</string>
     <string name="journey_path_title_hint">Oh: "Ny asan'ny Fanahy Masina"</string>
     <string name="journey_no_path_hint">Mila manampy dingana iray na maromaro ianao. Tsindrio eto.</string>
+
+    <!-- Journey download -->
+    <string name="journey_dld_title">Haka fandaharana</string>
+    <string name="journey_dld_net_err">Misy olana ny internet</string>
+    <string name="journey_dld_downloaded">Azo so aman-tsara ny fandaharana</string>
+    <string name="journey_dld_prev_page">Pejy to aloha</string>
+    <string name="journey_dld_next_page">Pejy manaraka</string>
+    <string name="journey_dld_no_data">Tsy misy fandaharana hafa intsony</string>
 
     <!-- Loader-->
     <string name="loader_text">Jesosy Kristy no lalana sy fahamarinana ary fiainana.</string>

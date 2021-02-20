@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="mg.maniry.tenymana.ui.journeyDownload.JourneyDownloadVM" />
+
+    </data>
+
+    <LinearLayout
+        android:id="@+id/journeyDownloadScreen"
+        style="@style/AppTheme.DarkMainCont"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/AppTheme.BibleTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/journey_dld_title" />
+
+        <LinearLayout
+            style="@style/AppTheme.PageBodyLight"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/journeysList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:isVisible="@{!viewModel.isLoading}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:layout_height="400dp" />
+
+            <ProgressBar
+                android:id="@+id/journeyDldLoader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:isVisible="@{viewModel.isLoading}" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/journeyDldMsg"
+            style="@style/AppTheme.DescriptionTextLight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:isVisible="@{viewModel.message != null}"
+            app:textResID="@{viewModel.message}"
+            tools:text="message..." />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/journeyDldPrevPageBtn"
+                style="@style/AppTheme.TransparentImgBtn"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:contentDescription="@string/journey_dld_prev_page"
+                android:onClick="@{() -> viewModel.loadPrevPage()}"
+                android:src="@drawable/ic_arrow_left"
+                app:isVisible="@{viewModel.hasPrev}" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="10dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/journeyDldCloseBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bible_close" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="10dp"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:id="@+id/journeyDldNextPageBtn"
+                style="@style/AppTheme.TransparentImgBtn"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:contentDescription="@string/journey_dld_next_page"
+                android:onClick="@{() -> viewModel.loadNextPage()}"
+                android:src="@drawable/ic_arrow_right"
+                app:isVisible="@{viewModel.hasNext}" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</layout>

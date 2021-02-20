@@ -52,6 +52,7 @@ class HomeFragment : Fragment() {
                 Screen.SOLUTION -> HomeFragmentDirections.homeToGames()
                 Screen.BIBLE -> HomeFragmentDirections.homeToBible()
                 Screen.JOURNEY_EDITOR -> HomeFragmentDirections.homeToJourneyEditor()
+                Screen.JOURNEY_DOWNLOAD -> HomeFragmentDirections.homeToJourneyDownload()
                 else -> null
             }
             navigate(d)

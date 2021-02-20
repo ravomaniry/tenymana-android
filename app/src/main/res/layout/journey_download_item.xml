@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="value"
+            type="mg.maniry.tenymana.ui.journeyDownload.DisplayJourneyItem" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/jdItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:onClick="@{() -> value.onClick()}">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/jdItemTitle"
+                style="@style/AppTheme.GameListJourneyName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{value.value.title}"
+                tools:text="Journey title" />
+
+            <TextView
+                style="@style/AppTheme.DescriptionText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{value.value.description}"
+                tools:text="Description" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/jdDownloadedImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:contentDescription="@string/app_action_done"
+            android:src="@drawable/ic_check_circle"
+            app:isVisible="@{value.isDownloaded}" />
+
+    </androidx.cardview.widget.CardView>
+
+</layout>
