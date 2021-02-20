@@ -1,5 +1,6 @@
 package mg.maniry.tenymana.ui.journeyDownload
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -93,6 +94,7 @@ class JourneyDownloadVM(
                 fn()
             } catch (e: Exception) {
                 message.postValue(R.string.journey_dld_net_err)
+                Log.e("JourneyDownload", "$e")
             } finally {
                 isLoading.postValue(false)
             }
