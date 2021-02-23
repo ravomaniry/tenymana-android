@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import mg.maniry.tenymana.gameLogic.models.BibleVerse
 import mg.maniry.tenymana.gameLogic.models.Character
 import mg.maniry.tenymana.gameLogic.models.Puzzle
+import mg.maniry.tenymana.gameLogic.models.Word
 import mg.maniry.tenymana.gameLogic.shared.words.bonusRatio
 import mg.maniry.tenymana.gameLogic.shared.words.deltaScore
 import mg.maniry.tenymana.utils.Random
@@ -41,6 +42,7 @@ class AnagramPuzzleImpl(
             prevWords = words.toList()
             val didResolve = resolveWords(selection)
             if (didResolve) {
+                words.resolveOneChars()
                 next()
                 updateScore()
                 return true
@@ -81,5 +83,17 @@ class AnagramPuzzleImpl(
             _score += (_score * words.bonusRatio).toInt()
         }
         score.postValue(_score)
+    }
+}
+
+private fun MutableList<Word>.resolveOneChars() {
+    for (i in indices) {
+        val w = get(i)
+        if (w.size == 1) {
+            set(i, w.resolvedVersion)
+        }
+        if (!w.isSeparator && !w.resolved) {
+            return
+        }
     }
 }

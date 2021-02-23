@@ -15,7 +15,7 @@ class PuzzleTest {
 
     @Test
     fun puzzle() {
-        val verse = BibleVerse.fromText("", 1, 1, "Abc de ab abc")
+        val verse = BibleVerse.fromText("", 1, 1, "Abc i de ab abc")
         val initialChars = listOf(
             chars('a', 'c', 'b') as List<Character>,
             chars('e', 'd') as List<Character>,
@@ -34,25 +34,26 @@ class PuzzleTest {
         // propose -> true
         val words = verse.words.toMutableList()
         words[0] = words[0].resolvedVersion
-        words[6] = words[6].resolvedVersion
+        words[2] = words[2].resolvedVersion
+        words[8] = words[8].resolvedVersion
         var didUpdate = puzzle.propose(listOf(0, 2, 1))
         assertThat(didUpdate).isTrue()
         assertThat(puzzle.chars).isEqualTo(chars('e', 'd'))
         assertThat(puzzle.verse.words).isEqualTo(words)
-        assertThat(puzzle.score.value).isEqualTo(6)
+        assertThat(puzzle.score.value).isEqualTo(7)
         assertThat(puzzle.completed).isFalse()
         // resolve -> true
         didUpdate = puzzle.propose(listOf(1, 0))
         assertThat(didUpdate).isTrue()
         assertThat(puzzle.chars).isEqualTo(chars('a', 'b'))
-        assertThat(puzzle.verse.words[2].resolved).isTrue()
-        assertThat(puzzle.score.value).isEqualTo(8)
+        assertThat(puzzle.verse.words[4].resolved).isTrue()
+        assertThat(puzzle.score.value).isEqualTo(9)
         assertThat(puzzle.completed).isFalse()
         // resolve -> true -> complete
         didUpdate = puzzle.propose(listOf(0, 1))
         assertThat(didUpdate).isTrue()
         assertThat(puzzle.completed).isTrue()
-        assertThat(puzzle.verse.words[4].resolved).isTrue()
-        assertThat(puzzle.score.value).isEqualTo((8 + 2) * 2)
+        assertThat(puzzle.verse.words[6].resolved).isTrue()
+        assertThat(puzzle.score.value).isEqualTo((9 + 2) * 2)
     }
 }

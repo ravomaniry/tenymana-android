@@ -11,6 +11,7 @@ import mg.maniry.tenymana.gameLogic.models.Score
 import mg.maniry.tenymana.repositories.models.Journey
 import mg.maniry.tenymana.repositories.models.Progress
 import mg.maniry.tenymana.repositories.models.Session
+import mg.maniry.tenymana.repositories.network.ApiClient
 import mg.maniry.tenymana.utils.AssetsWrapper
 import mg.maniry.tenymana.utils.verifyOnce
 import mg.maniry.tenymana.utils.verifyTimes
@@ -30,8 +31,9 @@ class GameRepoTest {
             onBlocking { readJson("123/progress/1.json", Progress::class.java) } doReturn p()
             onBlocking { readJson("123/progress/2.json", Progress::class.java) } doReturn null
         }
+        val apiClient: ApiClient = mock()
         runBlocking {
-            val repo = GameRepoImpl(fs)
+            val repo = GameRepoImpl(fs, apiClient)
             repo.initialize("123")
             assertThat(repo.sessions.value).isEqualTo(
                 listOf(
@@ -44,6 +46,7 @@ class GameRepoTest {
 
     @Test
     fun init_newUser() {
+        val apiClient: ApiClient = mock()
         val content = "{\"id\": \"1\"}"
         val assets: AssetsWrapper = mock {
             on { list("journey") } doReturn arrayOf("test.json")
@@ -55,7 +58,7 @@ class GameRepoTest {
             onBlocking { exists(any()) } doReturn false
         }
         runBlocking {
-            val repo = GameRepoImpl(fs)
+            val repo = GameRepoImpl(fs, apiClient)
             repo.initialize("111")
             // list: once before assets copy and once after
             verifyTimes(fs, 2).list("111/journey")
@@ -67,6 +70,7 @@ class GameRepoTest {
 
     @Test
     fun deleteJourney() {
+        val apiClient: ApiClient = mock()
         val assets: AssetsWrapper = mock {
             on { list(any()) } doReturn emptyArray()
         }
@@ -76,7 +80,7 @@ class GameRepoTest {
             onBlocking { delete("123/journey/1.json") } doReturn true
         }
         runBlocking {
-            val repo = GameRepoImpl(fs)
+            val repo = GameRepoImpl(fs, apiClient)
             repo.initialize("123")
             repo.deleteJourney("1")
             verifyOnce(fs).delete("123/journey/1.json")
