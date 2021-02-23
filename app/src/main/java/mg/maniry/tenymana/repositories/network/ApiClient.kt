@@ -1,6 +1,7 @@
 package mg.maniry.tenymana.repositories.network
 
 import android.content.Context
+import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -17,6 +18,11 @@ class ApiClient(context: Context) {
     private val json = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
         .build()
+    private val retryPolicy = DefaultRetryPolicy(
+        30 * 1000,
+        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+    )
     private val queue = newRequestQueue(context)
 
     private suspend fun fetchText(url: String, tag: String): String {
@@ -27,6 +33,7 @@ class ApiClient(context: Context) {
                 Response.Listener<String> { coroutine.resumeWith(Result.success(it)) },
                 Response.ErrorListener { coroutine.resumeWithException(it) }
             )
+            req.retryPolicy = retryPolicy
             req.tag = tag
             queue.add(req)
         }
