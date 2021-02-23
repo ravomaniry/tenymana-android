@@ -7,23 +7,27 @@ import mg.maniry.tenymana.gameLogic.models.Puzzle
 import mg.maniry.tenymana.gameLogic.models.Word
 import mg.maniry.tenymana.gameLogic.shared.words.bonusRatio
 import mg.maniry.tenymana.gameLogic.shared.words.deltaScore
+import mg.maniry.tenymana.gameLogic.shared.words.revealChars
 import mg.maniry.tenymana.utils.Random
 
 interface AnagramPuzzle : Puzzle {
     val chars: List<Character?>
     fun propose(indexes: List<Int>): Boolean
+    fun useBonusOne(n: Int, price: Int): Boolean
 
     companion object {
         fun build(verse: BibleVerse): AnagramPuzzle {
-            val chars = buildAnagram(verse, Random.impl())
-            return AnagramPuzzleImpl(chars, verse)
+            val random = Random.impl()
+            val chars = buildAnagram(verse, random)
+            return AnagramPuzzleImpl(chars, verse, random)
         }
     }
 }
 
 class AnagramPuzzleImpl(
     private val allChars: List<List<Character>>,
-    initialVerse: BibleVerse
+    initialVerse: BibleVerse,
+    private val random: Random
 ) : AnagramPuzzle {
     private var prevWords = initialVerse.words
     private val words = initialVerse.words.toMutableList()
@@ -49,6 +53,15 @@ class AnagramPuzzleImpl(
             }
         }
         return false
+    }
+
+    override fun useBonusOne(n: Int, price: Int): Boolean {
+        val didUpdate = words.revealChars(n, emptySet(), random)
+        if (didUpdate) {
+            _score -= price
+            updateScore()
+        }
+        return didUpdate
     }
 
     private fun calcSelection(indexes: List<Int>): List<Character>? {
