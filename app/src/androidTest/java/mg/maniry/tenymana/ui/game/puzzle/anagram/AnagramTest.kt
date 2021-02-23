@@ -58,7 +58,7 @@ class AnagramTest : KoinTest {
                     "11",
                     paths = listOf(Path("Path 0", "", "Matio", 1, 10, 20))
                 ),
-                Progress("11")
+                Progress("11", totalScore = 20)
             )
         )
         whenever(gameRepo.sessions).thenReturn(MutableLiveData(sessions))
@@ -75,6 +75,8 @@ class AnagramTest : KoinTest {
             clickView(R.id.pathsScreenContinueBtn)
             //  -> Path details screen -> auto click button
             assertShouldBeVisible(R.id.anagramBody)
+            // use bonus
+            clickView(R.id.anagramBonusOneBtn)
         }
         Thread.sleep(1000)
     }

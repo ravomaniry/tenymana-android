@@ -69,7 +69,7 @@ class PuzzleTest {
         val verse = BibleVerse.fromText("", 1, 1, "Abc")
         val initialChars = listOf(chars('a', 'c', 'b') as List<Character>)
         val puzzle = AnagramPuzzleImpl(initialChars, verse, random)
-        val res = puzzle.useBonusOne(2, 10)
+        val res = puzzle.useBonus(2, 10)
         assertThat(res).isTrue()
         assertThat(puzzle.verse.words[0].chars[0].resolved).isTrue()
         assertThat(puzzle.verse.words[0].chars[1].resolved).isTrue()

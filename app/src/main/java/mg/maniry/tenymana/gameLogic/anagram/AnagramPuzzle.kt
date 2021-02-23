@@ -13,7 +13,7 @@ import mg.maniry.tenymana.utils.Random
 interface AnagramPuzzle : Puzzle {
     val chars: List<Character?>
     fun propose(indexes: List<Int>): Boolean
-    fun useBonusOne(n: Int, price: Int): Boolean
+    fun useBonus(n: Int, price: Int): Boolean
 
     companion object {
         fun build(verse: BibleVerse): AnagramPuzzle {
@@ -55,7 +55,7 @@ class AnagramPuzzleImpl(
         return false
     }
 
-    override fun useBonusOne(n: Int, price: Int): Boolean {
+    override fun useBonus(n: Int, price: Int): Boolean {
         val didUpdate = words.revealChars(n, emptySet(), random)
         if (didUpdate) {
             _score -= price

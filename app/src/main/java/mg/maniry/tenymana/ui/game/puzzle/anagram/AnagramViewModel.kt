@@ -78,6 +78,13 @@ class AnagramViewModel(
         }
     }
 
+    fun useBonusOne() {
+        if (puzzleViewModel.canUseBonusOne()) {
+            puzzle?.useBonus(1, PuzzleViewModel.bonusOnePrice)
+            _words.postValue(puzzle!!.verse.words)
+        }
+    }
+
     fun onAnimationDone() {
         _animate.postValue(false)
     }
