@@ -53,6 +53,12 @@ class HiddenWordsViewModel(
         }
     }
 
+    fun onMount() {
+        if (groups.isNotEmpty()) {
+            _animate.postValue(true)
+        }
+    }
+
     fun cancel() {
         if (selected.isNotEmpty()) {
             selected.removeAll { true }

@@ -34,6 +34,7 @@ class HiddenWordsFragment : Fragment() {
         initHiddenWordView()
         initInputView()
         initAnim()
+        viewModel.onMount()
         return binding.root
     }
 
