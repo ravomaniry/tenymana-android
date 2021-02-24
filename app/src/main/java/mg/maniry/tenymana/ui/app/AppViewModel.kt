@@ -18,7 +18,10 @@ enum class Screen {
     PATHS_LIST,
     PATH_DETAILS,
     PUZZLE,
-    SOLUTION
+    SOLUTION,
+    LINK_CLEAR_HELP,
+    ANAGRAM_HELP,
+    HIDDEN_WORDS_HELP
 }
 
 class AppViewModel(

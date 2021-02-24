@@ -44,7 +44,29 @@
         android:id="@+id/gameFragment"
         android:name="mg.maniry.tenymana.ui.game.GameFragment"
         android:label="GameFragment"
-        tools:layout="@layout/games_list_screen" />
+        tools:layout="@layout/games_list_screen">
+        <action
+            android:id="@+id/gameToLkHelp"
+            app:destination="@id/helpLinkClear2"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/gameToHwHelp"
+            app:destination="@id/helpHiddenWords2"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/gameToAnagramHelp"
+            app:destination="@id/helpAnagram2"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
     <fragment
         android:id="@+id/bibleFragment"
         android:name="mg.maniry.tenymana.ui.bible.BibleFragment"
@@ -60,4 +82,19 @@
         android:name="mg.maniry.tenymana.ui.journeyDownload.JourneyDownloadFragment"
         android:label="JourneyDownloadFragment"
         tools:layout="@layout/journey_download_screen" />
+    <fragment
+        android:id="@+id/helpLinkClear2"
+        android:name="mg.maniry.tenymana.ui.game.helps.HelpLinkClear"
+        android:label="HelpLinkClear"
+        tools:layout="@layout/help_link_clear" />
+    <fragment
+        android:id="@+id/helpHiddenWords2"
+        android:name="mg.maniry.tenymana.ui.game.helps.HelpHiddenWords"
+        android:label="HelpHiddenWords"
+        tools:layout="@layout/help_hidden_words" />
+    <fragment
+        android:id="@+id/helpAnagram2"
+        android:name="mg.maniry.tenymana.ui.game.helps.HelpAnagram"
+        android:label="HelpAnagram"
+        tools:layout="@layout/help_anagram" />
 </navigation>

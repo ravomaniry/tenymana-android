@@ -24,6 +24,7 @@ interface GameViewModel {
     val onSessionClick: (Session) -> Unit
     val position: SessionPosition?
     val showDeleteDialog: LiveData<Boolean>
+    val helpScreen: MutableLiveData<Screen?>
 
     fun onPuzzleCompleted()
     fun saveAndContinue()
@@ -50,6 +51,7 @@ class GameViewModelImpl(
     var shouldNavigate = false
     override val screen = appViewModel.screen
     override var session = MutableLiveData<Session?>(null)
+    override val helpScreen = MutableLiveData<Screen?>(null)
 
     override val puzzle = MutableLiveData<Puzzle?>(null)
     override var position: SessionPosition? = null

@@ -3,6 +3,7 @@ package mg.maniry.tenymana.ui.game.puzzle.anagram
 import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import mg.maniry.tenymana.MainActivity
 import mg.maniry.tenymana.R
@@ -77,7 +78,12 @@ class AnagramTest : KoinTest {
             assertShouldBeVisible(R.id.anagramBody)
             // use bonus
             clickView(R.id.anagramBonusOneBtn)
+            delay(1000)
+            // help
+            clickView(R.id.puzzlHelpBtn)
+            assertShouldBeVisible(R.id.helpAnagram)
+            clickView(R.id.closeHelpBtn)
+            assertShouldBeVisible(R.id.anagramBody)
         }
-        Thread.sleep(1000)
     }
 }

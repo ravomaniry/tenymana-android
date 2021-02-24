@@ -15,6 +15,7 @@
     <string name="app_confirm_delete">Fafana ve?</string>
     <string name="app_yes">Eny</string>
     <string name="app_no">Tsia</string>
+    <string name="app_help">Fanazavana</string>
 
     <string name="paths_screen_prev_description">Aseho ny teo aloha</string>
     <string name="paths_screen_next_description">Aseho ny manaraka</string>
@@ -53,6 +54,13 @@
     <string name="journey_dld_prev_page">Pejy to aloha</string>
     <string name="journey_dld_next_page">Pejy manaraka</string>
     <string name="journey_dld_no_data">Tsy misy fandaharana hafa intsony</string>
+
+    <!-- Help -->
+    <string name="help_link_clear_title">Teny tsipihina</string>
+
+    <string name="help_hw_title">Teny miafina</string>
+
+    <string name="help_anagram_title">Teny mikorontana</string>
 
     <!-- Loader-->
     <string name="loader_text">Jesosy Kristy no lalana sy fahamarinana ary fiainana.</string>

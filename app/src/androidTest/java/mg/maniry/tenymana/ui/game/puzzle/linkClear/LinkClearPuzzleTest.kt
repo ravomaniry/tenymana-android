@@ -80,5 +80,10 @@ class LinkClearPuzzleTest : KoinTest {
             assertShouldBeVisible(R.id.linkClearPuzzle)
         }
         Thread.sleep(3000)
+        // help
+        clickView(R.id.puzzlHelpBtn)
+        assertShouldBeVisible(R.id.helpLinkClear)
+        clickView(R.id.closeHelpBtn)
+        assertShouldBeVisible(R.id.linkClearPuzzle)
     }
 }

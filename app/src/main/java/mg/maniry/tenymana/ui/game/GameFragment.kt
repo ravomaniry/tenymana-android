@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import mg.maniry.tenymana.R
 import mg.maniry.tenymana.gameLogic.shared.puzzleBuilder.PuzzleBuilder
 import mg.maniry.tenymana.repositories.BibleRepo
@@ -20,6 +20,7 @@ import mg.maniry.tenymana.ui.game.paths.PathsFragment
 import mg.maniry.tenymana.ui.game.puzzle.PuzzleFragment
 import mg.maniry.tenymana.ui.game.solution.SolutionFragment
 import mg.maniry.tenymana.utils.KDispatchers
+import mg.maniry.tenymana.utils.bindTo
 import mg.maniry.tenymana.utils.mountChild
 import org.koin.android.ext.android.inject
 
@@ -35,6 +36,7 @@ class GameFragment : Fragment() {
         super.onCreateView(inflater, container, savedInstanceState)
         initViewModel()
         observeRoute()
+        observerNav()
         viewModel.refreshData()
         return inflater.inflate(R.layout.game_screen, container, false)
     }
@@ -58,7 +60,7 @@ class GameFragment : Fragment() {
     }
 
     private fun observeRoute() {
-        viewModel.screen.observe(viewLifecycleOwner, Observer {
+        bindTo(viewModel.screen) {
             val child = when (it) {
                 Screen.GAMES_LIST -> GamesListFragment()
                 Screen.PATHS_LIST -> PathsFragment()
@@ -70,6 +72,21 @@ class GameFragment : Fragment() {
             if (child != null) {
                 mountChild(child, R.id.gameScreenBody)
             }
-        })
+        }
+    }
+
+    private fun observerNav() {
+        bindTo(viewModel.helpScreen) {
+            val direction = when (it) {
+                Screen.LINK_CLEAR_HELP -> GameFragmentDirections.gameToLkHelp()
+                Screen.HIDDEN_WORDS_HELP -> GameFragmentDirections.gameToHwHelp()
+                Screen.ANAGRAM_HELP -> GameFragmentDirections.gameToAnagramHelp()
+                else -> null
+            }
+            if (direction != null) {
+                viewModel.helpScreen.postValue(null)
+                findNavController().navigate(direction)
+            }
+        }
     }
 }

@@ -33,6 +33,15 @@
             android:layout_height="0dp"
             android:layout_weight="1" />
 
+        <ImageButton
+            android:id="@+id/puzzlHelpBtn"
+            style="@style/AppTheme.TransparentImgBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_help"
+            android:onClick="@{() -> viewModel.onHelp()}"
+            android:src="@drawable/ic_help" />
+
         <TextView
             android:id="@+id/puzzleHeaderScore"
             style="@style/AppTheme.ScoreTV"
@@ -41,5 +50,6 @@
             android:text="@{viewModel.score}"
             app:drawableRightCompat="@drawable/ic_star"
             tools:text="10" />
+
     </LinearLayout>
 </layout>

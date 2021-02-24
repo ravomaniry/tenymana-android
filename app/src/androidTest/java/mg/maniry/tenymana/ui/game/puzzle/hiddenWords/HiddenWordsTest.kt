@@ -87,5 +87,10 @@ class HiddenWordsTest : KoinTest {
             assertShouldBeInvisible(R.id.hwRightBtn)
         }
         Thread.sleep(1000)
+        // help
+        clickView(R.id.puzzlHelpBtn)
+        assertShouldBeVisible(R.id.helpHiddenWords)
+        clickView(R.id.closeHelpBtn)
+        assertShouldBeVisible(R.id.hiddenWordsPuzzleBody)
     }
 }
