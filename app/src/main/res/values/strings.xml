@@ -63,12 +63,12 @@
     <string name="help_anagram_title">Teny mikorontana</string>
     <string name="help_anagram_summary">
         ##Ny fomba filalao azy:\n
-        Eo ambony (1) no ahitana ilay andinin-tSoratra Masina hotadiavina ka miseho ireo teny efa hita.
-        Miseho tsirairay misesy avy any aloha ny teny ka ny litera rehetra no mandrafitra ilay teny hotadiavina.\n
-        Tsindriana tsirairay ny litera ao @ (5) ary mifindra mankeo amin\'ny (3).\n
-        Rehefa eo @ (3) avokoa ny litera rehetra dia tsindrina ny bokotra (4) hitsarana azy na ny bokotra (2) raha haverina.
-        Miseho ny teny manaraka raha marina fa miverina eo ambany (5) kosa ireo litera rehetra raha diso.\n
-        __Raha tsy hainao ny teny dia afaka tsindriana ny bokotra (6) mba hampiseo ampahany amin\'ny teny eo ambony (1).
+        "   "Eo ambony **(1)** no ahitana ilay andinin-tSoratra Masina hotadiavina ka miseho ireo teny efa hita.\n
+        "   "Miseho tsirairay misesy avy any aloha ny teny ka ny litera rehetra no mandrafitra ilay teny hotadiavina.\n
+        "   "Tsindriana tsirairay ny litera ao @ **(5)** ary mifindra mankeo amin\'ny **(3)**.\n
+        "   "Rehefa eo @ **(3)** avokoa ny litera rehetra dia tsindrina ny bokotra **(4)** hitsarana azy na ny bokotra **(2)** raha haverina.
+        "   "Miseho ny teny manaraka raha marina fa miverina eo ambany **(5)** kosa ireo litera rehetra raha diso.\n\n
+        __Raha tsy hainao ny teny dia afaka tsindriana ny bokotra__ **(6)** __mba hampiseo ampahany amin\'ny teny eo ambony **(1).
     </string>
 
     <!-- Loader-->
