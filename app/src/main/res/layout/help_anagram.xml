@@ -41,7 +41,8 @@
                     style="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:markdown="@{@string/help_anagram_summary}" />
+                    app:markdown="@{@string/help_anagram_summary}"
+                    tools:text="@string/help_anagram_summary" />
 
             </LinearLayout>
 
