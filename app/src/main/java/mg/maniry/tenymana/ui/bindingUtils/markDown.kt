@@ -64,7 +64,7 @@ fun parseMarkdown(value: String): MdSpans {
     val styles = mutableListOf<MdSpans.SpanStyle>()
     var prevChar: Char = ' '
 
-    fun append(style: MdSpans.Type) {
+    fun append() {
         if (tmpValue.isNotEmpty()) {
             if (tmpValue.isWhiteSpace() && styles.isNotEmpty()) {
                 val l = styles.size
@@ -72,31 +72,37 @@ fun parseMarkdown(value: String): MdSpans {
             } else {
                 styles.add(MdSpans.SpanStyle(tmpStyle, text.length, text.length + tmpValue.length))
             }
-            tmpStyle = MdSpans.Type.Plain
             text += tmpValue
         }
-        tmpStyle = style
         prevChar = ' '
         tmpValue = ""
+    }
+
+    fun toggleStyle(next: MdSpans.Type) {
+        tmpStyle = if (tmpStyle == next) MdSpans.Type.Plain else next
     }
 
     for (c in value) {
         when {
             c == '\n' -> {
                 tmpValue += c
-                append(MdSpans.Type.Plain)
+                append()
+                tmpStyle = MdSpans.Type.Plain
             }
             c == '#' && prevChar == '#' -> {
                 tmpValue = tmpValue.substring(0, tmpValue.length - 1)
-                append(MdSpans.Type.Headline)
+                append()
+                toggleStyle(MdSpans.Type.Headline)
             }
             c == '*' && prevChar == '*' -> {
                 tmpValue = tmpValue.substring(0, tmpValue.length - 1)
-                append(MdSpans.Type.Bold)
+                append()
+                toggleStyle(MdSpans.Type.Bold)
             }
             c == '_' && prevChar == '_' -> {
                 tmpValue = tmpValue.substring(0, tmpValue.length - 1)
-                append(MdSpans.Type.Italic)
+                append()
+                toggleStyle(MdSpans.Type.Italic)
             }
             else -> {
                 tmpValue += c
@@ -104,7 +110,7 @@ fun parseMarkdown(value: String): MdSpans {
         }
         prevChar = c
     }
-    append(MdSpans.Type.Plain)
+    append()
     return MdSpans(text, styles)
 }
 
