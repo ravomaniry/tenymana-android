@@ -114,7 +114,7 @@
     <style name="AppTheme.HomeAppTitle" parent="AppTheme.BaseAppTitle">
         <item name="android:layout_marginTop">16dp</item>
         <item name="android:layout_marginBottom">16dp</item>
-        <item name="android:textSize">48sp</item>
+        <item name="android:textSize">36sp</item>
     </style>
 
     <style name="AppTheme.HomeSlogan">
