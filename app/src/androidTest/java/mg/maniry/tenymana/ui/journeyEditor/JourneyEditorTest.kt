@@ -133,6 +133,9 @@ class JourneyEditorTest : KoinTest {
                 )
             )
             assertShouldBeVisible(R.id.goToJourneyEditorBtn)
+            // Clean after submit
+            clickView(R.id.goToJourneyEditorBtn)
+            assertShouldBeInvisible(R.id.jEditor_submit_summary)
         }
     }
 }

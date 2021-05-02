@@ -118,6 +118,7 @@ class JourneyEditorVM(
         val journey = Journey("", title.value!!, description.value ?: "", paths.value!!)
         gameRepo.saveNewJourney(journey)
         goToHome.postValue(true)
+        _paths.value = listOf()
     }
 
     fun onSelectPath(index: Int) {
