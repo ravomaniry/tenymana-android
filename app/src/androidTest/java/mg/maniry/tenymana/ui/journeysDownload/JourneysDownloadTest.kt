@@ -88,6 +88,11 @@ class JourneysDownloadTest : KoinTest {
             assertShouldBeVisible(R.id.journeyDldPrevPageBtn)
             assertShouldBeInvisible(R.id.journeyDldNextPageBtn)
             assertShouldHaveText(R.id.jdItemTitle, text = "title2")
+            verifyTimes(gameRepo, 1).fetchJourneysList(1);
+            // Refresh
+            clickView(R.id.journalDldRefreshBtn)
+            assertShouldHaveText(R.id.jdItemTitle, text = "title2")
+            verifyTimes(gameRepo, 2).fetchJourneysList(1);
             // download
             clickView(R.id.jdItem)
             verifyOnce(gameRepo).saveJourney(Journey("id2"))

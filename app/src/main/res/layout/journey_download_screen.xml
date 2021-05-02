@@ -18,12 +18,36 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            style="@style/AppTheme.BibleTitle"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/journey_dld_title" />
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/AppTheme.BibleTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/journey_dld_title" />
+
+            <ImageButton
+                android:id="@+id/journalDldRefreshBtn"
+                style="@style/AppTheme.TransparentImgBtn"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:contentDescription="@string/app_undo_desc"
+                android:onClick="@{()->viewModel.fetchList()}"
+                android:src="@drawable/ic_refresh"
+                app:isVisible="@{!viewModel.isLoading}" />
+
+            <ProgressBar
+                android:id="@+id/journeyDldLoader"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                app:isVisible="@{viewModel.isLoading}" />
+
+        </LinearLayout>
 
         <LinearLayout
             style="@style/AppTheme.PageBodyLight"
@@ -38,14 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:isVisible="@{!viewModel.isLoading}"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:layout_height="400dp" />
-
-            <ProgressBar
-                android:id="@+id/journeyDldLoader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:isVisible="@{viewModel.isLoading}" />
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </LinearLayout>
 

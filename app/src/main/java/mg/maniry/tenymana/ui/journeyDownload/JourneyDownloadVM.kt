@@ -75,7 +75,7 @@ class JourneyDownloadVM(
         }
     }
 
-    private fun fetchList() {
+    fun fetchList() {
         wrapRequest {
             hasPrev.postValue(false)
             hasNext.postValue(false)
